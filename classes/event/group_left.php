@@ -14,32 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace local_learningcompanions\event;
+
 /**
- * Plugin upgrade steps are defined here.
+ * The group_left event class.
  *
  * @package     local_learningcompanions
- * @category    upgrade
- * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @category    event
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <spiros.tzanetatos@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+class group_left extends \core\event\base {
 
-defined('MOODLE_INTERNAL') || die();
-
-/**
- * Execute local_learningcompanions upgrade from the given old version.
- *
- * @param int $oldversion
- * @return bool
- */
-function xmldb_local_learningcompanions_upgrade($oldversion) {
-    global $DB;
-
-    $dbman = $DB->get_manager();
-
-    $upgradefiles = glob(__DIR__ . "/upgrades/*.php");
-    foreach($upgradefiles as $upgradefile) {
-        include $upgradefile;
-    }
-
-    return true;
+    // For more information about the Events API please visit {@link https://docs.moodle.org/dev/Events_API}.
 }

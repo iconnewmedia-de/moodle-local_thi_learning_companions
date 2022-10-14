@@ -1,0 +1,1 @@
+<?phpfunction local_learningcompanions_extend_settings_navigation() {    global $PAGE;    if (!isloggedin()){        return;    }    $config = get_config('local_learningcompanions');    $PAGE->requires->js_call_amd('local_learningcompanions/learningcompanions', 'init', $config);}

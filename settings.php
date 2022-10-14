@@ -26,8 +26,30 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
-    if ($ADMIN->fulltree) {
-        // TODO: Define the plugin settings page - {@link https://docs.moodle.org/dev/Admin_settings}.
+    global $DB;
+    $rootcategories = $DB->get_records('course_categories', array('parent' => 0), 'sortorder');
+
+    $options = array();
+    foreach($rootcategories as $rootcategory) {
+        $options[$rootcategory->id] = $rootcategory->name;
+        $subcategories = $DB->get_records('course_categories', array('parent' => $rootcategory->id), 'sortorder');
+        foreach($subcategories as $subcategory) {
+            $options[$subcategory->id] = $rootcategory->name . ' &gt; ' . $subcategory->name;
+        }
     }
+    $settings = new admin_settingpage( 'local_learningcompanions', get_string('icgroups_settings', 'local_learningcompanions') );
+
+    // Create
+    $ADMIN->add( 'localplugins', $settings );
+    $settings->add(new admin_setting_configselect('local_learningcompanions/category', get_string('category_for_groups', 'local_learningcompanions'),
+        get_string('configcategory', 'local_learningcompanions'), 0, $options));
+
+    $settings->add(new admin_setting_configtext('local_learningcompanions/button_bg', get_string('button_bg_color', 'local_learningcompanions'),
+        get_string('configbuttonbg', 'local_learningcompanions'), '#333'));
+    $settings->add(new admin_setting_configtext('local_learningcompanions/button_color', get_string('button_text_color', 'local_learningcompanions'),
+        get_string('configbuttoncolor', 'local_learningcompanions'), '#fff'));
+    $settings->add(new admin_setting_configtext('local_learningcompanions/button_radius', get_string('button_radius', 'local_learningcompanions'),
+        get_string('configbuttonradius', 'local_learningcompanions'), '20', PARAM_INT));
 }
+
+

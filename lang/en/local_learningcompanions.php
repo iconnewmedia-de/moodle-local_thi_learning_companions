@@ -26,3 +26,18 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Learning Companions';
+$string['learningcompanions:group_create'] = 'Create groups';
+$string['learningcompanions:group_manage'] = 'Manage groups';
+$string['pluginname'] = 'Learning Companion Groups by ICON';
+$string['no_permission_create_group'] = 'You don\'t have the permission to create groups';
+$string['failed_create_group'] = 'Unexpected error. Creating a new group failed with the error message: ';
+$string['category_for_groups'] = 'Category for Groups';
+$string['configcategory'] = 'Please select the category which shall hold the courses for each group';
+$string['learningcompanions_settings'] = 'Settings for local plugin learningcompanions';
+$string['group-me-up'] = 'Group me up';
+$string['button_bg_color'] = 'Button background color';
+$string['configbuttonbg'] = 'Background color for the "group my up" button. Use CSS color syntax';
+$string['button_text_color'] = 'Button text color';
+$string['configbuttoncolor'] = 'Text color for the "group my up" button. Use CSS color syntax';
+$string['button_radius'] = 'Button radius';
+$string['configbuttonradius'] = 'Button radius for the "group my up" button in pixels.';
