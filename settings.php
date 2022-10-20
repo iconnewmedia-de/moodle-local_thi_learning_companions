@@ -37,7 +37,7 @@ if ($hassiteconfig) {
             $options[$subcategory->id] = $rootcategory->name . ' &gt; ' . $subcategory->name;
         }
     }
-    $settings = new admin_settingpage( 'local_learningcompanions', get_string('icgroups_settings', 'local_learningcompanions') );
+    $settings = new admin_settingpage( 'local_learningcompanions', get_string('learningcompanions_settings', 'local_learningcompanions') );
 
     // Create
     $ADMIN->add( 'localplugins', $settings );
