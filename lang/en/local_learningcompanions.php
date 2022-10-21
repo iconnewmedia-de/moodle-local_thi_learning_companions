@@ -41,3 +41,18 @@ $string['button_text_color'] = 'Button text color';
 $string['configbuttoncolor'] = 'Text color for the "group my up" button. Use CSS color syntax';
 $string['button_radius'] = 'Button radius';
 $string['configbuttonradius'] = 'Button radius for the "group my up" button in pixels.';
+$string['creategroup'] = 'Create group';
+$string['groupname'] = 'Group name';
+$string['maxlengthwarning'] = 'You may only use up to {$a} characters';
+$string['groupdescription'] = 'Group description';
+$string['closedgroup'] = 'Closed group';
+$string['closedgroup_help'] = 'With a closed group, people have to request permission to join. 
+You will then have to decide for each request who may or may not join. 
+Discussions of closed groups are only visible to group members.
+Open groups can be joined by anyone and the discussions are visible to the public.';
+$string['keywords'] = 'Keywords';
+$string['nokeywords'] = 'No keywords chosen yet';
+$string['error_group_creation_failed'] = 'Error: Group creation failed with message: "{$a}"';
+$string['error_group_edit_failed'] = 'Error: Editing the group failed with message: "{$a}"';
+$string['button_css_selector'] = 'CSS selector for group me up button';
+$string['configbuttoncssselector'] = 'Group me up buttons will automatically get placed on elements that match this CSS selector';

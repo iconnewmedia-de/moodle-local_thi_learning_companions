@@ -44,6 +44,8 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configselect('local_learningcompanions/category', get_string('category_for_groups', 'local_learningcompanions'),
         get_string('configcategory', 'local_learningcompanions'), 0, $options));
 
+    $settings->add(new admin_setting_configtext('local_learningcompanions/button_css_selector', get_string('button_css_selector', 'local_learningcompanions'),
+        get_string('configbuttoncssselector', 'local_learningcompanions'), '.activityinstance, .activity-item'));
     $settings->add(new admin_setting_configtext('local_learningcompanions/button_bg', get_string('button_bg_color', 'local_learningcompanions'),
         get_string('configbuttonbg', 'local_learningcompanions'), '#333'));
     $settings->add(new admin_setting_configtext('local_learningcompanions/button_color', get_string('button_text_color', 'local_learningcompanions'),
