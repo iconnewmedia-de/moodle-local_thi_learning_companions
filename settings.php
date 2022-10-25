@@ -40,7 +40,6 @@ if ($hassiteconfig) {
     $settings = new admin_settingpage( 'local_learningcompanions', get_string('learningcompanions_settings', 'local_learningcompanions') );
 
     // Create
-    $ADMIN->add( 'localplugins', $settings );
     $settings->add(new admin_setting_configselect('local_learningcompanions/category', get_string('category_for_groups', 'local_learningcompanions'),
         get_string('configcategory', 'local_learningcompanions'), 0, $options));
 
@@ -52,6 +51,7 @@ if ($hassiteconfig) {
         get_string('configbuttoncolor', 'local_learningcompanions'), '#fff'));
     $settings->add(new admin_setting_configtext('local_learningcompanions/button_radius', get_string('button_radius', 'local_learningcompanions'),
         get_string('configbuttonradius', 'local_learningcompanions'), '20', PARAM_INT));
+
+    $ADMIN->add('root', new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions')));
+    $ADMIN->add('lcconfig', $settings);
 }
-
-
