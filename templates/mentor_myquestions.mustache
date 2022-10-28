@@ -1,0 +1,46 @@
+{{#hasaskedquestions}}
+    <table class="stripe hover compact" id="askedquestionstable" data-paging="true" data-page-length="50">
+        <thead>
+        <tr>
+            <th>{{#str}}title, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#askedquestions}}
+            <tr>
+                <td>
+                    {{question}}
+                </td>
+                <td>
+                    {{#answercount}}
+                        <a href="#">{{answercount}}</a>
+                    {{/answercount}}
+                    {{^answercount}}
+                        0
+                    {{/answercount}}
+                </td>
+                <td>
+                    {{#lastactivity}}
+                        {{lastactivity}}
+                    {{/lastactivity}}
+                    {{^lastactivity}}
+                        {{dateasked}}
+                    {{/lastactivity}}
+                </td>
+                <td>
+                    {{dateasked}}
+                </td>
+            </tr>
+        {{/askedquestions}}
+        </tbody>
+    </table>
+{{/hasaskedquestions}}
+{{^askedquestions}}
+    <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+{{/askedquestions}}
+<div class="local_learningcompanions_mentor_asknewquestion">
+    <a href="#" class="btn btn-secondary">{{#str}}asknewquestion, local_learningcompanions{{/str}}</a>
+</div>

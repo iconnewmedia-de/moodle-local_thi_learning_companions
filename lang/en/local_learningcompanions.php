@@ -56,3 +56,23 @@ $string['error_group_creation_failed'] = 'Error: Group creation failed with mess
 $string['error_group_edit_failed'] = 'Error: Editing the group failed with message: "{$a}"';
 $string['button_css_selector'] = 'CSS selector for group me up button';
 $string['configbuttoncssselector'] = 'Group me up buttons will automatically get placed on elements that match this CSS selector';
+
+// Mentor
+$string['myquestions'] = 'My questions';
+$string['mentorquestions'] = 'Mentor questions';
+$string['mymentorquestions'] = 'My mentor questions';
+$string['allmentorquestions'] = 'Open questions related to my topics';
+$string['title'] = 'Question title';
+$string['topic'] = 'Topic';
+$string['answers'] = 'Answers';
+$string['lastactivity'] = 'Last activity';
+$string['questiondate'] = 'Question date';
+$string['noquestionsfound'] = 'No questions found.';
+$string['asknewquestion'] = 'Ask new question';
+$string['navbar_mentors'] = 'Mentors';
+$string['navbar_mentorquestions'] = 'My questions';
+
+// Group
+
+
+$string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';

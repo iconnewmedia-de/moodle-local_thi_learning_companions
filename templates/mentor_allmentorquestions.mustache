@@ -1,0 +1,48 @@
+<h2>{{#str}}allmentorquestions, local_learningcompanions{{/str}}</h2>
+{{#hasallmentorquestions}}
+    <table class="stripe hover compact" id="allmentorquestionstable" data-paging="true" data-page-length="50">
+        <thead>
+        <tr>
+            <th>{{#str}}title, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}topic, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#allmentorquestions}}
+            <tr>
+                <td>
+                    {{question}}
+                </td>
+                <td>
+                    XXX
+                </td>
+                <td>
+                    {{#answercount}}
+                        <a href="#">{{answercount}}</a>
+                    {{/answercount}}
+                    {{^answercount}}
+                        0
+                    {{/answercount}}
+                </td>
+                <td>
+                    {{#lastactivity}}
+                        {{lastactivity}}
+                    {{/lastactivity}}
+                    {{^lastactivity}}
+                        {{dateasked}}
+                    {{/lastactivity}}
+                </td>
+                <td>
+                    {{dateasked}}
+                </td>
+            </tr>
+        {{/allmentorquestions}}
+        </tbody>
+    </table>
+{{/hasallmentorquestions}}
+{{^allmentorquestions}}
+    <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+{{/allmentorquestions}}
