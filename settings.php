@@ -52,6 +52,9 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configtext('local_learningcompanions/button_radius', get_string('button_radius', 'local_learningcompanions'),
         get_string('configbuttonradius', 'local_learningcompanions'), '20', PARAM_INT));
 
-    $ADMIN->add('root', new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions')));
+    $category = new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions'));
+    if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings
+        $ADMIN->add('root', $category);
+    }
     $ADMIN->add('lcconfig', $settings);
 }
