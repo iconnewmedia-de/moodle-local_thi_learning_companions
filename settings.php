@@ -51,6 +51,8 @@ if ($hassiteconfig) {
         get_string('configbuttoncolor', 'local_learningcompanions'), '#fff'));
     $settings->add(new admin_setting_configtext('local_learningcompanions/button_radius', get_string('button_radius', 'local_learningcompanions'),
         get_string('configbuttonradius', 'local_learningcompanions'), '20', PARAM_INT));
+    $settings->add(new admin_setting_configtext('local_learningcompanions/groupimage_maxbytes', get_string('groupimage_maxbytes', 'local_learningcompanions'),
+        get_string('configgroupimagemaxbytes', 'local_learningcompanions'), 1000000, PARAM_INT));
 
     $category = new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions'));
     if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings

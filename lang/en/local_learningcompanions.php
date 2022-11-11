@@ -56,6 +56,11 @@ $string['error_group_creation_failed'] = 'Error: Group creation failed with mess
 $string['error_group_edit_failed'] = 'Error: Editing the group failed with message: "{$a}"';
 $string['button_css_selector'] = 'CSS selector for group me up button';
 $string['configbuttoncssselector'] = 'Group me up buttons will automatically get placed on elements that match this CSS selector';
+$string['group_topic'] = 'Topic';
+$string['coursecontext'] = 'Course context';
+$string['nuggetcontext'] = 'Learning nugget context';
+$string['group_image'] = 'Group image';
+$string['group_description'] = 'Group description';
 
 // Mentor
 $string['myquestions'] = 'My questions';
@@ -71,6 +76,8 @@ $string['noquestionsfound'] = 'No questions found.';
 $string['asknewquestion'] = 'Ask new question';
 $string['navbar_mentors'] = 'Mentors';
 $string['navbar_mentorquestions'] = 'My questions';
+$string['groupimage_maxbytes'] = 'Group image max filesize ';
+$string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
 
 // Group
 
