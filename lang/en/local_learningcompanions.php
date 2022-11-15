@@ -29,6 +29,8 @@ $string['pluginname'] = 'Learning Companions';
 $string['learningcompanions:group_create'] = 'Create groups';
 $string['learningcompanions:group_manage'] = 'Manage groups';
 $string['adminareaname'] = 'Learning Companions';
+$string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
+
 $string['no_permission_create_group'] = 'You don\'t have the permission to create groups';
 $string['failed_create_group'] = 'Unexpected error. Creating a new group failed with the error message: ';
 $string['category_for_groups'] = 'Category for Groups';
@@ -81,5 +83,7 @@ $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that 
 
 // Group
 
-
-$string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
+// Navigation
+$string['lcadministration_comments'] = 'Tagged comments';
+$string['lcadministration_groups'] = 'Groups';
+$string['lcadministration'] = 'Learning companions administration';
