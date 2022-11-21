@@ -7,6 +7,7 @@
             <th>{{#str}}status, local_learningcompanions{{/str}}</th>
             <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
             <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -45,6 +46,11 @@
                 </td>
                 <td>
                     {{dateasked}}
+                </td>
+                <td>
+                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                        <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
+                    </span>
                 </td>
             </tr>
         {{/askedquestions}}

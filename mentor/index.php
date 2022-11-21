@@ -21,6 +21,12 @@ $learningnuggetcomments = \local_learningcompanions\mentors::get_latest_nugget_c
 
 echo $OUTPUT->header();
 
+$notification = optional_param('n', null, PARAM_TEXT);
+if (!is_null($notification)) {
+    $notificationtype = substr($notification, 0, 2) == 'n_' ? 'error' : 'success';
+    echo $OUTPUT->notification(get_string('notification_'.$notification, 'local_learningcompanions'), $notificationtype);
+}
+
 $hasaskedquestions = count($askedquestions) > 0;
 $hasmentorquestions = count($mymentorquestions) > 0;
 $hasallmentorquestions = count($allmentorquestions) > 0;

@@ -84,6 +84,13 @@ $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
 $string['nolearningnuggetcommentsfound'] = 'No learning nugget comments found.';
 $string['questionclosedon'] = 'Question closed on {$a}';
+$string['deletemyquestion'] = 'Delete my question';
+$string['modal-deletemyquestion-title'] = 'Delete question';
+$string['modal-deletemyquestion-text'] = 'Do you want to delete your question ("{$a}") and all related answers?';
+$string['modal-deletemyquestion-okaybutton'] = 'Delete question';
+$string['modal-deletemyquestion-cancelbutton'] = 'Cancel';
+$string['notification_d'] = 'Question deleted successfully.';
+$string['notification_n_d'] = 'Could not delete question.';
 
 // Group
 
