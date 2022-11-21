@@ -16,7 +16,7 @@ $PAGE->navbar->add(get_string('navbar_mentorquestions', 'local_learningcompanion
 
 $askedquestions = \local_learningcompanions\mentors::get_my_asked_questions($USER->id, true);
 $mymentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions($USER->id, false, true);
-$allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, true, true);
+$allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, false, true);
 $learningnuggetcomments = \local_learningcompanions\mentors::get_latest_nugget_comments($USER->id); // ICTODO
 
 echo $OUTPUT->header();

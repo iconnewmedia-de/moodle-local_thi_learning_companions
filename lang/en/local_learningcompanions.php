@@ -68,11 +68,12 @@ $string['group_description'] = 'Group description';
 $string['myquestions'] = 'My questions';
 $string['mentorquestions'] = 'Mentor questions';
 $string['mymentorquestions'] = 'My mentor questions';
-$string['allmentorquestions'] = 'Open questions related to my topics';
+$string['allmentorquestions'] = 'Mentor questions related to my topics';
 $string['learningnuggetcomments'] = 'Latest learning nugget comments';
 $string['title'] = 'Question title';
 $string['topic'] = 'Topic';
 $string['answers'] = 'Answers';
+$string['status'] = 'Status';
 $string['lastactivity'] = 'Last activity';
 $string['questiondate'] = 'Question date';
 $string['noquestionsfound'] = 'No questions found.';
@@ -81,8 +82,8 @@ $string['navbar_mentors'] = 'Mentors';
 $string['navbar_mentorquestions'] = 'Mentor questions';
 $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
-
 $string['nolearningnuggetcommentsfound'] = 'No learning nugget comments found.';
+$string['questionclosedon'] = 'Question closed on {$a}';
 
 // Group
 

@@ -4,6 +4,7 @@
         <tr>
             <th>{{#str}}title, local_learningcompanions{{/str}}</th>
             <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}status, local_learningcompanions{{/str}}</th>
             <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
             <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
         </tr>
@@ -12,7 +13,9 @@
         {{#askedquestions}}
             <tr>
                 <td>
-                    {{question}}
+                    <span data-balloon="{{question}}" data-balloon-pos="right">
+                        {{title}}
+                    </span>
                 </td>
                 <td>
                     {{#answercount}}
@@ -21,6 +24,16 @@
                     {{^answercount}}
                         0
                     {{/answercount}}
+                </td>
+                <td>
+                    {{#dateclosed}}
+                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+                            <i class="fa fa-check icon-check-green"></i>
+                        </span>
+                    {{/dateclosed}}
+                    {{^dateclosed}}
+                        <i class="fa fa-rotate-right"></i>
+                    {{/dateclosed}}
                 </td>
                 <td>
                     {{#lastactivity}}
