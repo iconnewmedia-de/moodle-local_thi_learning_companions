@@ -1,0 +1,10 @@
+<div id="learningnuggetcommentsarea">
+    {{#haslearningnuggetcomments}}
+        {{#learningnuggetcomments}}
+
+        {{/learningnuggetcomments}}
+    {{/haslearningnuggetcomments}}
+    {{^learningnuggetcomments}}
+        <p>{{#str}}nolearningnuggetcommentsfound, local_learningcompanions{{/str}}</p>
+    {{/learningnuggetcomments}}
+</div>

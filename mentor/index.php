@@ -17,12 +17,14 @@ $PAGE->navbar->add(get_string('navbar_mentorquestions', 'local_learningcompanion
 $askedquestions = \local_learningcompanions\mentors::get_my_asked_questions($USER->id, true);
 $mymentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions($USER->id, false, true);
 $allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, true, true);
+$learningnuggetcomments = \local_learningcompanions\mentors::get_latest_nugget_comments($USER->id); // ICTODO
 
 echo $OUTPUT->header();
 
 $hasaskedquestions = count($askedquestions) > 0;
 $hasmentorquestions = count($mymentorquestions) > 0;
 $hasallmentorquestions = count($allmentorquestions) > 0;
+$haslearningnuggetcomments = count($learningnuggetcomments) > 0;
 
 echo $OUTPUT->render_from_template('local_learningcompanions/mentor_index', array(
     'hasaskedquestions' => $hasaskedquestions,
@@ -31,7 +33,8 @@ echo $OUTPUT->render_from_template('local_learningcompanions/mentor_index', arra
     'askedquestions' => array_values($askedquestions),
     'mymentorquestions' => array_values($mymentorquestions),
     'allmentorquestions' => array_values($allmentorquestions),
-    'ismentor' => has_capability('local/learningcompanions:mentor_ismentor', $context), // Maybe access restriction by database entry
+    'ismentor' => \local_learningcompanions\mentors::is_mentor(),
+    'istutor' => \local_learningcompanions\mentors::is_tutor(),
     'cfg' => $CFG
 ));
 

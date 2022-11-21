@@ -5,5 +5,9 @@
         <h1>{{#str}}mentorquestions, local_learningcompanions{{/str}}</h1>
         {{> local_learningcompanions/mentor_mymentorquestions }}
         {{> local_learningcompanions/mentor_allmentorquestions }}
+        {{#istutor}}
+            <h1>{{#str}}learningnuggetcomments, local_learningcompanions{{/str}}</h1>
+            {{> local_learningcompanions/mentor_learningnuggetcomments }}
+        {{/istutor}}
     {{/ismentor}}
 </div>
