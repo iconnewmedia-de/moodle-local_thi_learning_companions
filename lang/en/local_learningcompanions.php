@@ -93,6 +93,17 @@ $string['notification_d'] = 'Question deleted successfully.';
 $string['notification_n_d'] = 'Could not delete question.';
 
 // Group
+$string['findgroup'] = 'Find group';
+$string['navbar_groups'] = 'Groups';
+$string['navbar_findgroups'] = 'Find groups';
+$string['topic'] = 'Topic';
+$string['name'] = 'Name';
+$string['join'] = 'Join';
+$string['membercount'] = 'Member count';
+$string['createdon'] = 'Created on';
+$string['lastactivity'] = 'Last activity';
+$string['nogroupsfound'] = 'Could not find any group.';
+$string['joingroup'] = 'Klick to join the group.';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';

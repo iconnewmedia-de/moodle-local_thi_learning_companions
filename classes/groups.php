@@ -60,6 +60,7 @@ class groups {
                 $group->descriptioncut = false;
             }
             $group->keywords = self::get_group_keywords($group->id);
+            $group->keywords_list = implode(', ', $group->keywords);
             $group->image = self::get_group_image($group->id);
         }
 

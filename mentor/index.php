@@ -32,7 +32,7 @@ $hasmentorquestions = count($mymentorquestions) > 0;
 $hasallmentorquestions = count($allmentorquestions) > 0;
 $haslearningnuggetcomments = count($learningnuggetcomments) > 0;
 
-echo $OUTPUT->render_from_template('local_learningcompanions/mentor_index', array(
+echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_index', array(
     'hasaskedquestions' => $hasaskedquestions,
     'hasmentorquestions' => $hasmentorquestions,
     'hasallmentorquestions' => $hasallmentorquestions,

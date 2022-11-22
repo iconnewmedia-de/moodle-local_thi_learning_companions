@@ -1,13 +1,13 @@
 <div id="local_learningcompanions_mentor_index">
     <h1>{{#str}}myquestions, local_learningcompanions{{/str}}</h1>
-    {{> local_learningcompanions/mentor_myquestions }}
+    {{> local_learningcompanions/mentor/mentor_myquestions }}
     {{#ismentor}}
         <h1>{{#str}}mentorquestions, local_learningcompanions{{/str}}</h1>
-        {{> local_learningcompanions/mentor_mymentorquestions }}
-        {{> local_learningcompanions/mentor_allmentorquestions }}
+        {{> local_learningcompanions/mentor/mentor_mymentorquestions }}
+        {{> local_learningcompanions/mentor/mentor_allmentorquestions }}
         {{#istutor}}
             <h1>{{#str}}learningnuggetcomments, local_learningcompanions{{/str}}</h1>
-            {{> local_learningcompanions/mentor_learningnuggetcomments }}
+            {{> local_learningcompanions/mentor/mentor_learningnuggetcomments }}
         {{/istutor}}
     {{/ismentor}}
 </div>
