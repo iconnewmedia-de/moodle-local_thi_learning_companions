@@ -1,0 +1,1 @@
+/* eslint-disable no-undef, no-console */import React from "react";export default function Group({name, id, description, imageurl}) {    return (        <div id={"learningcompanions_chat-group-" + id}>            <hr />            <strong>{name}</strong><br />            <em>{description}</em><br />        </div>    )};
