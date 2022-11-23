@@ -1,0 +1,77 @@
+<div id="group-details-modal">
+    <div id="group-details-modal-left">
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-topic, local_learningcompanions{{/str}}
+            </span>
+            <span class="group-details-modal-info-content">
+                {{group.keywordstring}}
+            </span>
+        </div>
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-members, local_learningcompanions{{/str}}
+            </span>
+            <span class="group-details-modal-info-content">
+                {{group.groupmembercount}}
+            </span>
+        </div>
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-activity, local_learningcompanions{{/str}}
+            </span>
+            <span class="group-details-modal-info-content">
+                {{group.datecreated}}
+            </span>
+        </div>
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-createdate, local_learningcompanions{{/str}}
+            </span>
+            <span class="group-details-modal-info-content">
+                ...
+            </span>
+        </div>
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-join, local_learningcompanions{{/str}}
+            </span>
+            <span class="group-details-modal-info-content">
+                ...
+            </span>
+        </div>
+    </div>
+    <div id="group-details-modal-right">
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-description, local_learningcompanions{{/str}}
+            </span>
+            <span class="group-details-modal-info-content">
+                {{group.description}}
+            </span>
+        </div>
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-reference, local_learningcompanions{{/str}}
+            </span>
+            <span class="group-details-modal-info-content">
+                ...
+            </span>
+        </div>
+        <div class="group-details-modal-info">
+            <span class="group-details-modal-info-heading">
+                {{#str}}modal-groupdetails-administrator, local_learningcompanions{{/str}}
+            </span>
+            <div class="group-details-modal-info-content">
+                {{#groupadmins}}
+                    <span class="group-details-modal-info-admin">
+                        {{{userpic}}} <a href="{{profileurl}}" target="_blank">{{fullname}}</a>
+                    </span>
+                {{/groupadmins}}
+            </div>
+        </div>
+        <div class="group-details-modal-button">
+            <a href="#" class="btn btn-primary">{{#str}}gotogroupbutton, local_learningcompanions{{/str}}</a>
+        </div>
+    </div>
+</div>

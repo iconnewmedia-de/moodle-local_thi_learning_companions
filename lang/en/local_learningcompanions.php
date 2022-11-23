@@ -98,12 +98,25 @@ $string['navbar_groups'] = 'Groups';
 $string['navbar_findgroups'] = 'Find groups';
 $string['topic'] = 'Topic';
 $string['name'] = 'Name';
-$string['join'] = 'Join';
+$string['join'] = 'Joining';
 $string['membercount'] = 'Member count';
 $string['createdon'] = 'Created on';
 $string['lastactivity'] = 'Last activity';
 $string['nogroupsfound'] = 'Could not find any group.';
-$string['joingroup'] = 'Klick to join the group.';
+$string['newgroupbutton'] = 'Create new group';
+$string['closedgroup'] = 'Closed group';
+$string['opengroup'] = 'Open group';
+$string['modal-groupdetails-groupname'] = 'Group: {$a}';
+$string['modal-groupdetails-description'] = 'Group description';
+$string['modal-groupdetails-reference'] = 'Reference';
+$string['modal-groupdetails-administrator'] = 'Group administrator';
+$string['modal-groupdetails-visitgroup'] = 'Go to group';
+$string['modal-groupdetails-topic'] = 'Topic';
+$string['modal-groupdetails-members'] = 'Members';
+$string['modal-groupdetails-activity'] = 'Activity';
+$string['modal-groupdetails-createdate'] = 'Created on';
+$string['modal-groupdetails-join'] = 'Joining';
+$string['gotogroupbutton'] = 'Go to group';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';

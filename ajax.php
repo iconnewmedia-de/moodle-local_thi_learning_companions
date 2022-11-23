@@ -22,7 +22,7 @@
 
 require_once((dirname(__DIR__, 2)).'/config.php');
 
-global $DB;
+global $CFG, $DB, $OUTPUT;
 
 $action = required_param('action', PARAM_TEXT);
 
@@ -34,4 +34,16 @@ if ($action == 'deletemyquestion') {
     } else {
         echo 'fail';
     }
+}
+
+if ($action == 'getgroupdetails') {
+    $groupid = required_param('groupid', PARAM_INT);
+    $group = \local_learningcompanions\groups::get_group_by_id($groupid);
+    $groupadmins = \local_learningcompanions\groups::get_group_admins($groupid, true);
+
+    echo json_encode($OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', array(
+        'group' => $group,
+        'groupadmins' => $groupadmins,
+        'cfg' => $CFG
+    )));
 }

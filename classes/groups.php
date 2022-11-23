@@ -12,7 +12,10 @@ class groups {
         global $DB;
         $group = $DB->get_record('lc_groups', array('id' => $groupid));
         $group->groupmembers = self::get_group_members($groupid);
+        $group->groupmembercount = count($group->groupmembers);
         $group->keywords = self::get_group_keywords($groupid);
+        $group->keywordstring = implode(', ', $group->keywords);
+        $group->datecreated = date('d.m.Y', $group->timecreated);
         // ICTODO: fetch course and course category along with relevant metadata from course and course category, like topic and such
         return $group;
     }
@@ -50,7 +53,7 @@ class groups {
             $group->membercount = count(self::get_group_members($group->id));
             $group->admins = self::get_group_admins($group->id, true);
             $group->timecreated_dmY = date('d.m.Y', $group->timecreated);
-            $group->closedgroupicon = $group->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
+            $group->closedgroupbool = (bool)$group->closedgroup;
 
             $group->origindescription = $group->description;
             if ($cutdescription && strlen($group->description) > 50) {
@@ -86,7 +89,7 @@ class groups {
         $admins = $DB->get_records_sql($sql, array($groupid));
 
         if ($extended) {
-            return self::add_fullnames_to_admins($admins);
+            return self::add_extended_fields_to_admins($admins);
         }
         return $admins;
     }
@@ -95,12 +98,14 @@ class groups {
      * @param array $admins
      * @return array
      */
-    public static function add_fullnames_to_admins(array $admins): array {
-        global $CFG;
+    public static function add_extended_fields_to_admins(array $admins): array {
+        global $CFG, $OUTPUT;
 
         foreach ($admins as $admin) {
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;
+            $admin->userpic = $OUTPUT->user_picture($admin, array('link' => false, 'visibletoscreenreaders' => false,
+                                                                  'class' => 'userpicture'));
         }
 
         return array_values($admins);

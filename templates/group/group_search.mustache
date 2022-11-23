@@ -14,7 +14,7 @@
             </thead>
             <tbody>
             {{#groups}}
-                <tr>
+                <tr class="grouprow" data-gid="{{id}}" data-title="{{name}}">
                     <td>
                         {{keywords_list}}
                     </td>
@@ -22,9 +22,16 @@
                         {{name}}
                     </td>
                     <td>
-                        <span data-balloon="{{#str}}joingroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
-                            <i class="fa fa-arrow-right icon-joingroup"></i>
-                        </span>
+                        {{#closedgroupbool}}
+                            <span data-balloon="{{#str}}closedgroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                                <i class="fa fa-arrow-right icon-joingroup"></i>
+                            </span>
+                        {{/closedgroupbool}}
+                        {{^closedgroupbool}}
+                            <span data-balloon="{{#str}}opengroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                                <i class="fa fa-arrow-left icon-joingroup"></i>
+                            </span>
+                        {{/closedgroupbool}}
                     </td>
                     <td>
                         {{membercount}}
@@ -43,4 +50,7 @@
     {{^groups}}
         <p>{{#str}}nogroupsfound, local_learningcompanions{{/str}}</p>
     {{/groups}}
+    <div class="local_learningcompanions_group_search_newgroupbutton">
+        <a href="#" class="btn btn-secondary">{{#str}}newgroupbutton, local_learningcompanions{{/str}}</a>
+    </div>
 </div>
