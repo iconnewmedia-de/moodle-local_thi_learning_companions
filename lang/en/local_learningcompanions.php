@@ -117,6 +117,12 @@ $string['modal-groupdetails-activity'] = 'Activity';
 $string['modal-groupdetails-createdate'] = 'Created on';
 $string['modal-groupdetails-join'] = 'Joining';
 $string['gotogroupbutton'] = 'Go to group';
+$string['filter_all_topics'] = 'All topics';
+$string['filter_keywords_placeholder'] = 'Name/Keyword';
+$string['filter_all_status'] = 'All groups';
+$string['filter_open_status'] = 'Open groups';
+$string['filter_closed_status'] = 'Closed groups';
+$string['filter_members_count'] = 'Min. number of members';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';

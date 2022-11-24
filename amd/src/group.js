@@ -4,9 +4,10 @@ define([
     'core/str',
     'core/modal_factory',
     'core/modal_events',
+    'local_learningcompanions/datatables-helpers',
     'local_learningcompanions/jquery.dataTables',
     'local_learningcompanions/select2'
-], function($, c, str, ModalFactory, ModalEvents) {
+], function($, c, str, ModalFactory, ModalEvents, datatablesHelpers) {
     return {
 
         select2: function() {
@@ -14,12 +15,25 @@ define([
         },
 
         init: function() {
+            datatablesHelpers.initMinSearch('.js-group-filter--min');
+            datatablesHelpers.initIncludeSearch('.js-group-filter--includes');
+
             var translationURL = str.get_string('datatables_url', 'local_learningcompanions');
+
+            // eslint-disable-next-line promise/catch-or-return,promise/always-return
             translationURL.then(function(url) {
                 $('#allgroupstable').DataTable({
+                    dom: 'lrtip',
                     language: {
                         url: url
-                    }
+                    },
+                    initComplete: function() {
+                        const table = this.api();
+
+                        datatablesHelpers.setupSearchRules('.js-group-filter--search', table);
+
+                        datatablesHelpers.addRedrawEvent('.js-group-filter', table);
+                    },
                 });
             });
 
@@ -37,7 +51,7 @@ define([
                         action: 'getgroupdetails',
                         groupid: groupid
                     },
-                    success: function (data) {
+                    success: function(data) {
 
                         var strings = [
                             {key: 'modal-groupdetails-groupname', component: 'local_learningcompanions', param: groupname}
