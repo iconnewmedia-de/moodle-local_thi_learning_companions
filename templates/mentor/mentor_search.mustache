@@ -14,7 +14,9 @@
             {{#mentors}}
                 <tr class="mentorrow">
                     <td>
-                        {{{userpic}}} <a href="{{profileurl}}" target="_blank">{{fullname}}</a>
+                        {{{userpic}}}
+                        <i class="fa fa-circle icon-status status-{{status}}"></i>
+                        <a href="{{profileurl}}" target="_blank">{{fullname}}</a>
                         {{#issupermentor}}
                             <span data-balloon="{{#str}}issupermentor, local_learningcompanions{{/str}}" data-balloon-pos="up">
                                 <i class="fa fa-graduation-cap icon-issupermentor"></i>
