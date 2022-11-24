@@ -86,7 +86,13 @@ $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that 
 $string['group_created'] = 'Your group was created successfully';
 $string['listgroups'] = 'Group list';
 $string['learninggroups'] = 'Learning groups';
-
+$string['loading'] = 'Loading';
+$string['reply'] = 'Reply';
+$string['attachment'] = 'Attachment';
+$string['attachment_help'] = 'You can optionally attach one or more files to a forum post. If you attach an image, it will be displayed after the message.';
+$string['message'] = 'Message';
+$string['post'] = 'Post';
+$string['send'] = 'Send';
 // Group
 
 

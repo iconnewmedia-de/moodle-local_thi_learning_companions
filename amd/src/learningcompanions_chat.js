@@ -19,9 +19,9 @@ define(['jquery'], function($){
                 });
                 $('.block_learningcompanions_chat #id_messageeditable').css('opacity', '0.5');
                 $('.block_learningcompanions_chat #id_messageeditable').attr('contenteditable', 'false');
-                $('.block_learningcompanions_chat form input,  .block_learningcompanions_chat form textarea, #block-learningcompanions_chat-send').attr('disabled', true);
+                $('.block_learningcompanions_chat form input,  .block_learningcompanions_chat form textarea, #local_learningcompanions_chat-send').attr('disabled', true);
                 $.post(
-                    M.cfg.wwwroot + "/blocks/learningcompanions_chat/ajaxsubmit.php",
+                    M.cfg.wwwroot + "/local/learningcompanions/ajaxsubmit.php",
                     data
                 ).done(function(a,b,c) {
                     // ICTODO: give a success message, like with a toast or so
@@ -37,13 +37,13 @@ define(['jquery'], function($){
                     window.alert("couldn't save"); // ICTODO: give proper message, via get_string and ideally with a modal
                 }).always(function(){
                     // reactivate the form/ungrey it when data has been sent
-                    $('.block_learningcompanions_chat #id_messageeditable').css('opacity', '1');
-                    $('.block_learningcompanions_chat #id_messageeditable').attr('contenteditable', 'true');
-                    $('.block_learningcompanions_chat form input,  .block_learningcompanions_chat form textarea, #block-learningcompanions_chat-send').attr('disabled', false);
+                    $('#learningcompanions_chat #id_messageeditable').css('opacity', '1');
+                    $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'true');
+                    $('#learningcompanions_chat form input,  #learningcompanions_chat form textarea, #local_learningcompanions_chat-send').attr('disabled', false);
                 });
                 return false;
             }
-            $('#block-learningcompanions_chat-send').on('click', sendForm);
+            $('#local_learningcompanions_chat-send').on('click', sendForm);
         }
     };
 });

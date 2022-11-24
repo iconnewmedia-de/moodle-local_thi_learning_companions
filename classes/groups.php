@@ -2,9 +2,11 @@
 namespace local_learningcompanions;
 include_once __DIR__ . "/group.php";
 class groups {
+    const CHATTYPE_MENTOR = 0;
+    const CHATTYPE_GROUP = 1;
 
     /**
-     * @return array
+     * @return group[]
      * @throws \dml_exception
      */
     public static function get_all_groups(): array {
@@ -18,6 +20,12 @@ class groups {
         return $returnGroups;
     }
 
+    /**
+     * @param int $userid
+     * @param string $sortby possible values: latestcomment, earliestcomment, mylatestcomment, myearliestcomment
+     * @return group[]
+     * @throws \dml_exception
+     */
     public static function get_groups_of_user($userid, $sortby = 'latestcomment') {
         global $DB;
 
@@ -116,6 +124,7 @@ class groups {
         self::save_group_image($groupid, $data->groupimage);
         self::group_assign_keywords($groupid, $data->keywords);
         self::group_add_member($groupid, $USER->id, 1);
+        self::create_group_chat($groupid);
     }
 
     /**
@@ -247,5 +256,21 @@ class groups {
     protected static function group_remove_all_keywords($groupid) {
         global $DB;
         $DB->delete_records('lc_groups_keywords', array('groupid' => $groupid));
+    }
+
+    /**
+     * creates a chat record for the group
+     * @param $groupid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function create_group_chat($groupid) {
+        global $DB;
+        $record = new \stdClass();
+        $record->chattype = self::CHATTYPE_GROUP;
+        $record->relatedid = $groupid;
+        $record->timecreated = time();
+        $record->courseid = $DB->get_field('lc_groups', 'courseid', array('id' => $groupid));
+        $DB->insert_record('lc_chat', $record);
     }
 }
