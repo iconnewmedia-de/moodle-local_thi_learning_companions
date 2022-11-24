@@ -1,0 +1,46 @@
+<div id="local_learningcompanions_mentor_search">
+    <h1>{{#str}}findmentor, local_learningcompanions{{/str}}</h1>
+    {{#hasmentors}}
+        <table class="stripe hover compact" id="allmentorstable" data-paging="true" data-page-length="50">
+            <thead>
+                <tr>
+                    <th>{{#str}}name, local_learningcompanions{{/str}}</th>
+                    <th>{{#str}}badges, local_learningcompanions{{/str}}</th>
+                    <th>{{#str}}topics, local_learningcompanions{{/str}}</th>
+                    <th>{{#str}}actions, local_learningcompanions{{/str}}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{#mentors}}
+                <tr class="mentorrow">
+                    <td>
+                        {{{userpic}}} <a href="{{profileurl}}" target="_blank">{{fullname}}</a>
+                        {{#issupermentor}}
+                            <span data-balloon="{{#str}}issupermentor, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                                <i class="fa fa-graduation-cap icon-issupermentor"></i>
+                            </span>
+                        {{/issupermentor}}
+                    </td>
+                    <td>
+                        Badges
+                    </td>
+                    <td>
+                        {{topiclist}}
+                    </td>
+                    <td>
+                        <i class="fa fa-chevron-right local_learningcompanions_chevron"></i>
+                        <span class="local_learningcompanions_mentor_search_askquestion">
+                            <a href="#" class="local_learningcompanions_mentor_search_askquestion_link">
+                                {{#str}}askquestiontomentor, local_learningcompanions{{/str}}
+                            </a>
+                        </span>
+                    </td>
+                </tr>
+            {{/mentors}}
+            </tbody>
+        </table>
+    {{/hasmentors}}
+    {{^mentors}}
+        <p>{{#str}}nomentorsfound, local_learningcompanions{{/str}}</p>
+    {{/mentors}}
+</div>

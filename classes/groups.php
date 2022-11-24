@@ -144,6 +144,13 @@ class groups {
         return array_keys($keywords);
     }
 
+    /**
+     * @param $userid
+     * @param $sortby
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function get_groups_of_user($userid, $sortby = 'latestcomment') {
         global $DB;
         $groupCategory = get_config('local_learningcompanions', 'category');
