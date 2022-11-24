@@ -101,11 +101,14 @@ class groups {
     public static function add_extended_fields_to_admins(array $admins): array {
         global $CFG, $OUTPUT;
 
+        require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
+
         foreach ($admins as $admin) {
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;
             $admin->userpic = $OUTPUT->user_picture($admin, array('link' => false, 'visibletoscreenreaders' => false,
                                                                   'class' => 'userpicture'));
+            $admin->status = get_user_status($admin->id);
         }
 
         return array_values($admins);
