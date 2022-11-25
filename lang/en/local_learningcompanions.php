@@ -132,6 +132,12 @@ $string['lcadministration_comments'] = 'Tagged comments';
 $string['lcadministration_groups'] = 'Groups';
 $string['lcadministration'] = 'Learning companions administration';
 
+// This should not need any translation for other language packs. Please let 'en' be the first language.
+$string['profile_field_status_default_options'] = '<span lang="en" class="multilang">Online</span><span lang="de" class="multilang">Online</span>
+<span lang="en" class="multilang">Offline</span><span lang="de" class="multilang">Offline</span>
+<span lang="en" class="multilang">Please do not disturb</span><span lang="de" class="multilang">Bitte nicht stören</span>';
+$string['profile_field_status_default_default'] = '<span lang="en" class="multilang">Offline</span><span lang="de" class="multilang">Offline</span>';
+
 //Filtering
 $string['filter_all_status'] = 'All groups';
 $string['filter_open_status'] = 'Open groups';
