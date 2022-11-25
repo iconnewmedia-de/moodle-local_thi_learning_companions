@@ -31,6 +31,11 @@ define([
                         url: url
                     }
                 });
+                $('#allmentorstable').DataTable({
+                    language: {
+                        url: url
+                    }
+                });
             });
 
             $('.askedquestions-delete').click(function(e) {
