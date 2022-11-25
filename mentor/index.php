@@ -14,9 +14,11 @@ $PAGE->requires->css('/local/learningcompanions/vendor/balloon.css');
 $PAGE->navbar->add(get_string('navbar_mentors', 'local_learningcompanions'));
 $PAGE->navbar->add(get_string('navbar_mentorquestions', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/mentor/index.php'));
 
+$mentortopics = \local_learningcompanions\mentors::get_all_mentor_keywords($USER->id, true);
+
 $askedquestions = \local_learningcompanions\mentors::get_my_asked_questions($USER->id, true);
-$mymentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions($USER->id, false, true);
-$allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, false, true);
+$mymentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions($USER->id, null, false, true);
+$allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, $mentortopics, false, true);
 $learningnuggetcomments = \local_learningcompanions\mentors::get_latest_nugget_comments($USER->id); // ICTODO
 
 echo $OUTPUT->header();
