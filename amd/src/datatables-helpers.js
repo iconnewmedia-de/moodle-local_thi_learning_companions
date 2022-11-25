@@ -3,18 +3,6 @@ import $ from 'jquery';
 import 'local_learningcompanions/jquery.dataTables';
 
 /**
- * Adds the elements to the datatables search, for a minimum value search.
- * The elements need a data-target attribute, which is the column index to search.
- *
- * @param selector
- */
-export const initMinSearch = (selector) => {
-    $(selector).each(function() {
-        addMinSearch($(this), $(this).data('target'));
-    });
-};
-
-/**
  * Adds a default "value is included in the column" search to the datatables search.
  *
  * @param selector {string}
@@ -23,6 +11,14 @@ export const initMinSearch = (selector) => {
 export const setupSearchRules = (selector, table) => {
     $(selector).each(function() {
         $(this).on('keyup change clear', function() {
+            let elementValue;
+
+            if (this.type === 'checkbox') {
+                elementValue = this.checked ? 1 : '';
+            } else {
+                elementValue = this.value;
+            }
+
             let column;
             // Check of the target is a number
             if (isNaN($(this).data('target'))) {
@@ -30,8 +26,20 @@ export const setupSearchRules = (selector, table) => {
             } else {
                 column = table.column($(this).data('target'));
             }
-            column.search(this.value).draw();
+            column.search(elementValue).draw();
         });
+    });
+};
+
+/**
+ * Adds the elements to the datatables search, for a minimum value search.
+ * The elements need a data-target attribute, which is the column index to search.
+ *
+ * @param selector
+ */
+export const initMinSearch = (selector) => {
+    $(selector).each(function() {
+        addMinSearch($(this));
     });
 };
 
@@ -39,9 +47,8 @@ export const setupSearchRules = (selector, table) => {
  * Adds a specific element to the datatables search, for a minimum value search.
  *
  * @param element {jQuery} The element the search relates to.
- * @param targetColumn {int} The column index to search.
  */
-export const addMinSearch = (element, targetColumn) => {
+export const addMinSearch = (element) => {
     $.fn.dataTable.ext.search.push(function(settings, data) {
         let min = element.val() ?? '';
 
@@ -54,16 +61,15 @@ export const addMinSearch = (element, targetColumn) => {
             min = minDate.getTime() / 1000;
         }
 
-        if (targetColumn === undefined || isNaN(targetColumn)) {
-            // eslint-disable-next-line no-console
-            console.error('data-target is not defined or not a number for', element);
+        const index = getTargetColumnIndex(settings, element);
+        if (index === null) {
             return true;
         }
 
         /**
          * @type {number}
          */
-        const value = +data[targetColumn];
+        const value = +data[index];
         if (min) {
             return value >= min;
         }
@@ -80,7 +86,7 @@ export const addMinSearch = (element, targetColumn) => {
  */
 export const initIncludeSearch = (selector) => {
     $(selector).each(function() {
-        addIncludeSearch($(this), $(this).data('target'));
+        addIncludeSearch($(this));
     });
 };
 
@@ -88,25 +94,23 @@ export const initIncludeSearch = (selector) => {
  * Adds a specific select element to the datatables search, for an include search value search.
  *
  * @param element {jQuery} The element the search relates to.
- * @param targetColumn {int} The column index to search.
  */
-export const addIncludeSearch = (element, targetColumn) => {
+export const addIncludeSearch = (element) => {
     $.fn.dataTable.ext.search.push(function(settings, data) {
         /**
          * @type {string[]}
          */
         const include = element.val() ?? [];
 
-        if (targetColumn === undefined || isNaN(targetColumn)) {
-            // eslint-disable-next-line no-console
-            console.error('data-target is not defined or not a number for', element);
+        const index = getTargetColumnIndex(settings, element);
+        if (index === null) {
             return true;
         }
 
         /**
          * @type {string}
          */
-        const value = data[targetColumn];
+        const value = data[index];
 
         if (include.length) {
             return include.every((item) => value.includes(item));
@@ -127,31 +131,44 @@ export const addRedrawEvent = (selector, table) => {
     });
 };
 
-export const addDateMinSearch = (element, targetColumn) => {
-    $.fn.dataTable.ext.search.push(function(settings, data) {
-        /**
-         * @type {string}
-         */
-        const minDateString = element.val() ?? '';
-
-        if (!minDateString) {
-            return true;
+/**
+ *
+ * @param settings {*}
+ * @param className {string}
+ *
+ * @returns {null|int}
+ */
+const getIndexByClass = (settings, className) => {
+    for (const index in settings.aoColumns) {
+        if (settings.aoColumns[index].nTh.classList.contains(className)) {
+            return +index;
         }
+    }
 
-        // MinDate is a string. We need to convert it to a date object and get the timestamp.
-        const minDate = (new Date(minDateString)).getTime() / 1000;
+    return null;
+};
 
-        if (targetColumn === undefined || isNaN(targetColumn)) {
-            // eslint-disable-next-line no-console
-            console.error('data-target is not defined or not a number for', element);
-            return true;
-        }
+/**
+ *
+ * @param settings {*}
+ * @param element {jQuery}
+ * @returns {null|int}
+ */
+const getTargetColumnIndex = (settings, element) => {
+    const target = element.data('target');
 
-        /**
-         * @type {int}
-         */
-        const value = data[targetColumn];
+    // It´s not set? Return null.
+    if (target === undefined) {
+        // eslint-disable-next-line no-console
+        console.error('data-target is not defined or not a number for', element);
+        return null;
+    }
 
-        return value >= minDate;
-    });
+    // It´s a number? Return it.
+    if (!isNaN(target)) {
+        return target;
+    }
+
+    // It´s a string? Try to find the index by the class name.
+    return getIndexByClass(settings, target);
 };

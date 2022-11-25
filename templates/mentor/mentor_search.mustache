@@ -1,18 +1,25 @@
 <div id="local_learningcompanions_mentor_search">
     <h1>{{#str}}findmentor, local_learningcompanions{{/str}}</h1>
     {{#hasmentors}}
+        {{> local_learningcompanions/mentor/mentor_search_filter }}
         <table class="stripe hover compact" id="allmentorstable" data-paging="true" data-page-length="50">
             <thead>
                 <tr>
-                    <th>{{#str}}name, local_learningcompanions{{/str}}</th>
-                    <th>{{#str}}badges, local_learningcompanions{{/str}}</th>
-                    <th>{{#str}}topics, local_learningcompanions{{/str}}</th>
-                    <th>{{#str}}actions, local_learningcompanions{{/str}}</th>
+                    <th class="super-mentor no-show" style="display: none;">Is he?</th>
+                    <th class="name">{{#str}}name, local_learningcompanions{{/str}}</th>
+                    <th class="badges">{{#str}}badges, local_learningcompanions{{/str}}</th>
+                    <th class="topics">{{#str}}topics, local_learningcompanions{{/str}}</th>
+                    <th class="actions">{{#str}}actions, local_learningcompanions{{/str}}</th>
                 </tr>
             </thead>
             <tbody>
             {{#mentors}}
                 <tr class="mentorrow">
+
+                    <td style="display: none;">
+                        {{issupermentor}}
+                    </td>
+
                     <td>
                         {{{userpic}}}
                         <i class="fa fa-circle icon-status status-{{status}}"></i>

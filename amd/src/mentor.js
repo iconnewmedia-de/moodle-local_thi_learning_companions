@@ -1,12 +1,54 @@
+/* eslint-disable max-len, jsdoc/require-jsdoc, require-jsdoc */
 define([
     'jquery',
     'core/config',
     'core/str',
     'core/modal_factory',
     'core/modal_events',
+    'local_learningcompanions/datatables-helpers',
     'local_learningcompanions/jquery.dataTables',
     'local_learningcompanions/select2'
-], function($, c, str, ModalFactory, ModalEvents) {
+], function($, c, str, ModalFactory, ModalEvents, datatablesHelpers) {
+
+    async function initDatatables() {
+        datatablesHelpers.initMinSearch('.js-mentor-filter--min');
+        datatablesHelpers.initIncludeSearch('.js-mentor-filter--includes');
+
+        const languageUrl = await str.get_string('datatables_url', 'local_learningcompanions');
+
+        $('#askedquestionstable').DataTable({
+            language: {
+                url: languageUrl
+            }
+        });
+        $('#mymentorquestionstable').DataTable({
+            language: {
+                url: languageUrl
+            }
+        });
+        $('#allmentorquestionstable').DataTable({
+            language: {
+                url: languageUrl
+            }
+        });
+        $('#allmentorstable').DataTable({
+            dom: 'lrtip',
+            language: {
+                url: languageUrl,
+            },
+            initComplete: function() {
+                const table = this.api();
+
+                datatablesHelpers.setupSearchRules('.js-mentor-filter--search', table);
+
+                datatablesHelpers.addRedrawEvent('.js-mentor-filter', table);
+            },
+            columnDefs: [
+                {orderable: false, visible: false, targets: 'no-show'}
+            ]
+        });
+    }
+
     return {
 
         select2: function() {
@@ -14,29 +56,7 @@ define([
         },
 
         init: function() {
-            var translationURL = str.get_string('datatables_url', 'local_learningcompanions');
-            translationURL.then(function(url) {
-                $('#askedquestionstable').DataTable({
-                    language: {
-                        url: url
-                    }
-                });
-                $('#mymentorquestionstable').DataTable({
-                    language: {
-                        url: url
-                    }
-                });
-                $('#allmentorquestionstable').DataTable({
-                    language: {
-                        url: url
-                    }
-                });
-                $('#allmentorstable').DataTable({
-                    language: {
-                        url: url
-                    }
-                });
-            });
+            initDatatables();
 
             $('.askedquestions-delete').click(function(e) {
                 e.preventDefault();
