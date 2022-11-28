@@ -2,8 +2,11 @@
 
 namespace local_learningcompanions;
 
+require_once $CFG->libdir . "/formslib.php";
+
 class create_group_form extends \moodleform {
     public function __construct($action = null, $customdata = null, $method = 'post', $target = '', $attributes = null, $editable = true, $ajaxformdata = null) {
+        // Automatically add the class 'learningcompanions_group_form' to the form.
         $attributes['class'] = array_merge($attributes['class'] ?? [], ['learningcompanions_group_form']);
         parent::__construct($action, $customdata, $method, $target, ['class' => 'learningcompanions_group_form'], $editable, $ajaxformdata);
     }
@@ -20,6 +23,7 @@ class create_group_form extends \moodleform {
     protected function definition() {
         $mform = $this->_form;
         $topicchoices = groups::get_available_topics();
+        $mform->setAttributes(['class' => 'learningcompanions_group_form']);
 
         // ####### GROUP NAME
         $mform->addElement('text', 'name', get_string('groupname', 'local_learningcompanions'), 'size="60" maxlength="100"');
@@ -27,8 +31,15 @@ class create_group_form extends \moodleform {
         $mform->addRule('name', get_string('required'), 'required');
         $mform->addRule('name', get_string('maxlengthwarning', 'local_learningcompanions', 4000), 'maxlength', 100);
 
-        // ########### GROUP TOPIC
-        $mform->addElement('select', 'topic', get_string('group_topic', 'local_learningcompanions'), $topicchoices);
+        // ############### GROUP KEYWORDS
+        $knownkeywords = \local_learningcompanions\groups::get_all_keywords();
+        $knownkeywords = array_combine($knownkeywords, $knownkeywords);
+        $options = [
+            'multiple' => true, 'noselectionstring' => get_string('nokeywords', 'local_learningcompanions'),
+            'tags' => true
+        ];
+        $mform->addElement('autocomplete', 'keywords', get_string('group_topic', 'local_learningcompanions'), $knownkeywords, $options);
+        $mform->addHelpButton('keywords', 'keywords', 'local_learningcompanions');
 
         // ########### GROUP COURSE CONTEXT
         $systemcontext = \context_system::instance();
@@ -40,29 +51,24 @@ class create_group_form extends \moodleform {
         if (isset($this->_customdata['courseid']) && !empty($this->_customdata['courseid'])) {
             $mform->setDefault('courseid', intval($this->_customdata['courseid']));
         }
+        $mform->addHelpButton('courseid', 'coursecontext', 'local_learningcompanions');
 
         // ############### GROUP LEARNING NUGGET CONTEXT
-        $nuggetcontextoptions = [
+        $nuggetcontextoptions = array(
             'ajax' => 'local_learningcompanions/nuggetcontext'
-        ];
+        );
         $mform->addElement('autocomplete', 'cmid', get_string('nuggetcontext', 'local_learningcompanions'), null, $nuggetcontextoptions);
         if (isset($this->_customdata['cmid']) && !empty($this->_customdata['cmid'])) {
             $mform->setDefault('cmid', intval($this->_customdata['cmid']));
         }
+        $mform->addHelpButton('cmid', 'nuggetcontext', 'local_learningcompanions');
+        $mform->disabledIf('cmid', 'courseid', 'eq', ''); //, 'noitemselected');
 
-
-        // ############### GROUP KEYWORDS
-        $knownkeywords = \local_learningcompanions\groups::get_all_keywords();
-        $knownkeywords = array_combine($knownkeywords, $knownkeywords);
-        $options = [
-            'multiple' => true, 'noselectionstring' => get_string('nokeywords', 'local_learningcompanions'),
-            'tags' => true
-        ];
-        $mform->addElement('autocomplete', 'keywords', get_string('keywords', 'local_learningcompanions'), $knownkeywords, $options);
 
         // ############## GROUP OPEN/CLOSED
         $mform->addElement('select', 'closedgroup', get_string('closedgroup', 'local_learningcompanions'), [
-            0 => get_string('no'), 1 => get_string('yes')
+            0 => get_string('no'),
+            1 => get_string('yes')
         ]);
         $mform->setDefault('closedgroup', 0);
         $mform->addHelpButton('closedgroup', 'closedgroup', 'local_learningcompanions');
@@ -78,9 +84,9 @@ class create_group_form extends \moodleform {
         }
         file_prepare_draft_area($draftitemid, $context->id, 'mod_glossary', 'groupimage', $entry->id, self::get_filepickeroptions());
 
-        $mform->addElement('editor', 'description', get_string('group_description', 'local_learningcompanions'));
-//        $mform->setType('description', PARAM_RAW);
-//        $mform->addRule('description', get_string('required'), 'required');
+        $mform->addElement('editor', 'description_editor', get_string('group_description', 'local_learningcompanions'));
+        //        $mform->setType('description', PARAM_RAW);
+        //        $mform->addRule('description', get_string('required'), 'required');
 
         // ############# HIDDEN DATA
         if (isset($this->_customdata['groupid'])) {
