@@ -178,7 +178,7 @@ class groups {
      */
     protected static function save_group_image($groupid, $image) {
         $context = \context_system::instance();
-        file_save_draft_area_files($image, $context->id, 'local_learningcompanions', 'groupimage', $groupid, group_form::get_filepickeroptions());
+        file_save_draft_area_files($image, $context->id, 'local_learningcompanions', 'groupimage', $groupid, create_edit_group_form::get_filepickeroptions());
 
     }
 

@@ -4,7 +4,7 @@ namespace local_learningcompanions;
 
 require_once $CFG->libdir . "/formslib.php";
 
-class create_group_form extends \moodleform {
+class create_edit_group_form extends \moodleform {
     public function __construct($action = null, $customdata = null, $method = 'post', $target = '', $attributes = null, $editable = true, $ajaxformdata = null) {
         // Automatically add the class 'learningcompanions_group_form' to the form.
         $attributes['class'] = array_merge($attributes['class'] ?? [], ['learningcompanions_group_form']);
