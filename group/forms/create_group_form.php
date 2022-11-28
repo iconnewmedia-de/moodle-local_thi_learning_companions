@@ -23,7 +23,6 @@ class create_group_form extends \moodleform {
     protected function definition() {
         $mform = $this->_form;
         $topicchoices = groups::get_available_topics();
-        $mform->setAttributes(['class' => 'learningcompanions_group_form']);
 
         // ####### GROUP NAME
         $mform->addElement('text', 'name', get_string('groupname', 'local_learningcompanions'), 'size="60" maxlength="100"');
