@@ -63,6 +63,11 @@ $string['coursecontext'] = 'Course context';
 $string['nuggetcontext'] = 'Learning nugget context';
 $string['group_image'] = 'Group image';
 $string['group_description'] = 'Group description';
+$string['coursecontext_help'] = 'If this group\'s purpose relates to a course, please select the course here.
+You can begin typing and autocomplete will suggest matching courses that you\'re enrolled in.';
+$string['nuggetcontext_help'] = 'If this group\'s purpose relates to a certain learning nugget, you can select the nugget here.
+You can begin typing and autocomplete will suggest matching nuggets that belong to the course you\'ve seleced above';
+$string['keywords_help'] = 'Type into the search field and hit comma, enter or tab to add a keyword that describes the topic. You can add multiple keywords.';
 
 // Mentor
 $string['myquestions'] = 'My questions';
@@ -87,6 +92,16 @@ $string['navbar_mentors'] = 'Mentors';
 $string['navbar_mentorquestions'] = 'Mentor questions';
 $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
+$string['group_created'] = 'Your group was created successfully';
+$string['listgroups'] = 'Group list';
+$string['learninggroups'] = 'Learning groups';
+$string['loading'] = 'Loading';
+$string['reply'] = 'Reply';
+$string['attachment'] = 'Attachment';
+$string['attachment_help'] = 'You can optionally attach one or more files to a forum post. If you attach an image, it will be displayed after the message.';
+$string['message'] = 'Message';
+$string['post'] = 'Post';
+$string['send'] = 'Send';
 $string['nolearningnuggetcommentsfound'] = 'No learning nugget comments found.';
 $string['questionclosedon'] = 'Question closed on {$a}';
 $string['deletemyquestion'] = 'Delete my question';
