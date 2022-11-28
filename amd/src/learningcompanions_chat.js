@@ -14,20 +14,20 @@ define(['jquery'], function($){
                 // ICTODO: disable the form/grey it out, while data is getting sent
                 e.preventDefault();
                 var data = {};
-                $('.block_learningcompanions_chat form input, .block_learningcompanions_chat form textarea').each((index, el) => {
+                $('#learningcompanions_chat form input, #learningcompanions_chat form textarea').each((index, el) => {
                     data[el.name] = el.value;
                 });
-                $('.block_learningcompanions_chat #id_messageeditable').css('opacity', '0.5');
-                $('.block_learningcompanions_chat #id_messageeditable').attr('contenteditable', 'false');
-                $('.block_learningcompanions_chat form input,  .block_learningcompanions_chat form textarea, #local_learningcompanions_chat-send').attr('disabled', true);
+                $('#learningcompanions_chat #id_messageeditable').css('opacity', '0.5');
+                $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'false');
+                $('#learningcompanions_chat form input,  #learningcompanions_chat form textarea, #local_learningcompanions_chat-send').attr('disabled', true);
                 $.post(
                     M.cfg.wwwroot + "/local/learningcompanions/ajaxsubmit.php",
                     data
                 ).done(function(a,b,c) {
                     // ICTODO: give a success message, like with a toast or so
                     // reset the form to empty values after successfully sending the form
-                    $('.block_learningcompanions_chat form #id_messageeditable').text("");
-                    $('.block_learningcompanions_chat form input, .block_learningcompanions_chat form textarea').each((index, el) => {
+                    $('#learningcompanions_chat form #id_messageeditable').text("");
+                    $('#learningcompanions_chat form input, #learningcompanions_chat form textarea').each((index, el) => {
                         if (el.name == "textarea" || el.type !== "hidden") {
                             el.value = '';
                         }
@@ -43,6 +43,12 @@ define(['jquery'], function($){
                 });
                 return false;
             }
+            // put send button to the right next to the message box
+            // we can't arrange it that way with just Moodle Forms API
+            var sendButton = $('#local_learningcompanions_chat-send');
+            var messageBox = $('#id_messageeditable');
+            messageBox.after(sendButton);
+            // add event listener to the send button to handle message sending
             $('#local_learningcompanions_chat-send').on('click', sendForm);
         }
     };
