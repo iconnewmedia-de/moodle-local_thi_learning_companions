@@ -1,1 +1,158 @@
-<?xml version="1.0" encoding="UTF-8" ?><XMLDB PATH="local/learningcompanions/db" VERSION="20200427" COMMENT="XMLDB file for Moodle local/learningcompanions"     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">  <TABLES>    <TABLE NAME="lc_groups" COMMENT="the learning companion groups that were created by users">      <FIELDS>        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>        <FIELD NAME="description" TYPE="text" LENGTH="4000" NOTNULL="true" SEQUENCE="false"/>        <FIELD NAME="closedgroup" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="set to 1 if you want a group where users have to apply to join"/>        <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the user who created this group"/>        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the course that this group relates to"/>        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="the course module for which this group was created, if any"/>      </FIELDS>      <KEYS>        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>      </KEYS>    </TABLE>    <TABLE NAME="lc_keywords" COMMENT="keywords that are assigned to groups">        <FIELDS>            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>            <FIELD NAME="keyword" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false"/>        </FIELDS>        <KEYS>            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>        </KEYS>        <INDEXES>            <INDEX NAME="keyword" UNIQUE="true" FIELDS="keyword" COMMENT="Speed up keyword lookups and don't want the same keyword to exist twice"/>        </INDEXES>    </TABLE>    <TABLE NAME="lc_groups_keywords" COMMENT="which keywords are assigned to which group">        <FIELDS>            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>            <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>            <FIELD NAME="keywordid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>        </FIELDS>        <KEYS>            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>        </KEYS>        <INDEXES>            <INDEX NAME="group_keyword" UNIQUE="true" FIELDS="groupid,keywordid" COMMENT="Don't want the same keyword to get assigned to a group more than once"/>        </INDEXES>    </TABLE>    <TABLE NAME="lc_group_members" COMMENT="who is member of the group, obviously ;)">       <FIELDS>            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>            <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>            <FIELD NAME="userid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>            <FIELD NAME="isadmin"  TYPE="int" LENGTH="1" DEFAULT="0" NOTNULL="true" SEQUENCE="false"/>            <FIELD NAME="joined"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="timestamp of when the user joined the group"/>        </FIELDS>        <KEYS>            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>        </KEYS>         <INDEXES>            <INDEX NAME="groupid" UNIQUE="false" FIELDS="groupid" COMMENT="to improve speed when searching for a group's users"/>            <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" COMMENT="to improve speed when searching for a user's groups"/>            <INDEX NAME="group_user" UNIQUE="true" FIELDS="groupid,userid" COMMENT="Don't want the same user to get assigned to a group more than once"/>        </INDEXES>    </TABLE>    <TABLE NAME="lc_mentors" COMMENT="who is registered as a mentor">        <FIELDS>            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>            <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>            <FIELD NAME="topic" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>        </FIELDS>         <KEYS>            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>        </KEYS>        <INDEXES>            <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>        </INDEXES>    </TABLE>     <TABLE NAME="lc_users_mentors" COMMENT="which user has chosen which mentor">            <FIELDS>                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="mentorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="references lc_mentors.id"/>            </FIELDS>             <KEYS>                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>                <KEY NAME="fk_mentorid" TYPE="foreign" FIELDS="mentorid" REFTABLE="lc_mentors" REFFIELDS="id"/>            </KEYS>            <INDEXES>                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>                <INDEX NAME="useridmentor" UNIQUE="false" FIELDS="userid"/>            </INDEXES>        </TABLE>        <TABLE NAME="lc_chat" COMMENT="contains the chats for groups">            <FIELDS>                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>                <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="though the course id can be determined by chattype and relatedid, having it here makes it easier to fetch chats for the course"/>                <FIELD NAME="chattype" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="chattype can either be chat with a mentor (0) or a group (1)"/>                <FIELD NAME="relatedid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="refers to lc_group or userid, depending on chattype"/>                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>            </FIELDS>            <KEYS>                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>            </KEYS>             <INDEXES>                <INDEX NAME="chattype_relatedid" UNIQUE="true" FIELDS="chattype,relatedid"/>                <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>             </INDEXES>        </TABLE>        <TABLE NAME="lc_chat_comment" COMMENT="contains the individual comments inside the chat">            <FIELDS>                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>                 <FIELD NAME="chatid" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                 <FIELD NAME="userid" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                 <FIELD NAME="comment" TYPE="text" NOTNULL="true" SEQUENCE="false"/>                 <FIELD NAME="flagged" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="gets set to 1 when reported and confirmed to be inappropriate"/>                 <FIELD NAME="flaggedby" TYPE="int"  LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of reporting user"/>                 <FIELD NAME="totalscore" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="counts the upvotes for a comment"/>                 <FIELD NAME="timecreated" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                 <FIELD NAME="timemodified" TYPE="int"  LENGTH="10" NOTNULL="false" SEQUENCE="false"/>            </FIELDS>            <KEYS>                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>            </KEYS>            <INDEXES>                <INDEX NAME="chatid" UNIQUE="false" FIELDS="chatid"/>                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>            </INDEXES>        </TABLE>        <TABLE NAME="lc_mentor_questions" COMMENT="contains the questions asked to mentors">            <FIELDS>                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>                <FIELD NAME="askedby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="mentorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="can be NULL when question is asked to all mentors"/>                <FIELD NAME="topic" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="title" TYPE="text" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="question" TYPE="text" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="timeclosed" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>            </FIELDS>            <KEYS>                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>            </KEYS>        </TABLE>        <TABLE NAME="lc_mentor_answers" COMMENT="contains the answers to a question asked to mentors">            <FIELDS>                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>                <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="answer" TYPE="text" NOTNULL="true" SEQUENCE="false"/>                <FIELD NAME="issolution" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="flag for correct answer which closes the question"/>                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>            </FIELDS>            <KEYS>                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>            </KEYS>        </TABLE>  </TABLES></XMLDB>
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/learningcompanions/db" VERSION="20200427" COMMENT="XMLDB file for Moodle local/learningcompanions"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="lc_groups" COMMENT="the learning companion groups that were created by users">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="4000" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="closedgroup" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="set to 1 if you want a group where users have to apply to join"/>
+        <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the user who created this group"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the course that this group relates to"/>
+        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="the course module for which this group was created, if any"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="lc_keywords" COMMENT="keywords that are assigned to groups">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+            <FIELD NAME="keyword" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        </KEYS>
+        <INDEXES>
+            <INDEX NAME="keyword" UNIQUE="true" FIELDS="keyword" COMMENT="Speed up keyword lookups and don't want the same keyword to exist twice"/>
+        </INDEXES>
+    </TABLE>
+    <TABLE NAME="lc_groups_keywords" COMMENT="which keywords are assigned to which group">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+            <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="keywordid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        </KEYS>
+        <INDEXES>
+            <INDEX NAME="group_keyword" UNIQUE="true" FIELDS="groupid,keywordid" COMMENT="Don't want the same keyword to get assigned to a group more than once"/>
+        </INDEXES>
+    </TABLE>
+    <TABLE NAME="lc_group_members" COMMENT="who is member of the group, obviously ;)">
+       <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+            <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="userid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="isadmin"  TYPE="int" LENGTH="1" DEFAULT="0" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="joined"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="timestamp of when the user joined the group"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        </KEYS>
+         <INDEXES>
+            <INDEX NAME="groupid" UNIQUE="false" FIELDS="groupid" COMMENT="to improve speed when searching for a group's users"/>
+            <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" COMMENT="to improve speed when searching for a user's groups"/>
+            <INDEX NAME="group_user" UNIQUE="true" FIELDS="groupid,userid" COMMENT="Don't want the same user to get assigned to a group more than once"/>
+        </INDEXES>
+    </TABLE>
+    <TABLE NAME="lc_mentors" COMMENT="who is registered as a mentor">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+            <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            <FIELD NAME="topic" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        </FIELDS>
+         <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        </KEYS>
+        <INDEXES>
+            <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+        </INDEXES>
+    </TABLE>
+     <TABLE NAME="lc_users_mentors" COMMENT="which user has chosen which mentor">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mentorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="references lc_mentors.id"/>
+            </FIELDS>
+             <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="fk_mentorid" TYPE="foreign" FIELDS="mentorid" REFTABLE="lc_mentors" REFFIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+                <INDEX NAME="useridmentor" UNIQUE="false" FIELDS="userid"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="lc_chat" COMMENT="contains the chats for groups">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="though the course id can be determined by chattype and relatedid, having it here makes it easier to fetch chats for the course"/>
+                <FIELD NAME="chattype" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="chattype can either be chat with a mentor (0) or a group (1)"/>
+                <FIELD NAME="relatedid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="refers to lc_group or userid, depending on chattype"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+             <INDEXES>
+                <INDEX NAME="chattype_relatedid" UNIQUE="true" FIELDS="chattype,relatedid"/>
+                <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+             </INDEXES>
+        </TABLE>
+        <TABLE NAME="lc_chat_comment" COMMENT="contains the individual comments inside the chat">
+            <FIELDS>
+                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                 <FIELD NAME="chatid" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                 <FIELD NAME="userid" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                 <FIELD NAME="comment" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                 <FIELD NAME="flagged" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="gets set to 1 when reported and confirmed to be inappropriate"/>
+                 <FIELD NAME="flaggedby" TYPE="int"  LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of reporting user"/>
+                 <FIELD NAME="totalscore" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="counts the upvotes for a comment"/>
+                 <FIELD NAME="timecreated" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                 <FIELD NAME="timemodified" TYPE="int"  LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="chatid" UNIQUE="false" FIELDS="chatid"/>
+                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="lc_mentor_questions" COMMENT="contains the questions asked to mentors">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="askedby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mentorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="can be NULL when question is asked to all mentors"/>
+                <FIELD NAME="topic" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="title" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="question" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="timeclosed" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="lc_mentor_answers" COMMENT="contains the answers to a question asked to mentors">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="answer" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="issolution" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="flag for correct answer which closes the question"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+  </TABLES>
+</XMLDB>
