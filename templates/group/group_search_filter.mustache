@@ -1,0 +1,23 @@
+<form>
+    <div class="">
+        <label for="topic-search"><select data-placeholder="{{#str}}filter_all_topics, local_learningcompanions{{/str}}" data-target="0" multiple class="js-group-filter js-group-filter--includes select2" name="topics" id="topic-search">
+            {{#keywords}}
+                <option value="{{.}}">{{.}}</option>
+            {{/keywords}}
+        </select></label>
+        <label>
+            <input data-target="name" class="js-group-filter js-group-filter--search" name="keyword" type="text" placeholder="{{#str}}filter_keywords_placeholder, local_learningcompanions{{/str}}">
+        </label>
+        <label for="group-status"><select data-target="join" class="js-group-filter js-group-filter--search select2" name="status" id="group-status" data-minimum-results-for-search="Infinity">
+            <option value="">{{#str}}filter_all_status, local_learningcompanions{{/str}}</option>
+            <option value="0">{{#str}}filter_open_status, local_learningcompanions{{/str}}</option>
+            <option value="1">{{#str}}filter_closed_status, local_learningcompanions{{/str}}</option>
+        </select></label>
+        <label>
+            <input data-target="3" class="js-group-filter js-group-filter--min" name="members" type="text" placeholder="{{#str}}filter_members_count, local_learningcompanions{{/str}}">
+        </label>
+        <label>
+            <input data-target="4" class="js-group-filter js-group-filter--min" name="created" type="date">
+        </label>
+    </div>
+</form>

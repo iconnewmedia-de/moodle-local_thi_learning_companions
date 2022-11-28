@@ -15,16 +15,35 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
- *
  * @package     local_learningcompanions
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+require_once((dirname(__DIR__, 2)).'/config.php');
 
-$plugin->component = 'local_learningcompanions';
-$plugin->release = '0.1.0';
-$plugin->version = 2022112507;
-$plugin->requires = 2019111800;
+global $CFG, $DB, $OUTPUT;
+
+$action = required_param('action', PARAM_TEXT);
+
+if ($action == 'deletemyquestion') {
+    $questionid = required_param('questionid', PARAM_INT);
+
+    if (\local_learningcompanions\mentors::delete_asked_question($questionid)) {
+        echo '1';
+    } else {
+        echo 'fail';
+    }
+}
+
+if ($action == 'getgroupdetails') {
+    $groupid = required_param('groupid', PARAM_INT);
+    $group = \local_learningcompanions\groups::get_group_by_id($groupid);
+    $groupadmins = \local_learningcompanions\groups::get_group_admins($groupid, true);
+
+    echo json_encode($OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', array(
+        'group' => $group,
+        'groupadmins' => $groupadmins,
+        'cfg' => $CFG
+    )));
+}

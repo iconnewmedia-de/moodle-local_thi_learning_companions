@@ -1,23 +1,26 @@
-<h2>{{#str}}allmentorquestions, local_learningcompanions{{/str}}</h2>
-{{#hasallmentorquestions}}
-    <table class="stripe hover compact" id="allmentorquestionstable" data-paging="true" data-page-length="50">
+<h2>{{#str}}mymentorquestions, local_learningcompanions{{/str}}</h2>
+{{#hasmentorquestions}}
+    <table class="stripe hover compact" id="mymentorquestionstable" data-paging="true" data-page-length="50">
         <thead>
         <tr>
             <th>{{#str}}title, local_learningcompanions{{/str}}</th>
             <th>{{#str}}topic, local_learningcompanions{{/str}}</th>
             <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}status, local_learningcompanions{{/str}}</th>
             <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
             <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
         </tr>
         </thead>
         <tbody>
-        {{#allmentorquestions}}
+        {{#mymentorquestions}}
             <tr>
                 <td>
-                    {{question}}
+                    <span data-balloon="{{question}}" data-balloon-pos="right">
+                        {{title}}
+                    </span>
                 </td>
                 <td>
-                    XXX
+                    {{keyword}}
                 </td>
                 <td>
                     {{#answercount}}
@@ -26,6 +29,16 @@
                     {{^answercount}}
                         0
                     {{/answercount}}
+                </td>
+                <td>
+                    {{#dateclosed}}
+                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+                            <i class="fa fa-check icon-check-green"></i>
+                        </span>
+                    {{/dateclosed}}
+                    {{^dateclosed}}
+                        <i class="fa fa-rotate-right"></i>
+                    {{/dateclosed}}
                 </td>
                 <td>
                     {{#lastactivity}}
@@ -39,10 +52,10 @@
                     {{dateasked}}
                 </td>
             </tr>
-        {{/allmentorquestions}}
+        {{/mymentorquestions}}
         </tbody>
     </table>
-{{/hasallmentorquestions}}
-{{^allmentorquestions}}
+{{/hasmentorquestions}}
+{{^mymentorquestions}}
     <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
-{{/allmentorquestions}}
+{{/mymentorquestions}}

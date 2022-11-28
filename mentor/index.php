@@ -14,24 +14,35 @@ $PAGE->requires->css('/local/learningcompanions/vendor/balloon.css');
 $PAGE->navbar->add(get_string('navbar_mentors', 'local_learningcompanions'));
 $PAGE->navbar->add(get_string('navbar_mentorquestions', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/mentor/index.php'));
 
+$mentortopics = \local_learningcompanions\mentors::get_all_mentor_keywords($USER->id, true);
+
 $askedquestions = \local_learningcompanions\mentors::get_my_asked_questions($USER->id, true);
-$mymentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions($USER->id, false, true);
-$allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, true, true);
+$mymentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions($USER->id, null, false, true);
+$allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, $mentortopics, false, true);
+$learningnuggetcomments = \local_learningcompanions\mentors::get_latest_nugget_comments($USER->id); // ICTODO
 
 echo $OUTPUT->header();
+
+$notification = optional_param('n', null, PARAM_TEXT);
+if (!is_null($notification)) {
+    $notificationtype = substr($notification, 0, 2) == 'n_' ? 'error' : 'success';
+    echo $OUTPUT->notification(get_string('notification_'.$notification, 'local_learningcompanions'), $notificationtype);
+}
 
 $hasaskedquestions = count($askedquestions) > 0;
 $hasmentorquestions = count($mymentorquestions) > 0;
 $hasallmentorquestions = count($allmentorquestions) > 0;
+$haslearningnuggetcomments = count($learningnuggetcomments) > 0;
 
-echo $OUTPUT->render_from_template('local_learningcompanions/mentor_index', array(
+echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_index', array(
     'hasaskedquestions' => $hasaskedquestions,
     'hasmentorquestions' => $hasmentorquestions,
     'hasallmentorquestions' => $hasallmentorquestions,
     'askedquestions' => array_values($askedquestions),
     'mymentorquestions' => array_values($mymentorquestions),
     'allmentorquestions' => array_values($allmentorquestions),
-    'ismentor' => has_capability('local/learningcompanions:mentor_ismentor', $context), // Maybe access restriction by database entry
+    'ismentor' => \local_learningcompanions\mentors::is_mentor(),
+    'istutor' => \local_learningcompanions\mentors::is_tutor(),
     'cfg' => $CFG
 ));
 

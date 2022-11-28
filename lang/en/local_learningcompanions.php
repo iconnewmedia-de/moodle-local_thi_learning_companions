@@ -29,6 +29,8 @@ $string['pluginname'] = 'Learning Companions';
 $string['learningcompanions:group_create'] = 'Create groups';
 $string['learningcompanions:group_manage'] = 'Manage groups';
 $string['adminareaname'] = 'Learning Companions';
+$string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
+
 $string['no_permission_create_group'] = 'You don\'t have the permission to create groups';
 $string['failed_create_group'] = 'Unexpected error. Creating a new group failed with the error message: ';
 $string['category_for_groups'] = 'Category for Groups';
@@ -71,16 +73,23 @@ $string['keywords_help'] = 'Type into the search field and hit comma, enter or t
 $string['myquestions'] = 'My questions';
 $string['mentorquestions'] = 'Mentor questions';
 $string['mymentorquestions'] = 'My mentor questions';
-$string['allmentorquestions'] = 'Open questions related to my topics';
+$string['allmentorquestions'] = 'Mentor questions related to my topics';
+$string['learningnuggetcomments'] = 'Latest learning nugget comments';
 $string['title'] = 'Question title';
 $string['topic'] = 'Topic';
+$string['topics'] = 'Topics';
+$string['name'] = 'Name';
 $string['answers'] = 'Answers';
+$string['badges'] = 'Badges';
+$string['status'] = 'Status';
+$string['actions'] = 'Actions';
 $string['lastactivity'] = 'Last activity';
 $string['questiondate'] = 'Question date';
 $string['noquestionsfound'] = 'No questions found.';
 $string['asknewquestion'] = 'Ask new question';
+$string['navbar_findmentors'] = 'Find mentors';
 $string['navbar_mentors'] = 'Mentors';
-$string['navbar_mentorquestions'] = 'My questions';
+$string['navbar_mentorquestions'] = 'Mentor questions';
 $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
 $string['group_created'] = 'Your group was created successfully';
@@ -93,7 +102,63 @@ $string['attachment_help'] = 'You can optionally attach one or more files to a f
 $string['message'] = 'Message';
 $string['post'] = 'Post';
 $string['send'] = 'Send';
+$string['nolearningnuggetcommentsfound'] = 'No learning nugget comments found.';
+$string['questionclosedon'] = 'Question closed on {$a}';
+$string['deletemyquestion'] = 'Delete my question';
+$string['modal-deletemyquestion-title'] = 'Delete question';
+$string['modal-deletemyquestion-text'] = 'Do you want to delete your question ("{$a}") and all related answers?';
+$string['modal-deletemyquestion-okaybutton'] = 'Delete question';
+$string['modal-deletemyquestion-cancelbutton'] = 'Cancel';
+$string['notification_d'] = 'Question deleted successfully.';
+$string['notification_n_d'] = 'Could not delete question.';
+$string['findmentor'] = 'Find a mentor';
+$string['askquestiontomentor'] = 'Ask question';
+$string['nomentorsfound'] = 'Could not find any mentors';
+$string['issupermentor'] = 'Super mentor';
+
 // Group
+$string['findgroup'] = 'Find group';
+$string['navbar_groups'] = 'Groups';
+$string['navbar_findgroups'] = 'Find groups';
+$string['topic'] = 'Topic';
+$string['name'] = 'Name';
+$string['join'] = 'Joining';
+$string['membercount'] = 'Member count';
+$string['createdon'] = 'Created on';
+$string['lastactivity'] = 'Last activity';
+$string['nogroupsfound'] = 'Could not find any group.';
+$string['newgroupbutton'] = 'Create new group';
+$string['closedgroup'] = 'Closed group';
+$string['opengroup'] = 'Open group';
+$string['modal-groupdetails-groupname'] = 'Group: {$a}';
+$string['modal-groupdetails-description'] = 'Group description';
+$string['modal-groupdetails-reference'] = 'Reference';
+$string['modal-groupdetails-administrator'] = 'Group administrator';
+$string['modal-groupdetails-visitgroup'] = 'Go to group';
+$string['modal-groupdetails-topic'] = 'Topic';
+$string['modal-groupdetails-members'] = 'Members';
+$string['modal-groupdetails-activity'] = 'Activity';
+$string['modal-groupdetails-createdate'] = 'Created on';
+$string['modal-groupdetails-join'] = 'Joining';
+$string['gotogroupbutton'] = 'Go to group';
 
+// Navigation
+$string['lcadministration_comments'] = 'Tagged comments';
+$string['lcadministration_groups'] = 'Groups';
+$string['lcadministration'] = 'Learning companions administration';
 
-$string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
+// This should not need any translation for other language packs. Please let 'en' be the first language.
+$string['profile_field_status_default_options'] = '<span lang="en" class="multilang">Online</span><span lang="de" class="multilang">Online</span>
+<span lang="en" class="multilang">Offline</span><span lang="de" class="multilang">Offline</span>
+<span lang="en" class="multilang">Please do not disturb</span><span lang="de" class="multilang">Bitte nicht stören</span>';
+$string['profile_field_status_default_default'] = '<span lang="en" class="multilang">Offline</span><span lang="de" class="multilang">Offline</span>';
+
+//Filtering
+$string['filter_all_status'] = 'All groups';
+$string['filter_open_status'] = 'Open groups';
+$string['filter_closed_status'] = 'Closed groups';
+$string['filter_members_count'] = 'Min. number of members';
+$string['filter_all_topics'] = 'All topics';
+$string['filter_keywords_placeholder'] = 'Name/Keyword';
+$string['filter_badges'] = 'Badge';
+$string['filter_super_mentor'] = 'Super mentor';
