@@ -6,7 +6,5 @@ require_once(__DIR__ . "/classes/groups.php");
 require_login();
 global $USER;
 $groups = local_learningcompanions\groups::get_groups_of_user($USER->id);
-foreach($groups as $group) {
-    $imgurl = $group->imageurl;
-}
-echo json_encode(["groups" => $groups]);
+$response = json_encode(["groups" => $groups]);
+echo $response;

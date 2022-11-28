@@ -25,6 +25,7 @@ class group {
     public int $userid;
     public $groupmembers = null;
     public $membercount = null;
+//    public $thumbnail;
     protected $earliestpost = null;
     protected $latestpost = null;
     protected $myearliestpost = null;
@@ -58,6 +59,7 @@ class group {
 
         $this->get_image();
         $this->get_imageurl();
+//        $this->get_thumbnail();
         $this->get_groupmembers();
         $this->get_membercount();
 
@@ -326,4 +328,12 @@ class group {
         $this->admins = array_values($admins);
         return $this->admins;
     }
+
+//    protected function get_thumbnail() {
+//        if (!$this->image || !is_a($this->image, 'stored_file')) {
+//            $this->thumbnail = '';
+//        }
+//        $this->thumbnail = $this->image->generate_image_thumbnail(30,30);
+//        $var = 'debug me';
+//    }
 }
