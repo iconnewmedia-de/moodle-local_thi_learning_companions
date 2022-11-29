@@ -5,14 +5,22 @@ class chat {
     protected $chatid;
     protected $chat;
     protected $context;
-    public function __construct($chatid) {
+    public function __construct($groupid) {
         global $DB;
-        $this->chatid = $chatid;
-        $this->chat = $DB->get_record('lc_chat', array('id' => $chatid), '*', MUST_EXIST);
+        $this->groupid = $groupid;
+        $this->chat = $DB->get_record('lc_chat', array('relatedid' => $groupid, 'chattype' => 1), '*', MUST_EXIST);
+        $this->chatid = $this->chat->id;
         $this->context = \context_system::instance();
         $this->filestorage = get_file_storage();
     }
 
+    /**
+     * @deprecated do not use! Use chats::post_comment instead!
+     * @param $comment
+     * @param $attachments
+     * @return void
+     * @throws \dml_exception
+     */
     public function add_comment($comment, $attachments = []) {
         global $DB, $USER;
         // ICTODO: check if user has the permission to post to this chat
@@ -35,12 +43,13 @@ class chat {
     public function get_comments() {
         global $DB;
         $comments = $DB->get_records('lc_chat_comment', array('chatid' => $this->chatid), 'timecreated');
-        $attachments = $this->get_attachments_of_comments($comments, 'attachment');
+        $attachments = $this->get_attachments_of_comments($comments, 'attachments');
         // ICTODO: also get inline attachments
         foreach($comments as $comment) {
-            $comment->author = $DB->get_record('user', array('id' => $comment->userid));
+            $comment->datetime = userdate($comment->timecreated);
+            $comment->author = $DB->get_record('user', array('id' => $comment->userid), 'id,firstname,lastname,email,username');
             if (array_key_exists($comment->id, $attachments)) {
-                $comment->attachments = $attachments;
+                $comment->attachments = $attachments[$comment->id];
             } else {
                 $comment->attachments = [];
             }
@@ -48,23 +57,40 @@ class chat {
         return $comments;
     }
 
+    public function set_latestviewedcomment(int $chatid) {
+        global $DB, $USER;
+        $record = $DB->get_record('lc_chat_lastvisited', array('chatid' => $chatid, 'userid' => $USER->id));
+        if ($record) {
+            $record->timevisited = time();
+            $DB->update_record('lc_chat_lastvisited', $record);
+            return;
+        }
+        $record = new \stdClass();
+        $record->userid = $USER->id;
+        $record->chatid = $chatid;
+        $record->timevisited = time();
+        $DB->insert_record('lc_chat_lastvisited', $record);
+    }
+
     public function get_attachments_of_comments(array $comments, string $area) {
         global $CFG;
         require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
-        return get_attachments_of_chat_comments($comments, $area);
+        return local_learningcompanions_get_attachments_of_chat_comments($comments, $area);
     }
 
     /**
      * returns the HTML and JS inclusions for the chat module to include on the chat page
      * @return mixed
      */
-    public function get_chat_module($chatid = 0) {
+    public function get_chat_module() {
         global $USER, $OUTPUT, $CFG;
         $reactscript = \local_learningcompanions\get_chat_reactscript_path();
-        $form = $this->get_submission_form(['chatid' => $chatid]);
+        $form = $this->get_submission_form(['chatid' => $this->chatid]);
         $context = array(
             'userid' => $USER->id,
             'reactscript' => $reactscript,
+            'chatid' => $this->chatid,
+            'groupid' => $this->groupid,
             'form' => $form
         );
         return $OUTPUT->render_from_template('local_learningcompanions/chat', $context);
@@ -82,7 +108,7 @@ class chat {
         $postid = empty($customdata["postid"]) ? null : $customdata["postid"];
         $attachoptions = \local_learningcompanions\chat_post_form::attachment_options();
         $context = \context_system::instance();
-        file_prepare_draft_area($draftitemid, $context, 'local_learningcompanions', 'attachment', $postid, $attachoptions);
+        file_prepare_draft_area($draftitemid, $context, 'local_learningcompanions', 'attachments', $postid, $attachoptions);
         $draftideditor = file_get_submitted_draft_itemid('message');
 
         $form->set_data(

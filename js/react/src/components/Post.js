@@ -11,6 +11,7 @@ export default function Post({author, id, datetime, comment, attachments}) {
     }
     let button1;
     let button2;
+    let cssClass;
     function report(id) {
         var self = this;
         Y.use('moodle-core-notification-confirm', function() {
@@ -26,17 +27,20 @@ export default function Post({author, id, datetime, comment, attachments}) {
             confirm.show();
         });
     }
-
-    console.log('Post has author:', author, 'learningcompanions_chat_userid:', learningcompanions_chat_userid);
-    if (typeof learningcompanions_chat_userid !== "undefined" && author.id === learningcompanions_chat_userid) {
-        button1 = <a href={M.cfg.wwwroot + '/blocks/learningcompanions_chat/ajaxchat.php?edit=' + id}>edit</a>
-        button2 = <a href="#">edit</a>
+    if (typeof learningcompanions_chat_userid !== "undefined") {
+        console.log('Post has author:', author, 'learningcompanions_chat_userid:', learningcompanions_chat_userid);
+    }
+    if (typeof learningcompanions_chat_userid !== "undefined" && parseInt(author.id) === parseInt(learningcompanions_chat_userid)) {
+        button1 = <a href={M.cfg.wwwroot + '/blocks/learningcompanions_chat/ajaxchat.php?edit=' + id} className='learningcompanions_edit_comment'>edit</a>
+        button2 = <a href="#" className='learningcompanions_delete_comment'>delete</a>
+        cssClass = 'learningcompanions_chat-my-post';
     } else {
-        button1 = <a href="#" onClick={(e) => this.report(id, e)}>report</a>;
+        button1 = <a href="#" onClick={(e) => this.report(id, e)} className='learningcompanions_report_comment'>report</a>;
         button2 = '';
+        cssClass = 'learningcompanions_chat-other-post';
     }
     return (
-        <div id={"learningcompanions_chat-post-" + id} class={learningcompanions_chat_userid === parseInt(author.id)?'learningcompanions_chat-my-post':'learningcompanions_chat-other-post'}>
+        <div id={"learningcompanions_chat-post-" + id} className={'learningcompanions_chat-post ' + cssClass}>
             <hr />
             <strong>{author.firstname} {author.lastname}</strong><br />
             <em>{datetime}</em><br />

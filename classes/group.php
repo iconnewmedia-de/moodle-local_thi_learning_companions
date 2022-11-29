@@ -29,10 +29,12 @@ class group {
     public int $userid;
     public $groupmembers = null;
     public $membercount = null;
-    protected $earliestpost = null;
-    protected $latestpost = null;
-    protected $myearliestpost = null;
-    protected $mylatestpost = null;
+//    public $thumbnail;
+    public int $latestcomment;
+    public string $latestcomment_userdate;
+    protected $earliestcomment = null; // we seldom need these, so we only get them on demand with magic getter
+    protected $myearliestcomment = null;
+    protected $mylatestcomment = null;
 
 
     public function __construct($groupid, $userid = null) {
@@ -55,6 +57,7 @@ class group {
         $this->timecreated_dmY = date('d.m.Y', $this->timecreated);
         $this->timemodified_userdate = userdate($this->timemodified);
         $this->timemodified_dmY = date('d.m.Y', $this->timemodified);
+        $this->lastcomment_userdate = $this->lastcomment > 0?userdate($this->lastcomment):'-';
         $this->closedgroupicon = $this->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
         $shortdescription = strip_tags($this->description);
         $this->shortdescription = substr($shortdescription, 0, 50);
@@ -114,10 +117,10 @@ class group {
      * @return int
      * @throws \dml_exception
      */
-    protected function get_earliestpost() {
+    protected function get_earliestcomment() {
         global $DB;
-        if (!is_null($this->earliestpost)) {
-            return $this->earliestpost;
+        if (!is_null($this->earliestcomment)) {
+            return $this->earliestcomment;
         }
         $query = "SELECT MIN(posts.timecreated) AS earliestpost,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
@@ -125,21 +128,21 @@ class group {
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id));
         if (!$result) {
-            $this->earliestpost = 0;
+            $this->earliestcomment = 0;
         } else {
-            $this->earliestpost = $result->earliestpost;
+            $this->earliestcomment = $result->earliestpost;
         }
-        return $this->earliestpost;
+        return $this->earliestcomment;
     }
 
     /**
      * @return int
      * @throws \dml_exception
      */
-    protected function get_mylatestpost() {
+    protected function get_mylatestcomment() {
         global $DB;
-        if (!is_null($this->mylatestpost)) {
-            return $this->mylatestpost;
+        if (!is_null($this->mylatestcomment)) {
+            return $this->mylatestcomment;
         }
         $query = "SELECT MAX(posts.timecreated) AS latestpost,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
@@ -147,21 +150,21 @@ class group {
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id, $this->userid));
         if (!$result) {
-            $this->mylatestpost = 0;
+            $this->mylatestcomment = 0;
         } else {
-            $this->mylatestpost = $result->mylatestpost;
+            $this->mylatestcomment = $result->mylatestpost;
         }
-        return $this->mylatestpost;
+        return $this->mylatestcomment;
     }
 
     /**
      * @return int
      * @throws \dml_exception
      */
-    protected function get_myearliestpost() {
+    protected function get_myearliestcomment() {
         global $DB;
-        if (!is_null($this->myearliestpost)) {
-            return $this->myearliestpost;
+        if (!is_null($this->myearliestcomment)) {
+            return $this->myearliestcomment;
         }
         $query = "SELECT MIN(posts.timecreated) AS earliestpost,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
@@ -169,11 +172,11 @@ class group {
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id, $this->userid));
         if (!$result) {
-            $this->myearliestpost = 0;
+            $this->myearliestcomment = 0;
         } else {
-            $this->myearliestpost = $result->myearliestpost;
+            $this->myearliestcomment = $result->myearliestpost;
         }
-        return $this->myearliestpost;
+        return $this->myearliestcomment;
     }
 
     /**

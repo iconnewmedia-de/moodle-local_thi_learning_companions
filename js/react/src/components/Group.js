@@ -4,7 +4,7 @@ import Dateformatter from "./Dateformatter";
 
 export default function Group({name, id, description, shortdescription, imageurl, latestcomment}) {
     return (
-        <div id={"learningcompanions_chat-group-" + id}>
+        <div id={"learningcompanions_chat-group-" + id} className={(typeof learningcompanions_groupid !== "undefined" && learningcompanions_groupid === parseInt(id))?'learningcompanions_currentgroup':''}>
             <hr />
             <Dateformatter timestamp={latestcomment} />
             <img className="learningcompanions_group_image_small" src={imageurl} />

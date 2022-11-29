@@ -9,8 +9,12 @@ function App(props) {
   }
   const [posts, setPosts] = React.useState(props.posts);
   const [groups, setGroups] = React.useState(props.groups);
+  const [currentGroup, setCurrentGroup] = React.useState(props.activeGroupid);
+  const handleGroupSelect = (groupid) => {
+    setCurrentGroup(groupid);
+  };
   async function getPosts() {
-    const response = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php');
+    const response = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + currentGroup);
     const data = await response.json();
     console.log('data.posts:', data.posts);
     icblock_init = true;
@@ -62,7 +66,7 @@ function App(props) {
   return (
       <div>
         {props.component === 'groups' &&
-            <Grouplist groups={groups}/>
+            <Grouplist groups={groups} handleGroupSelect={handleGroupSelect} />
         }
         {props.component === 'chat' &&
             <Postlist posts={posts}/>
