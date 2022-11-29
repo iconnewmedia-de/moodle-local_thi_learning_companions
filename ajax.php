@@ -39,11 +39,10 @@ if ($action == 'deletemyquestion') {
 if ($action == 'getgroupdetails') {
     $groupid = required_param('groupid', PARAM_INT);
     $group = \local_learningcompanions\groups::get_group_by_id($groupid);
-    $groupadmins = \local_learningcompanions\groups::get_group_admins($groupid, true);
 
-    echo json_encode($OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', array(
+    echo json_encode($OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', [
         'group' => $group,
-        'groupadmins' => $groupadmins,
+        'groupadmins' => $group->admins,
         'cfg' => $CFG
-    )));
+    ]));
 }

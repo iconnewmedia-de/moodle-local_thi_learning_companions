@@ -1,84 +1,70 @@
-define([
-    'jquery',
-    'core/config',
-    'core/str',
-    'core/modal_factory',
-    'core/modal_events',
-    'local_learningcompanions/datatables-helpers',
-    'local_learningcompanions/jquery.dataTables',
-    'local_learningcompanions/select2'
-], function($, c, str, ModalFactory, ModalEvents, datatablesHelpers) {
-    return {
+import $ from 'jquery';
+import * as str from 'core/str';
+import * as ModalFactory from 'core/modal_factory';
+import * as ModalEvents from 'core/modal_events';
+import * as datatablesHelpers from 'local_learningcompanions/datatables-helpers';
+import {promiseAjax} from "local_learningcompanions/ajax";
+import 'local_learningcompanions/jquery.dataTables';
+import 'local_learningcompanions/select2';
 
-        select2: function() {
-            $('.select2').select2();
+export const select2 = () => {
+    $('.select2').select2();
+};
+
+export const init = () => {
+    setupDatatables();
+    attachEvents();
+};
+
+const setupDatatables = async() => {
+    datatablesHelpers.initMinSearch('.js-group-filter--min');
+    datatablesHelpers.initIncludeSearch('.js-group-filter--includes');
+
+    const url = await str.get_string('datatables_url', 'local_learningcompanions');
+
+    // eslint-disable-next-line promise/catch-or-return,promise/always-return
+    $('#allgroupstable').DataTable({
+        dom: 'lrtip',
+        language: {
+            url: url
         },
+        initComplete: function() {
+            const table = this.api();
 
-        init: function() {
-            datatablesHelpers.initMinSearch('.js-group-filter--min');
-            datatablesHelpers.initIncludeSearch('.js-group-filter--includes');
+            datatablesHelpers.setupSearchRules('.js-group-filter--search', table);
 
-            var translationURL = str.get_string('datatables_url', 'local_learningcompanions');
+            datatablesHelpers.addRedrawEvent('.js-group-filter', table);
+        },
+    });
+};
 
-            // eslint-disable-next-line promise/catch-or-return,promise/always-return
-            translationURL.then(function(url) {
-                $('#allgroupstable').DataTable({
-                    dom: 'lrtip',
-                    language: {
-                        url: url
-                    },
-                    initComplete: function() {
-                        const table = this.api();
+const attachEvents = () => {
+    $('.grouprow').click(async function(e) {
+        e.preventDefault();
 
-                        datatablesHelpers.setupSearchRules('.js-group-filter--search', table);
+        const groupid = $(this).data('gid');
+        const groupname = $(this).data('title');
 
-                        datatablesHelpers.addRedrawEvent('.js-group-filter', table);
-                    },
-                });
-            });
+        const groupDetails = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+            action: 'getgroupdetails',
+            groupid: groupid
+        });
 
-            $('.grouprow').click(function(e) {
-                e.preventDefault();
+        const title = await str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
+        const modal = await ModalFactory.create({
+            title: title,
+            body: groupDetails,
+            footer: '',
+            large: true
+        });
 
-                const groupid = $(this).data('gid');
-                const groupname = $(this).data('title');
+        modal.getRoot().on(ModalEvents.hidden, function() {
+            modal.destroy();
+        });
+        modal.show();
+    });
 
-                $.ajax({
-                    url: M.cfg.wwwroot + '/local/learningcompanions/ajax.php',
-                    method: 'POST',
-                    dataType: 'json',
-                    data: {
-                        action: 'getgroupdetails',
-                        groupid: groupid
-                    },
-                    success: function(data) {
-
-                        var strings = [
-                            {key: 'modal-groupdetails-groupname', component: 'local_learningcompanions', param: groupname}
-                        ];
-
-                        str.get_strings(strings).then(function(strings) {
-                            return ModalFactory.create({
-                                title: strings[0],
-                                body: data,
-                                footer: '',
-                                large: true
-                            });
-                        }).then(function(modal) {
-                            modal.getRoot().on(ModalEvents.hidden, function() {
-                                modal.destroy();
-                            });
-                            modal.show();
-                        });
-                    }
-                });
-
-            });
-
-            $('body').on('click', '#mentor-deletemyquestion-modal-close', function() {
-                $('.modal').remove();
-            });
-        }
-
-    };
-});
+    $('body').on('click', '#mentor-deletemyquestion-modal-close', function() {
+        $('.modal').remove();
+    });
+};

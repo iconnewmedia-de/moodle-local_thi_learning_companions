@@ -21,6 +21,16 @@ class groups {
     }
 
     /**
+     * Returns a specific group
+     * @param int $id
+     *
+     * @return group
+     */
+    public static function get_group_by_id(int $id): group {
+        return new group($id);
+    }
+
+    /**
      * @param int $userid
      * @param string $sortby possible values: latestcomment, earliestcomment, mylatestcomment, myearliestcomment
      * @return group[]
@@ -35,7 +45,7 @@ class groups {
                     JOIN {lc_group_members} gm ON gm.groupid = g.id AND gm.userid = ?";
         $groups = $DB->get_records_sql($query, $params);
         $return = [];
-        foreach($groups as &$group) {
+        foreach($groups as $group) {
             $returnGroup = new group($group->id, $userid);
             $return[] = $returnGroup;
         }

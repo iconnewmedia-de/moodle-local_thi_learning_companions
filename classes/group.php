@@ -1,15 +1,19 @@
 <?php
 namespace local_learningcompanions;
 include_once __DIR__ . "/groups.php";
+
 class group {
     public int $id;
-    public array $admins;
+    public $admins;
     public string $createdby_fullname;
     public string $createdby_profileurl;
-    public array $keywords;
+    public $keywords;
+    public string $keywords_list;
     public int $timecreated;
+    public string $timecreated_dmY;
     public string $timecreated_userdate;
     public $timemodified;
+    public string $timemodified_dmY;
     public string $timemodified_userdate;
     public bool $closedgroup;
     public string $closedgroupicon;
@@ -48,7 +52,9 @@ class group {
         $this->createdby_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
 
         $this->timecreated_userdate = userdate($this->timecreated);
+        $this->timecreated_dmY = date('d.m.Y', $this->timecreated);
         $this->timemodified_userdate = userdate($this->timemodified);
+        $this->timemodified_dmY = date('d.m.Y', $this->timemodified);
         $this->closedgroupicon = $this->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
         $shortdescription = strip_tags($this->description);
         $this->shortdescription = substr($shortdescription, 0, 50);
@@ -60,12 +66,15 @@ class group {
         $this->get_imageurl();
         $this->get_groupmembers();
         $this->get_membercount();
+        $this->get_admins();
+//        $this->get_keywords();
+        $this->get_keywords_list();
 
         // ICTODO: fetch course and course category along with relevant metadata from course and course category, like topic and such
     }
 
     /**
-     * use magic functions so we can access data that only needs to be read on the fly without calling methods
+     * use magic functions, so we can access data that only needs to be read on the fly without calling methods
      * lazy loading type of thing
      * @param $name
      * @return array|int|void
@@ -90,7 +99,7 @@ class group {
         }
         $query = "SELECT MAX(posts.timecreated) AS latestpost,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
-               LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id 
+               LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id));
         if (!$result) {
@@ -112,7 +121,7 @@ class group {
         }
         $query = "SELECT MIN(posts.timecreated) AS earliestpost,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
-               LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id 
+               LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id));
         if (!$result) {
@@ -226,6 +235,13 @@ class group {
         return $this->keywords;
     }
 
+    public function get_keywords_list() {
+        $keywords_list = $this->get_keywords();
+        $keywords_list = implode(', ', $keywords_list);
+        $this->keywords_list = $keywords_list;
+        return $keywords_list;
+    }
+
     /**
      * @return object|\stored_file|null
      * @throws \coding_exception
@@ -310,7 +326,7 @@ class group {
         global $DB, $CFG;
 
         $sql = 'SELECT u.*,
-                       gm.joined                                              
+                       gm.joined
                   FROM {lc_group_members} gm
              LEFT JOIN {user} u ON u.id = gm.userid
                  WHERE gm.groupid = ?

@@ -22,17 +22,17 @@
                     <td>
                         {{name}}
                     </td>
-                    <td data-search="{{closedgroupbool}}">
-                        {{#closedgroupbool}}
+                    <td data-search="{{closedgroup}}">
+                        {{#closedgroup}}
                             <span data-balloon="{{#str}}closedgroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
                                 <i class="fa fa-arrow-right icon-joingroup"></i>
                             </span>
-                        {{/closedgroupbool}}
-                        {{^closedgroupbool}}
+                        {{/closedgroup}}
+                        {{^closedgroup}}
                             <span data-balloon="{{#str}}opengroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
                                 <i class="fa fa-arrow-left icon-joingroup"></i>
                             </span>
-                        {{/closedgroupbool}}
+                        {{/closedgroup}}
                     </td>
                     <td>
                         {{membercount}}
