@@ -2,6 +2,8 @@
 namespace local_learningcompanions;
 
 class chats {
+    const CHAT_TYPE_MENTOR = 0;
+    const CHAT_TYPE_GROUP = 1;
     public static function get_chat_of_group(int $groupid) {
 
     }
@@ -31,8 +33,31 @@ class chats {
             $editoroptions, $comment->message);
         $DB->set_field('lc_chat_comment', 'comment', $comment->comment, array('id'=>$comment->id));
         self::add_attachment($comment, $formdata);
+        self::set_latest_comment($comment->chatid);
 
         return $comment->id;
+    }
+
+    /**
+     * stores date of latest comment in group
+     * @param $chatid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function set_latest_comment($chatid) {
+        global $DB;
+        $chat = $DB->get_record('lc_chat', array('id' => $chatid));
+        if (!$chat) {
+            return;
+        }
+        if ($chat->chattype == self::CHAT_TYPE_GROUP) {
+            $group = $DB->get_record('lc_groups', array('id' => $chat->relatedid));
+            if (!$group) {
+                return;
+            }
+            $group->lastestcomment = time();
+            $DB->update_record('lc_groups', $group);
+        }
     }
 
     protected static function add_attachment($comment, $formdata) {

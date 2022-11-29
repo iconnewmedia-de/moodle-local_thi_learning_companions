@@ -14,6 +14,13 @@ class chat {
         $this->filestorage = get_file_storage();
     }
 
+    /**
+     * @deprecated do not use! Use chats::post_comment instead!
+     * @param $comment
+     * @param $attachments
+     * @return void
+     * @throws \dml_exception
+     */
     public function add_comment($comment, $attachments = []) {
         global $DB, $USER;
         // ICTODO: check if user has the permission to post to this chat
@@ -48,6 +55,21 @@ class chat {
             }
         }
         return $comments;
+    }
+
+    public function set_latestviewedcomment(int $chatid) {
+        global $DB, $USER;
+        $record = $DB->get_record('lc_chat_lastvisited', array('chatid' => $chatid, 'userid' => $USER->id));
+        if ($record) {
+            $record->timevisited = time();
+            $DB->update_record('lc_chat_lastvisited', $record);
+            return;
+        }
+        $record = new \stdClass();
+        $record->userid = $USER->id;
+        $record->chatid = $chatid;
+        $record->timevisited = time();
+        $DB->insert_record('lc_chat_lastvisited', $record);
     }
 
     public function get_attachments_of_comments(array $comments, string $area) {
