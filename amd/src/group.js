@@ -39,6 +39,7 @@ const setupDatatables = async() => {
 };
 
 const attachEvents = () => {
+    const body = $('body');
     $('.grouprow').click(async function(e) {
         e.preventDefault();
 
@@ -64,7 +65,50 @@ const attachEvents = () => {
         modal.show();
     });
 
-    $('body').on('click', '#mentor-deletemyquestion-modal-close', function() {
+    body.on('click', '#mentor-deletemyquestion-modal-close', function() {
         $('.modal').remove();
+    });
+
+    body.on('click', '.js-leave-group', async function(e) {
+        e.preventDefault();
+
+        const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+            action: 'leavegroup',
+            groupid: $(this).data('groupid')
+        });
+
+        if (!error) {
+            window.location.reload();
+        }
+    });
+
+    body.on('click', '.js-request-join-group', async function(e) {
+        e.preventDefault();
+
+        const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+                action: 'requestgroupjoin',
+                groupid: $(this).data('groupid')
+        });
+
+        if (!error) {
+            window.location.reload();
+        } else {
+            const errorMessage = await str.get_string('group_request_not_possible', 'local_learningcompanions');
+            alert(errorMessage);
+        }
+    });
+
+    body.on('click', '.js-join-group', async function(e) {
+        e.preventDefault();
+
+        const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+                action: 'joingroup',
+                groupid: $(this).data('groupid')
+        });
+
+        if (!error) {
+            window.location.reload();
+        }
+
     });
 };

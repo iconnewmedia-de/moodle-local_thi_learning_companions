@@ -1,5 +1,7 @@
 <?php
+
 namespace local_learningcompanions;
+
 include_once __DIR__ . "/group.php";
 class groups {
     const CHATTYPE_MENTOR = 0;
@@ -90,7 +92,15 @@ class groups {
     }
 
     public static function invite_user_to_group($userid, $groupid) {
+        global $DB;
         // ICTODO: send invitation
+        $userIsAlreadyInGroup = $DB->record_exists('lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
+        if ($userIsAlreadyInGroup) {
+            // Return for now. Maybe throw exception or something later
+            return;
+        }
+
+        $DB->insert_record('lc_group_members', ['userid' => $userid, 'groupid' => $groupid, 'isadmin' => 0]);
     }
 
     /**
@@ -144,7 +154,7 @@ class groups {
      */
     public static function keyword_get_id($keyword) {
         global $DB;
-        return $DB->get_field('lc_keywords', 'id', array('keyword' => $keyword));
+        return $DB->get_field('lc_keywords', 'id', ['keyword' => $keyword]);
     }
 
     /**
@@ -159,7 +169,7 @@ class groups {
     public static function group_update($groupid, $name, $description, $closedgroup, $keywords, $courseid, $cmid, $image) {
         global $DB;
         // ICTODO: make sure that user may update this group
-        $group = $DB->get_record('lc_groups', array('id' => $groupid), '*', MUST_EXIST);
+        $group = $DB->get_record('lc_groups', ['id' => $groupid], '*', MUST_EXIST);
         $group->name = $name;
         $group->description = $description;
         $group->closedgroup = $closedgroup;
@@ -196,7 +206,7 @@ class groups {
      * @param $groupid
      * @param $userid
      * @param $isadmin
-     * @return void
+     * @return bool
      * @throws \dml_exception
      */
     protected static function group_add_member($groupid, $userid, $isadmin = 0) {
@@ -206,7 +216,7 @@ class groups {
         $record->userid = $userid;
         $record->isadmin = $isadmin;
         $record->joined = time();
-        $DB->insert_record('lc_group_members', $record);
+        return $DB->insert_record('lc_group_members', $record);
     }
 
     /**
@@ -283,4 +293,72 @@ class groups {
         $record->courseid = $DB->get_field('lc_groups', 'courseid', array('id' => $groupid));
         $DB->insert_record('lc_chat', $record);
     }
+
+    /**
+     * @param int $userId The id of the user who will leave the group
+     * @param int $groupid The id of the group the user will leave
+     *
+     * @return bool
+     * @throws \dml_exception
+     */
+    public static function leave_group(int $userId, int $groupId) {
+        global $DB;
+        return $DB->delete_records('lc_group_members', ['groupid' => $groupId, 'userid' => $userId]);
+    }
+
+    /**
+     * @param $userId
+     * @param $groupId
+     *
+     * @return bool|int
+     * @throws \dml_exception
+     */
+    public static function request_group_join($userId, $groupId) {
+        global $DB;
+        // Check if the group is closed
+        $group = new group($groupId);
+
+        // If the group is not closed, there is no need to request to join. Just join
+        if (!$group->closedgroup) {
+            return self::group_add_member($groupId, $userId);
+        }
+
+        $inserted = self::add_group_join_request($groupId, $userId);
+
+        if ($inserted) {
+            foreach ($group->admins as $admin) {
+                messages::send_group_join_requested_notification($userId, $admin->id, $groupId);
+            }
+        }
+
+        return $inserted;
+    }
+
+    protected static function add_group_join_request($groupId, $userId) {
+        global $DB;
+        $record = new \stdClass();
+        $record->groupid = $groupId;
+        $record->userid = $userId;
+        $record->timecreated = time();
+        return $DB->insert_record('lc_group_requests', $record);
+    }
+
+    /**
+     * @param int $userId
+     * @param int $groupId
+     *
+     * @return bool
+     * @throws \dml_exception
+     */
+    public static function join_group(int $userId, int $groupId) {
+        // Check if the group is open
+        $group = new group($groupId);
+        // If the group is not open, there is no need to join. Just request to join
+        if ($group->closedgroup) {
+            return self::request_group_join($userId, $groupId);
+        }
+        return self::group_add_member($groupId, $userId);
+    }
+
+
 }

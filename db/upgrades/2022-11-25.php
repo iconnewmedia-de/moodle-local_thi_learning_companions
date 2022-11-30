@@ -5,7 +5,6 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG, $DB;
 
 if ($oldversion < 2022112506) {
-
     /*** Adding new profile field 'lc_user_status' ***/
 
     require_once($CFG->dirroot.'/user/profile/definelib.php');

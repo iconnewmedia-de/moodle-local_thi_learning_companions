@@ -44,7 +44,9 @@ class create_edit_group_form extends \moodleform {
         $systemcontext = \context_system::instance();
         $limittoenrolled = !has_capability('moodle/category:viewcourselist', $systemcontext);
         $coursecontextoptions = array(
-            'limittoenrolled' => $limittoenrolled, 'multiple' => false, 'includefrontpage' => false
+            'limittoenrolled' => $limittoenrolled,
+            'multiple' => false,
+            'includefrontpage' => false
         );
         $mform->addElement('course', 'courseid', get_string('coursecontext', 'local_learningcompanions'), $coursecontextoptions);
         if (isset($this->_customdata['courseid']) && !empty($this->_customdata['courseid'])) {
@@ -58,7 +60,7 @@ class create_edit_group_form extends \moodleform {
         );
         $mform->addElement('autocomplete', 'cmid', get_string('nuggetcontext', 'local_learningcompanions'), null, $nuggetcontextoptions);
         if (isset($this->_customdata['cmid']) && !empty($this->_customdata['cmid'])) {
-            $mform->setDefault('cmid', intval($this->_customdata['cmid']));
+            $mform->setDefault('cmid', (int)$this->_customdata['cmid']);
         }
         $mform->addHelpButton('cmid', 'nuggetcontext', 'local_learningcompanions');
         $mform->disabledIf('cmid', 'courseid', 'eq', ''); //, 'noitemselected');
@@ -100,6 +102,20 @@ class create_edit_group_form extends \moodleform {
         $mform->setType('groupid', PARAM_INT);
 
         $this->add_action_buttons();
+    }
+
+    public function setGroupData(group $group) {
+        $this->set_data([
+            'name' => $group->name,
+            'description_editor' => [
+                'text' => $group->description,
+                'format' => FORMAT_HTML
+            ],
+            'closedgroup' => $group->closedgroup,
+            'keywords' => $group->keywords,
+            'courseid' => $group->cmid,
+            'groupimage' => $group->image
+        ]);
     }
 
 }

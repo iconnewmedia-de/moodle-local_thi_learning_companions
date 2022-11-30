@@ -26,5 +26,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_learningcompanions';
 $plugin->release = '0.1.0';
-$plugin->version = 2022112507;
+$plugin->version = 2022113003;
 $plugin->requires = 2019111800;

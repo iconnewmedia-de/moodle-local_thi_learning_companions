@@ -26,7 +26,25 @@ global $CFG, $DB, $OUTPUT;
 
 $action = required_param('action', PARAM_TEXT);
 
-if ($action == 'deletemyquestion') {
+switch ($action) {
+    case 'deletemyquestion':
+        deleteQuetion();
+        break;
+    case 'getgroupdetails':
+        getGroupDetails();
+        break;
+    case 'leavegroup':
+        leaveGroup();
+        break;
+    case 'requestgroupjoin':
+        requestGroupJoin();
+        break;
+    case 'joingroup':
+        joinGroup();
+        break;
+}
+
+function deleteQuetion() {
     $questionid = required_param('questionid', PARAM_INT);
 
     if (\local_learningcompanions\mentors::delete_asked_question($questionid)) {
@@ -36,7 +54,8 @@ if ($action == 'deletemyquestion') {
     }
 }
 
-if ($action == 'getgroupdetails') {
+function getGroupDetails() {
+    global $OUTPUT, $CFG;
     $groupid = required_param('groupid', PARAM_INT);
     $group = \local_learningcompanions\groups::get_group_by_id($groupid);
 
@@ -44,5 +63,55 @@ if ($action == 'getgroupdetails') {
         'group' => $group,
         'groupadmins' => $group->admins,
         'cfg' => $CFG
-    ]));
+    ]), JSON_THROW_ON_ERROR);
+}
+
+function leaveGroup() {
+    global $USER;
+    $groupid = required_param('groupid', PARAM_INT);
+    $leaved = \local_learningcompanions\groups::leave_group($USER->id, $groupid);
+
+    if ($leaved) {
+        echo '0';
+    } else {
+        echo '1';
+    }
+}
+
+function requestGroupJoin() {
+    global $USER;
+
+    $groupid = required_param('groupid', PARAM_INT);
+
+    try {
+        $requested = \local_learningcompanions\groups::request_group_join($USER->id, $groupid);
+    } catch (dml_write_exception $e) {
+        echo '1';
+        return;
+    }
+
+    if ($requested) {
+        echo '0';
+    } else {
+        echo '1';
+    }
+}
+
+function joinGroup() {
+    global $USER;
+
+    $groupid = required_param('groupid', PARAM_INT);
+
+    try {
+        $joined = \local_learningcompanions\groups::join_group($USER->id, $groupid);
+    } catch (dml_write_exception $e) {
+        echo '1';
+        return;
+    }
+
+    if ($joined) {
+        echo '0';
+    } else {
+        echo '1';
+    }
 }

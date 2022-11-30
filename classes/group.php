@@ -1,6 +1,7 @@
 <?php
 namespace local_learningcompanions;
 include_once __DIR__ . "/groups.php";
+require_once dirname(__DIR__). '/lib.php';
 
 class group {
     public int $id;
@@ -33,6 +34,7 @@ class group {
     protected $latestpost = null;
     protected $myearliestpost = null;
     protected $mylatestpost = null;
+    public $currentUserIsMember;
 
 
     public function __construct($groupid, $userid = null) {
@@ -181,6 +183,7 @@ class group {
      * @throws \dml_exception
      */
     protected function get_groupmembers() {
+        global $USER;
         if (!is_null($this->groupmembers)) {
             return $this->groupmembers;
         }
@@ -196,6 +199,9 @@ class group {
             $groupmembers[$key]->password = '';
         }
         $this->groupmembers = $groupmembers;
+        if (array_key_exists($USER->id, $this->groupmembers)) {
+            $this->currentUserIsMember = true;
+        }
         return $this->groupmembers;
     }
 
@@ -332,11 +338,12 @@ class group {
                  WHERE gm.groupid = ?
                    AND gm.isadmin = 1';
 
-        $admins = $DB->get_records_sql($sql, array($this->id));
+        $admins = $DB->get_records_sql($sql, [$this->id]);
         foreach ($admins as $admin) {
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;
             $admin->password = '';
+            $admin->status = get_user_status($admin->id);
         }
 
         $this->admins = array_values($admins);

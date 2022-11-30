@@ -62,6 +62,23 @@
             <INDEX NAME="group_user" UNIQUE="true" FIELDS="groupid,userid" COMMENT="Don't want the same user to get assigned to a group more than once"/>
         </INDEXES>
     </TABLE>
+    <TABLE NAME="lc_group_requests" COMMENT="contains request to join closed groups">
+     <FIELDS>
+         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+         <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+         <FIELD NAME="userid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+         <FIELD NAME="timecreated"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+         <FIELD NAME="denied" SEQUENCE="false" TYPE="int" NOTNULL="true" DEFAULT="0" LENGTH="1" COMMENT="set to 1 if the request was denied"/>
+     </FIELDS>
+     <KEYS>
+         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+     </KEYS>
+     <INDEXES>
+       <INDEX NAME="groupid" UNIQUE="false" FIELDS="groupid" COMMENT="to improve speed when searching for a group's requests"/>
+       <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" COMMENT="to improve speed when searching for a user's requests"/>
+       <INDEX NAME="group_user" UNIQUE="true" FIELDS="groupid,userid" COMMENT="Don't want the same user to request to join a group more than once"/>
+     </INDEXES>
+    </TABLE>
     <TABLE NAME="lc_mentors" COMMENT="who is registered as a mentor">
         <FIELDS>
             <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
