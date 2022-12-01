@@ -30,10 +30,12 @@ class group {
     public int $userid;
     public $groupmembers = null;
     public $membercount = null;
-    protected $earliestpost = null;
-    protected $latestpost = null;
-    protected $myearliestpost = null;
-    protected $mylatestpost = null;
+//    public $thumbnail;
+    public int $latestcomment;
+    public string $latestcomment_userdate;
+    protected $earliestcomment = null; // we seldom need these, so we only get them on demand with magic getter
+    protected $myearliestcomment = null;
+    protected $mylatestcomment = null;
     public $currentUserIsMember;
 
 
@@ -57,6 +59,7 @@ class group {
         $this->timecreated_dmY = date('d.m.Y', $this->timecreated);
         $this->timemodified_userdate = userdate($this->timemodified);
         $this->timemodified_dmY = date('d.m.Y', $this->timemodified);
+        $this->latestcomment_userdate = $this->latestcomment > 0?userdate($this->latestcomment):'-';
         $this->closedgroupicon = $this->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
         $shortdescription = strip_tags($this->description);
         $this->shortdescription = substr($shortdescription, 0, 50);
@@ -91,91 +94,72 @@ class group {
     }
 
     /**
+     * yes, PHPStorm thinks this method should be greyed out because it's never used
+     * but it will actually get called by __get if someone tries to access $group->latestpost
+     * so please don't remove this code :)
      * @return int
      * @throws \dml_exception
      */
-    protected function get_latestpost() {
+    protected function get_earliestcomment() {
         global $DB;
-        if (!is_null($this->latestpost)) {
-            return $this->latestpost;
+        if (!is_null($this->earliestcomment)) {
+            return $this->earliestcomment;
         }
-        $query = "SELECT MAX(posts.timecreated) AS latestpost,
+        $query = "SELECT MIN(posts.timecreated) AS earliestcomment,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id));
         if (!$result) {
-            $this->latestpost = 0;
+            $this->earliestcomment = 0;
         } else {
-            $this->latestpost = $result->latestpost;
+            $this->earliestcomment = $result->earliestcomment;
         }
-        return $this->latestpost;
+        return $this->earliestcomment;
     }
 
     /**
      * @return int
      * @throws \dml_exception
      */
-    protected function get_earliestpost() {
+    protected function get_mylatestcomment() {
         global $DB;
-        if (!is_null($this->earliestpost)) {
-            return $this->earliestpost;
+        if (!is_null($this->mylatestcomment)) {
+            return $this->mylatestcomment;
         }
-        $query = "SELECT MIN(posts.timecreated) AS earliestpost,
-                    FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
-               LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id
-                                                 GROUP BY chat.id";
-        $result = $DB->get_record_sql($query, array($this->id));
-        if (!$result) {
-            $this->earliestpost = 0;
-        } else {
-            $this->earliestpost = $result->earliestpost;
-        }
-        return $this->earliestpost;
-    }
-
-    /**
-     * @return int
-     * @throws \dml_exception
-     */
-    protected function get_mylatestpost() {
-        global $DB;
-        if (!is_null($this->mylatestpost)) {
-            return $this->mylatestpost;
-        }
-        $query = "SELECT MAX(posts.timecreated) AS latestpost,
+        $query = "SELECT MAX(posts.timecreated) AS mylatestcomment,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id, $this->userid));
         if (!$result) {
-            $this->mylatestpost = 0;
+            $this->mylatestcomment = 0;
         } else {
-            $this->mylatestpost = $result->mylatestpost;
+            $this->mylatestcomment = $result->mylatestcomment;
         }
-        return $this->mylatestpost;
+        return $this->mylatestcomment;
     }
 
     /**
      * @return int
      * @throws \dml_exception
      */
-    protected function get_myearliestpost() {
+    protected function get_myearliestcomment() {
         global $DB;
-        if (!is_null($this->myearliestpost)) {
-            return $this->myearliestpost;
+        if (!is_null($this->myearliestcomment)) {
+            return $this->myearliestcomment;
         }
-        $query = "SELECT MIN(posts.timecreated) AS earliestpost,
+        $query = "SELECT MIN(posts.timecreated) AS myearliestcomment,
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, array($this->id, $this->userid));
         if (!$result) {
-            $this->myearliestpost = 0;
+            $this->myearliestcomment = 0;
         } else {
-            $this->myearliestpost = $result->myearliestpost;
+            $this->myearliestcomment = $result->myearliestcomment;
         }
-        return $this->myearliestpost;
+        return $this->myearliestcomment;
     }
 
     /**

@@ -21,7 +21,7 @@ function local_learningcompanions_extend_settings_navigation() {
  * @throws coding_exception
  * @throws dml_exception
  */
-function get_attachments_of_chat_comments(array $comments, string $area) {
+function local_learningcompanions_get_attachments_of_chat_comments(array $comments, string $area) {
     // ICTODO: also get inline attachments
     if (empty($comments)) {
         return [];
@@ -46,7 +46,14 @@ function get_attachments_of_chat_comments(array $comments, string $area) {
 
     return array_reduce($files, function($carry, $file) {
         $itemid = $file->get_itemid();
-        $carry[$itemid] = array_merge($carry[$itemid], [$file]);
+        $fileurl = \moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename(), false);
+        $fileurl = $fileurl->out();
+        $attachment = [];
+        $attachment["url"] = $fileurl;
+        $attachment["filename"] = $file->get_filename();
+        $attachment["filesize"] = $file->get_filesize();
+//        $carry[$itemid] = array_merge($carry[$itemid], [$file]);
+        $carry[$itemid] = array_merge($carry[$itemid], [$attachment]);
         return $carry;
     }, $filesbyid);
 }
@@ -77,7 +84,8 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
         send_file_not_found();
     }
 
-    if ($filearea !== 'groupimage') {
+    $areaWhitelist = array('groupimage', 'attachments');
+    if (!in_array($filearea, $areaWhitelist)) {
         send_file_not_found();
     }
     $groupid = (int)array_shift($args);
@@ -88,7 +96,7 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
     $filepath = $args ? '/'.implode('/', $args).'/' : '/';
     $context = context_system::instance();
 
-    if (!$file = $fs->get_file($context->id, 'local_learningcompanions', 'groupimage', $groupid, $filepath, $filename) or $file->is_directory()) {
+    if (!$file = $fs->get_file($context->id, 'local_learningcompanions', $filearea, $groupid, $filepath, $filename) or $file->is_directory()) {
         send_file_not_found();
     }
 

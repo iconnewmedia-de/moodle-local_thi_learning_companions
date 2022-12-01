@@ -15,6 +15,7 @@
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="the id of the course that this group relates to"/>
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="the course module for which this group was created, if any"/>
+        <FIELD NAME="latestcomment" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="for performance reasons, so we don't need to determine this every time from the comments table"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -170,6 +171,22 @@
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
+        </TABLE>
+        <TABLE NAME="lc_chat_lastvisited" COMMENT="this table remembers when a user last visited a chat, so we know how many new comments were made since then">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="chatid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="timevisited" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="stores the timestamp when the user last viewed the comments of this chat"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+             <INDEXES>
+                <INDEX NAME="chatid" UNIQUE="false" FIELDS="chatid" />
+                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+                <INDEX NAME="chatid_userid" UNIQUE="true" FIELDS="userid,chatid" COMMENT="prevents duplicate entries for same user and chat"/>
+            </INDEXES>
         </TABLE>
   </TABLES>
 </XMLDB>

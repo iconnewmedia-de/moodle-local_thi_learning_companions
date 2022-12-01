@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="24.001" viewBox="0 0 20 24.001">
+  <g id="door-3" transform="translate(-2 0.001)" opacity="0.7">
+    <path id="Pfad_68102" data-name="Pfad 68102" d="M21,21H17V19h3V5H17V3h4a1,1,0,0,1,1,1V20A1,1,0,0,1,21,21Z" fill="#212121"/>
+    <path id="Pfad_68103" data-name="Pfad 68103" d="M14.641.232a.98.98,0,0,0-.82-.215l-11,2A1,1,0,0,0,2,3V20a1,1,0,0,0,.737.965l11,3A1.028,1.028,0,0,0,14,24a1,1,0,0,0,1-1V1a1,1,0,0,0-.359-.768ZM12,15a1,1,0,0,1-2,0V13a1,1,0,0,1,2,0Z" fill="#212121"/>
+  </g>
+</svg>

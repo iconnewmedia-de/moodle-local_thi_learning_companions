@@ -2,6 +2,8 @@
 namespace local_learningcompanions;
 
 class chats {
+    const CHAT_TYPE_MENTOR = 0;
+    const CHAT_TYPE_GROUP = 1;
     public static function get_chat_of_group(int $groupid) {
 
     }
@@ -31,12 +33,38 @@ class chats {
             $editoroptions, $comment->message);
         $DB->set_field('lc_chat_comment', 'comment', $comment->comment, array('id'=>$comment->id));
         self::add_attachment($comment, $formdata);
+        self::set_latest_comment($comment->chatid);
 
         return $comment->id;
     }
 
+    /**
+     * stores date of latest comment in group
+     * @param $chatid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function set_latest_comment($chatid) {
+        global $DB;
+        $chat = $DB->get_record('lc_chat', array('id' => $chatid));
+        if (!$chat) {
+            return;
+        }
+        if ($chat->chattype == self::CHAT_TYPE_GROUP) {
+            $group = $DB->get_record('lc_groups', array('id' => $chat->relatedid));
+            if (!$group) {
+                return;
+            }
+            $group->lastestcomment = time();
+            $DB->update_record('lc_groups', $group);
+        }
+    }
+
     protected static function add_attachment($comment, $formdata) {
-        // ICTODO: add the attachment
+        // add the attachment
+        $context = \context_system::instance();
+        file_save_draft_area_files($comment->attachments, $context->id, 'local_learningcompanions', 'attachments', $comment->id,
+            \local_learningcompanions\chat_post_form::attachment_options());
     }
 
     public static function report_comment($commentid) {
@@ -46,6 +74,7 @@ class chats {
     public static function flag_comment($commentid) {
         global $DB, $USER;
         $comment = $DB->get_record('lc_chat_comment', array('id' => $commentid));
+        // ICTODO: make sure the user has the permission to flag this comment, e.g. the user has to be in the group or have admin rights otherwise
         $comment->flagged = 1;
         $comment->flaggedby = $USER->id;
         $comment->timemodified = time();
@@ -78,7 +107,7 @@ class chats {
         require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
 
         if ($comments = $DB->get_records('lc_chat_comment', array('flagged' => 1), 'timecreated')) {
-            $attachments = get_attachments_of_chat_comments($comments, 'attachment');
+            $attachments = local_learningcompanions_get_attachments_of_chat_comments($comments, 'attachments');
 
             foreach ($comments as $comment) {
                 if (array_key_exists($comment->id, $attachments)) {
