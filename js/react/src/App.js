@@ -25,6 +25,8 @@ function App(props) {
     }, 10000);
 
     function handleGroupSelect(groupid) {
+        setPostsLoading(true);
+        setPosts([]);
         eventBus.dispatch('groupchanged', {groupid: groupid});
     }
     eventBus.on('groupchanged', (data) => {
@@ -36,15 +38,16 @@ function App(props) {
             return;
         }
         const controller = new AbortController();
-        setPosts([]);
-        setPostsLoading(true);
+        if (groupid !== activeGroupid) {
+            setPosts([]);
+        }
         async function fetchPosts(groupid) {
             const response = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + groupid);
             const data = await response.json();
             let posts = Object.values(data.posts);
             setPosts(posts);
-            setPostsLoading(false);
             setGroup(data.group);
+            setPostsLoading(false);
         }
         fetchPosts(groupid);
         return () => controller.abort();
@@ -52,7 +55,6 @@ function App(props) {
 
     function getGroups() {
         const controller = new AbortController();
-        setGroupsLoading(true);
         async function fetchGroups() {
             const groups = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxgrouplist.php');
             const data = await groups.json();

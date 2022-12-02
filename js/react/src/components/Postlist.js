@@ -5,8 +5,8 @@ import LoadingIndicator from "./LoadingIndicator";
 export default function Postlist({posts, group, loading}) {
     return (
         <div id="learningcompanions_chat-postlist">
-            <GroupHeader group={group}/>
             <LoadingIndicator loading={loading} />
+            <GroupHeader group={group}/>
             {posts.map(post => {
                     return (
                         <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime}
