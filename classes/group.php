@@ -4,38 +4,134 @@ include_once __DIR__ . "/groups.php";
 require_once dirname(__DIR__). '/lib.php';
 
 class group {
-    public int $id;
-    public $admins;
-    public string $createdby_fullname;
-    public string $createdby_profileurl;
+    /**
+     * @var int
+     */
+    public $id;
+    /**
+     * @var array|null
+     */
+    public $admins = null;
+    /**
+     * @var string
+     */
+    public $createdby_fullname;
+    /**
+     * @var string
+     */
+    public $createdby_profileurl;
+    /**
+     * @var array
+     */
     public $keywords;
-    public string $keywords_list;
-    public int $timecreated;
-    public string $timecreated_dmY;
-    public string $timecreated_userdate;
+    /**
+     * @var string
+     */
+    public $keywords_list;
+    /**
+     * @var int
+     */
+    public $timecreated;
+    /**
+     * @var string
+     */
+    public $timecreated_dmY;
+    /**
+     * @var string
+     */
+    public $timecreated_userdate;
+    /**
+     * @var int
+     */
     public $timemodified;
-    public string $timemodified_dmY;
-    public string $timemodified_userdate;
-    public bool $closedgroup;
-    public string $closedgroupicon;
-    public string $description;
-    public string $shortdescription;
-    public string $name;
-    public int $courseid;
-    public int $cmid;
-    public object $course;
-    public object $cm;
+    /**
+     * @var string
+     */
+    public $timemodified_dmY;
+    /**
+     * @var string
+     */
+    public $timemodified_userdate;
+    /**
+     * @var bool
+     */
+    public $closedgroup;
+    /**
+     * @var string
+     */
+    public $closedgroupicon;
+    /**
+     * @var string
+     */
+    public $description;
+    /**
+     * @var string
+     */
+    public $shortdescription;
+    /**
+     * @var string
+     */
+    public $name;
+    /**
+     * @var int
+     */
+    public $courseid;
+    /**
+     * @var int
+     */
+    public $cmid;
+    /**
+     * @var \stdClass
+     */
+    public $course;
+    /**
+     * @var \stdClass
+     */
+    public $cm;
+    /**
+     * @var string
+     */
     public $imageurl = null;
+    /**
+     * @var \stored_file|false
+     */
     public $image = null;
-    public int $userid;
+    /**
+     * @var string
+     */
+    public $userid;
+    /**
+     * @var \stdClass[]
+     */
     public $groupmembers = null;
+    /**
+     * @var int
+     */
     public $membercount = null;
 //    public $thumbnail;
-    public int $latestcomment;
-    public string $latestcomment_userdate;
+    /**
+     * @var int
+     */
+    public $latestcomment = null;
+    /**
+     * @var string
+     */
+    public $latestcomment_userdate;
+    /**
+     * @var int
+     */
     protected $earliestcomment = null; // we seldom need these, so we only get them on demand with magic getter
+    /**
+     * @var int
+     */
     protected $myearliestcomment = null;
+    /**
+     * @var int
+     */
     protected $mylatestcomment = null;
+    /**
+     * @var bool
+     */
     public $currentUserIsMember;
 
 
@@ -59,7 +155,7 @@ class group {
         $this->timecreated_dmY = date('d.m.Y', $this->timecreated);
         $this->timemodified_userdate = userdate($this->timemodified);
         $this->timemodified_dmY = date('d.m.Y', $this->timemodified);
-        $this->latestcomment_userdate = $this->latestcomment > 0?userdate($this->latestcomment):'-';
+        $this->latestcomment_userdate = $this->latestcomment > 0 ? userdate($this->latestcomment) : '-';
         $this->closedgroupicon = $this->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
         $shortdescription = strip_tags($this->description);
         $this->shortdescription = substr($shortdescription, 0, 50);
