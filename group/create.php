@@ -28,9 +28,9 @@ $form = new \local_learningcompanions\create_edit_group_form(
 );
 if ($data = $form->get_data()) {
     try {
-        $groupid = \local_learningcompanions\groups::group_create($data);
+        \local_learningcompanions\groups::group_create($data);
         if ($layout === 'popup' || $layout === 'embedded' ) {
-            // ICTODO: close overlay
+            echo "<script>document.querySelector('.modal').dispatchEvent((new Event('modal:hidden')))</script>";
         } else {
             redirect($CFG->wwwroot, get_string('group_created', 'local_learningcompanions'));
             // ICTODO: redirect to group overview or course or group chat or so

@@ -107,19 +107,19 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
 }
 
 /**
- * @param $userid
- * @param $readable
+ * @param $userid   int|null The user id to get the status for
+ * @param $readable bool Whether to return the status as a sentence or as a class string
  *
  * @return string
  * @throws dml_exception
  */
-function get_user_status($userid = null, $readable = false): string {
+function get_user_status(int $userid = null, bool $readable = false): string {
     global $CFG, $DB, $USER;
 
     require_once($CFG->dirroot.'/user/profile/lib.php');
 
     $userid = is_null($userid) ? $USER->id : $userid;
-    $user = $DB->get_record('user', array('id' => $userid));
+    $user = $DB->get_record('user', ['id' => $userid]);
     profile_load_data($user);
 
     $statusfield = $user->profile_field_lc_user_status;

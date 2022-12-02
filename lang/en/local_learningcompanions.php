@@ -48,8 +48,8 @@ $string['groupname'] = 'Group name';
 $string['maxlengthwarning'] = 'You may only use up to {$a} characters';
 $string['groupdescription'] = 'Group description';
 $string['closedgroup'] = 'Closed group';
-$string['closedgroup_help'] = 'With a closed group, people have to request permission to join. 
-You will then have to decide for each request who may or may not join. 
+$string['closedgroup_help'] = 'With a closed group, people have to request permission to join.
+You will then have to decide for each request who may or may not join.
 Discussions of closed groups are only visible to group members.
 Open groups can be joined by anyone and the discussions are visible to the public.';
 $string['keywords'] = 'Keywords';
@@ -141,6 +141,10 @@ $string['modal-groupdetails-activity'] = 'Activity';
 $string['modal-groupdetails-createdate'] = 'Created on';
 $string['modal-groupdetails-join'] = 'Joining';
 $string['gotogroupbutton'] = 'Go to group';
+$string['leavegroup'] = 'Leave Group';
+$string['request_join_group'] = 'Request to join group';
+$string['group_join_not_possible'] = 'Joining the group is not possible now.';
+$string['group_request_not_possible'] = 'Request to joining the group is not possible now.';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';
@@ -162,3 +166,18 @@ $string['filter_all_topics'] = 'All topics';
 $string['filter_keywords_placeholder'] = 'Name/Keyword';
 $string['filter_badges'] = 'Badge';
 $string['filter_super_mentor'] = 'Super mentor';
+
+// Messages
+$string['messageprovider:group_join_requested'] = 'Group Join request';
+
+$string['message_group_join_requested_small'] = 'New request to join group {$a}';
+$string['message_group_join_requested_subject'] = 'Group Join request';
+$string['message_group_join_requested_body'] = 'Hello {$a->receivername},
+
+{$a->sendername} has requested to join your group "{$a->groupname}".
+Please visit the group page to accept or decline the request.';
+$string['message_group_join_requested_body_html'] = '<h4>Hello {$a->receivername},</h4>
+<p>
+{$a->sendername} has requested to join your group "{$a->groupname}".<br>
+Please visit the group page to accept or decline the request.
+</p>';
