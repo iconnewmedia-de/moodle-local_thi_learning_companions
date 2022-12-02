@@ -84,7 +84,7 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
         send_file_not_found();
     }
 
-    $areaWhitelist = array('groupimage', 'attachments');
+    $areaWhitelist = array('groupimage', 'attachments', 'message');
     if (!in_array($filearea, $areaWhitelist)) {
         send_file_not_found();
     }

@@ -28,7 +28,7 @@ export default function Post({author, id, datetime, comment, attachments}) {
         });
     }
     if (typeof learningcompanions_chat_userid !== "undefined") {
-        console.log('Post has author:', author, 'learningcompanions_chat_userid:', learningcompanions_chat_userid);
+        // console.log('Post has author:', author, 'learningcompanions_chat_userid:', learningcompanions_chat_userid);
     }
     if (typeof learningcompanions_chat_userid !== "undefined" && parseInt(author.id) === parseInt(learningcompanions_chat_userid)) {
         button1 = <a href={M.cfg.wwwroot + '/blocks/learningcompanions_chat/ajaxchat.php?edit=' + id} className='learningcompanions_edit_comment'>edit</a>
@@ -41,7 +41,6 @@ export default function Post({author, id, datetime, comment, attachments}) {
     }
     return (
         <div id={"learningcompanions_chat-post-" + id} className={'learningcompanions_chat-post ' + cssClass}>
-            <hr />
             <strong>{author.firstname} {author.lastname}</strong><br />
             <em>{datetime}</em><br />
             <div dangerouslySetInnerHTML={{__html: comment}}></div>

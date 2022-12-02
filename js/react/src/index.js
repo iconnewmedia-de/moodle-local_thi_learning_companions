@@ -9,16 +9,16 @@ const groups = [];
 const root1 = ReactDOM.createRoot(document.getElementById('learningcompanions_groups-content'));
 const root2 = ReactDOM.createRoot(document.getElementById('learningcompanions_chat-content'));
 if (typeof learningcompanions_groupid === "undefined") {
-    var learningcompanions_groupid = 0;
+    var learningcompanions_groupid = 1;
 }
 root1.render(
   <React.StrictMode>
-    <App posts={posts} groups={groups} activeGroupid={learningcompanions_groupid} component="groups"/>
+     <App posts={posts} groups={groups} activeGroupid={learningcompanions_groupid} component="groups"/>
   </React.StrictMode>
 );
 root2.render(
     <React.StrictMode>
-        <App posts={posts} groups={groups} component="chat"/>
+        <App posts={posts} groups={groups} activeGroupid={learningcompanions_groupid} component="chat"/>
     </React.StrictMode>
 );
 

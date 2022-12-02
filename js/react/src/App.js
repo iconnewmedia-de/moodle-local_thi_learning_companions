@@ -1,78 +1,81 @@
+/* eslint-disable no-undef, no-console */
 import './App.css';
 import React from "react";
 import Postlist from "./components/Postlist";
 import Grouplist from "./components/Grouplist";
-var icblock_init = false;
+import eventBus from "./components/eventBus";
+
 function App(props) {
-  if (typeof M === "undefined") {
-    var M = {cfg: {wwwroot: ''}};
-  }
-  const [posts, setPosts] = React.useState(props.posts);
-  const [groups, setGroups] = React.useState(props.groups);
-  const [currentGroup, setCurrentGroup] = React.useState(props.activeGroupid);
-  const handleGroupSelect = (groupid) => {
-    setCurrentGroup(groupid);
-  };
-  async function getPosts() {
-    const response = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + currentGroup);
-    const data = await response.json();
-    console.log('data.posts:', data.posts);
-    icblock_init = true;
-    let posts = Object.values(data.posts);
-    setPosts(posts);
-    window.setTimeout(getPosts, 10000);
-  }
-  async function getGroups() {
-    const groups = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxgrouplist.php');
-    const data = await groups.json();
-    console.log('data.groups:', data.groups);
-    icblock_init = true;
-    setGroups(data.groups);
-    window.setTimeout(getGroups, 50000);
-  }
-  if (!icblock_init) {
-    if (props.component == "chat") {
-      console.log('is component chat');
-      getPosts();
+    if (typeof M === "undefined") {
+        var M = {cfg: {wwwroot: ''}};
     }
-    if (props.component == "groups") {
-      console.log('is component groups');
-      getGroups();
+    const [posts, setPosts] = React.useState(props.posts);
+    const [group, setGroup] = React.useState({});
+    const [groups, setGroups] = React.useState(props.groups);
+    const [activeGroupid, setActiveGroupid] = React.useState(props.activeGroupid);
+    const [grouptimer, setGrouptimer] = React.useState(0);
+    const [chattimer, setChattimer] = React.useState(0);
+    const [postsLoading, setPostsLoading] = React.useState(true);
+    const [groupsLoading, setGroupsLoading] = React.useState(true);
+    window.setInterval(() => {
+        setGrouptimer(grouptimer + 1);
+    }, 50000);
+    window.setInterval(() => {
+        setChattimer(chattimer + 1);
+    }, 10000);
+
+    function handleGroupSelect(groupid) {
+        eventBus.dispatch('groupchanged', {groupid: groupid});
     }
-    window.setTimeout(function() {
+    eventBus.on('groupchanged', (data) => {
+        setActiveGroupid(data.groupid);
+    });
 
-
-      // collapse reply form before displaying
-      // document.getElementById('id_general').classList.add('collapsed');
-      // document.getElementById('id_generalcontainer').classList.remove('show');
-      // document.querySelector('#id_general [data-toggle="collapse"]').classList.add('collapsed');
-      if (props.component == "chat") {
-        const container = document.getElementById('learningcompanions_chat-content');
-        console.log('about to scroll:', container, container.scrollHeight);
-        document.getElementById('learningcompanions_chat-loading').style.display = 'none';
-        document.getElementById('learningcompanions_chat-content').style.display = 'block';
-        container.scrollTo({top: container.scrollHeight, behavior: 'smooth'});
-      } else if (props.component == "groups") {
-        document.getElementById('learningcompanions_groups-loading').style.display = 'none';
-        document.getElementById('learningcompanions_groups-content').style.display = 'block';
-      }
-
-      // document.querySelector('#learningcompanions_chat form').style.display = 'block';
-
-
-    }, 1000); // wait for the posts to render, then scroll to the bottom
-  }
-
-  return (
-      <div>
-        {props.component === 'groups' &&
-            <Grouplist groups={groups} handleGroupSelect={handleGroupSelect} />
+    function getPosts(groupid) {
+        if (props.component !== 'chat') {
+            return;
         }
-        {props.component === 'chat' &&
-            <Postlist posts={posts}/>
+        const controller = new AbortController();
+        setPosts([]);
+        setPostsLoading(true);
+        async function fetchPosts(groupid) {
+            const response = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + groupid);
+            const data = await response.json();
+            let posts = Object.values(data.posts);
+            setPosts(posts);
+            setPostsLoading(false);
+            setGroup(data.group);
         }
-      </div>
-  );
+        fetchPosts(groupid);
+        return () => controller.abort();
+    }
+
+    function getGroups() {
+        const controller = new AbortController();
+        setGroupsLoading(true);
+        async function fetchGroups() {
+            const groups = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxgrouplist.php');
+            const data = await groups.json();
+            setGroups(data.groups);
+            setGroupsLoading(false);
+        }
+        fetchGroups();
+        return () => controller.abort();
+    }
+
+    React.useEffect(() => getPosts(activeGroupid), [activeGroupid, chattimer]);
+    React.useEffect(() => getGroups(), [activeGroupid, grouptimer]);
+
+    return (
+        <div>
+            {props.component === 'groups' &&
+                <Grouplist groups={groups} handleGroupSelect={handleGroupSelect} activeGroupid={activeGroupid} loading={groupsLoading}/>
+            }
+            {props.component === 'chat' &&
+                <Postlist posts={posts} group={group} loading={postsLoading}/>
+            }
+        </div>
+    );
 }
 
 export default App;
