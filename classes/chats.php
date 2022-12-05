@@ -29,7 +29,43 @@ class chats {
         $comment->attachment = "";
         $comment->comment = "";
         $comment->id = $DB->insert_record("lc_chat_comment", $comment);
-        $comment->comment = file_save_draft_area_files($comment->itemid, $context->id, 'local_learningcompanions', 'message', $comment->id,
+        $draftitemid = file_get_submitted_draft_itemid('comment');
+        $allowedTags = array(
+            '<div>',
+            '<p>',
+            '<a>',
+            '<span>',
+            '<strong>',
+            '<em>',
+            '<i>',
+            '<b>',
+            '<br>',
+            '<del>',
+            '<h1>',
+            '<h2>',
+            '<h3>',
+            '<h4>',
+            '<h5>',
+            '<h6>',
+            '<video>',
+            '<audio>',
+            '<img>',
+            '<address>',
+            '<ul>',
+            '<ol>',
+            '<li>',
+            '<sub>',
+            '<sup>',
+            '<table>',
+            '<thead>',
+            '<tbody>',
+            '<tfoot>',
+            '<th>',
+            '<tr>',
+            '<td>',
+        );
+        $comment->message = strip_tags($comment->message, implode('', $allowedTags));
+        $comment->comment = file_save_draft_area_files($draftitemid, $context->id, 'local_learningcompanions', 'message', $comment->id,
             $editoroptions, $comment->message);
         $DB->set_field('lc_chat_comment', 'comment', $comment->comment, array('id'=>$comment->id));
         self::add_attachment($comment, $formdata);

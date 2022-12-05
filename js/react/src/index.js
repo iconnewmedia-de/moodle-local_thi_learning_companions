@@ -1,24 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-const posts = [];
-const groups = [];
+import Grouplist from "./components/Grouplist";
+import Postlist from "./components/Postlist";
 
 const root1 = ReactDOM.createRoot(document.getElementById('learningcompanions_groups-content'));
 const root2 = ReactDOM.createRoot(document.getElementById('learningcompanions_chat-content'));
 if (typeof learningcompanions_groupid === "undefined") {
-    var learningcompanions_groupid = 0;
+    var learningcompanions_groupid = 1;
 }
 root1.render(
   <React.StrictMode>
-    <App posts={posts} groups={groups} activeGroupid={learningcompanions_groupid} component="groups"/>
+     <Grouplist activeGroupid={learningcompanions_groupid}/>
   </React.StrictMode>
 );
 root2.render(
     <React.StrictMode>
-        <App posts={posts} groups={groups} component="chat"/>
+        <Postlist activeGroupid={learningcompanions_groupid}/>
     </React.StrictMode>
 );
 

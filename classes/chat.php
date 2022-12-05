@@ -8,7 +8,17 @@ class chat {
     public function __construct($groupid) {
         global $DB;
         $this->groupid = $groupid;
-        $this->chat = $DB->get_record('lc_chat', array('relatedid' => $groupid, 'chattype' => 1), '*', MUST_EXIST);
+        $this->chat = $DB->get_record('lc_chat', array('relatedid' => $groupid, 'chattype' => 1));
+        if (!$this->chat) {
+            $chat = new \stdClass();
+            $chat->chattype = 1;
+            $chat->relatedid = $groupid;
+            $chat->timecreated = time();
+            $group = $DB->get_record('lc_groups', array('id' => $groupid));
+            $chat->course = $group->courseid;
+            $chatid = $DB->insert_record('lc_chat', $chat);
+            $this->chat = $DB->get_record('lc_chat', array('id' => $chatid));
+        }
         $this->chatid = $this->chat->id;
         $this->context = \context_system::instance();
         $this->filestorage = get_file_storage();
@@ -44,10 +54,12 @@ class chat {
         global $DB;
         $comments = $DB->get_records('lc_chat_comment', array('chatid' => $this->chatid), 'timecreated');
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
+        $context = \context_system::instance();
         // ICTODO: also get inline attachments
         foreach($comments as $comment) {
             $comment->datetime = userdate($comment->timecreated);
             $comment->author = $DB->get_record('user', array('id' => $comment->userid), 'id,firstname,lastname,email,username');
+            $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
             if (array_key_exists($comment->id, $attachments)) {
                 $comment->attachments = $attachments[$comment->id];
             } else {
