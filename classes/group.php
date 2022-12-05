@@ -134,7 +134,6 @@ class group {
      */
     public $currentUserIsMember;
 
-
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER;
         if (is_null($userid)) {

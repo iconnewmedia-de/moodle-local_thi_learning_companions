@@ -303,7 +303,34 @@ class groups {
      */
     public static function leave_group(int $userId, int $groupId) {
         global $DB;
-        return $DB->delete_records('lc_group_members', ['groupid' => $groupId, 'userid' => $userId]);
+        $deleted = $DB->delete_records('lc_group_members', ['groupid' => $groupId, 'userid' => $userId]);
+        $group = new group($groupId);
+
+        // If the group is a closed group, and the user was the last member, delete the group
+        if ($group->closedgroup && $group->membercount === 0) {
+            self::delete_group($groupId);
+            return true;
+        }
+
+        // Check if we need a new admin
+        if (count($group->admins) == 0) {
+            // ICTODO: make the last active member the new admin. Using joined for now
+            //Get the first joined member of the group
+            $newAdmin = $DB->get_record_sql('SELECT * FROM {lc_group_members} WHERE groupid = ? ORDER BY joined ASC', [$groupId]);
+            self::make_admin($groupId, $newAdmin->userid);
+        }
+
+        return $deleted;
+    }
+
+    public static function make_admin(int $userId, int $groupId) {
+        global $DB;
+        $DB->set_field('lc_group_members', 'isadmin', 1, ['groupid' => $groupId, 'userid' => $userId]);
+    }
+
+    public static function unmake_admin(int $userId, int $groupId) {
+        global $DB;
+        $DB->set_field('lc_group_members', 'isadmin', 0, ['groupid' => $groupId, 'userid' => $userId]);
     }
 
     /**
@@ -314,7 +341,6 @@ class groups {
      * @throws \dml_exception
      */
     public static function request_group_join($userId, $groupId) {
-        global $DB;
         // Check if the group is closed
         $group = new group($groupId);
 
@@ -360,5 +386,23 @@ class groups {
         return self::group_add_member($groupId, $userId);
     }
 
-
+    public static function delete_group(int $groupId) {
+        global $DB;
+        $transaction = $DB->start_delegated_transaction();
+        // Delete the group members
+        $DB->delete_records('lc_group_members', ['groupid' => $groupId]);
+        // Delete the group requests
+        $DB->delete_records('lc_group_requests', ['groupid' => $groupId]);
+        // Delete the group keywords
+        $DB->delete_records('lc_groups_keywords', ['groupid' => $groupId]);
+        // Delete the group
+        $DB->delete_records('lc_groups', ['id' => $groupId]);
+        //Get Chat ID
+        $chatId = $DB->get_field('lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]);
+        //Delete Chat
+        $DB->delete_records('lc_chat', ['id' => $chatId]);
+        //Delete Chat Messages
+        $DB->delete_records('lc_chat_messages', ['chatid' => $chatId]);
+        $transaction->allow_commit();
+    }
 }
