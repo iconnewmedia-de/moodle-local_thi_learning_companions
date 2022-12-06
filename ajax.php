@@ -42,6 +42,9 @@ switch ($action) {
     case 'joingroup':
         joinGroup();
         break;
+    case 'getpossiblenewadmins':
+        getPossibleNewAdmins();
+        break;
 }
 
 function deleteQuetion() {
@@ -66,16 +69,44 @@ function getGroupDetails() {
     ]), JSON_THROW_ON_ERROR);
 }
 
+function getPossibleNewAdmins() {
+    global $USER, $OUTPUT;
+
+    $groupid = required_param('groupid', PARAM_INT);
+    $group = \local_learningcompanions\groups::get_group_by_id($groupid);
+    $groupmembers = $group->groupmembers;
+    $groupmembers = array_filter($groupmembers, function($member) use ($USER) {
+        return $member->id !== $USER->id;
+    });
+
+    //ICTODO: the first user should be the last active user, because this user is the one, that gets shown the first
+    $possibleAdmins = array_map(function($member) {
+        return (object)['userid' => $member->id, 'name' => fullname($member)];
+    }, $groupmembers);
+
+    echo json_encode($OUTPUT->render_from_template('local_learningcompanions/group/group_modal_select_new_admin', []), JSON_THROW_ON_ERROR);
+}
+
 function leaveGroup() {
     global $USER;
     $groupid = required_param('groupid', PARAM_INT);
-    $leaved = \local_learningcompanions\groups::leave_group($USER->id, $groupid);
 
-    if ($leaved) {
-        echo '0';
+    $group = new \local_learningcompanions\group($groupid);
+    $isAdmin = $group->is_user_admin($USER->id);
+
+    //If
+    // - The user is an admin
+    // - The user is the only admin
+    // - The group has more than one member
+    // The user can´t leave the group and has to select a new admin first
+    if ($isAdmin && count($group->admins) === 1 && count($group->groupmembers) > 1) {
+        $response = ['leaved' => false, 'needsNewAdmin' => true];
     } else {
-        echo '1';
+        $leaved = \local_learningcompanions\groups::leave_group($USER->id, $groupid);
+        $response = ['leaved' => $leaved];
     }
+
+    echo json_encode($response, JSON_THROW_ON_ERROR);
 }
 
 function requestGroupJoin() {

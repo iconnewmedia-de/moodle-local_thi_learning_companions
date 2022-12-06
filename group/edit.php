@@ -17,9 +17,8 @@ $PAGE->set_title(get_string('creategroup', 'local_learningcompanions'));
 $groupid = required_param('groupid', PARAM_INT);
 $group = new \local_learningcompanions\group($groupid);
 // ICTODO: check that the user has the permission to edit this group
-require_once __DIR__ . '/forms/create_edit_group_form.php';
 
-$form = new \local_learningcompanions\create_edit_group_form(
+$form = new \local_learningcompanions\forms\create_edit_group_form(
     null,
     [
         'groupid' => $groupid,

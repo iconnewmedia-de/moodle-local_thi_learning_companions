@@ -2,7 +2,8 @@
 
 namespace local_learningcompanions;
 
-include_once __DIR__ . "/group.php";
+use local_learningcompanions\forms\create_edit_group_form;
+
 class groups {
     const CHATTYPE_MENTOR = 0;
     const CHATTYPE_GROUP = 1;
@@ -312,14 +313,6 @@ class groups {
             return true;
         }
 
-        // Check if we need a new admin
-        if (count($group->admins) == 0) {
-            // ICTODO: make the last active member the new admin. Using joined for now
-            //Get the first joined member of the group
-            $newAdmin = $DB->get_record_sql('SELECT * FROM {lc_group_members} WHERE groupid = ? ORDER BY joined ASC', [$groupId]);
-            self::make_admin($groupId, $newAdmin->userid);
-        }
-
         return $deleted;
     }
 
@@ -402,7 +395,7 @@ class groups {
         //Delete Chat
         $DB->delete_records('lc_chat', ['id' => $chatId]);
         //Delete Chat Messages
-        $DB->delete_records('lc_chat_messages', ['chatid' => $chatId]);
+        $DB->delete_records('lc_chat_comment', ['chatid' => $chatId]);
         $transaction->allow_commit();
     }
 }
