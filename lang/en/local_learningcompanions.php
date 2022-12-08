@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Learning Companions';
 $string['learningcompanions:group_create'] = 'Create groups';
 $string['learningcompanions:group_manage'] = 'Manage groups';
+$string['learningcompanions:delete_comments_of_others'] = 'Delete comments of other users';
 $string['adminareaname'] = 'Learning Companions';
 $string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
 
@@ -181,3 +182,12 @@ $string['message_group_join_requested_body_html'] = '<h4>Hello {$a->receivername
 {$a->sendername} has requested to join your group "{$a->groupname}".<br>
 Please visit the group page to accept or decline the request.
 </p>';
+
+$string['modal-deletecomment-title'] = 'Delete this comment?';
+$string['modal-deletecomment-text'] = 'Are you sure that you want to delete your comment? This can\'t be undone!';
+$string['modal-deletecomment-okaybutton'] = 'Delete comment';
+$string['modal-deletecomment-cancelbutton'] = 'Cancel';
+
+$string['modal-editcomment-title'] = 'Edit comment';
+$string['modal-editcomment-okaybutton'] = 'Save changes';
+$string['modal-editcomment-cancelbutton'] = 'Cancel';

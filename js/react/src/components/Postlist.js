@@ -13,11 +13,15 @@ export default function Postlist(props) {
     const [activeGroupid, setActiveGroupid] = React.useState(props.activeGroupid);
     const [chattimer, setChattimer] = React.useState(0);
     const [loading, setLoading] = React.useState(true);
+    const [reload, setReload] = React.useState(0);
     window.setInterval(() => {
         setChattimer(chattimer + 1);
     }, 10000);
     eventBus.on('groupchanged', (data) => {
         setActiveGroupid(data.groupid);
+    });
+    eventBus.on('learningcompanions_message_deleted', () => {
+        setReload(reload + 1);
     });
     function getPosts(groupid) {
         const controller = new AbortController();
@@ -35,7 +39,7 @@ export default function Postlist(props) {
         fetchPosts(groupid);
         return () => controller.abort();
     }
-    React.useEffect(() => getPosts(activeGroupid), [activeGroupid, chattimer]);
+    React.useEffect(() => getPosts(activeGroupid), [activeGroupid, chattimer, reload]);
     return (
         <div id="learningcompanions_chat-postlist">
             <LoadingIndicator loading={loading} />

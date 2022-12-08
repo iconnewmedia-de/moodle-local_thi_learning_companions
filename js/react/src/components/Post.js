@@ -30,9 +30,10 @@ export default function Post({author, id, datetime, comment, attachments}) {
     if (typeof learningcompanions_chat_userid !== "undefined") {
         // console.log('Post has author:', author, 'learningcompanions_chat_userid:', learningcompanions_chat_userid);
     }
+    // ICTODO: find a way to use get_string with React. Perhaps a global variable that holds the translated strings
     if (typeof learningcompanions_chat_userid !== "undefined" && parseInt(author.id) === parseInt(learningcompanions_chat_userid)) {
-        button1 = <a href={M.cfg.wwwroot + '/blocks/learningcompanions_chat/ajaxchat.php?edit=' + id} className='learningcompanions_edit_comment'>edit</a>
-        button2 = <a href="#" className='learningcompanions_delete_comment'>delete</a>
+        button1 = <a href='#' data-id={id} className='learningcompanions_edit_comment'>edit</a>
+        button2 = <a href="#" data-id={id} className='learningcompanions_delete_comment'>delete</a>
         cssClass = 'learningcompanions_chat-my-post';
     } else {
         button1 = <a href="#" onClick={(e) => this.report(id, e)} className='learningcompanions_report_comment'>report</a>;

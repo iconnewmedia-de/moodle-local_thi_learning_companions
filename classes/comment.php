@@ -21,10 +21,11 @@ class comment {
             }
         }
         $this->attachments = local_learningcompanions_get_attachments_of_chat_comments([$comment], 'attachments');
-        foreach($this->attachments as $key => $attachment) {
-            $url = \moodle_url::make_pluginfile_url($attachment->get_contextid(), $attachment->get_component(), $attachment->get_filearea(), $attachment->get_itemid(), $attachment->get_filepath(), $attachment->get_filename(), false);
-        }
+//        foreach($this->attachments as $key => $attachment) {
+//            if (empty($attachment)) {
+//                continue;
+//            }
+//            $url = \moodle_url::make_pluginfile_url($attachment->get_contextid(), $attachment->get_component(), $attachment->get_filearea(), $attachment->get_itemid(), $attachment->get_filepath(), $attachment->get_filename(), false);
+//        }
     }
 }
-$comment = new comment(9);
-$debug = 'me';

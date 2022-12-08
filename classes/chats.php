@@ -128,14 +128,23 @@ class chats {
         // ICTODO: when comment gets unflagged, should field 'flaggedby' go NULL?
     }
 
+    /**
+     * @param $commentid
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function delete_comment($commentid) {
         global $DB, $USER;
+        $comment = $DB->get_record('lc_chat_comment', array('id' => $commentid));
+        if (!$comment) {
+            return false;
+        }
+        $context = \context_system::instance();
+        if ($comment->userid !== $USER->id && !has_capability('local/learningcompanions:delete_comments_of_others', $context)) {
+            return false;
+        }
         return $DB->delete_records('lc_chat_comment', array('id' => $commentid));
-        // ICTODO: Maybe comments should not be deleted but changed to "this text was removed".
-        // ICTODO: check if it's the user's own comment.
-        // ICTODO: if it's not the user's own comment:
-        //          check if the user has the right to delete other people's comments
-        //          and if the user is admin for the chat or mentor for the corresponding course
     }
 
     public static function get_all_flagged_comments(bool $extended = false, bool $cut = false): array {
