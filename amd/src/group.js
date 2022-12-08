@@ -6,6 +6,7 @@ import * as datatablesHelpers from 'local_learningcompanions/datatables-helpers'
 import {promiseAjax} from "local_learningcompanions/ajax";
 import 'local_learningcompanions/jquery.dataTables';
 import 'local_learningcompanions/select2';
+import DynamicForm from 'core_form/dynamicform';
 
 export const select2 = () => {
     $('.select2').select2();
@@ -72,12 +73,44 @@ const attachEvents = () => {
     body.on('click', '.js-leave-group', async function(e) {
         e.preventDefault();
 
-        const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+        const groupId = $(this).data('groupid');
+
+        /**
+         * @type {{needsNewAdmin: ?bool, leaved: bool}}
+         */
+        const response = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
             action: 'leavegroup',
-            groupid: $(this).data('groupid')
+            groupid: groupId
         });
 
-        if (!error) {
+        if (response.needsNewAdmin) {
+            // eslint-disable-next-line max-len
+            const possibleNewAdminsBody = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+                action: 'getpossiblenewadmins',
+                groupid: groupId
+            });
+            const title = await str.get_string('modal-groupdetails-needsnewadmin', 'local_learningcompanions');
+            const modal = await ModalFactory.create({
+                title: title,
+                body: possibleNewAdminsBody,
+                footer: '',
+                large: false
+            });
+
+            modal.getRoot().on(ModalEvents.hidden, function() {
+                modal.destroy();
+            });
+            modal.show();
+
+            // eslint-disable-next-line max-len
+            const newAdminForm = new DynamicForm(document.querySelector('#formcontainer'), 'local_learningcompanions\\forms\\assign_new_admin_while_leaving_form');
+            newAdminForm.load({groupId: groupId});
+            newAdminForm.addEventListener(newAdminForm.events.FORM_SUBMITTED, () => {
+                window.location.reload();
+            });
+        }
+
+        if (response.leaved) {
             window.location.reload();
         }
     });

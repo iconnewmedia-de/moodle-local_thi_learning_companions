@@ -1,6 +1,9 @@
 <?php
 
-namespace local_learningcompanions;
+namespace local_learningcompanions\forms;
+
+use local_learningcompanions\group;
+use local_learningcompanions\groups;
 
 require_once $CFG->libdir . "/formslib.php";
 

@@ -9,7 +9,7 @@ class group {
      */
     public $id;
     /**
-     * @var array|null
+     * @var \stdClass[]|null
      */
     public $admins = null;
     /**
@@ -134,7 +134,6 @@ class group {
      */
     public $currentUserIsMember;
 
-
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER;
         if (is_null($userid)) {
@@ -187,6 +186,28 @@ class group {
             return $this->$methodname();
         }
         return null;
+    }
+
+    public function is_user_admin(int $userId) {
+        $isAdmin = false;
+        foreach ($this->admins as $admin) {
+            if ((int)$admin->id === $userId) {
+                $isAdmin = true;
+                break;
+            }
+        }
+        return $isAdmin;
+    }
+
+    public function is_user_member(int $userId) {
+        $isMember = false;
+        foreach ($this->groupmembers as $member) {
+            if ((int)$member->id === $userId) {
+                $isMember = true;
+                break;
+            }
+        }
+        return $isMember;
     }
 
     /**

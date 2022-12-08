@@ -18,8 +18,8 @@ $cmid = optional_param('cmid', 0, PARAM_INT);
 $courseid = optional_param('courseid', 0, PARAM_INT);
 //$PAGE->requires->js_call_amd('local_learningcompanions/nuggetcontext');
 // ICTODO: check that the user has the permission to create a group for that course
-require_once __DIR__ . "/forms/create_edit_group_form.php";
-$form = new \local_learningcompanions\create_edit_group_form(
+
+$form = new \local_learningcompanions\forms\create_edit_group_form(
     null,
     [
         'cmid' => $cmid,
