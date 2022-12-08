@@ -317,8 +317,10 @@ class groups {
     }
 
     public static function make_admin(int $userId, int $groupId) {
-        global $DB;
+        global $DB, $USER;
         $DB->set_field('lc_group_members', 'isadmin', 1, ['groupid' => $groupId, 'userid' => $userId]);
+
+        messages::send_appointed_to_admin_notification($userId, $groupId, $USER->id);
     }
 
     public static function unmake_admin(int $userId, int $groupId) {
