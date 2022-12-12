@@ -91,7 +91,7 @@ class chats {
             if (!$group) {
                 return;
             }
-            $group->lastestcomment = time();
+            $group->latestcomment = time();
             $DB->update_record('lc_groups', $group);
         }
     }

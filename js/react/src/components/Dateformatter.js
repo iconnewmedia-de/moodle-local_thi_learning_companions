@@ -2,13 +2,14 @@
 import React from "react";
 
 export default function Dateformatter({timestamp}) {
+    timestamp = parseInt(timestamp);
     if (timestamp === 0) {
         var time = '';
     } else {
         var date = new Date(timestamp * 1000);
         var today = new Date();
         if (today.getDate() == date.getDate() && today.getMonth() == date.getMonth() && today.getFullYear() == date.getFullYear()) {
-            var time = date.getHours + ':' + date.getMinutes();
+            var time = date.getHours() + ':' + date.getMinutes();
         } else {
             var time = date.toDateString();
         }

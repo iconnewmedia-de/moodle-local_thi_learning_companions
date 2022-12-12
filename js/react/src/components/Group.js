@@ -7,7 +7,7 @@ export default function Group({handleGroupSelect, name, id, description, shortde
         handleGroupSelect(id);
     };
     let cssclasses = 'learningcompanions_chat-group';
-    if (typeof activeGroupid !== "undefined" && activeGroupid === parseInt(id)) {
+    if (typeof activeGroupid !== "undefined" && parseInt(activeGroupid) === parseInt(id)) {
         cssclasses += ' learningcompanions_currentgroup';
     }
     return (
