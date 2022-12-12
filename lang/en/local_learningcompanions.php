@@ -121,6 +121,7 @@ $string['issupermentor'] = 'Super mentor';
 $string['findgroup'] = 'Find group';
 $string['navbar_groups'] = 'Groups';
 $string['navbar_findgroups'] = 'Find groups';
+$string['navbar_confirm_join'] = 'Confirm join';
 $string['topic'] = 'Topic';
 $string['name'] = 'Name';
 $string['join'] = 'Joining';

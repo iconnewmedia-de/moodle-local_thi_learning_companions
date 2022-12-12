@@ -10,9 +10,7 @@ class messages {
         $message->component = 'local_learningcompanions';
         $message->notification = 1;
 
-        if ($messageName) {
-            $message->name = $messageName;
-        }
+        $message->name = $messageName;
 
         return $message;
     }
@@ -40,8 +38,7 @@ class messages {
             'sendername' => fullname($requestedUser)
         ]);
         $message->smallmessage = get_string('message_group_join_requested_small', 'local_learningcompanions', $group->name);
-        //ICTODO: Change to correct URL
-        $message->contexturl = (new \moodle_url('/local/learningcompanions/group/search.php', ['id' => $group->id]))->out(false);
+        $message->contexturl = (new \moodle_url('/local/learningcompanions/group/confirm_requested_join.php'))->out(false);
         $message->contexturlname = $group->name;
 
         message_send($message);

@@ -92,6 +92,29 @@ class groups {
         return $return;
     }
 
+    public static function get_groups_where_user_is_admin(int $userId = null) {
+        global $USER, $DB;
+
+        if ($userId === null) {
+            $userId = $USER->id;
+        }
+
+        $query = "SELECT g.id
+                    FROM {lc_groups} g
+                    JOIN {lc_group_members} gm ON gm.groupid = g.id
+                    WHERE gm.userid = ? AND gm.isadmin = 1";
+        $params = [$userId];
+        $groups = $DB->get_records_sql($query, $params);
+
+        $return = [];
+        foreach($groups as $group) {
+            $returnGroup = new group($group->id, $USER->id);
+            $return[] = $returnGroup;
+        }
+
+        return $return;
+    }
+
     public static function invite_user_to_group($userid, $groupid) {
         global $DB;
         // ICTODO: send invitation
@@ -355,6 +378,35 @@ class groups {
         return $inserted;
     }
 
+    /**
+     * @return \stdClass[]
+     * @throws \dml_exception
+     */
+    public static function get_group_join_requests(): array {
+        global $DB;
+
+        $groups = self::get_groups_where_user_is_admin();
+        $groupIds = array_map(static function($group) {
+            return $group->id;
+        }, $groups);
+
+        if (empty($groupIds)) {
+            return [];
+        }
+
+        $requests = $DB->get_records_sql('SELECT * FROM {lc_group_requests} WHERE groupid IN (' . implode(',', $groupIds) . ') and denied = 0') ?? [];
+        $requestedUsersIds = array_map(static function($request) {
+            return $request->userid;
+        }, $requests);
+        $requestedUsers = $DB->get_records_list('user', 'id', $requestedUsersIds) ?? [];
+
+        foreach ($requests as $request) {
+            $request->user = $requestedUsers[$request->userid];
+        }
+
+        return $requests;
+    }
+
     protected static function add_group_join_request($groupId, $userId) {
         global $DB;
         $record = new \stdClass();
@@ -362,6 +414,26 @@ class groups {
         $record->userid = $userId;
         $record->timecreated = time();
         return $DB->insert_record('lc_group_requests', $record);
+    }
+
+    public static function accept_group_join_request($requestId) {
+        global $DB;
+
+        //Get the request
+        $request = $DB->get_record('lc_group_requests', ['id' => $requestId]);
+        //Add the user to the group
+        self::group_add_member($request->groupid, $request->userid);
+        //Delete the request
+        $DB->delete_records('lc_group_requests', ['id' => $requestId]);
+        //ICTODO: Send a notification to the user
+//        messages::send_group_join_accepted_notification($userId, $groupId);
+    }
+
+    public static function deny_group_join_request($requestId) {
+        global $DB;
+        $DB->set_field('lc_group_requests', 'denied', 1, ['id' => $requestId]);
+        // ICTODO: Send a notification to the user
+//        messages::send_group_join_denied_notification($userId, $groupId);
     }
 
     /**

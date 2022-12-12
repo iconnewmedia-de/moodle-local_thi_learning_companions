@@ -222,7 +222,7 @@ class group {
         if (!is_null($this->earliestcomment)) {
             return $this->earliestcomment;
         }
-        $query = "SELECT MIN(posts.timecreated) AS earliestcomment,
+        $query = "SELECT MIN(posts.timecreated) AS earliestcomment
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id
                                                  GROUP BY chat.id";
@@ -244,7 +244,7 @@ class group {
         if (!is_null($this->mylatestcomment)) {
             return $this->mylatestcomment;
         }
-        $query = "SELECT MAX(posts.timecreated) AS mylatestcomment,
+        $query = "SELECT MAX(posts.timecreated) AS mylatestcomment
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
@@ -266,7 +266,7 @@ class group {
         if (!is_null($this->myearliestcomment)) {
             return $this->myearliestcomment;
         }
-        $query = "SELECT MIN(posts.timecreated) AS myearliestcomment,
+        $query = "SELECT MIN(posts.timecreated) AS myearliestcomment
                     FROM {lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
