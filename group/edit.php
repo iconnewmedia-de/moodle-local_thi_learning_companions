@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__, 3).'/config.php';
+require_once __DIR__ . '/../classes/forms/create_edit_group_form.php';
 
 require_login();
 global $PAGE, $CFG, $OUTPUT;
