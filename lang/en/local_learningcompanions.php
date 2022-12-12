@@ -174,8 +174,12 @@ require '_messages.php';
 $string['modal-deletecomment-title'] = 'Delete this comment?';
 $string['modal-deletecomment-text'] = 'Are you sure that you want to delete your comment? This can\'t be undone!';
 $string['modal-deletecomment-okaybutton'] = 'Delete comment';
-$string['modal-deletecomment-cancelbutton'] = 'Cancel';
+$string['modal-cancelbutton'] = 'Cancel';
 
 $string['modal-editcomment-title'] = 'Edit comment';
 $string['modal-editcomment-okaybutton'] = 'Save changes';
-$string['modal-editcomment-cancelbutton'] = 'Cancel';
+
+$string['modal-reportcomment-title'] = 'Report comment';
+$string['modal-reportcomment-text'] = 'Are you sure that you want to report this comment? Please only report comments that are against the general guidelines.';
+$string['modal-reportcomment-cancelbutton'] = 'Cancel';
+$string['modal-reportcomment-okaybutton'] = 'Report comment';

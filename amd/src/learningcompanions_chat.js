@@ -57,6 +57,9 @@ define(['jquery','core/str','core/modal_factory', 'core/modal_events'], function
                 {key: 'modal-deletecomment-okaybutton', component: 'local_learningcompanions'},
                 {key: 'modal-editcomment-title', component: 'local_learningcompanions'},
                 {key: 'modal-editcomment-okaybutton', component: 'local_learningcompanions'},
+                {key: 'modal-reportcomment-title', component: 'local_learningcompanions'},
+                {key: 'modal-reportcomment-text', component: 'local_learningcompanions'},
+                {key: 'modal-reportcomment-okaybutton', component: 'local_learningcompanions'},
             ];
 
             str.get_strings(strings).then(function(strings) {
@@ -152,6 +155,57 @@ define(['jquery','core/str','core/modal_factory', 'core/modal_events'], function
                         });
                     }
 
+
+                    // handle reporting a comment
+                    if (e.target.classList.contains('learningcompanions_report_comment')) {
+                        console.log('clicked report comment. event object:', e);
+                        console.log('clicked report comment for comment id:', e.target.dataset.id);
+                        var commentid = e.target.dataset.id;
+                        console.log('commentid before creating modal:', commentid);
+                        console.log(ModalFactory);
+                        return ModalFactory.create({
+                            type: ModalFactory.types.SAVE_CANCEL,
+                            title: strings[5],
+                            body: '' +
+                                '<div id="learningcompanions-reportcomment-modal">' +
+                                '<div id="learningcompanions-reportcomment-modal-text">' + strings[6] + '</div>' +
+                                '</div>',
+                            // footer: '' +
+                            //     '<div id="learningcompanions-deletecomment-modal-buttons">' +
+                            //     '<button class="btn btn-primary" aria-hidden="true" id="learningcompanions-deletecomment-modal-delete" data-cid="' + commentid + '">' + strings[2] + '</button>' +
+                            //     '<button class="btn btn-secondary" aria-hidden="true" id="learningcompanions-deletecomment-modal-close" data-action="hide">' + strings[3] + '</button>' +
+                            //     '</div>'
+                        }).then(function (modal) {
+                            console.log('comment id from data:', commentid);
+
+                            modal.getRoot().on(ModalEvents.save, function() {
+                                console.log('about to call ajaxdeletecomment.php with comment id', commentid);
+                                $.ajax({
+                                    url: M.cfg.wwwroot + '/local/learningcompanions/ajaxreportcomment.php',
+                                    method: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        commentid: commentid
+                                    },
+                                    success: function (data) {
+                                        // modal.destroy();
+                                        if (data === 'fail') {
+                                            // ICTODO: output fail message
+                                        } else {
+                                            // ICTODO: output success message
+                                        }
+                                        document.dispatchEvent(new CustomEvent('learningcompanions_message_reported'));
+                                        document.dispatchEvent(new ModalEvents.hidden);
+                                    }
+                                });
+                            });
+                            modal.setSaveButtonText(strings[7]);
+                            // modal.getRoot().on(ModalEvents.hidden, function () {
+                            //     modal.destroy();
+                            // });
+                            modal.show();
+                        });
+                    }
                 });
             });
         }
