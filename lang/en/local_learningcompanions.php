@@ -121,6 +121,7 @@ $string['issupermentor'] = 'Super mentor';
 $string['findgroup'] = 'Find group';
 $string['navbar_groups'] = 'Groups';
 $string['navbar_findgroups'] = 'Find groups';
+$string['navbar_confirm_join'] = 'Confirm join';
 $string['topic'] = 'Topic';
 $string['name'] = 'Name';
 $string['join'] = 'Joining';
@@ -168,20 +169,7 @@ $string['filter_keywords_placeholder'] = 'Name/Keyword';
 $string['filter_badges'] = 'Badge';
 $string['filter_super_mentor'] = 'Super mentor';
 
-// Messages
-$string['messageprovider:group_join_requested'] = 'Group Join request';
-
-$string['message_group_join_requested_small'] = 'New request to join group {$a}';
-$string['message_group_join_requested_subject'] = 'Group Join request';
-$string['message_group_join_requested_body'] = 'Hello {$a->receivername},
-
-{$a->sendername} has requested to join your group "{$a->groupname}".
-Please visit the group page to accept or decline the request.';
-$string['message_group_join_requested_body_html'] = '<h4>Hello {$a->receivername},</h4>
-<p>
-{$a->sendername} has requested to join your group "{$a->groupname}".<br>
-Please visit the group page to accept or decline the request.
-</p>';
+require '_messages.php';
 
 $string['modal-deletecomment-title'] = 'Delete this comment?';
 $string['modal-deletecomment-text'] = 'Are you sure that you want to delete your comment? This can\'t be undone!';
