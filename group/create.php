@@ -32,8 +32,7 @@ if ($data = $form->get_data()) {
         if ($layout === 'popup' || $layout === 'embedded' ) {
             echo "<script>document.querySelector('.modal').dispatchEvent((new Event('modal:hidden')))</script>";
         } else {
-            redirect($CFG->wwwroot, get_string('group_created', 'local_learningcompanions'));
-            // ICTODO: redirect to group overview or course or group chat or so
+            redirect((new moodle_url('/local/learningcompanions/group/search.php')), get_string('group_created', 'local_learningcompanions'));
         }
     } catch(Exception $e) {
         $warning = new \core\output\notification(
