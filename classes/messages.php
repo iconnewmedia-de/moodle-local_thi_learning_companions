@@ -70,6 +70,61 @@ class messages {
         $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
         $message->contexturlname = $group->name;
 
+        message_send($message);
+    }
+
+    public static function send_group_join_accepted_notification($userId, $groupId) {
+        global $DB, $USER;
+
+        $user = $DB->get_record('user', ['id' => $userId]);
+        $group = new group($groupId);
+
+        $message = self::initNewMessage('group_join_accepted');
+        $message->userfrom = $USER;
+        $message->userto = $user;
+        $message->subject = get_string('message_group_join_accepted_subject', 'local_learningcompanions');
+        $message->fullmessage = get_string('message_group_join_accepted_body', 'local_learningcompanions', [
+            'receivername' => fullname($user),
+            'groupname' => $group->name,
+            'sendername' => fullname($USER),
+        ]);
+        $message->fullmessageformat = FORMAT_PLAIN;
+        $message->fullmessagehtml = get_string('message_group_join_accepted_body_html', 'local_learningcompanions', [
+            'receivername' => fullname($user),
+            'groupname' => $group->name,
+            'sendername' => fullname($USER)
+        ]);
+        $message->smallmessage = get_string('message_group_join_accepted_small', 'local_learningcompanions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
+        $message->contexturlname = $group->name;
+
+        message_send($message);
+    }
+
+    public static function send_group_join_denied_notification($userId, $groupId) {
+        global $DB, $USER;
+
+        $user = $DB->get_record('user', ['id' => $userId]);
+        $group = new group($groupId);
+
+        $message = self::initNewMessage('group_join_denied');
+        $message->userfrom = $USER;
+        $message->userto = $user;
+        $message->subject = get_string('message_group_join_denied_subject', 'local_learningcompanions');
+        $message->fullmessage = get_string('message_group_join_denied_body', 'local_learningcompanions', [
+            'receivername' => fullname($user),
+            'groupname' => $group->name,
+            'sendername' => fullname($USER),
+        ]);
+        $message->fullmessageformat = FORMAT_PLAIN;
+        $message->fullmessagehtml = get_string('message_group_join_denied_body_html', 'local_learningcompanions', [
+            'receivername' => fullname($user),
+            'groupname' => $group->name,
+            'sendername' => fullname($USER)
+        ]);
+        $message->smallmessage = get_string('message_group_join_denied_small', 'local_learningcompanions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
+        $message->contexturlname = $group->name;
 
         message_send($message);
     }

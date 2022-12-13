@@ -425,15 +425,15 @@ class groups {
         self::group_add_member($request->groupid, $request->userid);
         //Delete the request
         $DB->delete_records('lc_group_requests', ['id' => $requestId]);
-        //ICTODO: Send a notification to the user
-//        messages::send_group_join_accepted_notification($userId, $groupId);
+        messages::send_group_join_accepted_notification($request->userid, $request->groupid);
     }
 
     public static function deny_group_join_request($requestId) {
         global $DB;
+        $request = $DB->get_record('lc_group_requests', ['id' => $requestId]);
+
         $DB->set_field('lc_group_requests', 'denied', 1, ['id' => $requestId]);
-        // ICTODO: Send a notification to the user
-//        messages::send_group_join_denied_notification($userId, $groupId);
+        messages::send_group_join_denied_notification($request->userid, $request->groupid);
     }
 
     /**
