@@ -183,3 +183,8 @@ $string['modal-reportcomment-title'] = 'Report comment';
 $string['modal-reportcomment-text'] = 'Are you sure that you want to report this comment? Please only report comments that are against the general guidelines.';
 $string['modal-reportcomment-cancelbutton'] = 'Cancel';
 $string['modal-reportcomment-okaybutton'] = 'Report comment';
+
+$string['notification_uf'] = 'Comment successfully unflagged';
+$string['notification_n_uf'] = 'Could not unflagg comment';
+$string['notification_d'] = 'Comment successfully deleted.';
+$string['notification_n_d'] = 'Could not delete comment.';

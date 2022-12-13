@@ -64,6 +64,7 @@ define(['jquery','core/str','core/modal_factory', 'core/modal_events'], function
 
             str.get_strings(strings).then(function(strings) {
                 $('#learningcompanions_chat-postlist').on('click', function(e){
+                    console.log('clicked something in postlist:', e);
                     if (e.target.classList.contains('learningcompanions_delete_comment')) {
                         console.log('clicked delete comment. event object:', e);
                         console.log('clicked delete comment for comment id:', e.target.dataset.id);
@@ -181,7 +182,7 @@ define(['jquery','core/str','core/modal_factory', 'core/modal_events'], function
                             modal.getRoot().on(ModalEvents.save, function() {
                                 console.log('about to call ajaxdeletecomment.php with comment id', commentid);
                                 $.ajax({
-                                    url: M.cfg.wwwroot + '/local/learningcompanions/ajaxreportcomment.php',
+                                    url: M.cfg.wwwroot + '/local/learningcompanions/ajaxreport.php',
                                     method: 'POST',
                                     dataType: 'json',
                                     data: {
@@ -206,8 +207,49 @@ define(['jquery','core/str','core/modal_factory', 'core/modal_events'], function
                             modal.show();
                         });
                     }
+
+                    if (e.target.classList.contains('learningcompanions_editgroup')) {
+                        console.log('clicked on gear icon', this, e);
+                        async function callGroupModal(e) {
+                            e.preventDefault();
+
+                            const groupid = e.target.dataset.gid;
+                            const groupname = e.target.dataset.title;
+                            console.log('getting group modal for ', groupid, groupname, this, e);
+                            const groupDetails = $.ajax({
+                                url: M.cfg.wwwroot + '/local/learningcompanions/ajax.php',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    action: 'getgroupdetails',
+                                    groupid: groupid
+                                },
+                                success: function(data){
+                                    const title = str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
+                                    title.then(function(string) {
+                                        console.log('got group title string:', title);
+                                        console.log('got group details data:', data);
+                                        ModalFactory.create({
+                                            title: string,
+                                            body: data.html,
+                                            footer: '',
+                                            large: true,
+                                            type: ModalFactory.types.CANCEL,
+                                        }).then(modal => {
+                                            modal.show();
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                        callGroupModal(e).then(() => {
+                            console.log('called modal for group details. What now?');
+                        });
+                    }
+
                 });
             });
+
         }
     };
 });
