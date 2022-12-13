@@ -13,6 +13,8 @@ if (!in_array($layout, $layoutwhitelist)) {
 }
 $PAGE->set_pagelayout($layout);
 $PAGE->set_title(get_string('creategroup', 'local_learningcompanions'));
+$PAGE->navbar->add(get_string('navbar_groups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/index.php'));
+$PAGE->navbar->add(get_string('navbar_create_group', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/create.php'));
 
 $cmid = optional_param('cmid', 0, PARAM_INT);
 $courseid = optional_param('courseid', 0, PARAM_INT);

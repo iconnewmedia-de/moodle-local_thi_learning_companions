@@ -88,9 +88,6 @@ $string['lastactivity'] = 'Last activity';
 $string['questiondate'] = 'Question date';
 $string['noquestionsfound'] = 'No questions found.';
 $string['asknewquestion'] = 'Ask new question';
-$string['navbar_findmentors'] = 'Find mentors';
-$string['navbar_mentors'] = 'Mentors';
-$string['navbar_mentorquestions'] = 'Mentor questions';
 $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
 $string['group_created'] = 'Your group was created successfully';
@@ -119,9 +116,6 @@ $string['issupermentor'] = 'Super mentor';
 
 // Group
 $string['findgroup'] = 'Find group';
-$string['navbar_groups'] = 'Groups';
-$string['navbar_findgroups'] = 'Find groups';
-$string['navbar_confirm_join'] = 'Confirm join';
 $string['topic'] = 'Topic';
 $string['name'] = 'Name';
 $string['join'] = 'Joining';
@@ -170,6 +164,7 @@ $string['filter_badges'] = 'Badge';
 $string['filter_super_mentor'] = 'Super mentor';
 
 require '_messages.php';
+require '_navbar.php';
 
 $string['modal-deletecomment-title'] = 'Delete this comment?';
 $string['modal-deletecomment-text'] = 'Are you sure that you want to delete your comment? This can\'t be undone!';
