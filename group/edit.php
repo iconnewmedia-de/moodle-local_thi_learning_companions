@@ -13,6 +13,8 @@ if (!in_array($layout, $layoutwhitelist)) {
 }
 $PAGE->set_pagelayout($layout);
 $PAGE->set_title(get_string('creategroup', 'local_learningcompanions'));
+$PAGE->navbar->add(get_string('navbar_groups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/index.php'));
+$PAGE->navbar->add(get_string('navbar_edit_group', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/search.php'));
 
 $groupid = required_param('groupid', PARAM_INT);
 $group = new \local_learningcompanions\group($groupid);
@@ -43,7 +45,7 @@ if ($data = $form->get_data()) {
         if ($layout === 'popup' || $layout === 'embedded') {
             echo "<script>document.querySelector('.modal').dispatchEvent((new Event('modal:hidden')))</script>";
         } else {
-            // ICTODO: redirect to group overview or course or group chat or so
+            redirect((new moodle_url('/local/learningcompanions/group/search.php')), get_string('group_edited', 'local_learningcompanions'));
         }
     } catch(Exception $e) {
         $warning = new \core\output\notification(

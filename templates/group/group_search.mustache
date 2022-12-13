@@ -22,15 +22,15 @@
                     <td>
                         {{name}}
                     </td>
-                    <td data-search="{{closedgroup}}">
+                    <td data-search="{{closedgroup}}" data-order="{{closedgroup}}">
                         {{#closedgroup}}
                             <span data-balloon="{{#str}}closedgroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
-                                <i class="fa fa-arrow-right icon-joingroup"></i>
+                                <div class="learningcompanions_group_icon learningcompanions_group_icon--closed"></div>
                             </span>
                         {{/closedgroup}}
                         {{^closedgroup}}
                             <span data-balloon="{{#str}}opengroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
-                                <i class="fa fa-arrow-left icon-joingroup"></i>
+                                <div class="learningcompanions_group_icon learningcompanions_group_icon--open"></div>
                             </span>
                         {{/closedgroup}}
                     </td>

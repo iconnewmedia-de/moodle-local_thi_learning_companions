@@ -160,15 +160,23 @@ class groups {
         $record->createdby = $USER->id;
         $record->timecreated = time();
         $record->timemodified = 0;
-        $groupid = $DB->insert_record('lc_groups', $record);
-        $context = \context_system::instance();
-        $options = [];
-        $data = file_postupdate_standard_editor($data, 'description', $options, $context, 'local_learningcompanions', 'description', $groupid);
-        $DB->set_field('lc_groups', 'description', $data->description, array('id' => $groupid));
-        self::save_group_image($groupid, $data->groupimage);
-        self::group_assign_keywords($groupid, $data->keywords);
-        self::group_add_member($groupid, $USER->id, 1);
-        self::create_group_chat($groupid);
+
+        $transaction = $DB->start_delegated_transaction();
+
+        try {
+            $groupid = $DB->insert_record('lc_groups', $record);
+            $context = \context_system::instance();
+            $options = [];
+            $data = file_postupdate_standard_editor($data, 'description', $options, $context, 'local_learningcompanions', 'description', $groupid);
+            $DB->set_field('lc_groups', 'description', $data->description, array('id' => $groupid));
+            self::save_group_image($groupid, $data->groupimage);
+            self::group_assign_keywords($groupid, $data->keywords);
+            self::group_add_member($groupid, $USER->id, 1);
+            self::create_group_chat($groupid);
+            $transaction->allow_commit();
+        } catch (\Exception $e) {
+            $transaction->rollback($e);
+        }
     }
 
     /**
@@ -314,7 +322,7 @@ class groups {
         $record->chattype = self::CHATTYPE_GROUP;
         $record->relatedid = $groupid;
         $record->timecreated = time();
-        $record->courseid = $DB->get_field('lc_groups', 'courseid', array('id' => $groupid));
+        $record->course = $DB->get_field('lc_groups', 'courseid', array('id' => $groupid));
         $DB->insert_record('lc_chat', $record);
     }
 
@@ -425,15 +433,15 @@ class groups {
         self::group_add_member($request->groupid, $request->userid);
         //Delete the request
         $DB->delete_records('lc_group_requests', ['id' => $requestId]);
-        //ICTODO: Send a notification to the user
-//        messages::send_group_join_accepted_notification($userId, $groupId);
+        messages::send_group_join_accepted_notification($request->userid, $request->groupid);
     }
 
     public static function deny_group_join_request($requestId) {
         global $DB;
+        $request = $DB->get_record('lc_group_requests', ['id' => $requestId]);
+
         $DB->set_field('lc_group_requests', 'denied', 1, ['id' => $requestId]);
-        // ICTODO: Send a notification to the user
-//        messages::send_group_join_denied_notification($userId, $groupId);
+        messages::send_group_join_denied_notification($request->userid, $request->groupid);
     }
 
     /**
