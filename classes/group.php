@@ -150,11 +150,18 @@ class group {
         $this->createdby_fullname = fullname($user);
         $this->createdby_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
 
-        $this->timecreated_userdate = userdate($this->timecreated);
-        $this->timecreated_dmY = date('d.m.Y', $this->timecreated);
-        $this->timemodified_userdate = userdate($this->timemodified);
-        $this->timemodified_dmY = date('d.m.Y', $this->timemodified);
+        $this->timecreated_userdate = $this->timecreated > 0 ? userdate($this->timecreated) : '-';
+        $this->timecreated_dmY =  $this->timecreated > 0 ? date('d.m.Y', $this->timecreated) : '-';
+        $this->timemodified_userdate = $this->timemodified > 0 ? userdate($this->timemodified) : '-';
+        $this->timemodified_dmY =  $this->timemodified > 0 ? date('d.m.Y', $this->timemodified) : '-';
         $this->latestcomment_userdate = $this->latestcomment > 0 ? userdate($this->latestcomment) : '-';
+        if (date('d.m.Y', $this->latestcomment) === date('d.m.Y', time())){
+            $this->latestcomment_dmY = date('H:i', $this->latestcomment);
+        } elseif ($this->latestcomment > 0) {
+            $this->latestcomment_dmY = date('d.m.Y', $this->latestcomment);
+        } else {
+            $this->latestcomment_dmY = '-';
+        }
         $this->closedgroupicon = $this->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
         $shortdescription = strip_tags($this->description);
         $this->shortdescription = substr($shortdescription, 0, 50);
