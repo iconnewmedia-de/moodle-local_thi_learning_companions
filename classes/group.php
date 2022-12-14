@@ -224,7 +224,7 @@ class group {
      * @return int
      * @throws \dml_exception
      */
-    protected function get_earliestcomment() {
+    protected function get_timestamp_of_earliestcomment() {
         global $DB;
         if (!is_null($this->earliestcomment)) {
             return $this->earliestcomment;
@@ -246,7 +246,7 @@ class group {
      * @return int
      * @throws \dml_exception
      */
-    protected function get_mylatestcomment() {
+    protected function get_timestamp_of_my_latestcomment() {
         global $DB;
         if (!is_null($this->mylatestcomment)) {
             return $this->mylatestcomment;
@@ -268,7 +268,7 @@ class group {
      * @return int
      * @throws \dml_exception
      */
-    protected function get_myearliestcomment() {
+    protected function get_timestamp_of_my_earliestcomment() {
         global $DB;
         if (!is_null($this->myearliestcomment)) {
             return $this->myearliestcomment;
@@ -456,5 +456,25 @@ class group {
 
         $this->admins = array_values($admins);
         return $this->admins;
+    }
+
+    public function get_last_comment() {
+        global $DB;
+        $chatid = chats::get_chat_of_group($this->id);
+        if (false === $chatid) {
+            return '';
+        }
+        $lastcomment = $DB->get_record_sql(
+            'SELECT comment
+                    FROM {lc_chat_comment}
+                    WHERE chatid = ?
+                    ORDER BY timecreated DESC, id DESC
+                    LIMIT 1',
+            array($chatid)
+        );
+        if (false === $lastcomment) {
+            return '';
+        }
+        return $lastcomment->comment;
     }
 }
