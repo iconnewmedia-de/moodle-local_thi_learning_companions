@@ -45,6 +45,9 @@ switch ($action) {
     case 'getpossiblenewadmins':
         getPossibleNewAdmins();
         break;
+    case 'getinvitableusers':
+        getInvitableUsers();
+        break;
 }
 
 function deleteQuetion() {
@@ -145,4 +148,32 @@ function joinGroup() {
     } else {
         echo '1';
     }
+}
+
+function getInvitableUsers() {
+    global $DB, $USER;
+
+    $query = required_param('query', PARAM_TEXT);
+    $groupId = required_param('groupid', PARAM_INT);
+    $limit = optional_param('limit', 10, PARAM_INT);
+
+    $sl = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
+                FROM {user} u
+                LEFT JOIN {groups_members} gm ON gm.userid = u.id
+                WHERE u.deleted = 0
+                AND u.confirmed = 1
+                AND " . $DB->sql_like($DB->sql_fullname(), ':search', false) . "
+                AND u.id <> :userid
+                AND (gm.groupid <> :groupid OR gm.groupid IS NULL)
+              ORDER BY " . $DB->sql_fullname();
+
+    $params = [
+        'search' => '%'. $DB->sql_like_escape($query) . '%',
+        'userid' => $USER->id,
+        'groupid' => $groupId
+    ];
+
+    $users = $DB->get_records_sql($sl, $params, 0, $limit);
+
+    echo json_encode(array_values($users), JSON_THROW_ON_ERROR);
 }
