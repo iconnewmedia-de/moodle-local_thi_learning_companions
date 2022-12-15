@@ -60,4 +60,99 @@ class external extends \external_api {
             ])
         );
     }
+
+    public static function get_invitable_users(string $query, int $groupId, int $limit = 10) {
+        global $DB, $USER, $OUTPUT, $PAGE;
+
+        $PAGE->set_context(\context_system::instance());
+
+        $params = self::validate_parameters(self::get_invitable_users_parameters(),
+            [
+                'query' => $query,
+                'groupId' => $groupId,
+            ]);
+
+        $query = $params['query'];
+        $groupId = $params['groupId'];
+
+        $sl = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
+                FROM {user} u
+                LEFT JOIN {lc_group_members} gm ON gm.userid = u.id AND gm.groupid = 11
+                WHERE u.deleted = 0
+                AND u.confirmed = 1
+                AND " . $DB->sql_like($DB->sql_fullname(), ':search', false) . "
+                AND u.id <> :userid
+                AND (gm.groupid <> :groupid OR gm.groupid IS NULL)
+              ORDER BY " . $DB->sql_fullname();
+
+        $params = [
+            'search' => '%'. $DB->sql_like_escape($query) . '%',
+            'userid' => $USER->id,
+            'groupid' => $groupId
+        ];
+
+        $users = $DB->get_records_sql($sl, $params, 0, $limit);
+
+        foreach ($users as $user) {
+            $user->profilepicture = $OUTPUT->user_picture($user, ['size' => '240', 'link' => false, 'class' => '']);
+        }
+
+        return $users;
+    }
+
+    public static function get_invitable_users_parameters() {
+        return new \external_function_parameters(
+            [
+                'query' => new \external_value(PARAM_TEXT, 'The text to search for', VALUE_REQUIRED, null),
+                'groupId' => new \external_value(PARAM_INT, 'The group id', VALUE_REQUIRED, null),
+                'limit' => new \external_value(PARAM_INT, 'The number of results to return', VALUE_OPTIONAL, 10)
+            ],
+            '',
+            VALUE_REQUIRED
+        );
+    }
+
+    public static function get_invitable_users_returns() {
+        return new \external_multiple_structure(
+            new \external_single_structure([
+                'id'    => new \external_value(PARAM_INT, 'ID of the context'),
+                'fullname'  => new \external_value(PARAM_NOTAGS, 'The context name'),
+                'profilepicture' => new \external_value(PARAM_RAW, 'The user picture')
+            ])
+        );
+    }
+
+    public static function invite_user(int $userId, int $groupId) {
+        $params = self::validate_parameters(self::invite_user_parameters(),
+            [
+                'userId' => $userId,
+                'groupId' => $groupId,
+            ]);
+
+        $userId = $params['userId'];
+        $groupId = $params['groupId'];
+
+        $id = groups::invite_user_to_group($userId, $groupId);
+        if ($id) {
+            return ['errorcode' => 0];
+        }
+        return ['errorcode' => 1];
+    }
+
+    public static function invite_user_parameters() {
+        return new \external_function_parameters(
+            [
+                'userId' => new \external_value(PARAM_INT, 'To userid of the user to invite', VALUE_REQUIRED, null),
+                'groupId' => new \external_value(PARAM_INT, 'The group id', VALUE_REQUIRED, null),
+            ],
+            '',
+            VALUE_REQUIRED
+        );
+    }
+
+    public static function invite_user_returns() {
+        new \external_single_structure([
+            'errorcode' => new \external_value(PARAM_INT, 'Errorcode'),
+        ]);
+    }
 }

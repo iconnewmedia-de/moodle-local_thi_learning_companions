@@ -138,6 +138,7 @@ $string['modal-groupdetails-createdate'] = 'Created on';
 $string['modal-groupdetails-join'] = 'Joining';
 $string['gotogroupbutton'] = 'Go to group';
 $string['leavegroup'] = 'Leave Group';
+$string['invite_to_group'] = 'Invite';
 $string['request_join_group'] = 'Request to join group';
 $string['group_join_not_possible'] = 'Joining the group is not possible now.';
 $string['group_request_not_possible'] = 'Request to joining the group is not possible now.';

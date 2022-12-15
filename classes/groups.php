@@ -116,15 +116,25 @@ class groups {
     }
 
     public static function invite_user_to_group($userid, $groupid) {
-        global $DB;
-        // ICTODO: send invitation
+        global $DB, $USER;
+
         $userIsAlreadyInGroup = $DB->record_exists('lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
         if ($userIsAlreadyInGroup) {
             // Return for now. Maybe throw exception or something later
             return;
         }
 
-        $DB->insert_record('lc_group_members', ['userid' => $userid, 'groupid' => $groupid, 'isadmin' => 0]);
+        //Check if the current user is in the group
+        $userIsInGroup = $DB->record_exists('lc_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
+        if (!$userIsInGroup) {
+            // Return for now. Maybe throw exception or something later
+            return;
+        }
+
+        //If there is a request for joining this group, delete it
+        $DB->delete_records('lc_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
+
+        return self::group_add_member($groupid, $userid);
     }
 
     /**
@@ -235,13 +245,14 @@ class groups {
     }
 
     /**
-     * @param $groupid
-     * @param $userid
-     * @param $isadmin
+     * @param int $groupid
+     * @param int $userid
+     * @param int $isadmin
+     *
      * @return bool
      * @throws \dml_exception
      */
-    protected static function group_add_member($groupid, $userid, $isadmin = 0) {
+    protected static function group_add_member(int $groupid, int $userid, $isadmin = 0) {
         global $DB;
         $record = new \stdClass();
         $record->groupid = $groupid;

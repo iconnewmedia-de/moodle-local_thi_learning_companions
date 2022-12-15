@@ -1,0 +1,11 @@
+{{#users}}
+    <li>
+        <input type="radio" class="js-invite-radio invite-radio" id="user-invite-{{id}}" value="{{id}}" name="userid">
+        <label for="user-invite-{{id}}">
+            {{{profilepicture}}}
+            <span>
+                {{fullname}}
+            </span>
+        </label>
+    </li>
+{{/users}}

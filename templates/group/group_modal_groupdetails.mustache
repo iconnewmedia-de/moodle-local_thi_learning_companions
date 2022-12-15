@@ -49,6 +49,7 @@
             {{#group.currentUserIsMember}}
                 {{! If the User is in the Group, show the Leave Group Button }}
                 <a href="#" class="btn btn-primary js-leave-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{#str}}leavegroup, local_learningcompanions{{/str}}</a>
+                <a href="#" class="btn btn-secondary js-invite-member" data-groupid="{{group.id}}"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}invite_to_group, local_learningcompanions{{/str}}</a>
             {{/group.currentUserIsMember}}
             {{^group.currentUserIsMember}}
                 {{#group.closedgroup}}
