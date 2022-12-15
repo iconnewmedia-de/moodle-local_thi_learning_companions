@@ -106,7 +106,7 @@ const handleTableRowClick = async function(e) {
     const title = await str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
     const modal = await ModalFactory.create({
         title: title,
-        body: groupDetails,
+        body: groupDetails.html,
         footer: '',
         large: true
     });

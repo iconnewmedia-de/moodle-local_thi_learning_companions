@@ -491,4 +491,22 @@ class groups {
         $DB->delete_records('lc_chat_comment', ['chatid' => $chatId]);
         $transaction->allow_commit();
     }
+
+    public static function count_comments_since_last_visit($groupid) {
+        global $DB, $USER;
+        $chatId = $DB->get_field('lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
+        $lastVisited = $DB->get_field('lc_chat_lastvisited', 'timevisited', array('chatid' => $chatId, 'userid' => $USER->id));
+        if (false === $lastVisited) {
+            $lastVisited = 0;
+        }
+        $commentsSinceLastVisit = $DB->get_records_sql(
+            'SELECT * FROM {lc_chat_comment}
+                    WHERE chatid = ? AND timecreated > ?',
+            array($chatId, $lastVisited)
+        );
+        if (false === $commentsSinceLastVisit) {
+            return 0;
+        }
+        return count($commentsSinceLastVisit);
+    }
 }

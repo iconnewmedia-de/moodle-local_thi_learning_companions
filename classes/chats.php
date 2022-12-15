@@ -5,7 +5,9 @@ class chats {
     const CHAT_TYPE_MENTOR = 0;
     const CHAT_TYPE_GROUP = 1;
     public static function get_chat_of_group(int $groupid) {
-
+        global $DB;
+        $chatid = $DB->get_field('lc_chat', 'id', array('relatedid' => $groupid, 'chattype' => self::CHAT_TYPE_GROUP));
+        return $chatid;
     }
 
     public static function get_chat_of_activity(int $cmid) {

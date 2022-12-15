@@ -150,11 +150,18 @@ class group {
         $this->createdby_fullname = fullname($user);
         $this->createdby_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
 
-        $this->timecreated_userdate = userdate($this->timecreated);
-        $this->timecreated_dmY = date('d.m.Y', $this->timecreated);
-        $this->timemodified_userdate = userdate($this->timemodified);
-        $this->timemodified_dmY = date('d.m.Y', $this->timemodified);
+        $this->timecreated_userdate = $this->timecreated > 0 ? userdate($this->timecreated) : '-';
+        $this->timecreated_dmY =  $this->timecreated > 0 ? date('d.m.Y', $this->timecreated) : '-';
+        $this->timemodified_userdate = $this->timemodified > 0 ? userdate($this->timemodified) : '-';
+        $this->timemodified_dmY =  $this->timemodified > 0 ? date('d.m.Y', $this->timemodified) : '-';
         $this->latestcomment_userdate = $this->latestcomment > 0 ? userdate($this->latestcomment) : '-';
+        if (date('d.m.Y', $this->latestcomment) === date('d.m.Y', time())){
+            $this->latestcomment_dmY = date('H:i', $this->latestcomment);
+        } elseif ($this->latestcomment > 0) {
+            $this->latestcomment_dmY = date('d.m.Y', $this->latestcomment);
+        } else {
+            $this->latestcomment_dmY = '-';
+        }
         $this->closedgroupicon = $this->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
         $shortdescription = strip_tags($this->description);
         $this->shortdescription = substr($shortdescription, 0, 50);
@@ -217,7 +224,7 @@ class group {
      * @return int
      * @throws \dml_exception
      */
-    protected function get_earliestcomment() {
+    protected function get_timestamp_of_earliestcomment() {
         global $DB;
         if (!is_null($this->earliestcomment)) {
             return $this->earliestcomment;
@@ -239,7 +246,7 @@ class group {
      * @return int
      * @throws \dml_exception
      */
-    protected function get_mylatestcomment() {
+    protected function get_timestamp_of_my_latestcomment() {
         global $DB;
         if (!is_null($this->mylatestcomment)) {
             return $this->mylatestcomment;
@@ -261,7 +268,7 @@ class group {
      * @return int
      * @throws \dml_exception
      */
-    protected function get_myearliestcomment() {
+    protected function get_timestamp_of_my_earliestcomment() {
         global $DB;
         if (!is_null($this->myearliestcomment)) {
             return $this->myearliestcomment;
@@ -449,5 +456,25 @@ class group {
 
         $this->admins = array_values($admins);
         return $this->admins;
+    }
+
+    public function get_last_comment() {
+        global $DB;
+        $chatid = chats::get_chat_of_group($this->id);
+        if (false === $chatid) {
+            return '';
+        }
+        $lastcomment = $DB->get_record_sql(
+            'SELECT comment
+                    FROM {lc_chat_comment}
+                    WHERE chatid = ?
+                    ORDER BY timecreated DESC, id DESC
+                    LIMIT 1',
+            array($chatid)
+        );
+        if (false === $lastcomment) {
+            return '';
+        }
+        return $lastcomment->comment;
     }
 }

@@ -62,11 +62,11 @@ function getGroupDetails() {
     $groupid = required_param('groupid', PARAM_INT);
     $group = \local_learningcompanions\groups::get_group_by_id($groupid);
 
-    echo json_encode($OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', [
+    echo json_encode(['html' => $OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', [
         'group' => $group,
         'groupadmins' => $group->admins,
         'cfg' => $CFG
-    ]), JSON_THROW_ON_ERROR);
+    ])], JSON_THROW_ON_ERROR);
 }
 
 function getPossibleNewAdmins() {

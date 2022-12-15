@@ -253,6 +253,18 @@
     100% { transform: rotate(360deg); }
 }
 
+.learningcompanions_editgroup {
+    cursor: pointer;
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url([[pix:local_learningcompanions|gear]]) no-repeat;
+    float: right;
+    margin-top: 10px;
+}
+.learningcompanions_chat_time {
+    float: right;
+}
 
 /* Invite */
 .invite-member-list {
