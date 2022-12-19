@@ -121,20 +121,26 @@ class groups {
         $userIsAlreadyInGroup = $DB->record_exists('lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
         if ($userIsAlreadyInGroup) {
             // Return for now. Maybe throw exception or something later
-            return;
+            return false;
         }
 
         //Check if the current user is in the group
         $userIsInGroup = $DB->record_exists('lc_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
         if (!$userIsInGroup) {
             // Return for now. Maybe throw exception or something later
-            return;
+            return false;
         }
 
         //If there is a request for joining this group, delete it
         $DB->delete_records('lc_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
 
-        return self::group_add_member($groupid, $userid);
+        $id = self::group_add_member($groupid, $userid);
+
+        if ($id) {
+            messages::send_invited_to_group($userid, $groupid);
+        }
+
+        return $id;
     }
 
     /**

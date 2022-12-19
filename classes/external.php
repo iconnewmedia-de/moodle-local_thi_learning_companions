@@ -77,7 +77,7 @@ class external extends \external_api {
 
         $sl = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
-                LEFT JOIN {lc_group_members} gm ON gm.userid = u.id AND gm.groupid = 11
+                LEFT JOIN {lc_group_members} gm ON gm.userid = u.id AND gm.groupid = :groupidjoin
                 WHERE u.deleted = 0
                 AND u.confirmed = 1
                 AND " . $DB->sql_like($DB->sql_fullname(), ':search', false) . "
@@ -88,7 +88,8 @@ class external extends \external_api {
         $params = [
             'search' => '%'. $DB->sql_like_escape($query) . '%',
             'userid' => $USER->id,
-            'groupid' => $groupId
+            'groupid' => $groupId,
+            'groupidjoin' => $groupId
         ];
 
         $users = $DB->get_records_sql($sl, $params, 0, $limit);

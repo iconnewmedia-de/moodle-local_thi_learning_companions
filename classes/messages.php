@@ -9,7 +9,7 @@ class messages {
         $message = new \core\message\message();
         $message->component = 'local_learningcompanions';
         $message->notification = 1;
-
+        $message->fullmessageformat = FORMAT_PLAIN;
         $message->name = $messageName;
 
         return $message;
@@ -31,7 +31,6 @@ class messages {
             'groupname' => $group->name,
             'sendername' => fullname($requestedUser),
         ]);
-        $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = get_string('message_group_join_requested_body_html', 'local_learningcompanions', [
             'receivername' => fullname($recipient),
             'groupname' => $group->name,
@@ -60,7 +59,6 @@ class messages {
             'groupname' => $group->name,
             'sendername' => fullname($appointedBy),
         ]);
-        $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = get_string('message_appointed_to_admin_body_html', 'local_learningcompanions', [
             'receivername' => fullname($newAdmin),
             'groupname' => $group->name,
@@ -88,7 +86,6 @@ class messages {
             'groupname' => $group->name,
             'sendername' => fullname($USER),
         ]);
-        $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = get_string('message_group_join_accepted_body_html', 'local_learningcompanions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
@@ -116,13 +113,39 @@ class messages {
             'groupname' => $group->name,
             'sendername' => fullname($USER),
         ]);
-        $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = get_string('message_group_join_denied_body_html', 'local_learningcompanions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
             'sendername' => fullname($USER)
         ]);
         $message->smallmessage = get_string('message_group_join_denied_small', 'local_learningcompanions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
+        $message->contexturlname = $group->name;
+
+        message_send($message);
+    }
+
+    public static function send_invited_to_group($userid, $groupid) {
+        global $DB, $USER;
+
+        $user = $DB->get_record('user', ['id' => $userid]);
+        $group = new group($groupid);
+
+        $message = self::initNewMessage('invited_to_group');
+        $message->userfrom = $USER;
+        $message->userto = $user;
+        $message->subject = get_string('message_invited_to_group_subject', 'local_learningcompanions');
+        $message->fullmessage = get_string('message_invited_to_group_body', 'local_learningcompanions', [
+            'receivername' => fullname($user),
+            'groupname' => $group->name,
+            'sendername' => fullname($USER),
+        ]);
+        $message->fullmessagehtml = get_string('message_invited_to_group_body_html', 'local_learningcompanions', [
+            'receivername' => fullname($user),
+            'groupname' => $group->name,
+            'sendername' => fullname($USER)
+        ]);
+        $message->smallmessage = get_string('message_invited_to_group_small', 'local_learningcompanions', $group->name);
         $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
         $message->contexturlname = $group->name;
 
