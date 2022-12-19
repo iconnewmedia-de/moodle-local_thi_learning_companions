@@ -5,6 +5,12 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG, $DB;
 
 if ($oldversion < 2022112506) {
+    /*** Adding new profile category 'Status' ***/
+    $categoryId = $DB->insert_record('user_info_category', [
+        'name' => get_string('profile_field_category_status_default'),
+        'sortorder' => 1
+    ]);
+
     /*** Adding new profile field 'lc_user_status' ***/
 
     require_once($CFG->dirroot.'/user/profile/definelib.php');
@@ -21,7 +27,7 @@ if ($oldversion < 2022112506) {
     $newfield->forceunique = 0;
     $newfield->signup = 0;
     $newfield->visible = 2;
-    $newfield->categoryid = 1; // ICTODO: Maybe create a learning companions category.
+    $newfield->categoryid = $categoryId;
     // Multi language, take a look at the strings.
     $newfield->defaultdata = get_string('profile_field_status_default_default', 'local_learningcompanions');
     $newfield->param1 = get_string('profile_field_status_default_options', 'local_learningcompanions');

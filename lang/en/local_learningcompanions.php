@@ -153,6 +153,7 @@ $string['profile_field_status_default_options'] = '<span lang="en" class="multil
 <span lang="en" class="multilang">Offline</span><span lang="de" class="multilang">Offline</span>
 <span lang="en" class="multilang">Please do not disturb</span><span lang="de" class="multilang">Bitte nicht stören</span>';
 $string['profile_field_status_default_default'] = '<span lang="en" class="multilang">Offline</span><span lang="de" class="multilang">Offline</span>';
+$string['profile_field_category_status_default'] = '<span lang="en" class="multilang">Status</span><span lang="de" class="multilang">Status</span>';
 
 //Filtering
 $string['filter_all_status'] = 'All groups';
