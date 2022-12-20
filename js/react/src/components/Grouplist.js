@@ -26,7 +26,7 @@ export default function Grouplist(props) {
             const groups = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxgrouplist.php');
             const data = await groups.json();
             setGroups(data.groups);
-            console.log('got groups via AJAX:', data.groups);
+            // console.log('got groups via AJAX:', data.groups);
             setLoading(false);
         }
         fetchGroups();

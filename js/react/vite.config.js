@@ -7,7 +7,6 @@ export default defineConfig({
     plugins: [react()],
     build: {
         watch: {
-            // https://rollupjs.org/guide/en/#watch-options
             include: 'src/**'
         },
         outDir: 'build',

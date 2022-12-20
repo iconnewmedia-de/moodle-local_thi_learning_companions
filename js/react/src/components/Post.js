@@ -4,7 +4,7 @@ import Attachmentlist from "./Attachmentlist";
 
 export default function Post({author, id, datetime, comment, attachments}) {
     let attach;
-    console.log('attachments: ', attachments);
+    // console.log('attachments: ', attachments);
     if (attachments && attachments.length > 0) {
         attach = <Attachmentlist attachments={attachments} />
     } else {
@@ -27,6 +27,7 @@ export default function Post({author, id, datetime, comment, attachments}) {
         button2 = '';
         cssClass = 'learningcompanions_chat-other-post';
     }
+
     return (
         <div id={"learningcompanions_chat-post-" + id} className={'learningcompanions_chat-post ' + cssClass}>
             <strong>{author.firstname} {author.lastname}</strong><br />
