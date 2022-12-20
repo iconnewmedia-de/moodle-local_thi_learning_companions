@@ -4,6 +4,7 @@ import Attachmentlist from "./Attachmentlist";
 
 export default function Post({author, id, datetime, comment, attachments}) {
     let attach;
+    console.log('attachments: ', attachments);
     if (attachments && attachments.length > 0) {
         attach = <Attachmentlist attachments={attachments} />
     } else {

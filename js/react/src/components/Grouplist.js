@@ -1,20 +1,18 @@
 /* eslint-disable no-undef, no-console */
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Group from "./Group";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "./EventBus";
 
 export default function Grouplist(props) {
-    if (typeof M === "undefined") {
-        var M = {cfg: {wwwroot: ''}};
+    if (typeof window.M === "undefined") {
+        window.M = {cfg: {wwwroot: ''}};
     }
-    const [groups, setGroups] = React.useState([]);
-    const [activeGroupid, setActiveGroupid] = React.useState(props.activeGroupid);
-    const [grouptimer, setGrouptimer] = React.useState(0);
-    const [loading, setLoading] = React.useState(true);
-    window.setInterval(() => {
-        setGrouptimer(grouptimer + 1);
-    }, 50000);
+    const [groups, setGroups] = useState([]);
+    const [activeGroupid, setActiveGroupid] = useState(props.activeGroupid);
+    const [grouptimer, setGrouptimer] = useState(0);
+    const [loading, setLoading] = useState(true);
+
     function handleGroupSelect(groupid) {
         eventBus.dispatch('groupchanged', {groupid: groupid});
         setActiveGroupid(groupid);
@@ -34,9 +32,20 @@ export default function Grouplist(props) {
         fetchGroups();
         return () => controller.abort();
     }
-    React.useEffect(() => getGroups(), [activeGroupid, grouptimer]);
+    useEffect(getGroups, [activeGroupid, grouptimer]);
+
+    //Wrap the setInterval in a useEffect hook, so it doesn´t add a new interval on every render.
+    useEffect(() => {
+        const intervalId = window.setInterval(() => {
+            setGrouptimer(grouptimer + 1);
+        }, 50000);
+
+        return () => {
+            window.clearInterval(intervalId);
+        }
+    });
     return (
-        <div id="learningcompanions_chat-grouplist">
+        <div id="learningcompanions_chat-grouplist s">
             <LoadingIndicator loading={loading} />
             {groups.map(group => (
                 <Group handleGroupSelect={handleGroupSelect} name={group.name} key={group.id} id={group.id} shortdescription={group.shortdescription} description={group.description} imageurl={group.imageurl} latestcomment={group.latestcomment} activeGroupid={activeGroupid} />

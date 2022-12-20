@@ -1,33 +1,32 @@
 /* eslint-disable no-undef, no-console */
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Post from "./Post";
 import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "./EventBus";
+
 export default function Postlist(props) {
-    if (typeof M === "undefined") {
-        var M = {cfg: {wwwroot: ''}};
+    if (typeof window.M === "undefined") {
+        window.M = {cfg: {wwwroot: ''}};
     }
-    const [posts, setPosts] = React.useState([]);
-    const [group, setGroup] = React.useState({});
-    const [activeGroupid, setActiveGroupid] = React.useState(props.activeGroupid);
-    const [chattimer, setChattimer] = React.useState(0);
-    const [loading, setLoading] = React.useState(true);
-    const [reload, setReload] = React.useState(0);
-    window.setInterval(() => {
-        setChattimer(chattimer + 1);
-    }, 10000);
+    const [posts, setPosts] = useState([]);
+    const [group, setGroup] = useState({});
+    const [activeGroupid, setActiveGroupid] = useState(props.activeGroupid);
+    const [chattimer, setChattimer] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [reload, setReload] = useState(0);
+
     eventBus.on('groupchanged', (data) => {
         setActiveGroupid(data.groupid);
     });
     eventBus.on('learningcompanions_message_deleted', () => {
         setReload(reload + 1);
     });
-    function getPosts(groupid) {
+    function getPosts() {
         const controller = new AbortController();
-        if (groupid !== activeGroupid) {
-            setPosts([]);
-        }
+        // if (groupid !== activeGroupid) {
+        //     setPosts([]);
+        // }
         async function fetchPosts(groupid) {
             const response = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + groupid);
             const data = await response.json();
@@ -36,10 +35,24 @@ export default function Postlist(props) {
             setGroup(data.group);
             setLoading(false);
         }
-        fetchPosts(groupid);
+        fetchPosts(activeGroupid);
         return () => controller.abort();
     }
-    React.useEffect(() => getPosts(activeGroupid), [activeGroupid, chattimer, reload]);
+
+    useEffect(getPosts, [activeGroupid, chattimer, reload]);
+
+    //Wrap the setInterval in a useEffect hook, so it doesn´t add a new interval on every render.
+    useEffect(() => {
+        const intervalId = window.setInterval(() => {
+            setChattimer(chattimer + 1);
+        }, 10000);
+        console.log('Adding Interval', intervalId);
+        return () => {
+            console.log('clearing interval', intervalId);
+            window.clearInterval(intervalId);
+        }
+    }, []);
+
     return (
         <div id="learningcompanions_chat-postlist">
             <LoadingIndicator loading={loading} />

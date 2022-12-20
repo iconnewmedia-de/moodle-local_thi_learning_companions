@@ -1,8 +1,6 @@
 /* eslint no-console: off, no-undef: off, no-unused-vars: off */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
 import Grouplist from "./components/Grouplist";
 import Postlist from "./components/Postlist";
 
@@ -12,9 +10,9 @@ const root2 = ReactDOM.createRoot(document.getElementById('learningcompanions_ch
 //     var learningcompanions_groupid = 1;
 // }
 root1.render(
-  <React.StrictMode>
-     <Grouplist activeGroupid={learningcompanions_groupid}/>
-  </React.StrictMode>
+    <React.StrictMode>
+        <Grouplist activeGroupid={learningcompanions_groupid}/>
+    </React.StrictMode>
 );
 root2.render(
     <React.StrictMode>
@@ -25,4 +23,4 @@ root2.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// reportWebVitals();
