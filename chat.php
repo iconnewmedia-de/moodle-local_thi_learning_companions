@@ -18,15 +18,12 @@ $groupid = optional_param('groupid', 1, PARAM_INT); // ictodo: change default, o
 $cmid = optional_param('cmid', 0, PARAM_INT);
 $courseid = optional_param('courseid', 0, PARAM_INT);
 $PAGE->requires->js_call_amd('local_learningcompanions/learningcompanions_chat', 'init');
+$PAGE->requires->js(new moodle_url('https://unpkg.com/react@18/umd/react.development.js'), true);
+$PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18/umd/react-dom.development.js'), true);
+$PAGE->requires->js('/local/learningcompanions/js/react/build/learningcompanions-chat.min.js');
 
 echo $OUTPUT->header();
-//$reactscript = \local_learningcompanions\get_chat_reactscript_path();
+
 $chat = new \local_learningcompanions\chat($groupid);
 echo $chat->get_chat_module();
-//$context = array(
-//    'userid' => $USER->id,
-//    'reactscript' => $reactscript,
-//    'form' => 'here be submission form'
-//);
-//echo $OUTPUT->render_from_template('local_learningcompanions/chat', $context);
 echo $OUTPUT->footer();

@@ -11,6 +11,18 @@ export default defineConfig({
             include: 'src/**'
         },
         outDir: 'build',
+        rollupOptions: {
+            external: ['react', 'react-dom'],
+            output: {
+                // assetFileNames: 'assets/[name][extname]',
+                entryFileNames: 'learningcompanions-chat.min.js',
+                format: 'iife',
+                globals: {
+                    react: 'React',
+                    'react-dom': 'ReactDOM'
+                }
+            }
+        }
     },
     esbuild: {
         loader: 'jsx',
