@@ -4,28 +4,26 @@
  * @param component {string}
  * @param params {string|Object}
  * @param lang {?string}
- * @returns {string}
+ * @returns {Promise<string>}
  */
 export const useGetString = async (key, component = 'core', params = [], lang) => {
-    lang = lang || navigator.language || navigator.userLanguage;
-    const strings = await fetchStrings([{key, component, params, lang}]);
-    return strings[0].data;
+    const s = await useGetStrings([{key, component, params, lang}]);
+    return s[0];
 };
 
 /**
  *
- * @param requests {{key: string, component: ?string, params: ?string|?object, lang: ?string}[]}
+ * @param requests {{key: string, component?: string, params?: string|object, lang?: string}[]}
+ * @returns {Promise<string[]>}
  */
 export const useGetStrings = async (requests) => {
-    console.log('useGetStrings1: ', requests);
     const formatedRequests = requests.map(request => {
-        console.log('Inner request: ', request);
         request.lang = request.lang || navigator.language || navigator.userLanguage;
         request.component = request.component || 'core';
         request.params = request.params || [];
         return request;
     });
-    console.log('useGetStrings2:', formatedRequests);
+
     const strings = await fetchStrings(formatedRequests);
 
     return strings.map(string => {
@@ -37,7 +35,7 @@ export const useGetStrings = async (requests) => {
  * @param requests {{key: string, component: ?string, params: ?string|?object, lang: ?string}[]}
  * @returns {Promise<{error: bool, data: string}[]>}
  */
-const fetchStrings = async (requests) => {
+const fetchStrings = (requests) => {
     const data = requests.map(({key,params, ...rest}, index) => {
         return {
             index,

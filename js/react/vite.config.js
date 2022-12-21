@@ -13,7 +13,6 @@ export default defineConfig({
         rollupOptions: {
             external: ['react', 'react-dom'],
             output: {
-                // assetFileNames: 'assets/[name][extname]',
                 entryFileNames: 'learningcompanions-chat.min.js',
                 format: 'iife',
                 globals: {
