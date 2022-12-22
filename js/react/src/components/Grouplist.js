@@ -14,7 +14,7 @@ export default function Grouplist(props) {
     const [loading, setLoading] = useState(true);
 
     function handleGroupSelect(groupid) {
-        eventBus.dispatch('groupchanged', {groupid: groupid});
+        eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid: groupid});
         setActiveGroupid(groupid);
         document.querySelector('input[name="chatid"]').value = groupid;
         console.log('setting active group id to: ', groupid);
@@ -43,7 +43,7 @@ export default function Grouplist(props) {
         return () => {
             window.clearInterval(intervalId);
         }
-    });
+    }, []);
     return (
         <div id="learningcompanions_chat-grouplist s">
             <LoadingIndicator loading={loading} />

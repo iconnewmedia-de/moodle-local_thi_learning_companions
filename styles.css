@@ -285,6 +285,13 @@
     margin-bottom: 10px;
     cursor: pointer;
 }
+
+.post-wrapper {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
 .invite-radio:checked + label {
     background: #0ff;
 }

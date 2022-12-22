@@ -50,9 +50,10 @@ class chat {
         // ICTODO: update comment and attachments
     }
 
-    public function get_comments() {
+    public function get_comments($page = 1) {
         global $DB;
-        $comments = $DB->get_records('lc_chat_comment', array('chatid' => $this->chatid), 'timecreated');
+        $stepSize = 5;
+        $comments = $DB->get_records('lc_chat_comment', ['chatid' => $this->chatid], 'timecreated DESC', '*', ($page-1) * $stepSize, $stepSize);
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
         $context = \context_system::instance();
         // ICTODO: also get inline attachments
