@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function EditButton({id}) {
-    return <a href='#' data-id={id} className='learningcompanions_edit_comment'>edit</a>;
+    return <a href='#' data-id={id} title="Edit" className='learningcompanions_edit_comment'></a>;
 }

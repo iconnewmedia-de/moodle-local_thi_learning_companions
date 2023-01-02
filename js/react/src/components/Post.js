@@ -33,9 +33,11 @@ export default function Post({author, id, datetime, comment, attachments}) {
             <em>{datetime}</em><br />
             <div dangerouslySetInnerHTML={{__html: comment}}></div>
             {attach}
-            {showEditButton && <EditButton id={id} />}
-            {showDeleteButton && <DeleteButton id={id} />}
-            {showReportButton && <ReportButton id={id} />}
+            <div className="action-button-wrapper">
+                {showEditButton && <EditButton id={id} />}
+                {showDeleteButton && <DeleteButton id={id} />}
+                {showReportButton && <ReportButton id={id} />}
+            </div>
         </div>
     )
 };

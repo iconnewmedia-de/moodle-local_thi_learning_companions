@@ -9,6 +9,7 @@ export default function Postlist(props) {
     if (typeof window.M === "undefined") {
         window.M = {cfg: {wwwroot: ''}};
     }
+
     const [posts, setPosts] = useState([]);
     const [group, setGroup] = useState({});
     const [page, setPage] = useState(1);
@@ -16,6 +17,7 @@ export default function Postlist(props) {
     const [chattimer, setChattimer] = useState(0);
     const [loading, setLoading] = useState(true);
     const [reload, setReload] = useState(0);
+    const [lastPostId, setLastPostId] = useState(null);
 
     eventBus.on(eventBus.events.GROUP_CHANGED, (data) => {
         setActiveGroupid(data.groupid);
@@ -30,9 +32,9 @@ export default function Postlist(props) {
 
         fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + activeGroupid + '&page='+page, {
             signal: controller.signal
-        }).then(response => {
-            return response.json();
-        }).then(data => {
+        })
+        .then(response => response.json())
+        .then(data => {
             const newPosts = Object.values(data.posts);
             console.log(data);
             setPosts((posts) => [...posts, ...newPosts]);
@@ -52,13 +54,16 @@ export default function Postlist(props) {
 
         fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + activeGroupid, {
             signal: controller.signal
-        }).then(response => {
-            return response.json();
-        }).then(data => {
+        })
+        .then(response => response.json())
+        .then(data => {
             const initialPosts = Object.values(data.posts).reverse();
             setPosts(initialPosts);
             setGroup(data.group);
             setLoading(false);
+            // Get the Id of the last element
+            setLastPostId(initialPosts[0]?.id ?? 0);
+            console.log('Last post id: ' + lastPostId);
         }).catch(error => {
             if (error.name === 'AbortError') {
                 console.log('Fetch aborted');
@@ -71,20 +76,27 @@ export default function Postlist(props) {
     };
 
     const getNewPosts = () => {
-        //Placeholder for now, will be used to get new posts from the server.
-        //Get only the new Posts from the server. Not the already loaded ones.
-        const fakeId = Math.random().toString(36).substring(7);
-        const newPost = {
-            author: {
-                firstname: 'John',
-                lastname: 'Doe'
-            },
-            datetime: (new Date()).toLocaleString(),
-            comment: 'This is a new post ' + fakeId,
-            attachments: [],
-            id: fakeId
-        };
-        setPosts(posts => [ ...[newPost], ...posts]);
+        if (lastPostId === null) return;
+
+        console.log('Getting new posts with lastPostId: ' + lastPostId);
+
+        const controller = new AbortController();
+
+        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}`, {
+            signal: controller.signal
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('New Posts:', data);
+            const newPosts = Object.values(data.posts).reverse();
+
+            if (newPosts.length) {
+                setPosts((posts) => [...newPosts, ...posts]);
+                setLastPostId(newPosts[0].id);
+            }
+        });
+
+        return () => controller.abort();
     }
 
     useEffect(getMorePosts, [page]);
@@ -108,7 +120,6 @@ export default function Postlist(props) {
             setPage((page) => page + 1);
         }
     };
-
 
     return (
         <div id="learningcompanions_chat-postlist">

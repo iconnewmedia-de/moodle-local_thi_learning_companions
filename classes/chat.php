@@ -5,6 +5,7 @@ class chat {
     protected $chatid;
     protected $chat;
     protected $context;
+
     public function __construct($groupid) {
         global $DB;
         $this->groupid = $groupid;
@@ -57,6 +58,30 @@ class chat {
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
         $context = \context_system::instance();
         // ICTODO: also get inline attachments
+        foreach($comments as $comment) {
+            $comment->datetime = userdate($comment->timecreated);
+            $comment->author = $DB->get_record('user', array('id' => $comment->userid), 'id,firstname,lastname,email,username');
+            $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
+            if (array_key_exists($comment->id, $attachments)) {
+                $comment->attachments = $attachments[$comment->id];
+            } else {
+                $comment->attachments = [];
+            }
+        }
+        return $comments;
+    }
+
+    public function get_newest_posts(int $lastViewedPostId) {
+        global $DB;
+
+        //Get the newest comments
+        $comments = $DB->get_records_sql('SELECT * FROM {lc_chat_comment} WHERE chatid = ? AND id > ? ORDER BY timecreated DESC', [$this->chatid, $lastViewedPostId]);
+        $this->set_latestviewedcomment($this->chatid);
+
+        //Get the attachments
+        $attachments = $this->get_attachments_of_comments($comments, 'attachments');
+        $context = \context_system::instance();
+
         foreach($comments as $comment) {
             $comment->datetime = userdate($comment->timecreated);
             $comment->author = $DB->get_record('user', array('id' => $comment->userid), 'id,firstname,lastname,email,username');

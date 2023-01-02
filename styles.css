@@ -138,9 +138,6 @@
 .learningcompanions_edit_comment,
 .learningcompanions_delete_comment,
 .learningcompanions_report_comment {
-    position: absolute;
-    top: 20px;
-    right: 20px;
     width: 20px;
     height: 20px;
     color: transparent;
@@ -156,7 +153,6 @@
 
 .learningcompanions_delete_comment {
     background-image: url([[pix:local_learningcompanions|delete-bin]]);
-    right: 45px;
 }
 .learningcompanions_report_comment {
     background-image: url([[pix:local_learningcompanions|flag]]);
@@ -291,6 +287,13 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column-reverse;
+}
+.action-button-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 0.5em;
 }
 .invite-radio:checked + label {
     background: #0ff;
