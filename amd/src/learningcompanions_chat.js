@@ -75,7 +75,7 @@ const handleCommentDelete = async function(e) {
                     } else {
                         // ICTODO: output success message
                     }
-                    document.dispatchEvent(new CustomEvent('learningcompanions_message_deleted'));
+                    document.dispatchEvent(new CustomEvent('learningcompanions_message_deleted', {detail: {postid: commentid}}));
                     document.dispatchEvent(new ModalEvents.hidden);
                 }
             });

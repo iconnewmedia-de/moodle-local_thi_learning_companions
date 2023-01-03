@@ -8,10 +8,11 @@ export default function Grouplist(props) {
     if (typeof window.M === "undefined") {
         window.M = {cfg: {wwwroot: ''}};
     }
+
     const [groups, setGroups] = useState([]);
     const [activeGroupid, setActiveGroupid] = useState(props.activeGroupid);
     const [grouptimer, setGrouptimer] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     function handleGroupSelect(groupid, chatid) {
         eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid: groupid});
@@ -26,8 +27,7 @@ export default function Grouplist(props) {
             const groups = await fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxgrouplist.php');
             const data = await groups.json();
             setGroups(data.groups);
-            // console.log('got groups via AJAX:', data.groups);
-            setLoading(false);
+            setIsLoading(false);
         }
         fetchGroups();
         return () => controller.abort();
@@ -46,7 +46,7 @@ export default function Grouplist(props) {
     }, []);
     return (
         <div id="learningcompanions_chat-grouplist">
-            {loading && <LoadingIndicator/>}
+            {isLoading && <LoadingIndicator/>}
             {groups.map(group => (
                 <Group handleGroupSelect={handleGroupSelect} name={group.name} key={group.id} chatid={group.chatid} id={group.id} shortdescription={group.shortdescription} description={group.description} imageurl={group.imageurl} latestcomment={group.latestcomment} activeGroupid={activeGroupid} />
             ))}

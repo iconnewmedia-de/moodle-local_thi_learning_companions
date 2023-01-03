@@ -16,24 +16,32 @@ export default function Postlist(props) {
     const [postsOffset, setPostsOffset] = useState(0);
     const [activeGroupid, setActiveGroupid] = useState(props.activeGroupid);
     const [chattimer, setChattimer] = useState(0);
-    const [loading, setLoading] = useState(true);
-    const [reload, setReload] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
     const [lastPostId, setLastPostId] = useState(null);
+    let updateRunning = false;
 
     eventBus.on(eventBus.events.GROUP_CHANGED, (data) => {
         setActiveGroupid(data.groupid);
         setPage(1);
         setPostsOffset(0);
     });
-    eventBus.on(eventBus.events.MESSAGE_DELETED, () => {
-        setReload(reload + 1);
+    eventBus.on(eventBus.events.MESSAGE_DELETED, ({postid}) => {
+        setPosts(posts.filter(post => post.id !== postid));
+        // setReload(reload + 1);
     });
 
     function getMorePosts() {
         //If this is the first page, we don´t need to load more posts.
         if (page === 1) {
+            setPage(page + 1);
             return;
         }
+
+        if (updateRunning) {
+            return;
+        }
+
+        updateRunning = true;
 
         const controller = new AbortController();
 
@@ -48,15 +56,18 @@ export default function Postlist(props) {
         })
         .then(response => response.json())
         .then(data => {
-            const newPosts = Object.values(data.posts);
+            const newPosts = Object.values(data.posts).reverse();
             console.log(data);
             setPosts((posts) => [...posts, ...newPosts]);
+            setPage(page + 1);
         }).catch(error => {
             if (error.name === 'AbortError') {
                 console.log('Fetch aborted');
             } else {
                 console.log(error);
             }
+        }).finally(() => {
+            updateRunning = false;
         });
 
         return () => controller.abort();
@@ -73,7 +84,7 @@ export default function Postlist(props) {
             const initialPosts = Object.values(data.posts).reverse();
             setPosts(initialPosts);
             setGroup(data.group);
-            setLoading(false);
+            setIsLoading(false);
             // Get the Id of the last element
             setLastPostId(initialPosts[0]?.id ?? 0);
             console.log('Last post id: ' + lastPostId);
@@ -113,8 +124,7 @@ export default function Postlist(props) {
         return () => controller.abort();
     }
 
-    useEffect(getMorePosts, [page]);
-    useEffect(getInitialPosts, [activeGroupid, reload]);
+    useEffect(getInitialPosts, [activeGroupid]);
     useEffect(getNewPosts, [chattimer]);
 
     //Wrap the setInterval in a useEffect hook, so it doesn´t add a new interval on every render.
@@ -130,13 +140,13 @@ export default function Postlist(props) {
 
     const handleWrapperScroll = (e) => {
         if (-e.target.scrollTop + e.target.clientHeight >= (e.target.scrollHeight)) {
-            setPage((page) => page + 1);
+            getMorePosts();
         }
     };
 
     return (
         <div id="learningcompanions_chat-postlist">
-            {loading && <LoadingIndicator/>}
+            {isLoading && <LoadingIndicator/>}
             <GroupHeader group={group}/>
             <div className="post-wrapper" onScroll={handleWrapperScroll}>
                 {posts.map(post => {
