@@ -46,6 +46,7 @@ class groups {
         $query = "SELECT g.id
                     FROM {lc_groups} g
                     JOIN {lc_group_members} gm ON gm.groupid = g.id AND gm.userid = ?";
+
         $groups = $DB->get_records_sql($query, $params);
         $return = [];
         foreach($groups as $group) {
@@ -67,7 +68,8 @@ class groups {
                         return 0;
                     }
                     return ($a->latestcomment > $b->latestcomment) ? -1 : 1;
-                });                break;
+                });
+                break;
             case 'myearliestcomment':
                 usort($return, function($a, $b) {
                     if ($a->myearliestcomment == $b->myearliestcomment) {

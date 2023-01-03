@@ -141,8 +141,9 @@ class group {
         }
         $this->userid = $userid;
         $this->id = $groupid;
-        $group = $DB->get_record('lc_groups', array('id' => $groupid));
-        $user = $DB->get_record('user', array('id' => $group->createdby));
+        $group = $DB->get_record('lc_groups', ['id' => $groupid]);
+        $user = $DB->get_record('user', ['id' => $group->createdby]);
+        $chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => 1]);
         foreach($group as $key => $value) {
             $this->$key = $value;
         }
@@ -168,6 +169,7 @@ class group {
         if (strlen($shortdescription) > 50) {
             $this->shortdescription .= " ...";
         }
+        $this->chatid = $chat->id;
 
         $this->get_image();
         $this->get_imageurl();

@@ -5,7 +5,7 @@ import EditButton from "./PostButtons/EditButton";
 import DeleteButton from "./PostButtons/DeleteButton";
 import ReportButton from "./PostButtons/ReportButton";
 
-export default function Post({author, id, datetime, comment, attachments}) {
+export default function Post({author, id, datetime, comment, attachments, reported}) {
     let attach;
     if (attachments && attachments.length) {
         attach = <Attachmentlist attachments={attachments} />
@@ -19,7 +19,7 @@ export default function Post({author, id, datetime, comment, attachments}) {
 
     // ICTODO: find a way to use get_string with React. Perhaps a global variable that holds the translated strings
     if (typeof window.learningcompanions_chat_userid !== undefined && +author.id === +window.learningcompanions_chat_userid) {
-        showEditButton = true;
+        // showEditButton = true;
         showDeleteButton = true;
         cssClass = 'learningcompanions_chat-my-post';
     } else {
@@ -34,9 +34,9 @@ export default function Post({author, id, datetime, comment, attachments}) {
             <div dangerouslySetInnerHTML={{__html: comment}}></div>
             {attach}
             <div className="action-button-wrapper">
-                {showEditButton && <EditButton id={id} />}
+                {/* {showEditButton && <EditButton id={id} />} */}
                 {showDeleteButton && <DeleteButton id={id} />}
-                {showReportButton && <ReportButton id={id} />}
+                {showReportButton && !reported && <ReportButton id={id} />}
             </div>
         </div>
     )

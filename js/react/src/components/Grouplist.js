@@ -13,11 +13,11 @@ export default function Grouplist(props) {
     const [grouptimer, setGrouptimer] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    function handleGroupSelect(groupid) {
+    function handleGroupSelect(groupid, chatid) {
         eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid: groupid});
         setActiveGroupid(groupid);
-        document.querySelector('input[name="chatid"]').value = groupid;
-        console.log('setting active group id to: ', groupid);
+        document.querySelector('input[name="chatid"]').value = chatid;
+        console.log(`setting active group id to: ${groupid} and chatid to: ${chatid}`);
     }
 
     function getGroups() {
@@ -37,7 +37,7 @@ export default function Grouplist(props) {
     //Wrap the setInterval in a useEffect hook, so it doesn´t add a new interval on every render.
     useEffect(() => {
         const intervalId = window.setInterval(() => {
-            setGrouptimer(grouptimer + 1);
+            setGrouptimer((grouptimer) => grouptimer + 1);
         }, 50000);
 
         return () => {
@@ -45,10 +45,10 @@ export default function Grouplist(props) {
         }
     }, []);
     return (
-        <div id="learningcompanions_chat-grouplist s">
-            <LoadingIndicator loading={loading} />
+        <div id="learningcompanions_chat-grouplist">
+            {loading && <LoadingIndicator/>}
             {groups.map(group => (
-                <Group handleGroupSelect={handleGroupSelect} name={group.name} key={group.id} id={group.id} shortdescription={group.shortdescription} description={group.description} imageurl={group.imageurl} latestcomment={group.latestcomment} activeGroupid={activeGroupid} />
+                <Group handleGroupSelect={handleGroupSelect} name={group.name} key={group.id} chatid={group.chatid} id={group.id} shortdescription={group.shortdescription} description={group.description} imageurl={group.imageurl} latestcomment={group.latestcomment} activeGroupid={activeGroupid} />
             ))}
         </div>
     );

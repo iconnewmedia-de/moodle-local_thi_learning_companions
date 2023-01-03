@@ -51,10 +51,17 @@ class chat {
         // ICTODO: update comment and attachments
     }
 
-    public function get_comments($page = 1) {
+    /**
+     * @param int $page the Page to use, used for pagination
+     * @param int $offset Any offset. Can be used, to compensate new posts, that were added in the meantime
+     *
+     * @return array
+     * @throws \dml_exception
+     */
+    public function get_comments(int $page = 1, int $offset = 0) {
         global $DB;
         $stepSize = 5;
-        $comments = $DB->get_records('lc_chat_comment', ['chatid' => $this->chatid], 'timecreated DESC', '*', ($page-1) * $stepSize, $stepSize);
+        $comments = $DB->get_records('lc_chat_comment', ['chatid' => $this->chatid], 'timecreated DESC', '*', ($page-1) * $stepSize + $offset, $stepSize);
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
         $context = \context_system::instance();
         // ICTODO: also get inline attachments

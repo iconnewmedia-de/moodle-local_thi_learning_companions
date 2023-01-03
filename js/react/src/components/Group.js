@@ -2,18 +2,19 @@
 import React from "react";
 import Dateformatter from "./Dateformatter";
 
-export default function Group({handleGroupSelect, name, id, description, shortdescription, imageurl, latestcomment, activeGroupid}) {
+export default function Group({handleGroupSelect, name, id, description, chatid, shortdescription, imageurl, latestcomment, activeGroupid}) {
     const changeGroup = function() {
-        handleGroupSelect(id);
+        handleGroupSelect(id, chatid);
     };
     let cssclasses = 'learningcompanions_chat-group';
     if (typeof activeGroupid !== "undefined" && parseInt(activeGroupid) === parseInt(id)) {
         cssclasses += ' learningcompanions_currentgroup';
     }
+
     return (
         <div onClick={changeGroup} id={"learningcompanions_chat-group-" + id} className={cssclasses}>
             <Dateformatter timestamp={latestcomment} />
-            <img className="learningcompanions_group_image_small" src={imageurl} />
+            <img className="learningcompanions_group_image_small" src={imageurl} alt={`Group picture for group ${name}`}/>
             <em>{name}</em><br />
             <span>{shortdescription}</span><br />
         </div>
