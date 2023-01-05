@@ -44,7 +44,10 @@ class chat_post_form extends \moodleform {
 
     function definition() {
         global $OUTPUT;
+
+
         $mform =& $this->_form;
+        $mform->disable_form_change_checker();
 
         $chatid = $this->_customdata['chatid'];
 

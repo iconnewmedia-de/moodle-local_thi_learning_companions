@@ -1,22 +1,15 @@
 /* eslint-disable no-undef, no-console */
-import React from "react";
-
-export default function Dateformatter({timestamp}) {
+export default function Dateformatter({timestamp, format = { year: 'numeric', month: '2-digit', day: '2-digit'}}) {
     timestamp = timestamp ?? 0;
     timestamp = parseInt(timestamp);
     if (timestamp === 0) {
-        return <div className="learningcompanions_chat_time"></div>;
+        return <div className="learningcompanions_chat_time">No Time!</div>;
     }
 
-    const lastActive = new Intl.DateTimeFormat(undefined, {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-    }).format(date);
-    console.log('lastActive: ', lastActive);
+    const date = new Date(timestamp * 1000);
 
-    // }
-    // ICTODO: maybe also display "Saturday", "Friday" etc. instead if it's from the same week
+    const lastActive = new Intl.DateTimeFormat(undefined, format).format(date);
+
     return (
         <div className="learningcompanions_chat_time">{lastActive}</div>
     )

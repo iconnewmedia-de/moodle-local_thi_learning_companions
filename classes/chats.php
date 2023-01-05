@@ -32,7 +32,7 @@ class chats {
         $comment->comment = "";
         $comment->id = $DB->insert_record("lc_chat_comment", $comment);
         $draftitemid = file_get_submitted_draft_itemid('comment');
-        $allowedTags = array(
+        $allowedTags = [
             '<div>',
             '<p>',
             '<a>',
@@ -65,11 +65,11 @@ class chats {
             '<th>',
             '<tr>',
             '<td>',
-        );
+        ];
         $comment->message = strip_tags($comment->message, implode('', $allowedTags));
         $comment->comment = file_save_draft_area_files($draftitemid, $context->id, 'local_learningcompanions', 'message', $comment->id,
             $editoroptions, $comment->message);
-        $DB->set_field('lc_chat_comment', 'comment', $comment->comment, array('id'=>$comment->id));
+        $DB->set_field('lc_chat_comment', 'comment', $comment->comment, ['id'=>$comment->id]);
         self::add_attachment($comment, $formdata);
         self::set_latest_comment($comment->chatid);
 
@@ -138,15 +138,19 @@ class chats {
      */
     public static function delete_comment($commentid) {
         global $DB, $USER;
-        $comment = $DB->get_record('lc_chat_comment', array('id' => $commentid));
+
+        $comment = $DB->get_record('lc_chat_comment', ['id' => $commentid]);
         if (!$comment) {
             return false;
         }
+
         $context = \context_system::instance();
         if ($comment->userid !== $USER->id && !has_capability('local/learningcompanions:delete_comments_of_others', $context)) {
             return false;
         }
-        return $DB->delete_records('lc_chat_comment', array('id' => $commentid));
+
+        $comment->timedeleted = time();
+        return $DB->update_record('lc_chat_comment', $comment);
     }
 
     public static function get_all_flagged_comments(bool $extended = false, bool $cut = false): array {

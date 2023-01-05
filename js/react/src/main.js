@@ -1,5 +1,5 @@
 /* eslint no-console: off, no-undef: off, no-unused-vars: off */
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Grouplist from "./components/Grouplist";
 import Postlist from "./components/Postlist";

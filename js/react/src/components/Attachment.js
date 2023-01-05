@@ -1,9 +1,10 @@
-import React from "react";
+export default function Attachment({attachment}) {
+    const {url, filename} = attachment;
 
-export default function Attachment(props) {
     return (
         <div>
-            <a target="_blank" href={props.attachment.url}>{props.attachment.filename}</a>
+            <a target="_blank" href={url}>{filename}</a>
         </div>
     )
 }
+

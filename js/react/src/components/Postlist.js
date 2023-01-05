@@ -1,9 +1,9 @@
 /* eslint-disable no-undef, no-console */
-import React, {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import Post from "./Post";
 import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
-import eventBus from "./EventBus";
+import eventBus from "../helpers/EventBus";
 
 export default function Postlist(props) {
     if (typeof window.M === "undefined") {
@@ -20,15 +20,41 @@ export default function Postlist(props) {
     const [lastPostId, setLastPostId] = useState(null);
     let updateRunning = false;
 
-    eventBus.on(eventBus.events.GROUP_CHANGED, (data) => {
+    // Create them using useCallback, so we dont have to recreate them on every render.
+    const handleGroupChanged = useCallback((data) => {
         setActiveGroupid(data.groupid);
         setPage(1);
         setPostsOffset(0);
-    });
-    eventBus.on(eventBus.events.MESSAGE_DELETED, ({postid}) => {
-        setPosts(posts.filter(post => post.id !== postid));
-        // setReload(reload + 1);
-    });
+    }, []);
+    const handlePostDeleted = useCallback(({postid}) => {
+        setPosts(oldPosts => oldPosts.map(post => {
+            if (+post.id === +postid) {
+                post.timedeleted = 1;
+            }
+            return post;
+        }));
+    }, []);
+    const hanldelPostReported = useCallback(({postid}) => {
+        setPosts(oldPosts => oldPosts.map(post => {
+            if (+post.id === +postid) {
+                post.flagged = true;
+            }
+            return post;
+        }));
+    }, []);
+
+    useEffect(() => {
+        eventBus.on(eventBus.events.GROUP_CHANGED, handleGroupChanged);
+        eventBus.on(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
+        eventBus.on(eventBus.events.MESSAGE_REPORTED, hanldelPostReported);
+
+        // ICTODO: This doesn´t remove the event listeners.
+        return () => {
+            eventBus.off(eventBus.events.GROUP_CHANGED, handleGroupChanged);
+            eventBus.off(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
+            eventBus.off(eventBus.events.MESSAGE_REPORTED, hanldelPostReported);
+        }
+    }, []);
 
     function getMorePosts() {
         //If this is the first page, we don´t need to load more posts.
@@ -45,8 +71,6 @@ export default function Postlist(props) {
 
         const controller = new AbortController();
 
-        console.log({page, postsOffset});
-
         fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajaxchat.php?`+ new URLSearchParams({
             groupid: activeGroupid,
             page: page,
@@ -57,13 +81,10 @@ export default function Postlist(props) {
         .then(response => response.json())
         .then(data => {
             const newPosts = Object.values(data.posts).reverse();
-            console.log(data);
             setPosts((posts) => [...posts, ...newPosts]);
             setPage(page + 1);
         }).catch(error => {
-            if (error.name === 'AbortError') {
-                console.log('Fetch aborted');
-            } else {
+            if (error.name !== 'AbortError') {
                 console.log(error);
             }
         }).finally(() => {
@@ -85,13 +106,11 @@ export default function Postlist(props) {
             setPosts(initialPosts);
             setGroup(data.group);
             setIsLoading(false);
-            // Get the Id of the last element
+
+            // Get the ID of the last element, so we know where to start from when we get new posts.
             setLastPostId(initialPosts[0]?.id ?? 0);
-            console.log('Last post id: ' + lastPostId);
         }).catch(error => {
-            if (error.name === 'AbortError') {
-                console.log('Fetch aborted');
-            } else {
+            if (error.name !== 'AbortError') {
                 console.log(error);
             }
         });
@@ -102,8 +121,6 @@ export default function Postlist(props) {
     const getNewPosts = () => {
         if (lastPostId === null) return;
 
-        console.log('Getting new posts with lastPostId: ' + lastPostId);
-
         const controller = new AbortController();
 
         fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}`, {
@@ -111,7 +128,6 @@ export default function Postlist(props) {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('New Posts:', data);
             const newPosts = Object.values(data.posts).reverse();
 
             if (newPosts.length) {
@@ -152,7 +168,8 @@ export default function Postlist(props) {
                 {posts.map(post => {
                         return (
                             <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime}
-                                  comment={post.comment} attachments={post.attachments} reported={+post.flagged}/>
+                                  comment={post.comment} attachments={post.attachments} reported={!!+post.flagged}
+                                  deleted={!!+post.timedeleted}/>
                         );
                     }
                 )}

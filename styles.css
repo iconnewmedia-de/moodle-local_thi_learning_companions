@@ -234,6 +234,9 @@
 .learningcompanions_chat-my-post {
     background: #e6ffe3;
 }
+.learningcompanions_chat-reported-post {
+    background: #ffffcc;
+}
 .learningcompanions_loading {
     border: 16px solid var(--light);
     border-top: 16px solid var(--dark);

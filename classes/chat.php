@@ -9,16 +9,16 @@ class chat {
     public function __construct($groupid) {
         global $DB;
         $this->groupid = $groupid;
-        $this->chat = $DB->get_record('lc_chat', array('relatedid' => $groupid, 'chattype' => 1));
+        $this->chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => 1]);
         if (!$this->chat) {
             $chat = new \stdClass();
             $chat->chattype = 1;
             $chat->relatedid = $groupid;
             $chat->timecreated = time();
-            $group = $DB->get_record('lc_groups', array('id' => $groupid));
+            $group = $DB->get_record('lc_groups', ['id' => $groupid]);
             $chat->course = $group->courseid;
             $chatid = $DB->insert_record('lc_chat', $chat);
-            $this->chat = $DB->get_record('lc_chat', array('id' => $chatid));
+            $this->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
         }
         $this->chatid = $this->chat->id;
         $this->context = \context_system::instance();
@@ -67,7 +67,7 @@ class chat {
         // ICTODO: also get inline attachments
         foreach($comments as $comment) {
             $comment->datetime = userdate($comment->timecreated);
-            $comment->author = $DB->get_record('user', array('id' => $comment->userid), 'id,firstname,lastname,email,username');
+            $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
             $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
             if (array_key_exists($comment->id, $attachments)) {
                 $comment->attachments = $attachments[$comment->id];
@@ -91,7 +91,7 @@ class chat {
 
         foreach($comments as $comment) {
             $comment->datetime = userdate($comment->timecreated);
-            $comment->author = $DB->get_record('user', array('id' => $comment->userid), 'id,firstname,lastname,email,username');
+            $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
             $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
             if (array_key_exists($comment->id, $attachments)) {
                 $comment->attachments = $attachments[$comment->id];
@@ -104,7 +104,7 @@ class chat {
 
     public function set_latestviewedcomment(int $chatid) {
         global $DB, $USER;
-        $record = $DB->get_record('lc_chat_lastvisited', array('chatid' => $chatid, 'userid' => $USER->id));
+        $record = $DB->get_record('lc_chat_lastvisited', ['chatid' => $chatid, 'userid' => $USER->id]);
         if ($record) {
             $record->timevisited = time();
             $DB->update_record('lc_chat_lastvisited', $record);
@@ -131,13 +131,13 @@ class chat {
         global $USER, $OUTPUT, $CFG;
         $reactscript = \local_learningcompanions\get_chat_reactscript_path();
         $form = $this->get_submission_form(['chatid' => $this->chatid]);
-        $context = array(
+        $context = [
             'userid' => $USER->id,
             'reactscript' => $reactscript,
             'chatid' => $this->chatid,
             'groupid' => $this->groupid,
             'form' => $form
-        );
+        ];
         return $OUTPUT->render_from_template('local_learningcompanions/chat', $context);
     }
 
@@ -157,21 +157,21 @@ class chat {
         $draftideditor = file_get_submitted_draft_itemid('message');
 
         $form->set_data(
-            array(
+            [
                 'attachments' => $draftitemid,
                 'subject' => '',
-                'message' => array(
+                'message' => [
                     'text' => '',
                     'format' => editors_get_preferred_format(),
                     'itemid' => $draftideditor
-                ),
+                ],
                 'chatid' => $chatid
-            )
+            ]
         );
         $output = $form->render();
-        $output = str_replace("col-md-3", "d-none", $output);
-        $output = str_replace("col-form-label d-flex", "col-form-label", $output);
-        $output = str_replace("col-md-9", "", $output);
+        $output = str_replace(["col-md-3", "col-form-label d-flex", "col-md-9"], [
+            "d-none", "col-form-label", ""
+        ], $output);
         return $output;
     }
 

@@ -1,12 +1,13 @@
 /* eslint-disable no-undef, no-console */
-import React from "react";
 import Dateformatter from "./Dateformatter";
 
 export default function Group({handleGroupSelect, name, id, description, chatid, shortdescription, imageurl, latestcomment, activeGroupid}) {
     const changeGroup = function() {
         handleGroupSelect(id, chatid);
     };
+
     let cssclasses = 'learningcompanions_chat-group';
+
     if (typeof activeGroupid !== "undefined" && parseInt(activeGroupid) === parseInt(id)) {
         cssclasses += ' learningcompanions_currentgroup';
     }
@@ -14,7 +15,7 @@ export default function Group({handleGroupSelect, name, id, description, chatid,
     return (
         <div onClick={changeGroup} id={"learningcompanions_chat-group-" + id} className={cssclasses}>
             <Dateformatter timestamp={latestcomment} />
-            <img className="learningcompanions_group_image_small" src={imageurl} alt={`Group picture for group ${name}`}/>
+            <img className="learningcompanions_group_image_small" src={imageurl} />
             <em>{name}</em><br />
             <span>{shortdescription}</span><br />
         </div>

@@ -6,9 +6,6 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
     plugins: [react()],
     build: {
-        watch: {
-            include: 'src/**'
-        },
         outDir: 'build',
         rollupOptions: {
             external: ['react', 'react-dom'],

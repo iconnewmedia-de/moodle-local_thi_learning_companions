@@ -27,7 +27,6 @@ export const init = async() => {
     ];
 
     strings = await str.get_strings(stringsObj);
-    console.log('Strings:', strings);
 
     const body = $('body');
 
@@ -38,54 +37,41 @@ export const init = async() => {
 };
 
 const handleCommentDelete = async function(e) {
-    console.log('clicked delete comment. event object:', e);
-    console.log('clicked delete comment for comment id:', e.target.dataset.id);
-    var commentid = e.target.dataset.id;
-    console.log('commentid before creating modal:', commentid);
-    console.log(ModalFactory);
+    const postId = +e.target.dataset.id;
 
-    return ModalFactory.create({
+    const modal = await ModalFactory.create({
         type: ModalFactory.types.SAVE_CANCEL,
         title: strings[0],
         body: '' +
             '<div id="learningcompanions-deletecomment-modal">' +
             '<div id="learningcompanions-deletecomment-modal-text">' + strings[1] + '</div>' +
             '</div>',
-        // footer: '' +
-        //     '<div id="learningcompanions-deletecomment-modal-buttons">' +
-        //     '<button class="btn btn-primary" aria-hidden="true" id="learningcompanions-deletecomment-modal-delete" data-cid="' + commentid + '">' + strings[2] + '</button>' +
-        //     '<button class="btn btn-secondary" aria-hidden="true" id="learningcompanions-deletecomment-modal-close" data-action="hide">' + strings[3] + '</button>' +
-        //     '</div>'
-    }).then(function(modal) {
-        console.log('comment id from data:', commentid);
-
-        modal.getRoot().on(ModalEvents.save, function() {
-            console.log('about to call ajaxdeletecomment.php with comment id', commentid);
-            $.ajax({
-                url: M.cfg.wwwroot + '/local/learningcompanions/ajaxdeletecomment.php',
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    commentid: commentid
-                },
-                success: function(data) {
-                    // modal.destroy();
-                    if (data === 'fail') {
-                        // ICTODO: output fail message
-                    } else {
-                        // ICTODO: output success message
-                    }
-                    document.dispatchEvent(new CustomEvent('learningcompanions_message_deleted', {detail: {postid: commentid}}));
-                    document.dispatchEvent(new ModalEvents.hidden);
-                }
-            });
-        });
-        modal.setSaveButtonText(strings[2]);
-        // modal.getRoot().on(ModalEvents.hidden, function () {
-        //     modal.destroy();
-        // });
-        modal.show();
     });
+
+    console.log('comment id from data:', postId);
+
+    modal.getRoot().on(ModalEvents.save, function() {
+        $.ajax({
+            url: M.cfg.wwwroot + '/local/learningcompanions/ajaxdeletecomment.php',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                commentid: postId
+            },
+            success: function(data) {
+                // modal.destroy();
+                if (data === 'fail') {
+                    // ICTODO: output fail message
+                } else {
+                    // ICTODO: output success message
+                }
+                document.dispatchEvent(new CustomEvent('learningcompanions_message_deleted', {detail: {postid: postId}}));
+                // document.dispatchEvent(new ModalEvents.hidden);
+            }
+        });
+    });
+    modal.setSaveButtonText(strings[2]);
+    modal.show();
 };
 const handleCommentEdit = async function(e) {
     console.log('clicked edit comment. event object:', e);
@@ -129,34 +115,26 @@ const handleCommentEdit = async function(e) {
     });
 };
 const handleCommentReport = async function(e) {
-    console.log('clicked report comment. event object:', e);
-    console.log('clicked report comment for comment id:', e.target.dataset.id);
-    var commentid = e.target.dataset.id;
-    console.log('commentid before creating modal:', commentid);
-    console.log(ModalFactory);
+    const postId = +e.target.dataset.id;
+
     return ModalFactory.create({
         type: ModalFactory.types.SAVE_CANCEL,
         title: strings[5],
         body: '' +
             '<div id="learningcompanions-reportcomment-modal">' +
             '<div id="learningcompanions-reportcomment-modal-text">' + strings[6] + '</div>' +
-            '</div>',
-        // footer: '' +
-        //     '<div id="learningcompanions-deletecomment-modal-buttons">' +
-        //     '<button class="btn btn-primary" aria-hidden="true" id="learningcompanions-deletecomment-modal-delete" data-cid="' + commentid + '">' + strings[2] + '</button>' +
-        //     '<button class="btn btn-secondary" aria-hidden="true" id="learningcompanions-deletecomment-modal-close" data-action="hide">' + strings[3] + '</button>' +
-        //     '</div>'
+            '</div>'
     }).then(function(modal) {
-        console.log('comment id from data:', commentid);
+        console.log('comment id from data:', postId);
 
         modal.getRoot().on(ModalEvents.save, function() {
-            console.log('about to call ajaxdeletecomment.php with comment id', commentid);
+            console.log('about to call ajaxdeletecomment.php with comment id', postId);
             $.ajax({
-                url: M.cfg.wwwroot + '/local/learningcompanions/ajaxreport.php',
+                url: `${M.cfg.wwwroot}/local/learningcompanions/ajaxreport.php`,
                 method: 'POST',
                 dataType: 'json',
                 data: {
-                    commentid: commentid
+                    commentid: postId
                 },
                 success: function(data) {
                     // modal.destroy();
@@ -165,15 +143,12 @@ const handleCommentReport = async function(e) {
                     } else {
                         // ICTODO: output success message
                     }
-                    document.dispatchEvent(new CustomEvent('learningcompanions_message_reported'));
-                    document.dispatchEvent(new ModalEvents.hidden);
+                    document.dispatchEvent(new CustomEvent('learningcompanions_message_reported', {detail: {postid: postId}}));
+                    // document.dispatchEvent(ModalEvents.hidden);
                 }
             });
         });
         modal.setSaveButtonText(strings[7]);
-        // modal.getRoot().on(ModalEvents.hidden, function () {
-        //     modal.destroy();
-        // });
         modal.show();
     });
 };

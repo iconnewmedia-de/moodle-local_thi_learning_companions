@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function GroupHeader({group}) {
     return (
         <div className='learningcompanions_groupheader'>

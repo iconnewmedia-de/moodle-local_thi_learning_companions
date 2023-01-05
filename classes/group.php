@@ -151,6 +151,8 @@ class group {
         $this->createdby_fullname = fullname($user);
         $this->createdby_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
 
+        $this->latestcomment = $DB->get_field('lc_chat_comment', 'MAX(timecreated)', ['chatid' => $chat->id, 'timedeleted' => null]);
+
         $this->timecreated_userdate = $this->timecreated > 0 ? userdate($this->timecreated) : '-';
         $this->timecreated_dmY =  $this->timecreated > 0 ? date('d.m.Y', $this->timecreated) : '-';
         $this->timemodified_userdate = $this->timemodified > 0 ? userdate($this->timemodified) : '-';
