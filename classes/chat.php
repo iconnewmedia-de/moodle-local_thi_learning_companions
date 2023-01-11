@@ -84,7 +84,7 @@ class chat {
      * @return array
      * @throws \dml_exception
      */
-    public function get_posts_for_chat(int $firstPostId = null, int $includedPostId = null) {
+    public function get_posts_for_chat(int $firstPostId = null, int $includedPostId = 0) {
         global $DB;
 
         $stepSize = 5;
@@ -97,14 +97,14 @@ class chat {
         $sql = 'SELECT * FROM {lc_chat_comment} WHERE chatid = :chatid AND id < :firstpostid ';
         $params = ['chatid' => $this->chatid, 'firstpostid' => $firstPostId];
 
-        if (!is_null($includedPostId)) {
+        if ($includedPostId !== 0) {
             $sql .= ' AND id >= :includedpostid ';
             $params['includedpostid'] = $includedPostId;
         }
 
         $sql .= 'ORDER BY timecreated DESC ';
 
-        if (is_null($includedPostId)) {
+        if ($includedPostId === 0) {
             $sql .= ' LIMIT 0, '.$stepSize;
         }
         $comments = $DB->get_records_sql($sql, $params);
@@ -124,7 +124,7 @@ class chat {
             }
         }
 
-        if (!is_null($includedPostId)) {
+        if ($includedPostId !== 0) {
             $moreCommentsAfterTheIncluded = $this->get_posts_for_chat($includedPostId);
             $comments = array_merge($comments, $moreCommentsAfterTheIncluded);
         }

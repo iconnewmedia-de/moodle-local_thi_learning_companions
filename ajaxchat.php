@@ -7,7 +7,7 @@ require_login();
 $groupid = optional_param('groupid', 1, PARAM_INT); // ICTODO: turn this into a required param. Just using optional with default for testing/development purposes
 $chatid = optional_param('chatid', 1, PARAM_INT); // ICTODO: turn this into a required param. Just using optional with default for testing/development purposes
 $firstPostId = optional_param('firstPostId', null, PARAM_INT);
-$includedPostId = optional_param('includedPostId', null, PARAM_INT);
+$includedPostId = optional_param('includedPostId', 0, PARAM_INT);
 
 $chat = new local_learningcompanions\chat($groupid);
 $chat->set_latestviewedcomment($chatid);
