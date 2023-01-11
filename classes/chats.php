@@ -157,7 +157,7 @@ class chats {
         global $CFG, $DB;
         require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
 
-        if ($comments = $DB->get_records('lc_chat_comment', array('flagged' => 1), 'timecreated')) {
+        if ($comments = $DB->get_records('lc_chat_comment', ['flagged' => 1], 'timecreated')) {
             $attachments = local_learningcompanions_get_attachments_of_chat_comments($comments, 'attachments');
 
             foreach ($comments as $comment) {
@@ -178,14 +178,15 @@ class chats {
         global $CFG, $DB;
 
         foreach($comments as $comment) {
-            $comment->author = $DB->get_record('user', array('id' => $comment->userid));
+            $comment->author = $DB->get_record('user', ['id' => $comment->userid]);
             $comment->author_fullname = fullname($comment->author);
             $comment->author_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$comment->userid;
-            $comment->flaggedbyuser = $DB->get_record('user', array('id' => $comment->flaggedby));
+            $comment->flaggedbyuser = $DB->get_record('user', ['id' => $comment->flaggedby]);
             $comment->flaggedbyuser_fullname = fullname($comment->flaggedbyuser);
             $comment->flaggedbyuser_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$comment->flaggedby;
             $comment->commentdate = date('d.m.Y', $comment->timecreated);
             $comment->relatedchat_url = $CFG->wwwroot;
+            $comment->groupId = $DB->get_field('lc_chat', 'relatedid', ['id' => $comment->chatid]);
 
             $comment->origincomment = $comment->comment;
             if ($cut && strlen($comment->comment) > 100) {

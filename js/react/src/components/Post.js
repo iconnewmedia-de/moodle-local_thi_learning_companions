@@ -1,10 +1,9 @@
 /* eslint-disable no-undef, no-console */
-// import React from "react";
 import Attachmentlist from "./Attachmentlist";
 import DeleteButton from "./PostButtons/DeleteButton";
 import ReportButton from "./PostButtons/ReportButton";
 
-export default function Post({author, id, datetime, comment, attachments, reported, deleted}) {
+export default function Post({author, id, datetime, comment, attachments, reported, deleted, highlighted}) {
     let showDeleteButton = false;
     let showReportButton = false;
     let cssClass;
@@ -21,7 +20,7 @@ export default function Post({author, id, datetime, comment, attachments, report
     reported && (cssClass += ' learningcompanions_chat-reported-post');
 
     return (
-        <div id={"learningcompanions_chat-post-" + id} className={'learningcompanions_chat-post ' + cssClass}>
+        <div id={`learningcompanions_chat-post-${id}`} className={`learningcompanions_chat-post ${cssClass}`}>
             <strong>{author.firstname} {author.lastname}</strong><br />
             <em>{datetime}</em><br />
 
@@ -33,6 +32,12 @@ export default function Post({author, id, datetime, comment, attachments, report
                 {showDeleteButton && <DeleteButton id={id} />}
                 {showReportButton && !reported && <ReportButton id={id} />}
             </div>
+            <span>ID: {id}</span>
+            {highlighted && (
+                <>
+                    <br />
+                    <span className="highlighted-post">Highlighted</span>
+                </>)}
         </div>
     )
 };

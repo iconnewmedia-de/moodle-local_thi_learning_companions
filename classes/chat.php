@@ -58,10 +58,9 @@ class chat {
      * @return array
      * @throws \dml_exception
      */
-    public function get_comments(int $page = 1, int $offset = 0) {
+    public function get_comments() {
         global $DB;
-        $stepSize = 5;
-        $comments = $DB->get_records('lc_chat_comment', ['chatid' => $this->chatid], 'timecreated DESC', '*', ($page-1) * $stepSize + $offset, $stepSize);
+        $comments = $DB->get_records('lc_chat_comment', ['chatid' => $this->chatid], 'timecreated DESC');
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
         $context = \context_system::instance();
         // ICTODO: also get inline attachments
@@ -74,6 +73,60 @@ class chat {
             } else {
                 $comment->attachments = [];
             }
+        }
+        return $comments;
+    }
+
+    /**
+     * @param int|null $firstPostId The last post id, that was already loaded. If null, the posts will be loaded from the beginning
+     * @param int|null $includedPostId The id of the Post, that should be included in the result, even if it is older than $firstPostId
+     *
+     * @return array
+     * @throws \dml_exception
+     */
+    public function get_posts_for_chat(int $firstPostId = null, int $includedPostId = null) {
+        global $DB;
+
+        $stepSize = 5;
+
+        if (is_null($firstPostId)) {
+            $firstPostId = $DB->get_field_sql('SELECT MAX(id) FROM {lc_chat_comment} WHERE chatid = ?', [$this->chatid]);
+            $firstPostId++;
+        }
+
+        $sql = 'SELECT * FROM {lc_chat_comment} WHERE chatid = :chatid AND id < :firstpostid ';
+        $params = ['chatid' => $this->chatid, 'firstpostid' => $firstPostId];
+
+        if (!is_null($includedPostId)) {
+            $sql .= ' AND id >= :includedpostid ';
+            $params['includedpostid'] = $includedPostId;
+        }
+
+        $sql .= 'ORDER BY timecreated DESC ';
+
+        if (is_null($includedPostId)) {
+            $sql .= ' LIMIT 0, '.$stepSize;
+        }
+        $comments = $DB->get_records_sql($sql, $params);
+
+        $attachments = $this->get_attachments_of_comments($comments, 'attachments');
+        $context = \context_system::instance();
+
+        // ICTODO: also get inline attachments
+        foreach($comments as $comment) {
+            $comment->datetime = userdate($comment->timecreated);
+            $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
+            $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
+            if (array_key_exists($comment->id, $attachments)) {
+                $comment->attachments = $attachments[$comment->id];
+            } else {
+                $comment->attachments = [];
+            }
+        }
+
+        if (!is_null($includedPostId)) {
+            $moreCommentsAfterTheIncluded = $this->get_posts_for_chat($includedPostId);
+            $comments = array_merge($comments, $moreCommentsAfterTheIncluded);
         }
         return $comments;
     }

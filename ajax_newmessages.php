@@ -14,4 +14,4 @@ $lastPostId = required_param('lastPostId', PARAM_INT);
 $chat = new local_learningcompanions\chat($groupId);
 $posts = $chat->get_newest_posts($lastPostId);
 
-echo json_encode(['posts' => $posts]);
+echo json_encode(['posts' => array_values($posts)]);

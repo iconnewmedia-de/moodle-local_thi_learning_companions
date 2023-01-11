@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, no-console */
+/* eslint-disable no-console */
 import {useState, useEffect, useCallback} from "react";
 import Post from "./Post";
 import GroupHeader from "./GroupHeader";
@@ -12,19 +12,17 @@ export default function Postlist(props) {
 
     const [posts, setPosts] = useState([]);
     const [group, setGroup] = useState({});
-    const [page, setPage] = useState(1);
-    const [postsOffset, setPostsOffset] = useState(0);
     const [activeGroupid, setActiveGroupid] = useState(props.activeGroupid);
     const [chattimer, setChattimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const [lastPostId, setLastPostId] = useState(null);
+    const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
+    const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
     let updateRunning = false;
+    const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
 
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
         setActiveGroupid(data.groupid);
-        setPage(1);
-        setPostsOffset(0);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
@@ -56,33 +54,47 @@ export default function Postlist(props) {
         }
     }, []);
 
-    function getMorePosts() {
-        //If this is the first page, we don´t need to load more posts.
-        if (page === 1) {
-            setPage(page + 1);
+    // Scroll to the Id
+    useEffect(() => {
+        if (!highlightedPostId) {
             return;
         }
+
+        // setHighlightedPostId(postId);
+        const element = document.querySelector(`#learningcompanions_chat-post-${highlightedPostId}`);
+        console.log('Found element:', element);
+
+        if (!element) {
+            return;
+        }
+
+        element.scrollIntoView();
+    }, [isLoading]);
+
+    function getMorePosts() {
+        if (firstPostId === null) return;
 
         if (updateRunning) {
             return;
         }
-
         updateRunning = true;
 
         const controller = new AbortController();
 
         fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajaxchat.php?`+ new URLSearchParams({
             groupid: activeGroupid,
-            page: page,
-            offset: postsOffset
+            firstPostId: firstPostId,
         }), {
             signal: controller.signal
         })
         .then(response => response.json())
         .then(data => {
-            const newPosts = Object.values(data.posts).reverse();
-            setPosts((posts) => [...posts, ...newPosts]);
-            setPage(page + 1);
+            const newPosts = data.posts;
+
+            if (newPosts.length) {
+                setPosts((posts) => [...posts, ...newPosts]);
+                setFirstPostId(newPosts[newPosts.length - 1].id);
+            }
         }).catch(error => {
             if (error.name !== 'AbortError') {
                 console.log(error);
@@ -94,21 +106,26 @@ export default function Postlist(props) {
         return () => controller.abort();
     }
 
-    const getInitialPosts = () => {
+    function getInitialPosts() {
         const controller = new AbortController();
 
-        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?groupid=' + activeGroupid, {
+        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
+            groupid: activeGroupid,
+            includedPostId: highlightedPostId
+        }), {
             signal: controller.signal
         })
         .then(response => response.json())
         .then(data => {
-            const initialPosts = Object.values(data.posts).reverse();
+            const initialPosts = data.posts;
             setPosts(initialPosts);
             setGroup(data.group);
             setIsLoading(false);
 
             // Get the ID of the last element, so we know where to start from when we get new posts.
             setLastPostId(initialPosts[0]?.id ?? 0);
+            // Also set the "first" post id, so we can get older posts.
+            setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
         }).catch(error => {
             if (error.name !== 'AbortError') {
                 console.log(error);
@@ -116,9 +133,9 @@ export default function Postlist(props) {
         });
 
         return () => controller.abort();
-    };
+    }
 
-    const getNewPosts = () => {
+    function getNewPosts() {
         if (lastPostId === null) return;
 
         const controller = new AbortController();
@@ -128,10 +145,9 @@ export default function Postlist(props) {
         })
         .then(response => response.json())
         .then(data => {
-            const newPosts = Object.values(data.posts).reverse();
+            const newPosts = data.posts;
 
             if (newPosts.length) {
-                setPostsOffset(postsOffset => postsOffset + newPosts.length);
                 setPosts((posts) => [...newPosts, ...posts]);
                 setLastPostId(newPosts[0].id);
             }
@@ -169,7 +185,7 @@ export default function Postlist(props) {
                         return (
                             <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime}
                                   comment={post.comment} attachments={post.attachments} reported={!!+post.flagged}
-                                  deleted={!!+post.timedeleted}/>
+                                  deleted={!!+post.timedeleted} highlighted={post.id === highlightedPostId}/>
                         );
                     }
                 )}
