@@ -20,10 +20,16 @@ $groups = \local_learningcompanions\groups::get_all_groups(true);
 $hasgroups = count($groups) > 0;
 
 echo $OUTPUT->header();
+$creategroupurl = $CFG->wwwroot . '/local/learningcompanions/group/create.php';
+$courseid = optional_param('courseid', 0, PARAM_INT);
+if ($courseid > 0) {
+    $creategroupurl .= '?courseid=' . $courseid;
+}
 echo $OUTPUT->render_from_template('local_learningcompanions/group/group_search', array(
     'cfg' => $CFG,
     'groups' => array_values($groups),
     'hasgroups' => $hasgroups,
-    'keywords' => \local_learningcompanions\groups::get_all_keywords()
+    'keywords' => \local_learningcompanions\groups::get_all_keywords(),
+    'creategroupurl' => $creategroupurl
 ));
 echo $OUTPUT->footer();

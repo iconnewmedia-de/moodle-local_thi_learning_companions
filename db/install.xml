@@ -134,6 +134,7 @@
                  <FIELD NAME="flaggedby" TYPE="int"  LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="id of reporting user"/>
                  <FIELD NAME="totalscore" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="counts the upvotes for a comment"/>
                  <FIELD NAME="timecreated" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                 <FIELD NAME="timedeleted" TYPE="int"  LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
                  <FIELD NAME="timemodified" TYPE="int"  LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
             </FIELDS>
             <KEYS>

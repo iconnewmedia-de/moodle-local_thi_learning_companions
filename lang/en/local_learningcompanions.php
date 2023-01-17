@@ -32,6 +32,7 @@ $string['learningcompanions:delete_comments_of_others'] = 'Delete comments of ot
 $string['adminareaname'] = 'Learning Companions';
 $string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
 
+$string['create_new_group'] = 'Create new group';
 $string['no_permission_create_group'] = 'You don\'t have the permission to create groups';
 $string['failed_create_group'] = 'Unexpected error. Creating a new group failed with the error message: ';
 $string['category_for_groups'] = 'Category for Groups';
@@ -69,6 +70,7 @@ You can begin typing and autocomplete will suggest matching courses that you\'re
 $string['nuggetcontext_help'] = 'If this group\'s purpose relates to a certain learning nugget, you can select the nugget here.
 You can begin typing and autocomplete will suggest matching nuggets that belong to the course you\'ve seleced above';
 $string['keywords_help'] = 'Type into the search field and hit comma, enter or tab to add a keyword that describes the topic. You can add multiple keywords.';
+$string['invite_member'] = 'Invite member';
 
 // Mentor
 $string['myquestions'] = 'My questions';
