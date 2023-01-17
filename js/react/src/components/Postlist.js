@@ -23,6 +23,7 @@ export default function Postlist(props) {
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
         setActiveGroupid(data.groupid);
+        window.history.replaceState(null, "Chat", `${window.M.cfg.wwwroot}/local/learningcompanions/chat.php?groupid=${data.groupid}`);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
