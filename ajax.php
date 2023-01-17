@@ -104,6 +104,8 @@ function leaveGroup() {
     // The user can´t leave the group and has to select a new admin first
     if ($isAdmin && count($group->admins) === 1 && count($group->groupmembers) > 1) {
         $response = ['leaved' => false, 'needsNewAdmin' => true];
+    } else if ($group->closedgroup && count($group->groupmembers) === 1) {
+        $response = ['leaved' => false, 'isLastMember' => true];
     } else {
         $leaved = \local_learningcompanions\groups::leave_group($USER->id, $groupid);
         $response = ['leaved' => $leaved];

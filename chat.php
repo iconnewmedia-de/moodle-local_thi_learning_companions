@@ -23,7 +23,7 @@ $PAGE->requires->js(new moodle_url('https://unpkg.com/react@18/umd/react.develop
 //$PAGE->requires->js(new moodle_url('https://unpkg.com/react@18.2.0/umd/react.production.min.js'), true);
 $PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18/umd/react-dom.development.js'), true);
 //$PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js'), true);
-$PAGE->requires->js(new moodle_url('http://thi.local/local/learningcompanions/js/react/build/learningcompanions-chat.min.js'));
+$PAGE->requires->js(new moodle_url('/local/learningcompanions/js/react/build/learningcompanions-chat.min.js'));
 
 echo $OUTPUT->header();
 

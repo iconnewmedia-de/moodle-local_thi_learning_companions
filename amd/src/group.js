@@ -1,4 +1,4 @@
-/* eslint-disable jsdoc/require-jsdoc */
+/* eslint-disable jsdoc/require-jsdoc, no-console, max-len */
 import $ from 'jquery';
 import * as str from 'core/str';
 import * as ModalFactory from 'core/modal_factory';
@@ -36,7 +36,6 @@ const setupDatatables = async() => {
             const table = this.api();
 
             datatablesHelpers.setupSearchRules('.js-group-filter--search', table);
-
             datatablesHelpers.addRedrawEvent('.js-group-filter', table);
         },
     });
@@ -55,30 +54,22 @@ const attachEvents = () => {
     body.on('click', '.js-join-group', handleGroupJoinButton);
 
     body.on('click', '.js-invite-member', handleGroupInviteButton);
-
-    // body.on('click', '.js-search-invite', handleSearchInviteButton);
 };
-
-// const handleSearchInviteButton = async function(e) {
-//     e.preventDefault();
-//
-//     // const groupId = $(this).data('groupid');
-//     // const searchString = $('.js-invite-input').val();
-//
-//
-// };
 
 const handleGroupInviteButton = async function(e) {
     e.preventDefault();
 
     const groupId = $(this).data('groupid');
 
-    const {html} = await Templates.renderForPromise('local_learningcompanions/group/group_invite', {
+    const templatePromise = Templates.renderForPromise('local_learningcompanions/group/group_invite', {
         groupId
     });
+    const titlePromise = str.get_string('group_invite_title', 'local_learningcompanions');
+
+    const [{html}, title] = await Promise.all([templatePromise, titlePromise]);
 
     const modal = await ModalFactory.create({
-        title: 'Invite member',
+        title: title,
         body: html,
         footer: '',
         large: false
@@ -98,15 +89,17 @@ const handleTableRowClick = async function(e) {
     const groupid = $(this).data('gid');
     const groupname = $(this).data('title');
 
-    const groupDetails = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+    const groupDetailsPromise = promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
         action: 'getgroupdetails',
         groupid: groupid
     });
+    const titlePromise = str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
 
-    const title = await str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
+    const [{html}, title] = await Promise.all([groupDetailsPromise, titlePromise]);
+
     const modal = await ModalFactory.create({
         title: title,
-        body: groupDetails.html,
+        body: html,
         footer: '',
         large: true
     });
@@ -123,7 +116,7 @@ const handleGroupLeaveButton = async function(e) {
     const groupId = $(this).data('groupid');
 
     /**
-     * @type {{needsNewAdmin: ?bool, leaved: bool}}
+     * @type {{needsNewAdmin: ?bool, leaved: bool, isLastMember: ?bool}}
      */
     const response = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
         action: 'leavegroup',
@@ -131,12 +124,14 @@ const handleGroupLeaveButton = async function(e) {
     });
 
     if (response.needsNewAdmin) {
-        // eslint-disable-next-line max-len
-        const possibleNewAdminsBody = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+        const possibleNewAdminsBodyPromise = promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
             action: 'getpossiblenewadmins',
             groupid: groupId
         });
-        const title = await str.get_string('modal-groupdetails-needsnewadmin', 'local_learningcompanions');
+        const titlePromise = str.get_string('modal-groupdetails-needsnewadmin', 'local_learningcompanions');
+
+        const [possibleNewAdminsBody, title] = await Promise.all([possibleNewAdminsBodyPromise, titlePromise]);
+
         const modal = await ModalFactory.create({
             title: title,
             body: possibleNewAdminsBody,
@@ -149,11 +144,38 @@ const handleGroupLeaveButton = async function(e) {
         });
         modal.show();
 
-        // eslint-disable-next-line max-len
         const newAdminForm = new DynamicForm(document.querySelector('#formcontainer'), 'local_learningcompanions\\forms\\assign_new_admin_while_leaving_form');
         newAdminForm.load({groupId: groupId});
         newAdminForm.addEventListener(newAdminForm.events.FORM_SUBMITTED, () => {
             window.location.reload();
+        });
+    }
+
+    if (response.isLastMember) {
+        const templatePromise = Templates.renderForPromise('local_learningcompanions/group/group_modal_confirm_leave', {});
+        const titlePromise = str.get_string('modal-groupdetails-leavetitle', 'local_learningcompanions');
+
+        const [{html}, title] = await Promise.all([templatePromise, titlePromise]);
+
+        const modal = await ModalFactory.create({
+            title: title,
+            body: html,
+            footer: '',
+            large: false
+        });
+
+        modal.getRoot().on(ModalEvents.hidden, function() {
+            modal.destroy();
+        });
+        modal.show();
+
+        const confirmLeaveForm = new DynamicForm(document.querySelector('#formcontainer'), 'local_learningcompanions\\forms\\last_user_leaves_closed_group_form');
+        confirmLeaveForm.load({groupId: groupId});
+        confirmLeaveForm.addEventListener(confirmLeaveForm.events.FORM_SUBMITTED, () => {
+            window.location.reload();
+        });
+        confirmLeaveForm.addEventListener(confirmLeaveForm.events.FORM_CANCELLED, () => {
+            modal.destroy();
         });
     }
 

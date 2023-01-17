@@ -2,8 +2,9 @@
 import Attachmentlist from "./Attachmentlist";
 import DeleteButton from "./PostButtons/DeleteButton";
 import ReportButton from "./PostButtons/ReportButton";
+import Dateformatter from './Dateformatter';
 
-export default function Post({author, id, datetime, comment, attachments, reported, deleted, highlighted}) {
+export default function Post({author, id, datetime, timestamp, comment, attachments, reported, deleted, highlighted}) {
     let showDeleteButton = false;
     let showReportButton = false;
     let cssClass;
@@ -22,7 +23,7 @@ export default function Post({author, id, datetime, comment, attachments, report
     return (
         <div id={`learningcompanions_chat-post-${id}`} className={`learningcompanions_chat-post ${cssClass}`}>
             <strong>{author.firstname} {author.lastname}</strong><br />
-            <em>{datetime}</em><br />
+            <em><Dateformatter timestamp={timestamp} format={{ year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long'}}/></em><br />
 
             {!deleted && <div dangerouslySetInnerHTML={{__html: comment}}></div>}
             {deleted && <div><i>Message Deleted</i></div>}

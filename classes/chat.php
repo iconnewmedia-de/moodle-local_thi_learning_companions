@@ -194,8 +194,7 @@ class chat {
         return $OUTPUT->render_from_template('local_learningcompanions/chat', $context);
     }
 
-    protected function get_submission_form($customdata)
-    {
+    protected function get_submission_form($customdata) {
         global $USER;
         require_once(__DIR__. "/chat_post_form.php");
         // ICTODO: dynamically get the course and module from the currently selected group
@@ -226,6 +225,37 @@ class chat {
             "d-none", "col-form-label", ""
         ], $output);
         return $output;
+    }
+
+    public function get_last_active_time() {
+        global $DB;
+        return $DB->get_field_sql('SELECT timecreated FROM {lc_chat_comment} WHERE chatid = ? ORDER BY timecreated DESC LIMIT 1', [$this->chatid]);
+    }
+
+    /**
+     * @param bool $excludeCurrentUser True, if the current user should be ignored.
+     *
+     * @return false|int
+     * @throws \dml_exception
+     */
+    public function get_last_active_userid(bool $excludeCurrentUser = false) {
+        global $DB, $USER;
+
+        $sql = 'SELECT cc.userid FROM mdl_lc_chat_comment cc
+    LEFT JOIN mdl_lc_chat chat ON cc.chatid = chat.id
+    LEFT JOIN mdl_lc_group_members members ON members.groupid = chat.relatedid AND chat.chattype = 1
+         AND cc.userid = members.userid
+    WHERE chatid = ? ';
+        $params = [$this->chatid];
+
+        if ($excludeCurrentUser) {
+            $sql .= ' AND members.userid != ? ';
+            $params[] = $USER->id;
+        }
+
+        $sql .= ' ORDER BY cc.timecreated DESC LIMIT 1;';
+
+        return $DB->get_field_sql($sql, $params);
     }
 
 }

@@ -22,25 +22,25 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
      */
     protected function definition() {
         $mform = $this->_form;
+        $groupid = $this->_ajaxformdata['groupId'];
+        $group = \local_learningcompanions\groups::get_group_by_id($groupid);
 
-        $possibleAdmins = $this->getPossibleAdmins();
+        $possibleAdmins = $this->getPossibleAdmins($group);
 
         $mform->addElement('static', 'description', get_string('assign_new_admin_while_leaving_description', 'local_learningcompanions'));
         $mform->addElement('hidden', 'groupId', $this->_ajaxformdata['groupId']);
         $mform->addElement('select', 'newAdmin', get_string('choose_new_admin', 'local_learningcompanions'), $possibleAdmins);
-        $this->add_action_buttons(false, 'Leave group');
+        $mform->setDefault('newAdmin', $group->chat->get_last_active_userid(true));
+        $this->add_action_buttons(false, get_string('leave_group', 'local_learningcompanions'));
     }
 
-    private function getPossibleAdmins(): array {
+    private function getPossibleAdmins(group $group): array {
         global $USER;
 
-        $groupid = $this->_ajaxformdata['groupId'];
-        $group = \local_learningcompanions\groups::get_group_by_id($groupid);
         $groupmembers = $group->groupmembers;
         $groupmembers = array_filter($groupmembers, static function($member) use ($USER) {
             return $member->id !== $USER->id;
         });
-        //ICTODO: the first user should be the last active user, because this user is the one, that gets shown the first
         $possibleAdmins = [];
         foreach ($groupmembers as $member) {
             $possibleAdmins[$member->id] = fullname($member);

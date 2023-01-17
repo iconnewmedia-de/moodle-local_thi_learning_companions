@@ -1,6 +1,5 @@
 <?php
 namespace local_learningcompanions;
-include_once __DIR__ . "/groups.php";
 require_once dirname(__DIR__). '/lib.php';
 
 class group {
@@ -134,6 +133,21 @@ class group {
      */
     public $currentUserIsMember;
 
+    /**
+     * @var chat
+     */
+    private $chat;
+
+    public $last_active_time;
+    /**
+     * @var string
+     */
+    public $last_active_time_dmy;
+    /**
+     * @var false|int
+     */
+    public $last_active_userid;
+
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER;
         if (is_null($userid)) {
@@ -172,6 +186,10 @@ class group {
             $this->shortdescription .= " ...";
         }
         $this->chatid = $chat->id;
+        $this->chat = new chat($this->id);
+        $this->last_active_time = $this->chat->get_last_active_time() ?? 0;
+        $this->last_active_time_dmy = !$this->last_active_time ? '-' : date('d.m.Y',$this->last_active_time);
+        $this->last_active_userid = $this->chat->get_last_active_userid();
 
         $this->get_image();
         $this->get_imageurl();
@@ -347,7 +365,7 @@ class group {
             'SELECT DISTINCT k.keyword
                     FROM {lc_keywords} k
                     JOIN {lc_groups_keywords} gk ON gk.groupid = ? AND gk.keywordid = k.id',
-            array($this->id)
+            [$this->id]
         );
         $this->keywords = array_keys($keywords);
         return $this->keywords;
@@ -441,7 +459,7 @@ class group {
         if (!is_null($this->admins)) {
             return $this->admins;
         }
-        global $DB, $CFG;
+        global $DB, $CFG, $OUTPUT;
 
         $sql = 'SELECT u.*,
                        gm.joined
@@ -454,8 +472,12 @@ class group {
         foreach ($admins as $admin) {
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;
-            $admin->password = '';
+            unset($admin->password);
             $admin->status = get_user_status($admin->id);
+            $admin->userpic = $OUTPUT->user_picture($admin, [
+                'link' => false, 'visibletoscreenreaders' => false,
+                'class' => 'userpicture'
+            ]);
         }
 
         $this->admins = array_values($admins);
@@ -480,5 +502,9 @@ class group {
             return '';
         }
         return $lastcomment->comment;
+    }
+
+    public function get_chat() {
+        return $this->chat;
     }
 }

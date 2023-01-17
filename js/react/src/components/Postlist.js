@@ -183,7 +183,7 @@ export default function Postlist(props) {
             <div className="post-wrapper" onScroll={handleWrapperScroll}>
                 {posts.map(post => {
                         return (
-                            <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime}
+                            <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime} timestamp={post.timecreated}
                                   comment={post.comment} attachments={post.attachments} reported={!!+post.flagged}
                                   deleted={!!+post.timedeleted} highlighted={post.id === highlightedPostId}/>
                         );
