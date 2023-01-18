@@ -64,11 +64,12 @@ function getGroupDetails() {
     global $OUTPUT, $CFG;
     $groupid = required_param('groupid', PARAM_INT);
     $group = \local_learningcompanions\groups::get_group_by_id($groupid);
-
+    $cm = $group->cm;
     echo json_encode(['html' => $OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', [
         'group' => $group,
         'groupadmins' => $group->admins,
-        'cfg' => $CFG
+        'cfg' => $CFG,
+        'cm' => $cm
     ])], JSON_THROW_ON_ERROR);
 }
 

@@ -301,3 +301,7 @@
 .invite-radio:checked + label {
     background: #0ff;
 }
+
+#allgroupstable tr {
+    cursor: pointer;
+}

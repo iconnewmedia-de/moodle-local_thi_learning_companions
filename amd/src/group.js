@@ -16,6 +16,7 @@ export const select2 = () => {
 };
 
 export const init = () => {
+    console.log('init');
     setupDatatables();
     attachEvents();
 };
@@ -36,10 +37,15 @@ const setupDatatables = async() => {
             const table = this.api();
 
             datatablesHelpers.setupSearchRules('.js-group-filter--search', table);
-
             datatablesHelpers.addRedrawEvent('.js-group-filter', table);
+
+            // trigger onchange event for course name filter upon page load in case we prefilter by course name
+            var theinput = document.querySelector('input[data-target="course"]');
+            theinput.dispatchEvent(new Event('change'));
         },
     });
+
+
 };
 
 const attachEvents = () => {

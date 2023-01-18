@@ -87,7 +87,7 @@ class group {
     /**
      * @var \stdClass
      */
-    public $cm;
+    protected $cm;
     /**
      * @var string
      */
@@ -178,6 +178,7 @@ class group {
         $this->get_groupmembers();
         $this->get_membercount();
         $this->get_admins();
+        $this->get_course();
 //        $this->get_keywords();
         $this->get_keywords_list();
 
@@ -409,8 +410,8 @@ class group {
         if (!is_null($this->course)) {
             return $this->course;
         }
-        if (!empty($group->courseid)) {
-            $this->course = $DB->get_record('course', array('id' => $group->courseid));
+        if (!empty($this->courseid)) {
+            $this->course = $DB->get_record('course', array('id' => $this->courseid));
         } else {
             $this->course = false;
         }
@@ -422,13 +423,17 @@ class group {
      * @throws \coding_exception
      */
     protected function get_cm() {
+        global $DB;
         if (!is_null($this->cm)) {
             return $this->cm;
         }
+        $this->cm = false;
         if (!empty($this->cmid)) {
-            $this->cm = get_coursemodule_from_id($this->cmid);
-        } else {
-            $this->cm = false;
+            $cm = $DB->get_record('course_modules', array('id' => $this->cmid));
+            if ($cm) {
+                $module = $DB->get_record('modules', array('id' => $cm->module));
+                $this->cm = get_coursemodule_from_id($module->name, $this->cmid);
+            }
         }
         return $this->cm;
     }

@@ -6,6 +6,7 @@
             <thead>
                 <tr>
                     <th class="topic">{{#str}}topic, local_learningcompanions{{/str}}</th>
+                    <th class="course">{{#str}}course, local_learningcompanions{{/str}}</th>
                     <th class="name">{{#str}}name, local_learningcompanions{{/str}}</th>
                     <th class="join">{{#str}}join, local_learningcompanions{{/str}}</th>
                     <th class="member-count">{{#str}}membercount, local_learningcompanions{{/str}}</th>
@@ -18,6 +19,9 @@
                 <tr class="grouprow" data-gid="{{id}}" data-title="{{name}}">
                     <td>
                         {{keywords_list}}
+                    </td>
+                    <td>
+                        {{course.fullname}}
                     </td>
                     <td>
                         {{name}}
@@ -41,7 +45,7 @@
                         {{timecreated_dmY}}
                     </td>
                     <td>
-                        lastactivity
+                        {{latestcomment_userdate}}
                     </td>
                 </tr>
             {{/groups}}
