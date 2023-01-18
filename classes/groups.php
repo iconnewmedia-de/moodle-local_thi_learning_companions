@@ -39,7 +39,7 @@ class groups {
      * @return group[]
      * @throws \dml_exception
      */
-    public static function get_groups_of_user($userid, $sortby = 'latestcomment') {
+    public static function get_groups_of_user($userid, int $previewGroup = null, $sortby = 'latestcomment') {
         global $DB;
 
         $params = array($userid);
@@ -49,10 +49,12 @@ class groups {
 
         $groups = $DB->get_records_sql($query, $params);
         $return = [];
+
         foreach($groups as $group) {
             $returnGroup = new group($group->id, $userid);
             $return[] = $returnGroup;
         }
+
         switch($sortby) {
             case 'earliestcomment':
                 usort($return, function($a, $b) {
@@ -91,6 +93,16 @@ class groups {
                 break;
 
         }
+
+        //Add preview group if it is set
+        if(is_null($previewGroup) === false && !in_array($previewGroup, array_column($return, 'id'), true)) {
+            $previewGroup = new group($previewGroup, $userid);
+            if(!$previewGroup->closedgroup) {
+                $previewGroup->isPreviewGroup = true;
+                $return = array_merge([$previewGroup], $return);
+            }
+        }
+
         return $return;
     }
 

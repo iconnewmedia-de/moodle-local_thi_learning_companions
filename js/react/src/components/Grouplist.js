@@ -4,18 +4,27 @@ import Group from "./Group";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
 
-export default function Grouplist(props) {
+export default function Grouplist({activeGroupid, previewGroup}) {
     if (typeof window.M === "undefined") {
         window.M = {cfg: {wwwroot: ''}};
     }
 
     const [groups, setGroups] = useState([]);
-    const [activeGroupId, setActiveGroupId] = useState(props.activeGroupid);
+    const [activeGroupId, setActiveGroupId] = useState(activeGroupid);
     const [grouptimer, setGrouptimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     function handleGroupSelect(groupid, chatid) {
-        eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid: groupid});
+        eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid});
+
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set('groupid', groupid); //Update the current group Param
+        searchParams.delete('postId'); //Remove the postId Param
+
+        window.history.replaceState(null,
+            "Chat",
+            `${window.M.cfg.wwwroot}/local/learningcompanions/chat.php?${searchParams}`
+        );
         setActiveGroupId(groupid);
         document.querySelector('input[name="chatid"]').value = chatid;
         console.log(`setting active group id to: ${groupid} and chatid to: ${chatid}`);
@@ -24,7 +33,15 @@ export default function Grouplist(props) {
     function getGroups() {
         const controller = new AbortController();
 
-        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxgrouplist.php', {
+        const previewGroup = (new URLSearchParams(window.location.search)).get('previewGroup');
+        const urlParams = new URLSearchParams();
+
+        let extention = '';
+        if (previewGroup) {
+            urlParams.set('previewGroup', previewGroup);
+        }
+
+        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajaxgrouplist.php?${urlParams}`, {
             signal: controller.signal
         })
         .then(response => response.json())
@@ -57,9 +74,7 @@ export default function Grouplist(props) {
         <div id="learningcompanions_chat-grouplist">
             {isLoading && <LoadingIndicator/>}
             {groups.map(group => (
-                <Group handleGroupSelect={handleGroupSelect} name={group.name} key={group.id} chatid={group.chatid} id={group.id}
-                       shortdescription={group.shortdescription} description={group.description} imageurl={group.imageurl}
-                       latestcomment={group.latestcomment} activeGroupid={activeGroupId} />
+                <Group key={group.id} handleGroupSelect={handleGroupSelect} group={group} activeGroupid={activeGroupId} />
             ))}
         </div>
     );

@@ -1,7 +1,9 @@
 /* eslint-disable no-undef, no-console */
 import Dateformatter from "./Dateformatter";
 
-export default function Group({handleGroupSelect, name, id, description, chatid, shortdescription, imageurl, latestcomment, activeGroupid}) {
+export default function Group({handleGroupSelect, group, activeGroupid}) {
+    const {name, id, description, chatid, shortdescription, imageurl, latestcomment, isPreview} = group;
+
     const changeGroup = function() {
         handleGroupSelect(id, chatid);
     };
@@ -10,6 +12,10 @@ export default function Group({handleGroupSelect, name, id, description, chatid,
 
     if (typeof activeGroupid !== "undefined" && parseInt(activeGroupid) === parseInt(id)) {
         cssclasses += ' learningcompanions_currentgroup';
+    }
+
+    if (isPreview) {
+        cssclasses += ' learningcompanions_previewgroup';
     }
 
     return (

@@ -5,25 +5,25 @@ import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
 
-export default function Postlist(props) {
+export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     if (typeof window.M === "undefined") {
         window.M = {cfg: {wwwroot: ''}};
     }
 
     const [posts, setPosts] = useState([]);
     const [group, setGroup] = useState({});
-    const [activeGroupid, setActiveGroupid] = useState(props.activeGroupid);
+    const [activeGroupid, setActiveGroupid] = useState(startGroupId);
     const [chattimer, setChattimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
-    let updateRunning = false;
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
+    const isInPreviewMode = previewGroup === group.id;
+    let updateRunning = false;
 
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
         setActiveGroupid(data.groupid);
-        window.history.replaceState(null, "Chat", `${window.M.cfg.wwwroot}/local/learningcompanions/chat.php?groupid=${data.groupid}`);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
@@ -181,15 +181,9 @@ export default function Postlist(props) {
         <div id="learningcompanions_chat-postlist">
             {isLoading && <LoadingIndicator/>}
             <GroupHeader group={group}/>
+            {isInPreviewMode && <span>Is Preview</span>}
             <div className="post-wrapper" onScroll={handleWrapperScroll}>
-                {posts.map(post => {
-                        return (
-                            <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime} timestamp={post.timecreated}
-                                  comment={post.comment} attachments={post.attachments} reported={!!+post.flagged}
-                                  deleted={!!+post.timedeleted} highlighted={post.id === highlightedPostId}/>
-                        );
-                    }
-                )}
+                {posts.map(post => <Post post={post} key={post.id} isPreview={isInPreviewMode} highlighted={post.id === highlightedPostId}/>)}
             </div>
         </div>
     );
