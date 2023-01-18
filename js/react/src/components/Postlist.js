@@ -23,6 +23,7 @@ export default function Postlist(props) {
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
         setActiveGroupid(data.groupid);
+        window.history.replaceState(null, "Chat", `${window.M.cfg.wwwroot}/local/learningcompanions/chat.php?groupid=${data.groupid}`);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
@@ -183,7 +184,7 @@ export default function Postlist(props) {
             <div className="post-wrapper" onScroll={handleWrapperScroll}>
                 {posts.map(post => {
                         return (
-                            <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime}
+                            <Post author={post.author} key={post.id} id={post.id} datetime={post.datetime} timestamp={post.timecreated}
                                   comment={post.comment} attachments={post.attachments} reported={!!+post.flagged}
                                   deleted={!!+post.timedeleted} highlighted={post.id === highlightedPostId}/>
                         );

@@ -1,5 +1,5 @@
-<div id="group-details-modal">
-    <div id="group-details-modal-left">
+<div id="group-details-modal" class="row">
+    <div id="group-details-modal-left" class="col-4">
         <div class="group-details-modal-info">
             <span class="group-details-modal-info-heading">
                 {{#str}}modal-groupdetails-topic, local_learningcompanions{{/str}}
@@ -21,7 +21,7 @@
                 {{#str}}modal-groupdetails-activity, local_learningcompanions{{/str}}
             </span>
             <span class="group-details-modal-info-content">
-                ...
+                {{group.last_active_time_dmy}}
             </span>
         </div>
         <div class="group-details-modal-info">
@@ -45,33 +45,18 @@
                 {{/group.closedgroup}}
             </span>
         </div>
-        <div class="group-details-modal-button">
-            {{#group.currentUserIsMember}}
-                {{! If the User is in the Group, show the Leave Group Button }}
-                <a href="#" class="btn btn-primary js-leave-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{#str}}leavegroup, local_learningcompanions{{/str}}</a>
-                <a href="#" class="btn btn-secondary js-invite-member" data-groupid="{{group.id}}"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}invite_to_group, local_learningcompanions{{/str}}</a>
-            {{/group.currentUserIsMember}}
-            {{^group.currentUserIsMember}}
-                {{#group.closedgroup}}
-                    {{! If the Group is closed, show the Request Join Group Button }}
-                    <a href="#" class="btn btn-primary js-request-join-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}request_join_group, local_learningcompanions{{/str}}</a>
-                {{/group.closedgroup}}
-                {{^group.closedgroup}}
-                    <a href="#" class="btn btn-primary js-join-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_learningcompanions{{/str}}</a>
-                {{/group.closedgroup}}
-            {{/group.currentUserIsMember}}
-        </div>
     </div>
-    <div id="group-details-modal-right">
-        <div class="group-details-modal-info">
+    <div id="group-details-modal-right" class="col d-flex flex-column justify-content-between">
+        <div>
+            <div class="group-details-modal-info">
             <span class="group-details-modal-info-heading">
                 {{#str}}modal-groupdetails-description, local_learningcompanions{{/str}}
             </span>
-            <span class="group-details-modal-info-content">
-                {{{group.description}}}
-            </span>
-        </div>
-        <div class="group-details-modal-info">
+                <span class="group-details-modal-info-content">
+                    {{{group.description}}}
+                </span>
+            </div>
+            <div class="group-details-modal-info">
             <span class="group-details-modal-info-heading">
                 {{#str}}modal-groupdetails-reference, local_learningcompanions{{/str}}
             </span>
@@ -79,20 +64,39 @@
                 {{#group.course}}<a href="{{cfg.wwwroot}}/course/view.php?id={{group.courseid}}"><i class="fa fa-chevron-right local_learningcompanions_chevron"></i> {{group.course.fullname}}</a>{{/group.course}}
                 {{#cm}}<br><a href="{{cfg.wwwroot}}/mod/{{cm.modname}}/view.php?id={{cm.id}}"><i class="fa fa-chevron-right local_learningcompanions_chevron"></i> {{cm.name}}</a>{{/cm}}
             </span>
-        </div>
-        <div class="group-details-modal-info">
+            </div>
+            <div class="group-details-modal-info">
             <span class="group-details-modal-info-heading">
                 {{#str}}modal-groupdetails-administrator, local_learningcompanions{{/str}}
             </span>
-            <div class="group-details-modal-info-content">
-                {{#groupadmins}}
-                    <span class="group-details-modal-info-admin ml-6">
-                        {{{userpic}}}
-                        <i class="fa fa-circle icon-status status-{{status}}"></i>
+                <div class="group-details-modal-info-content">
+                    {{#groupadmins}}
+                        <span class="group-details-modal-info-admin d-flex align-items-center">
+                        <div>
+                            {{{userpic}}}
+                            <i class="fa fa-circle icon-status status-{{status}}"></i>
+                        </div>
                         <a href="{{profileurl}}" target="_blank">{{fullname}}</a>
                     </span>
-                {{/groupadmins}}
+                    {{/groupadmins}}
+                </div>
             </div>
+        </div>
+        <div class="group-details-modal-button">
+            {{#group.currentUserIsMember}}
+            {{! If the User is in the Group, show the Leave Group Button }}
+                <a href="#" class="btn btn-primary js-leave-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{#str}}leavegroup, local_learningcompanions{{/str}}</a>
+                <a href="#" class="btn btn-secondary js-invite-member" data-groupid="{{group.id}}"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}invite_to_group, local_learningcompanions{{/str}}</a>
+            {{/group.currentUserIsMember}}
+            {{^group.currentUserIsMember}}
+                {{#group.closedgroup}}
+                {{! If the Group is closed, show the Request Join Group Button }}
+                    <a href="#" class="btn btn-primary js-request-join-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}request_join_group, local_learningcompanions{{/str}}</a>
+                {{/group.closedgroup}}
+                {{^group.closedgroup}}
+                    <a href="#" class="btn btn-primary js-join-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_learningcompanions{{/str}}</a>
+                {{/group.closedgroup}}
+            {{/group.currentUserIsMember}}
         </div>
     </div>
 </div>

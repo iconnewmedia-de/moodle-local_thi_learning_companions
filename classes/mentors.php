@@ -19,7 +19,7 @@ class mentors {
         require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
 
         $sql = 'SELECT DISTINCT m.userid,
-                       u.*  
+                       u.*
                   FROM {lc_mentors} m
              LEFT JOIN {user} u ON u.id = m.userid';
         $params = array();
@@ -43,14 +43,16 @@ class mentors {
             if ($supermentorsonly && !$mentor->issupermentor) {
                 unset($mentors[$mentor->userid]);
             } else {
-                $mentor->topics = $DB->get_records_sql($sql, array($mentor->userid));
+                $mentor->topics = $DB->get_records_sql($sql, [$mentor->userid]);
                 $mentor->fullname = fullname($mentor);
                 $mentor->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$mentor->userid;
-                $mentor->userpic = $OUTPUT->user_picture($mentor, array('link' => false, 'visibletoscreenreaders' => false,
-                                                                        'class' => 'userpicture'));
+                $mentor->userpic = $OUTPUT->user_picture($mentor, [
+                    'link' => false, 'visibletoscreenreaders' => false,
+                    'class' => 'userpicture'
+                ]);
                 $mentor->status = get_user_status($mentor->userid);
 
-                $topiclist = array();
+                $topiclist = [];
                 foreach ($mentor->topics as $mentorTopic) {
                     $topiclist[] = $mentorTopic->keyword;
                 }

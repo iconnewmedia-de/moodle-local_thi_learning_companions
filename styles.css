@@ -47,6 +47,7 @@
     font-weight: 700;
 }
 .group-details-modal-info-content {
+
     display: block;
 }
 .group-details-modal-info-admin {
@@ -54,6 +55,7 @@
 }
 #group-details-modal-left {
     min-width: 20%;
+    max-width: 10em;
 }
 .local_learningcompanions_mentor_search_askquestion_link {
     color: #E38227;
@@ -88,8 +90,7 @@
     background-repeat: no-repeat;
     border-radius: 50%;
     background-size: cover;
-    margin-right: 10px;
-    position: absolute;
+    flex-shrink: 0;
 }
 #learningcompanions_chat #fitem_id_message .col-form-label {
     display: none !important;
@@ -217,12 +218,12 @@
     line-height: 24px;
     min-height:65px;
     cursor: pointer;
+    gap: 0.5em;
+}
+.learningcompanions_group_infos {
+    flex-grow: 1;
 }
 
-.learningcompanions_chat-group em,
-.learningcompanions_chat-group span {
-    margin-left: 60px;
-}
 .learningcompanions_chat-group em {
     font-weight: bold;
 }
@@ -262,7 +263,6 @@
     margin-top: 10px;
 }
 .learningcompanions_chat_time {
-    float: right;
 }
 
 /* Invite */

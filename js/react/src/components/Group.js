@@ -6,7 +6,7 @@ export default function Group({handleGroupSelect, name, id, description, chatid,
         handleGroupSelect(id, chatid);
     };
 
-    let cssclasses = 'learningcompanions_chat-group';
+    let cssclasses = 'd-flex learningcompanions_chat-group';
 
     if (typeof activeGroupid !== "undefined" && parseInt(activeGroupid) === parseInt(id)) {
         cssclasses += ' learningcompanions_currentgroup';
@@ -14,10 +14,12 @@ export default function Group({handleGroupSelect, name, id, description, chatid,
 
     return (
         <div onClick={changeGroup} id={"learningcompanions_chat-group-" + id} className={cssclasses}>
-            <Dateformatter timestamp={latestcomment} />
             <img className="learningcompanions_group_image_small" src={imageurl} />
-            <em>{name}</em><br />
-            <span>{shortdescription}</span><br />
+            <div className="learningcompanions_group_infos">
+                <em>{name}</em><br />
+                <span>{shortdescription}</span>
+            </div>
+            <Dateformatter timestamp={latestcomment} />
         </div>
     );
 };
