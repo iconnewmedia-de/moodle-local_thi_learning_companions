@@ -60,8 +60,9 @@
             <span class="group-details-modal-info-heading">
                 {{#str}}modal-groupdetails-reference, local_learningcompanions{{/str}}
             </span>
-                <span class="group-details-modal-info-content">
-                ...
+            <span class="group-details-modal-info-content">
+                {{#group.course}}<a href="{{cfg.wwwroot}}/course/view.php?id={{group.courseid}}"><i class="fa fa-chevron-right local_learningcompanions_chevron"></i> {{group.course.fullname}}</a>{{/group.course}}
+                {{#cm}}<br><a href="{{cfg.wwwroot}}/mod/{{cm.modname}}/view.php?id={{cm.id}}"><i class="fa fa-chevron-right local_learningcompanions_chevron"></i> {{cm.name}}</a>{{/cm}}
             </span>
             </div>
             <div class="group-details-modal-info">
