@@ -97,6 +97,10 @@
                     <a href="#" class="btn btn-primary js-join-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_learningcompanions{{/str}}</a>
                 {{/group.closedgroup}}
             {{/group.currentUserIsMember}}
+            {{#group.may_edit}}
+                <a href="{{cfg.wwwroot}}/local/learningcompanions/group/edit.php?groupid={{group.id}}" class="btn btn-secondary"><i class="icon-learningcompanions-edit" aria-hidden="true"></i>{{#str}}edit_group, local_learningcompanions{{/str}}</a>
+            {{/group.may_edit}}
         </div>
+
     </div>
 </div>

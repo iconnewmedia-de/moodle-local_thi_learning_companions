@@ -136,6 +136,7 @@
     position: relative;
 }
 
+
 .learningcompanions_edit_comment,
 .learningcompanions_delete_comment,
 .learningcompanions_report_comment {
@@ -146,9 +147,23 @@
     background-position: center center;
     display: none;
 }
+.learningcompanions_edit_group,
 .learningcompanions_edit_comment {
     background-image: url([[pix:local_learningcompanions|edit-pen]]);
     z-index: 10;
+}
+.icon-learningcompanions-edit {
+    width: 20px;
+    height: 20px;
+    color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url([[pix:local_learningcompanions|edit-pen]]);
+    display: inline-block;
+    background-size: contain;
+    top: 4px;
+    position: relative;
+    margin-right: 5px;
 }
 
 
