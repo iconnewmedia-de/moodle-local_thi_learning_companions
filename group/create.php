@@ -30,11 +30,12 @@ $form = new \local_learningcompanions\forms\create_edit_group_form(
 );
 if ($data = $form->get_data()) {
     try {
-        \local_learningcompanions\groups::group_create($data);
+        $groupid = \local_learningcompanions\groups::group_create($data);
         if ($layout === 'popup' || $layout === 'embedded' ) {
             echo "<script>document.querySelector('.modal').dispatchEvent((new Event('modal:hidden')))</script>";
         } else {
-            redirect((new moodle_url('/local/learningcompanions/group/search.php')), get_string('group_created', 'local_learningcompanions'));
+            redirect((new moodle_url('/local/learningcompanions/chat.php?groupid=' . $groupid)), get_string('group_created', 'local_learningcompanions'));
+//            redirect((new moodle_url('/local/learningcompanions/group/search.php')), get_string('group_created', 'local_learningcompanions'));
         }
     } catch(Exception $e) {
         $warning = new \core\output\notification(
