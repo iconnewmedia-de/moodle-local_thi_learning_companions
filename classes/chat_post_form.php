@@ -3,6 +3,7 @@ namespace local_learningcompanions;
 global $CFG;
 require_once $CFG->libdir . DIRECTORY_SEPARATOR . 'formslib.php';
 require_once $CFG->dirroot . DIRECTORY_SEPARATOR . 'repository' . DIRECTORY_SEPARATOR . 'lib.php';
+require_once __DIR__ . '/lccustomeditor.php';
 class chat_post_form extends \moodleform {
 
     /**
@@ -31,14 +32,21 @@ class chat_post_form extends \moodleform {
     public static function editor_options($postid) {
         global $PAGE, $CFG;
         $context = \context_system::instance();
-        // TODO: add max files and max size support
         $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $CFG->maxbytes);
         return array(
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'maxbytes' => $maxbytes,
             'trusttext'=> true,
             'return_types'=> FILE_INTERNAL | FILE_EXTERNAL,
-            'subdirs' => file_area_contains_subdirs($context, 'local_learningcompanions', 'message', $postid)
+            'subdirs' => file_area_contains_subdirs($context, 'local_learningcompanions', 'message', $postid),
+            /*'atto:toolbar' => 'collapse = collapse
+style1 = title, bold, italic
+list = unorderedlist, orderedlist, indent
+links = link
+files = emojipicker, image, media, recordrtc, managefiles
+style2 = underline, strike, subscript, superscript
+align = align
+undo = undo'*/
         );
     }
 
@@ -51,8 +59,7 @@ class chat_post_form extends \moodleform {
 
         $chatid = $this->_customdata['chatid'];
 
-//        $mform->addElement('header', 'general', get_string('reply', 'local_learningcompanions'));
-
+//        $mform->addElement('lccustomeditor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
         $mform->addElement('editor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
         $mform->setType('message', PARAM_RAW);
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
@@ -60,10 +67,6 @@ class chat_post_form extends \moodleform {
         $mform->addElement('filemanager', 'attachments', get_string('attachment', 'local_learningcompanions'), null,
             self::attachment_options());
         $mform->addHelpButton('attachments', 'attachment', 'local_learningcompanions');
-
-//        $submitstring = get_string('post', 'local_learningcompanions');
-
-//        $this->add_action_buttons(true, $submitstring);
 
         $mform->addElement('hidden', 'chatid');
         if (isset($chatid)) {

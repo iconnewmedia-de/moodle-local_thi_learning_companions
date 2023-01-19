@@ -12,6 +12,12 @@ class eventobservers {
         global $DB;
         $data = $event->get_data();
         $modulename = $data['other']['modulename'];
+        $config = get_config('local_learningcompanions');
+        $whitelist = explode(',', $config->commentactivities);
+        array_walk($whitelist, 'trim');
+        if (!in_array($modulename, $whitelist)) {
+            return;
+        }
         $parentcontextid = $data['contextid'];
         $block = new \stdClass();
 
