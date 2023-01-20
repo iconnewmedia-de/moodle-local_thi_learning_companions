@@ -1,8 +1,13 @@
 /* eslint-disable no-undef, no-console */
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import Group from "./Group";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
+
+const previewSelector = ".js-chat-preview";
+const messageInputSelector = "#fitem_id_message";
+const attachmentsSelector = "#fitem_id_attachments";
+const requiredHintSelector = '.fdescription.required'
 
 export default function Grouplist({activeGroupid, previewGroup}) {
     if (typeof window.M === "undefined") {
@@ -14,7 +19,26 @@ export default function Grouplist({activeGroupid, previewGroup}) {
     const [grouptimer, setGrouptimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
-    function handleGroupSelect(groupid, chatid) {
+    useEffect(() => {
+        const chatid = groups.find(group => +group.id === +activeGroupId)?.chatid;
+
+        let newChatValue = chatid;
+        if (+previewGroup === +activeGroupId) {
+            console.log('I make the input invisible');
+            newChatValue = '';
+            document.querySelector(previewSelector).classList.replace('d-none','d-flex');
+            document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.add('d-none'));
+        } else {
+            console.log('I make the input Visible');
+            document.querySelector(previewSelector).classList.replace('d-flex', 'd-none');
+            document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.remove('d-none'));
+        }
+
+        document.querySelector('input[name="chatid"]').value = newChatValue;
+        console.log(`setting active group id to: ${activeGroupId} and chatid to: ${chatid}`);
+    }, [activeGroupId, groups]);
+
+    function handleGroupSelect(groupid) {
         eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid});
 
         const searchParams = new URLSearchParams(window.location.search);
@@ -26,8 +50,6 @@ export default function Grouplist({activeGroupid, previewGroup}) {
             `${window.M.cfg.wwwroot}/local/learningcompanions/chat.php?${searchParams}`
         );
         setActiveGroupId(groupid);
-        document.querySelector('input[name="chatid"]').value = chatid;
-        console.log(`setting active group id to: ${groupid} and chatid to: ${chatid}`);
     }
 
     function getGroups() {
@@ -36,7 +58,6 @@ export default function Grouplist({activeGroupid, previewGroup}) {
         const previewGroup = (new URLSearchParams(window.location.search)).get('previewGroup');
         const urlParams = new URLSearchParams();
 
-        let extention = '';
         if (previewGroup) {
             urlParams.set('previewGroup', previewGroup);
         }

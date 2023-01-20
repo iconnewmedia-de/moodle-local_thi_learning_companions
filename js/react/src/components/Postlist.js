@@ -178,7 +178,7 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     };
 
     return (
-        <div id="learningcompanions_chat-postlist">
+        <div id="learningcompanions_chat-postlist" className="mx-n3">
             {isLoading && <LoadingIndicator/>}
             <GroupHeader group={group}/>
             {isInPreviewMode && <span>Is Preview</span>}

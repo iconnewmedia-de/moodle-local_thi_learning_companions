@@ -29,7 +29,7 @@ export default function Post({highlighted, post, isPreview}) {
             {!+deleted && <div dangerouslySetInnerHTML={{__html: comment}}></div>}
             {!!+deleted && <div><i>Message Deleted</i></div>}
 
-            {!!attachments.length && <Attachmentlist attachments={attachments} />}
+            {!+deleted && !!attachments.length && <Attachmentlist attachments={attachments} />}
             <div className="action-button-wrapper">
                 {!isPreview && showDeleteButton && <DeleteButton id={id} />}
                 {!isPreview && showReportButton && !+reported && <ReportButton id={id} />}
