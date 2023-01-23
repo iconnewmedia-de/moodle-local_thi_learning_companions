@@ -57,10 +57,12 @@ class chat_post_form extends \moodleform {
         $mform->setType('message', PARAM_RAW);
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
 
-        $mform->addElement('html', '<div class="js-chat-preview preview-wrapper d-flex flex-column p-6 mx-n3 align-items-center">
+        if ($groupId = $this->optional_param('previewGroup', null, PARAM_INT)) {
+            $mform->addElement('html', '<div class="js-chat-preview preview-wrapper d-flex flex-column p-6 mx-n3 align-items-center">
 <span class="preview-text">'.
-get_string('previewing_group', 'local_learningcompanions')
-.'</span><a href="" class="preview-link">'.get_string('join_group_link_text', 'local_learningcompanions').'</a></div>');
+                get_string('previewing_group', 'local_learningcompanions')
+                .'</span><a href="/local/learningcompanions/join.php?groupid='.$groupId.'" class="preview-link">'.get_string('join_group_link_text', 'local_learningcompanions').'</a></div>');
+        }
 
         $mform->addElement('filemanager', 'attachments', get_string('attachment', 'local_learningcompanions'), null,
             self::attachment_options());

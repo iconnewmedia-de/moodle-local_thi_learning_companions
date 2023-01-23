@@ -7,7 +7,7 @@ import eventBus from "../helpers/EventBus";
 const previewSelector = ".js-chat-preview";
 const messageInputSelector = "#fitem_id_message";
 const attachmentsSelector = "#fitem_id_attachments";
-const requiredHintSelector = '.fdescription.required'
+const requiredHintSelector = '.fdescription.required';
 
 export default function Grouplist({activeGroupid, previewGroup}) {
     if (typeof window.M === "undefined") {
@@ -26,11 +26,11 @@ export default function Grouplist({activeGroupid, previewGroup}) {
         if (+previewGroup === +activeGroupId) {
             console.log('I make the input invisible');
             newChatValue = '';
-            document.querySelector(previewSelector).classList.replace('d-none','d-flex');
+            document.querySelector(previewSelector)?.classList.replace('d-none','d-flex');
             document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.add('d-none'));
         } else {
             console.log('I make the input Visible');
-            document.querySelector(previewSelector).classList.replace('d-flex', 'd-none');
+            document.querySelector(previewSelector)?.classList.replace('d-flex', 'd-none');
             document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.remove('d-none'));
         }
 
