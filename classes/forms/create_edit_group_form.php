@@ -24,6 +24,7 @@ class create_edit_group_form extends \moodleform {
     }
 
     protected function definition() {
+        global $CFG;
         $mform = $this->_form;
         $topicchoices = groups::get_available_topics();
 
@@ -63,7 +64,11 @@ class create_edit_group_form extends \moodleform {
         );
         $mform->addElement('autocomplete', 'cmid', get_string('nuggetcontext', 'local_learningcompanions'), null, $nuggetcontextoptions);
         if (isset($this->_customdata['cmid']) && !empty($this->_customdata['cmid'])) {
-            $mform->setDefault('cmid', (int)$this->_customdata['cmid']);
+            require_once $CFG->dirroot . "/question/editlib.php";
+            $cm = get_module_from_cmid($this->_customdata['cmid']);
+            if (!empty($cm)) {
+                $mform->setDefault('cmid', array((int)$this->_customdata['cmid'] => $cm[0]->name));
+            }
         }
         $mform->addHelpButton('cmid', 'nuggetcontext', 'local_learningcompanions');
         $mform->disabledIf('cmid', 'courseid', 'eq', ''); //, 'noitemselected');

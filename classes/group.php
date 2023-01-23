@@ -409,12 +409,13 @@ class group {
      * @return \moodle_url|string
      */
     protected function get_imageurl() {
+        global $CFG;
         if (!is_null($this->imageurl)) {
             return $this->imageurl;
         }
         $file = $this->get_image();
         if (!($file instanceof \stored_file)) {
-            $this->imageurl = '';
+            $this->imageurl = $CFG->wwwroot . '/local/learningcompanions/pix/group.svg';
             return '';
         }
         $imageurl = \moodle_url::make_file_url('/pluginfile.php', "/" . $file->get_contextid() . "/local_learningcompanions/groupimage/" .
