@@ -3,6 +3,7 @@
 namespace local_learningcompanions;
 
 use local_learningcompanions\forms\create_edit_group_form;
+use Matrix\Exception;
 
 class groups {
     const CHATTYPE_MENTOR = 0;
@@ -170,8 +171,9 @@ class groups {
 
     /**
      * @param $data
-     * @return void
+     * @return int    id of created group
      * @throws \dml_exception
+     * @throws \Exception
      */
     public static function group_create($data) {
         global $DB, $USER;
@@ -204,8 +206,10 @@ class groups {
             self::group_add_member($groupid, $USER->id, 1);
             self::create_group_chat($groupid);
             $transaction->allow_commit();
+            return $groupid;
         } catch (\Exception $e) {
             $transaction->rollback($e);
+            throw new \Exception($e->getMessage(), $e->getCode()); // pass the exception on to the top
         }
     }
 

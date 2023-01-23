@@ -56,6 +56,7 @@ Discussions of closed groups are only visible to group members.
 Open groups can be joined by anyone and the discussions are visible to the public.';
 $string['keywords'] = 'Keywords';
 $string['nokeywords'] = 'No keywords chosen yet';
+$string['edit_group'] = 'Edit group';
 $string['error_group_creation_failed'] = 'Error: Group creation failed with message: "{$a}"';
 $string['error_group_edit_failed'] = 'Error: Editing the group failed with message: "{$a}"';
 $string['button_css_selector'] = 'CSS selector for group me up button';
@@ -92,6 +93,8 @@ $string['noquestionsfound'] = 'No questions found.';
 $string['asknewquestion'] = 'Ask new question';
 $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
+$string['setting_commentactivities'] = 'Add comment block to activities';
+$string['configcommentactivities'] = 'Comma-separated whitelist of activities that should automatically receive a comment block';
 $string['group_created'] = 'Your group was created successfully';
 $string['listgroups'] = 'Group list';
 $string['learninggroups'] = 'Learning groups';
@@ -145,6 +148,7 @@ $string['invite_to_group'] = 'Invite';
 $string['request_join_group'] = 'Request to join group';
 $string['group_join_not_possible'] = 'Joining the group is not possible now.';
 $string['group_request_not_possible'] = 'Request to joining the group is not possible now.';
+$string['group_edit_not_allowed'] = 'You don\'t have permission to edit this group.';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';

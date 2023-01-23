@@ -114,8 +114,8 @@
 }
 
 #learningcompanions_chat #id_messageeditable {
-    min-height: 160px;
-    height: 160px;
+    min-height: 0 !important;
+    height: 100px !important;
     opacity: 1;
     width: calc(100% - 50px);
     border: none;
@@ -123,7 +123,7 @@
 #local_learningcompanions_chat-send {
     float: right;
     width: 20px;
-    margin-top: 50px;
+    margin-top: 75px;
     background: url([[pix:local_learningcompanions|send]]) no-repeat top left;
     border: none;
     color: transparent;
@@ -136,6 +136,7 @@
     position: relative;
 }
 
+
 .learningcompanions_edit_comment,
 .learningcompanions_delete_comment,
 .learningcompanions_report_comment {
@@ -146,9 +147,23 @@
     background-position: center center;
     display: none;
 }
+.learningcompanions_edit_group,
 .learningcompanions_edit_comment {
     background-image: url([[pix:local_learningcompanions|edit-pen]]);
     z-index: 10;
+}
+.icon-learningcompanions-edit {
+    width: 20px;
+    height: 20px;
+    color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url([[pix:local_learningcompanions|edit-pen]]);
+    display: inline-block;
+    background-size: contain;
+    top: 4px;
+    position: relative;
+    margin-right: 5px;
 }
 
 

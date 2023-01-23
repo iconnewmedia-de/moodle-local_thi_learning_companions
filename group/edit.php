@@ -12,12 +12,16 @@ if (!in_array($layout, $layoutwhitelist)) {
     $layout = $defaultlayout;
 }
 $PAGE->set_pagelayout($layout);
-$PAGE->set_title(get_string('creategroup', 'local_learningcompanions'));
+$PAGE->set_title(get_string('edit_group', 'local_learningcompanions'));
 $PAGE->navbar->add(get_string('navbar_groups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/index.php'));
 $PAGE->navbar->add(get_string('navbar_edit_group', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/search.php'));
 
 $groupid = required_param('groupid', PARAM_INT);
 $group = new \local_learningcompanions\group($groupid);
+
+if (!$group->may_edit) {
+    print_error(get_string('group_edit_not_allowed', 'local_learningcompanions'));
+}
 // ICTODO: check that the user has the permission to edit this group
 
 $form = new \local_learningcompanions\forms\create_edit_group_form(

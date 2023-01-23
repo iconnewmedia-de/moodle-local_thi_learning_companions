@@ -147,6 +147,10 @@ class group {
      * @var false|int
      */
     public $last_active_userid;
+    /**
+     * @var bool
+     */
+    public $may_edit;
 
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER;
@@ -199,7 +203,7 @@ class group {
         $this->get_course();
 //        $this->get_keywords();
         $this->get_keywords_list();
-
+        $this->may_edit = has_capability('local/learningcompanions:group_manage', \context_system::instance()) || array_key_exists($USER->id, $this->admins);
         // ICTODO: fetch course and course category along with relevant metadata from course and course category, like topic and such
     }
 
