@@ -320,3 +320,7 @@
 #allgroupstable tr {
     cursor: pointer;
 }
+
+.preview-wrapper.preview-wrapper {
+    background-color: var(--light);
+}

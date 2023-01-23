@@ -4,7 +4,8 @@ import DeleteButton from "./PostButtons/DeleteButton";
 import ReportButton from "./PostButtons/ReportButton";
 import Dateformatter from './Dateformatter';
 
-export default function Post({author, id, datetime, timestamp, comment, attachments, reported, deleted, highlighted}) {
+export default function Post({highlighted, post, isPreview}) {
+    const {author, id, timecreated, comment, attachments, flagged: reported, timedeleted: deleted} = post;
     let showDeleteButton = false;
     let showReportButton = false;
     let cssClass;
@@ -18,20 +19,20 @@ export default function Post({author, id, datetime, timestamp, comment, attachme
         cssClass = 'learningcompanions_chat-other-post';
     }
 
-    reported && (cssClass += ' learningcompanions_chat-reported-post');
+    !!+reported && (cssClass += ' learningcompanions_chat-reported-post');
 
     return (
         <div id={`learningcompanions_chat-post-${id}`} className={`learningcompanions_chat-post ${cssClass}`}>
             <strong>{author.firstname} {author.lastname}</strong><br />
-            <em><Dateformatter timestamp={timestamp} format={{ year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long'}}/></em><br />
+            <em><Dateformatter timestamp={timecreated} format={{ year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long'}}/></em><br />
 
-            {!deleted && <div dangerouslySetInnerHTML={{__html: comment}}></div>}
-            {deleted && <div><i>Message Deleted</i></div>}
+            {!+deleted && <div dangerouslySetInnerHTML={{__html: comment}}></div>}
+            {!!+deleted && <div><i>Message Deleted</i></div>}
 
-            {!!attachments.length && <Attachmentlist attachments={attachments} />}
+            {!+deleted && !!attachments.length && <Attachmentlist attachments={attachments} />}
             <div className="action-button-wrapper">
-                {showDeleteButton && <DeleteButton id={id} />}
-                {showReportButton && !reported && <ReportButton id={id} />}
+                {!isPreview && showDeleteButton && <DeleteButton id={id} />}
+                {!isPreview && showReportButton && !+reported && <ReportButton id={id} />}
             </div>
             <span>ID: {id}</span>
             {highlighted && (

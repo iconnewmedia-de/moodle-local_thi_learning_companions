@@ -25,6 +25,16 @@ class chats {
     public static function post_comment($comment, $formdata, $editoroptions) {
         global $USER, $DB;
 
+        //Check if the user is a member of the group
+        $chatId = $comment->chatid;
+        $groupId = $DB->get_field('lc_chat', 'relatedid', ['id' => $chatId]);
+        $isMember = $DB->record_exists('lc_group_members', ['groupid' => $groupId, 'userid' => $USER->id]);
+
+        if (!$isMember) {
+            throw new \Exception("You are not a member of this group");
+        }
+
+
         $context    = \context_system::instance();
         $comment->timecreated = time();
         $comment->userid     = $USER->id;
