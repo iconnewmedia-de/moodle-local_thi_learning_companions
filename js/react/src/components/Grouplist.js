@@ -40,7 +40,9 @@ export default function Grouplist({activeGroupid, previewGroup}) {
     }, [activeGroupId, groups]);
 
     function handleGroupSelect(groupid) {
-        eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid});
+        const isPreviewGroup = groups.find(group => +group.id === +groupid)?.isPreviewGroup ?? false;
+
+        eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid, isPreviewGroup});
 
         const searchParams = new URLSearchParams(window.location.search);
         searchParams.set('groupid', groupid); //Update the current group Param

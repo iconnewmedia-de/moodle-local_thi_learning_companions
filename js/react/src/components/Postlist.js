@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {useState, useEffect, useCallback} from "react";
-import Post from "./Post";
+import Posts from "./Posts";
 import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
@@ -17,15 +17,15 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     const [isLoading, setIsLoading] = useState(true);
     const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
+    const [isInPreviewMode, setIsInPreviewMode] = useState(false);
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
-    console.log('Group', group);
-    console.log('isPreviewGroup', group.isPreviewGroup);
-    const isInPreviewMode = group.isPreviewGroup ?? false;
     let updateRunning = false;
 
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
+        console.log('Data', data);
         setActiveGroupid(data.groupid);
+        setIsInPreviewMode(data.isPreviewGroup);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
@@ -114,7 +114,8 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
 
         fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
             groupid: activeGroupid,
-            includedPostId: highlightedPostId
+            includedPostId: highlightedPostId,
+            previewGroup: previewGroup,
         }), {
             signal: controller.signal
         })
@@ -122,8 +123,10 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
         .then(data => {
             const initialPosts = data.posts;
             setPosts(initialPosts);
+            console.log('Group', data.group);
             setGroup(data.group);
             setIsLoading(false);
+            setIsInPreviewMode(data.group.isPreviewGroup);
 
             // Get the ID of the last element, so we know where to start from when we get new posts.
             setLastPostId(initialPosts[0]?.id ?? 0);
@@ -181,12 +184,10 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
 
     return (
         <div id="learningcompanions_chat-postlist">
-            {isLoading && <LoadingIndicator/>}
             <GroupHeader group={group}/>
+            {isLoading && <LoadingIndicator/>}
             {isInPreviewMode && <span>Is Preview</span>}
-            <div className="post-wrapper" onScroll={handleWrapperScroll}>
-                {posts.map(post => <Post post={post} key={post.id} isPreview={isInPreviewMode} highlighted={post.id === highlightedPostId}/>)}
-            </div>
+            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
         </div>
     );
 };
