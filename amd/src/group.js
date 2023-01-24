@@ -63,33 +63,6 @@ const attachEvents = () => {
     body.on('click', '.js-invite-member', handleGroupInviteButton);
 };
 
-const handleGroupInviteButton = async function(e) {
-    e.preventDefault();
-
-    const groupId = $(this).data('groupid');
-
-    const templatePromise = Templates.renderForPromise('local_learningcompanions/group/group_invite', {
-        groupId
-    });
-    const titlePromise = str.get_string('group_invite_title', 'local_learningcompanions');
-
-    const [{html}, title] = await Promise.all([templatePromise, titlePromise]);
-
-    const modal = await ModalFactory.create({
-        title: title,
-        body: html,
-        footer: '',
-        large: false
-    });
-
-    modal.getRoot().on(ModalEvents.hidden, function() {
-        modal.destroy();
-    });
-    modal.show();
-
-    inviteInit();
-};
-
 const handleTableRowClick = async function(e) {
     e.preventDefault();
 
@@ -117,7 +90,34 @@ const handleTableRowClick = async function(e) {
     modal.show();
 };
 
-const handleGroupLeaveButton = async function(e) {
+export const handleGroupInviteButton = async function(e) {
+    e.preventDefault();
+
+    const groupId = $(this).data('groupid');
+
+    const templatePromise = Templates.renderForPromise('local_learningcompanions/group/group_invite', {
+        groupId
+    });
+    const titlePromise = str.get_string('group_invite_title', 'local_learningcompanions');
+
+    const [{html}, title] = await Promise.all([templatePromise, titlePromise]);
+
+    const modal = await ModalFactory.create({
+        title: title,
+        body: html,
+        footer: '',
+        large: false
+    });
+
+    modal.getRoot().on(ModalEvents.hidden, function() {
+        modal.destroy();
+    });
+    modal.show();
+
+    inviteInit();
+};
+
+export const handleGroupLeaveButton = async function(e) {
     e.preventDefault();
 
     const groupId = $(this).data('groupid');
@@ -191,7 +191,7 @@ const handleGroupLeaveButton = async function(e) {
     }
 };
 
-const handleGroupRequestButton = async function(e) {
+export const handleGroupRequestButton = async function(e) {
     e.preventDefault();
 
     const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
@@ -207,7 +207,7 @@ const handleGroupRequestButton = async function(e) {
     }
 };
 
-const handleGroupJoinButton = async function(e) {
+export const handleGroupJoinButton = async function(e) {
     e.preventDefault();
 
     const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {

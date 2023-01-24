@@ -123,7 +123,6 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
         .then(data => {
             const initialPosts = data.posts;
             setPosts(initialPosts);
-            console.log('Group', data.group);
             setGroup(data.group);
             setIsLoading(false);
             setIsInPreviewMode(data.group.isPreviewGroup);
