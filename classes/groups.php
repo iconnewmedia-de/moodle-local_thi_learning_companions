@@ -96,7 +96,8 @@ class groups {
         }
 
         //Add preview group if it is set
-        if(is_null($previewGroup) === false && !in_array($previewGroup, array_column($return, 'id'), true)) {
+        $alreadyInArray = in_array($previewGroup, array_column($return, 'id'), false);
+        if(!is_null($previewGroup) && !$alreadyInArray) {
             $previewGroup = new group($previewGroup, $userid);
             if(!$previewGroup->closedgroup) {
                 $previewGroup->isPreviewGroup = true;

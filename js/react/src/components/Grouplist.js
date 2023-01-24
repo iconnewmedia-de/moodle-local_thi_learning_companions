@@ -21,9 +21,10 @@ export default function Grouplist({activeGroupid, previewGroup}) {
 
     useEffect(() => {
         const chatid = groups.find(group => +group.id === +activeGroupId)?.chatid;
+        const isPreviewGroup = groups.find(group => +group.id === +activeGroupId)?.isPreviewGroup ?? false;
 
         let newChatValue = chatid;
-        if (+previewGroup === +activeGroupId) {
+        if (isPreviewGroup) {
             console.log('I make the input invisible');
             newChatValue = '';
             document.querySelector(previewSelector)?.classList.replace('d-none','d-flex');
@@ -78,7 +79,7 @@ export default function Grouplist({activeGroupid, previewGroup}) {
 
         return () => controller.abort();
     }
-    useEffect(getGroups, [activeGroupId, grouptimer]);
+    useEffect(getGroups, [grouptimer]);
 
     //Wrap the setInterval in a useEffect hook, so it doesn´t add a new interval on every render.
     useEffect(() => {

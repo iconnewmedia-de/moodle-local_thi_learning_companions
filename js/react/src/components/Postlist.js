@@ -18,7 +18,9 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
-    const isInPreviewMode = previewGroup === group.id;
+    console.log('Group', group);
+    console.log('isPreviewGroup', group.isPreviewGroup);
+    const isInPreviewMode = group.isPreviewGroup ?? false;
     let updateRunning = false;
 
     // Create them using useCallback, so we dont have to recreate them on every render.
