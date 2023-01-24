@@ -53,7 +53,6 @@ undo = undo'*/
     function definition() {
         global $OUTPUT;
 
-
         $mform =& $this->_form;
         $mform->disable_form_change_checker();
 
@@ -65,7 +64,7 @@ undo = undo'*/
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
 
         if ($groupId = $this->optional_param('previewGroup', null, PARAM_INT)) {
-            $mform->addElement('html', '<div class="js-chat-preview preview-wrapper d-flex flex-column p-6 mx-n3 align-items-center">
+            $mform->addElement('html', '<div class="js-chat-preview preview-wrapper d-flex flex-column p-6 align-items-center">
 <span class="preview-text">'.
                 get_string('previewing_group', 'local_learningcompanions')
                 .'</span><a href="/local/learningcompanions/join.php?groupid='.$groupId.'" class="preview-link">'.get_string('join_group_link_text', 'local_learningcompanions').'</a></div>');

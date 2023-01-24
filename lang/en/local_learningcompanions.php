@@ -192,3 +192,15 @@ $string['notification_uf'] = 'Comment successfully unflagged';
 $string['notification_n_uf'] = 'Could not unflagg comment';
 $string['notification_d'] = 'Comment successfully deleted.';
 $string['notification_n_d'] = 'Could not delete comment.';
+
+$string['previewing_group'] = 'You can´t send messages to this group, because you are not a member.';
+$string['join_group_link_text'] = 'Join group';
+$string['group_invite_title'] = 'Invite User to group';
+$string['no_open_requests'] = 'There are currently no open requests.';
+$string['process_requests'] = 'Process requests';
+$string['last_user_leaves_closed_group_description'] = 'You are trying to leave a closed group. If you leave the group, the group will be deleted. This can not be undone.';
+$string['leave_group'] = 'Leave group';
+$string['assign_new_admin_while_leaving_description'] = 'You are the last admin of this group. If you leave the group, you have to assign a new admin.';
+$string['choose_new_admin'] = 'Choose a new admin. The default is the last active member.';
+$string['user_is_not_group_admin'] = 'You are not allowed to do this. You are not the admin of this group.';
+$string['new_admin_is_not_member'] = 'The new admin is not a member of this group. Please choose a new admin.';

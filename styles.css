@@ -177,6 +177,10 @@
 .learningcompanions_chat-post {
     position: relative;
 }
+#learningcompanions_chat-postlist {
+    margin-left: -15px;
+    margin-right: -15px;
+}
 
 .learningcompanions_chat-post:hover .learningcompanions_report_comment,
 .learningcompanions_chat-post:hover .learningcompanions_delete_comment,
@@ -323,4 +327,6 @@
 
 .preview-wrapper.preview-wrapper {
     background-color: var(--light);
+    margin-left: -15px;
+    margin-right: -15px;
 }
