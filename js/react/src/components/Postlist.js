@@ -5,7 +5,7 @@ import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
 
-export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
+export default function Postlist({activeGroupid: startGroupId}) {
     if (typeof window.M === "undefined") {
         window.M = {cfg: {wwwroot: ''}};
     }
@@ -29,7 +29,6 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
         setIsLoading(true);
     }, []);
     const handleGroupsUpdated = useCallback((data) => {
-        console.log('Data', data);
         setGroups(data.groups);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
@@ -48,6 +47,33 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
             return post;
         }));
     }, []);
+    const getInitialPosts = useCallback(() => {
+        const controller = new AbortController();
+
+        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
+            groupid: activeGroupid,
+            includedPostId: highlightedPostId,
+        }), {
+            signal: controller.signal
+        })
+            .then(response => response.json())
+            .then(data => {
+                const initialPosts = data.posts;
+                setPosts(initialPosts);
+                setIsLoading(false);
+
+                // Get the ID of the last element, so we know where to start from when we get new posts.
+                setLastPostId(initialPosts[0]?.id ?? 0);
+                // Also set the "first" post id, so we can get older posts.
+                setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
+            }).catch(error => {
+            if (error.name !== 'AbortError') {
+                console.log(error);
+            }
+        });
+
+        return () => controller.abort();
+    }, [activeGroupid, highlightedPostId]);
 
     useEffect(() => {
         eventBus.on(eventBus.events.GROUP_CHANGED, handleGroupChanged);
@@ -66,13 +92,9 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
 
     // Scroll to the Id
     useEffect(() => {
-        if (!highlightedPostId) {
-            return;
-        }
+        if (!highlightedPostId) return;
 
-        // setHighlightedPostId(postId);
         const element = document.querySelector(`#learningcompanions_chat-post-${highlightedPostId}`);
-        console.log('Found element:', element);
 
         if (!element) {
             return;
@@ -111,37 +133,6 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
             }
         }).finally(() => {
             updateRunning = false;
-        });
-
-        return () => controller.abort();
-    }
-
-    function getInitialPosts() {
-        const controller = new AbortController();
-
-        console.log('Using this group:', group);
-
-        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
-            groupid: activeGroupid,
-            includedPostId: highlightedPostId,
-            previewGroup: previewGroup,
-        }), {
-            signal: controller.signal
-        })
-        .then(response => response.json())
-        .then(data => {
-            const initialPosts = data.posts;
-            setPosts(initialPosts);
-            setIsLoading(false);
-
-            // Get the ID of the last element, so we know where to start from when we get new posts.
-            setLastPostId(initialPosts[0]?.id ?? 0);
-            // Also set the "first" post id, so we can get older posts.
-            setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
-        }).catch(error => {
-            if (error.name !== 'AbortError') {
-                console.log(error);
-            }
         });
 
         return () => controller.abort();

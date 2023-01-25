@@ -20,7 +20,6 @@ $group = new \local_learningcompanions\group($groupid);
 
 $context = context_system::instance();
 $canSeeAllGroups = has_capability( 'tool/learningcompanions:group_manage', $context);
-//$canSeeAllGroups = false;
 
 $other = [];
 
@@ -33,7 +32,8 @@ if (!$group->is_user_member($USER->id) && !$canSeeAllGroups) {
     } else {
         $group = null;
         $other['viewNotAllowed'] = true;
+        $posts = [];
     }
 }
 
-echo json_encode(["posts" => array_values($posts) ,"group" => $group, "other" => $other]);
+echo json_encode(["posts" => array_values($posts) , "other" => $other]);

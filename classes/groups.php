@@ -43,7 +43,7 @@ class groups {
     public static function get_groups_of_user($userid, int $shouldIncludeGroupId = null, $sortby = 'latestcomment') {
         global $DB, $CFG;
 
-        $params = array($userid);
+        $params = [$userid];
         $query = "SELECT g.id
                     FROM {lc_groups} g
                     JOIN {lc_group_members} gm ON gm.groupid = g.id AND gm.userid = ?";
@@ -95,14 +95,16 @@ class groups {
 
         }
 
+        $canSeeAllGroups = has_capability( 'tool/learningcompanions:group_manage', \context_system::instance());
         //Add preview group if it is set
         $alreadyInArray = in_array($shouldIncludeGroupId, array_column($return, 'id'), false);
         if(!is_null($shouldIncludeGroupId) && !$alreadyInArray) {
             $shouldIncludeGroup = new group($shouldIncludeGroupId, $userid);
-            if(!$shouldIncludeGroup->closedgroup && false) {
+
+            if (!$shouldIncludeGroup->closedgroup || $canSeeAllGroups) {
                 $shouldIncludeGroup->isPreviewGroup = true;
             } else {
-                //Create a fake group, that doesnt hold any information
+                //Create a fake group, that does not hold any information
                 $shouldIncludeGroup = new \stdClass();
                 $shouldIncludeGroup->isPreviewGroup = true;
                 $shouldIncludeGroup->dummyGroup = true;

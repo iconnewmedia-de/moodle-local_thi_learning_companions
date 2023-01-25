@@ -64,7 +64,8 @@ undo = undo'*/
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
 
         $mform->addElement('html', '<div class="js-chat-preview preview-wrapper d-flex flex-column p-6 align-items-center">
-        <span class="preview-text">' . get_string('previewing_group', 'local_learningcompanions') . '</span><a href="/local/learningcompanions/join.php?groupid=" class="preview-link">' . get_string('join_group_link_text', 'local_learningcompanions') . '</a></div>');
+        <span class="preview-text">' . get_string('previewing_group', 'local_learningcompanions') . '</span>' .
+            '<a href="/local/learningcompanions/join.php?groupid='.optional_param('groupid', null, PARAM_INT).'" class="preview-link">' . get_string('join_group_link_text', 'local_learningcompanions') . '</a></div>');
 
         $mform->addElement('filemanager', 'attachments', get_string('attachment', 'local_learningcompanions'), null,
             self::attachment_options());
