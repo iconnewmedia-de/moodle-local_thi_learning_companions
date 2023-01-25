@@ -11,21 +11,26 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     }
 
     const [posts, setPosts] = useState([]);
-    const [group, setGroup] = useState({});
     const [activeGroupid, setActiveGroupid] = useState(startGroupId);
+    const [groups, setGroups] = useState([]);
     const [chattimer, setChattimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
-    const [isInPreviewMode, setIsInPreviewMode] = useState(false);
+
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
+    const group = groups.find(group => +group.id === +activeGroupid);
+    const isInPreviewMode = group?.isPreviewGroup ?? false;
     let updateRunning = false;
 
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
-        console.log('Data', data);
         setActiveGroupid(data.groupid);
-        setIsInPreviewMode(data.isPreviewGroup);
+        setIsLoading(true);
+    }, []);
+    const handleGroupsUpdated = useCallback((data) => {
+        console.log('Data', data);
+        setGroups(data.groups);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
@@ -35,7 +40,7 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
             return post;
         }));
     }, []);
-    const hanldelPostReported = useCallback(({postid}) => {
+    const handlePostReported = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
             if (+post.id === +postid) {
                 post.flagged = true;
@@ -47,13 +52,15 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     useEffect(() => {
         eventBus.on(eventBus.events.GROUP_CHANGED, handleGroupChanged);
         eventBus.on(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
-        eventBus.on(eventBus.events.MESSAGE_REPORTED, hanldelPostReported);
+        eventBus.on(eventBus.events.MESSAGE_REPORTED, handlePostReported);
+        eventBus.on(eventBus.events.GROUPS_UPDATED, handleGroupsUpdated);
 
         // ICTODO: This doesn´t remove the event listeners.
         return () => {
             eventBus.off(eventBus.events.GROUP_CHANGED, handleGroupChanged);
             eventBus.off(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
-            eventBus.off(eventBus.events.MESSAGE_REPORTED, hanldelPostReported);
+            eventBus.off(eventBus.events.MESSAGE_REPORTED, handlePostReported);
+            eventBus.off(eventBus.events.GROUPS_UPDATED, handleGroupsUpdated);
         }
     }, []);
 
@@ -112,6 +119,8 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     function getInitialPosts() {
         const controller = new AbortController();
 
+        console.log('Using this group:', group);
+
         fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
             groupid: activeGroupid,
             includedPostId: highlightedPostId,
@@ -123,9 +132,7 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
         .then(data => {
             const initialPosts = data.posts;
             setPosts(initialPosts);
-            setGroup(data.group);
             setIsLoading(false);
-            setIsInPreviewMode(data.group.isPreviewGroup);
 
             // Get the ID of the last element, so we know where to start from when we get new posts.
             setLastPostId(initialPosts[0]?.id ?? 0);
@@ -184,8 +191,8 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     return (
         <div id="learningcompanions_chat-postlist">
             <GroupHeader group={group}/>
-            {isLoading && <LoadingIndicator/>}
             {isInPreviewMode && <span>Is Preview</span>}
+            {isLoading && <LoadingIndicator/>}
             {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
         </div>
     );

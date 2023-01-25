@@ -55,3 +55,23 @@ const fetchStrings = (requests) => {
         return response.json();
     });
 }
+
+const previewSelector = ".js-chat-preview";
+const messageInputSelector = "#fitem_id_message";
+const attachmentsSelector = "#fitem_id_attachments";
+const requiredHintSelector = '.fdescription.required';
+export function useSetChatInput(isPreviewGroup, chatid) {
+    let newChatValue = chatid;
+    if (isPreviewGroup) {
+        console.log('I make the input invisible');
+        newChatValue = '';
+        document.querySelector(previewSelector)?.classList.replace('d-none','d-flex');
+        document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.add('d-none'));
+    } else {
+        console.log('I make the input Visible');
+        document.querySelector(previewSelector)?.classList.replace('d-flex', 'd-none');
+        document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.remove('d-none'));
+    }
+
+    document.querySelector('input[name="chatid"]').value = newChatValue;
+}

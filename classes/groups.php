@@ -40,8 +40,8 @@ class groups {
      * @return group[]
      * @throws \dml_exception
      */
-    public static function get_groups_of_user($userid, int $previewGroup = null, $sortby = 'latestcomment') {
-        global $DB;
+    public static function get_groups_of_user($userid, int $shouldIncludeGroupId = null, $sortby = 'latestcomment') {
+        global $DB, $CFG;
 
         $params = array($userid);
         $query = "SELECT g.id
@@ -96,13 +96,22 @@ class groups {
         }
 
         //Add preview group if it is set
-        $alreadyInArray = in_array($previewGroup, array_column($return, 'id'), false);
-        if(!is_null($previewGroup) && !$alreadyInArray) {
-            $previewGroup = new group($previewGroup, $userid);
-            if(!$previewGroup->closedgroup) {
-                $previewGroup->isPreviewGroup = true;
-                $return = array_merge([$previewGroup], $return);
+        $alreadyInArray = in_array($shouldIncludeGroupId, array_column($return, 'id'), false);
+        if(!is_null($shouldIncludeGroupId) && !$alreadyInArray) {
+            $shouldIncludeGroup = new group($shouldIncludeGroupId, $userid);
+            if(!$shouldIncludeGroup->closedgroup && false) {
+                $shouldIncludeGroup->isPreviewGroup = true;
+            } else {
+                //Create a fake group, that doesnt hold any information
+                $shouldIncludeGroup = new \stdClass();
+                $shouldIncludeGroup->isPreviewGroup = true;
+                $shouldIncludeGroup->dummyGroup = true;
+                $shouldIncludeGroup->userIsNotAMember = true;
+                $shouldIncludeGroup->id = $shouldIncludeGroupId;
+                $shouldIncludeGroup->imageurl = $CFG->wwwroot . '/local/learningcompanions/pix/group.svg';
+                $shouldIncludeGroup->name = get_string('group_closed', 'local_learningcompanions');
             }
+            $return = array_merge([$shouldIncludeGroup], $return);
         }
 
         return $return;

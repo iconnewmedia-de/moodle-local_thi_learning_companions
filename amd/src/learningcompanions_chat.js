@@ -42,10 +42,7 @@ export const init = async() => {
     body.on('click', '.learningcompanions_report_comment', handleCommentReport);
     body.on('click', '.learningcompanions_editgroup', handleEditGroup);
 
-    // console.log('STUFF:', handleGroupLeaveButton);
     body.on('click', '.js-leave-group', handleGroupLeaveButton);
-    // body.on('click', '.js-leave-group', () => {
-    //     console.log('Yes Hello!');});
     body.on('click', '.js-request-join-group', handleGroupRequestButton);
     body.on('click', '.js-join-group', handleGroupJoinButton);
     body.on('click', '.js-invite-member', handleGroupInviteButton);

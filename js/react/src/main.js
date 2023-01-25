@@ -9,15 +9,15 @@ const root2 = ReactDOM.createRoot(document.getElementById('learningcompanions_ch
 // if (typeof learningcompanions_groupid === "undefined") {
 //     var learningcompanions_groupid = 1;
 // }
-const previewGroup = (new URLSearchParams(window.location.search)).get('previewGroup');
+// const previewGroup = (new URLSearchParams(window.location.search)).get('previewGroup');
 
 root1.render(
     <React.StrictMode>
-        <Grouplist previewGroup={previewGroup} activeGroupid={window.learningcompanions_groupid}/>
+        <Grouplist activeGroupid={window.learningcompanions_groupid}/>
     </React.StrictMode>
 );
 root2.render(
     <React.StrictMode>
-        <Postlist previewGroup={previewGroup} activeGroupid={window.learningcompanions_groupid}/>
+        <Postlist activeGroupid={window.learningcompanions_groupid}/>
     </React.StrictMode>
 );

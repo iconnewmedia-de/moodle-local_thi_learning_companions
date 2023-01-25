@@ -6,7 +6,7 @@ require_once(__DIR__ . "/classes/groups.php");
 require_login();
 global $USER;
 
-$previewGroup = optional_param('previewGroup', null, PARAM_INT);
+$previewGroup = optional_param('shouldIncludeId', null, PARAM_INT);
 
 $groups = local_learningcompanions\groups::get_groups_of_user($USER->id, $previewGroup);
 header('Content-Type: application/json');
