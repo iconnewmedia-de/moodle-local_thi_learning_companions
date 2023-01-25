@@ -55,11 +55,7 @@ const attachEvents = () => {
     body.on('click', '#mentor-deletemyquestion-modal-close', () => $('.modal').remove());
 
     body.on('click', '.js-leave-group', handleGroupLeaveButton);
-
     body.on('click', '.js-request-join-group', handleGroupRequestButton);
-
-    body.on('click', '.js-join-group', handleGroupJoinButton);
-
     body.on('click', '.js-invite-member', handleGroupInviteButton);
 };
 
@@ -204,18 +200,5 @@ export const handleGroupRequestButton = async function(e) {
     } else {
         const errorMessage = await str.get_string('group_request_not_possible', 'local_learningcompanions');
         alert(errorMessage);
-    }
-};
-
-export const handleGroupJoinButton = async function(e) {
-    e.preventDefault();
-
-    const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
-        action: 'joingroup',
-        groupid: $(this).data('groupid')
-    });
-
-    if (!error) {
-        window.location.reload();
     }
 };

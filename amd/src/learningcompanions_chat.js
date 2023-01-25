@@ -4,7 +4,6 @@ import * as str from 'core/str';
 import * as ModalFactory from 'core/modal_factory';
 import * as ModalEvents from 'core/modal_events';
 import {
-    handleGroupJoinButton,
     handleGroupLeaveButton,
     handleGroupRequestButton,
     handleGroupInviteButton
@@ -44,7 +43,6 @@ export const init = async() => {
 
     body.on('click', '.js-leave-group', handleGroupLeaveButton);
     body.on('click', '.js-request-join-group', handleGroupRequestButton);
-    body.on('click', '.js-join-group', handleGroupJoinButton);
     body.on('click', '.js-invite-member', handleGroupInviteButton);
 };
 
