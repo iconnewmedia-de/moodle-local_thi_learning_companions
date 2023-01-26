@@ -192,3 +192,6 @@ $string['notification_uf'] = 'Comment successfully unflagged';
 $string['notification_n_uf'] = 'Could not unflagg comment';
 $string['notification_d'] = 'Comment successfully deleted.';
 $string['notification_n_d'] = 'Could not delete comment.';
+
+$string['bigbluebutton_title'] = 'Video conference with BigBlueButton';
+$string['bigbluebutton_join_text'] = 'Click here to join the BigBlueButton video conference';

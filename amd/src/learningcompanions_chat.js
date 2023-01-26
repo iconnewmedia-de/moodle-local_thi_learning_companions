@@ -15,6 +15,8 @@ export const init = async() => {
     // Add event listener to the send button to handle message sending
     sendButton.on('click', handleNewMessageSubmit);
 
+    addBBBlinkButton();
+
     const stringsObj = [
         {key: 'modal-deletecomment-title', component: 'local_learningcompanions'},
         {key: 'modal-deletecomment-text', component: 'local_learningcompanions'},
@@ -34,8 +36,79 @@ export const init = async() => {
     body.on('click', '.learningcompanions_edit_comment', handleCommentEdit);
     body.on('click', '.learningcompanions_report_comment', handleCommentReport);
     body.on('click', '.learningcompanions_editgroup', handleEditGroup);
+    body.on('click', '.learningcompanions_bbb_button', handleBBBButton);
 };
 
+const addBBBlinkButton = function() {
+    var string = str.get_string(  'bigbluebutton_title', 'local_learningcompanions');
+    string.then((title) => {
+        $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_bbb_button" title="' + title + '")>BigBlueButton</button></div>').appendTo('.atto_toolbar_row:first-child');
+    })
+}
+const handleBBBButton = function(e){
+    e.preventDefault();
+    var sel = window.getSelection();
+    let messageEditorSelected = false;
+    const messageEditor = document.getElementById('id_messageeditable');
+    while (sel = sel.parentNode){
+        if (sel.id == 'id_messageeditable') {
+            messageEditorSelected = true;
+            break;
+        }
+    }
+    if (!messageEditorSelected) {
+        document.getSelection().removeAllRanges();
+        messageEditor.focus();
+        const range = new Range();
+        const childElementCount = messageEditor.childElementCount;
+        range.setStartAfter(messageEditor.children[childElementCount - 1]);
+        document.getSelection().addRange(range);
+    }
+    var string = str.get_string('bigbluebutton_join_text', 'local_learningcompanions');
+    var bbbURLs = $.ajax(M.cfg.wwwroot + '/local/learningcompanions/ajax_videocall.php');
+    Promise.all([string,bbbURLs]).then((data) => {
+        const urls = data[1];
+        window.open(urls['moderator'], '_blank');
+        pasteHtmlAtCaret(' <a target="_blank" href="' + urls['participants'] + '">' + data[0] + '</a>');
+
+    });
+    // ICTODO: Create a new BBB room, then create a link that the users can use to join the room, all via AJAX
+    return false;
+}
+const pasteHtmlAtCaret = function(html) {
+    var sel, range;
+    if (window.getSelection) {
+        // IE9 and non-IE
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+
+            // Range.createContextualFragment() would be useful here but is
+            // only relatively recently standardized and is not supported in
+            // some browsers (IE9, for one)
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+
+            // Preserve the selection
+            if (lastNode) {
+                range = range.cloneRange();
+                range.setStartAfter(lastNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+    } else if (document.selection && document.selection.type != "Control") {
+        // IE < 9
+        document.selection.createRange().pasteHTML(html);
+    }
+}
 const handleCommentDelete = async function(e) {
     const postId = +e.target.dataset.id;
 

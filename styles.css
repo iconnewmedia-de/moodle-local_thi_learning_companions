@@ -324,3 +324,9 @@
 .preview-wrapper.preview-wrapper {
     background-color: var(--light);
 }
+.learningcompanions_bbb_button {
+    background: url([[pix:local_learningcompanions|bbbutton]]) no-repeat center center !important;
+    width: 30px;
+    background-size: cover;
+    color: transparent;
+}
