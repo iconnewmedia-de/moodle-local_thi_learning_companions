@@ -1,8 +1,10 @@
 import Post from "./Post.js";
+import {useGetString} from "../hooks/moodleHelpers.js";
 
 export default function Posts({posts, highlightedPostId, isInPreviewMode, handleWrapperScroll}) {
     if (!posts.length) {
-        return <div className="post-wrapper p-3">[[No Posts available]]</div>;
+        const noPosts = useGetString('no_posts_available');
+        return <div className="post-wrapper p-3">{noPosts}</div>;
     }
 
     return (

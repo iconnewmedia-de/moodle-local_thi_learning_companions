@@ -174,6 +174,7 @@ $string['filter_super_mentor'] = 'Super mentor';
 
 require '_messages.php';
 require '_navbar.php';
+require '_chat.php';
 
 $string['modal-deletecomment-title'] = 'Delete this comment?';
 $string['modal-deletecomment-text'] = 'Are you sure that you want to delete your comment? This can\'t be undone!';

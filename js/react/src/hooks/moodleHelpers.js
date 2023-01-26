@@ -3,57 +3,29 @@
  * @param key {string}
  * @param component {string}
  * @param params {string|Object}
- * @param lang {?string}
- * @returns {Promise<string>}
+ * @returns {string}
  */
-export const useGetString = async (key, component = 'core', params = [], lang) => {
-    const s = await useGetStrings([{key, component, params, lang}]);
-    return s[0];
-};
+export function useGetString(key, component = 'local_learningcompanions', params = []) {
+    const targetString = window.M.str[component]?.[key] ?? `[[${key}_not_found]]`;
 
-/**
- *
- * @param requests {{key: string, component?: string, params?: string|object, lang?: string}[]}
- * @returns {Promise<string[]>}
- */
-export const useGetStrings = async (requests) => {
-    const formatedRequests = requests.map(request => {
-        request.lang = request.lang || navigator.language || navigator.userLanguage;
-        request.component = request.component || 'core';
-        request.params = request.params || [];
-        return request;
-    });
+    //if there are no params, just return the string
+    if (!params.length) {
+        return targetString;
+    }
 
-    const strings = await fetchStrings(formatedRequests);
+    //Add params to the $a variables in the string
+    const regexWithParam = /{\$a->(\w*)}/gm;
+    const regexWithoutParam = /{\$a}/gm;
 
-    return strings.map(string => {
-        return string.data;
-    });
-};
-
-/**
- * @param requests {{key: string, component: ?string, params: ?string|?object, lang: ?string}[]}
- * @returns {Promise<{error: bool, data: string}[]>}
- */
-const fetchStrings = (requests) => {
-    const data = requests.map(({key,params, ...rest}, index) => {
-        return {
-            index,
-            methodname: 'core_get_string',
-            args: {
-                stringid: key,
-                stringparams: params,
-                ...rest
-            }
-        }
-    });
-
-    return fetch('/lib/ajax/service-nologin.php', {
-        method: 'POST',
-        body: JSON.stringify(data),
-    }).then(response => {
-        return response.json();
-    });
+    //Check if the params are an object
+    if (typeof params === 'object') {
+        //If so, replace the $a->param with the value
+        return targetString.replace(regexWithParam, (match, p1) => {
+            return params[p1] ?? match;
+        });
+    }
+    //If not, replace the $a with the param
+    return targetString.replace(regexWithoutParam, params);
 }
 
 const previewSelector = ".js-chat-preview";
