@@ -29,6 +29,6 @@ class proccess_open_join_requests_form extends \moodleform {
             $form->addElement('radio', 'request_' . $request->id . '_action', '', 'Decline', 'decline');
         }
 
-        $this->add_action_buttons(false, 'Process requests');
+        $this->add_action_buttons(false, get_string('process_requests', 'local_learningcompanions'));
     }
 }

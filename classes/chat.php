@@ -25,6 +25,17 @@ class chat {
         $this->filestorage = get_file_storage();
     }
 
+    private function get_language_strings(): string {
+        $stringKeys = [
+            'delete_post',
+            'report_post',
+            'no_posts_available'
+        ];
+        $strings = get_strings($stringKeys, 'local_learningcompanions');
+        $stringsString = json_encode($strings);
+        return "M.str.local_learningcompanions = {...M.str.local_learningcompanions, ...$stringsString};";
+    }
+
     /**
      * @deprecated do not use! Use chats::post_comment instead!
      * @param $comment
@@ -184,12 +195,14 @@ class chat {
         global $USER, $OUTPUT, $CFG;
         $reactscript = \local_learningcompanions\get_chat_reactscript_path();
         $form = $this->get_submission_form(['chatid' => $this->chatid]);
+        $languageStrings = $this->get_language_strings();
         $context = [
             'userid' => $USER->id,
             'reactscript' => $reactscript,
             'chatid' => $this->chatid,
             'groupid' => $this->groupid,
-            'form' => $form
+            'form' => $form,
+            'languageStrings' => $languageStrings,
         ];
         return $OUTPUT->render_from_template('local_learningcompanions/chat', $context);
     }

@@ -3,6 +3,11 @@ import $ from 'jquery';
 import * as str from 'core/str';
 import * as ModalFactory from 'core/modal_factory';
 import * as ModalEvents from 'core/modal_events';
+import {
+    handleGroupLeaveButton,
+    handleGroupRequestButton,
+    handleGroupInviteButton
+} from 'local_learningcompanions/group';
 
 let strings = [];
 
@@ -28,7 +33,8 @@ export const init = async() => {
         {key: 'modal-reportcomment-okaybutton', component: 'local_learningcompanions'},
     ];
 
-    strings = await str.get_strings(stringsObj);
+    // eslint-disable-next-line no-return-assign
+    str.get_strings(stringsObj).then(results => strings = results);
 
     const body = $('body');
 
@@ -36,6 +42,10 @@ export const init = async() => {
     body.on('click', '.learningcompanions_edit_comment', handleCommentEdit);
     body.on('click', '.learningcompanions_report_comment', handleCommentReport);
     body.on('click', '.learningcompanions_editgroup', handleEditGroup);
+
+    body.on('click', '.js-leave-group', handleGroupLeaveButton);
+    body.on('click', '.js-request-join-group', handleGroupRequestButton);
+    body.on('click', '.js-invite-member', handleGroupInviteButton);
     body.on('click', '.learningcompanions_bbb_button', handleBBBButton);
 };
 
@@ -282,7 +292,7 @@ const handleNewMessageSubmit = (e) => {
     $.post(
         M.cfg.wwwroot + "/local/learningcompanions/ajaxsubmit.php",
         data
-    ).done(function(a,b,c) {
+    ).done(function(a, b, c) {
         // ICTODO: give a success message, like with a toast or so
         // reset the form to empty values after successfully sending the form
         $('#learningcompanions_chat form #id_messageeditable').text("");
@@ -291,10 +301,10 @@ const handleNewMessageSubmit = (e) => {
                 el.value = '';
             }
         });
-    }).fail(function(a,b,c){
+    }).fail(function(a, b, c) {
         console.warn('Failed sending via AJAX', a, b, c);
         window.alert("couldn't save"); // ICTODO: give proper message, via get_string and ideally with a modal
-    }).always(function(){
+    }).always(function() {
         // reactivate the form/ungrey it when data has been sent
         $('#learningcompanions_chat #id_messageeditable').css('opacity', '1');
         $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'true');

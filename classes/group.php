@@ -154,6 +154,7 @@ class group {
 
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER;
+
         if (is_null($userid)) {
             $userid = $USER->id;
         }
@@ -469,7 +470,10 @@ class group {
         if (!is_null($this->admins)) {
             return $this->admins;
         }
-        global $DB, $CFG, $OUTPUT;
+        global $DB, $CFG, $OUTPUT, $PAGE;
+
+        $context = \context_system::instance();
+        $PAGE->set_context($context);
 
         $sql = 'SELECT u.*,
                        gm.joined

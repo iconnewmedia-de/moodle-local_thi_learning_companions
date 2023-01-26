@@ -18,6 +18,7 @@ const eventBus = {
         GROUP_CHANGED: 'groupchanged',
         MESSAGE_DELETED: 'learningcompanions_message_deleted',
         MESSAGE_REPORTED: 'learningcompanions_message_reported',
+        GROUPS_UPDATED: 'learningcompanions_groups_updated',
     }
 };
 

@@ -1,9 +1,5 @@
-export default function LoadingIndicator({loading}) {
-    if (!loading) {
-        return null;
-    } else {
-        return (
-            <div className='learningcompanions_loading'></div>
-        );
-    }
+export default function LoadingIndicator() {
+    return (
+        <div className="learningcompanions_loading"></div>
+    );
 }

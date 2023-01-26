@@ -1,29 +1,35 @@
 /* eslint-disable no-console */
 import {useState, useEffect, useCallback} from "react";
-import Post from "./Post";
+import Posts from "./Posts";
 import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
 
-export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
+export default function Postlist({activeGroupid: startGroupId}) {
     if (typeof window.M === "undefined") {
         window.M = {cfg: {wwwroot: ''}};
     }
 
     const [posts, setPosts] = useState([]);
-    const [group, setGroup] = useState({});
     const [activeGroupid, setActiveGroupid] = useState(startGroupId);
+    const [groups, setGroups] = useState([]);
     const [chattimer, setChattimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
+
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
-    const isInPreviewMode = previewGroup === group.id;
+    const group = groups.find(group => +group.id === +activeGroupid);
+    const isInPreviewMode = group?.isPreviewGroup ?? false;
     let updateRunning = false;
 
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
         setActiveGroupid(data.groupid);
+        setIsLoading(true);
+    }, []);
+    const handleGroupsUpdated = useCallback((data) => {
+        setGroups(data.groups);
     }, []);
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
@@ -33,7 +39,7 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
             return post;
         }));
     }, []);
-    const hanldelPostReported = useCallback(({postid}) => {
+    const handlePostReported = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
             if (+post.id === +postid) {
                 post.flagged = true;
@@ -41,29 +47,54 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
             return post;
         }));
     }, []);
+    const getInitialPosts = useCallback(() => {
+        const controller = new AbortController();
+
+        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
+            groupid: activeGroupid,
+            includedPostId: highlightedPostId,
+        }), {
+            signal: controller.signal
+        })
+            .then(response => response.json())
+            .then(data => {
+                const initialPosts = data.posts;
+                setPosts(initialPosts);
+                setIsLoading(false);
+
+                // Get the ID of the last element, so we know where to start from when we get new posts.
+                setLastPostId(initialPosts[0]?.id ?? 0);
+                // Also set the "first" post id, so we can get older posts.
+                setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
+            }).catch(error => {
+            if (error.name !== 'AbortError') {
+                console.log(error);
+            }
+        });
+
+        return () => controller.abort();
+    }, [activeGroupid, highlightedPostId]);
 
     useEffect(() => {
         eventBus.on(eventBus.events.GROUP_CHANGED, handleGroupChanged);
         eventBus.on(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
-        eventBus.on(eventBus.events.MESSAGE_REPORTED, hanldelPostReported);
+        eventBus.on(eventBus.events.MESSAGE_REPORTED, handlePostReported);
+        eventBus.on(eventBus.events.GROUPS_UPDATED, handleGroupsUpdated);
 
         // ICTODO: This doesn´t remove the event listeners.
         return () => {
             eventBus.off(eventBus.events.GROUP_CHANGED, handleGroupChanged);
             eventBus.off(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
-            eventBus.off(eventBus.events.MESSAGE_REPORTED, hanldelPostReported);
+            eventBus.off(eventBus.events.MESSAGE_REPORTED, handlePostReported);
+            eventBus.off(eventBus.events.GROUPS_UPDATED, handleGroupsUpdated);
         }
     }, []);
 
     // Scroll to the Id
     useEffect(() => {
-        if (!highlightedPostId) {
-            return;
-        }
+        if (!highlightedPostId) return;
 
-        // setHighlightedPostId(postId);
         const element = document.querySelector(`#learningcompanions_chat-post-${highlightedPostId}`);
-        console.log('Found element:', element);
 
         if (!element) {
             return;
@@ -102,35 +133,6 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
             }
         }).finally(() => {
             updateRunning = false;
-        });
-
-        return () => controller.abort();
-    }
-
-    function getInitialPosts() {
-        const controller = new AbortController();
-
-        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
-            groupid: activeGroupid,
-            includedPostId: highlightedPostId
-        }), {
-            signal: controller.signal
-        })
-        .then(response => response.json())
-        .then(data => {
-            const initialPosts = data.posts;
-            setPosts(initialPosts);
-            setGroup(data.group);
-            setIsLoading(false);
-
-            // Get the ID of the last element, so we know where to start from when we get new posts.
-            setLastPostId(initialPosts[0]?.id ?? 0);
-            // Also set the "first" post id, so we can get older posts.
-            setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
-        }).catch(error => {
-            if (error.name !== 'AbortError') {
-                console.log(error);
-            }
         });
 
         return () => controller.abort();
@@ -178,13 +180,11 @@ export default function Postlist({activeGroupid: startGroupId, previewGroup}) {
     };
 
     return (
-        <div id="learningcompanions_chat-postlist" className="mx-n3">
-            {isLoading && <LoadingIndicator/>}
+        <div id="learningcompanions_chat-postlist">
             <GroupHeader group={group}/>
             {isInPreviewMode && <span>Is Preview</span>}
-            <div className="post-wrapper" onScroll={handleWrapperScroll}>
-                {posts.map(post => <Post post={post} key={post.id} isPreview={isInPreviewMode} highlighted={post.id === highlightedPostId}/>)}
-            </div>
+            {isLoading && <LoadingIndicator/>}
+            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
         </div>
     );
 };

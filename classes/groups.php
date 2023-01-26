@@ -40,10 +40,10 @@ class groups {
      * @return group[]
      * @throws \dml_exception
      */
-    public static function get_groups_of_user($userid, int $previewGroup = null, $sortby = 'latestcomment') {
-        global $DB;
+    public static function get_groups_of_user($userid, int $shouldIncludeGroupId = null, $sortby = 'latestcomment') {
+        global $DB, $CFG;
 
-        $params = array($userid);
+        $params = [$userid];
         $query = "SELECT g.id
                     FROM {lc_groups} g
                     JOIN {lc_group_members} gm ON gm.groupid = g.id AND gm.userid = ?";
@@ -95,13 +95,25 @@ class groups {
 
         }
 
+        $canSeeAllGroups = has_capability( 'tool/learningcompanions:group_manage', \context_system::instance());
         //Add preview group if it is set
-        if(is_null($previewGroup) === false && !in_array($previewGroup, array_column($return, 'id'), true)) {
-            $previewGroup = new group($previewGroup, $userid);
-            if(!$previewGroup->closedgroup) {
-                $previewGroup->isPreviewGroup = true;
-                $return = array_merge([$previewGroup], $return);
+        $alreadyInArray = in_array($shouldIncludeGroupId, array_column($return, 'id'), false);
+        if(!is_null($shouldIncludeGroupId) && !$alreadyInArray) {
+            $shouldIncludeGroup = new group($shouldIncludeGroupId, $userid);
+
+            if (!$shouldIncludeGroup->closedgroup || $canSeeAllGroups) {
+                $shouldIncludeGroup->isPreviewGroup = true;
+            } else {
+                //Create a fake group, that does not hold any information
+                $shouldIncludeGroup = new \stdClass();
+                $shouldIncludeGroup->isPreviewGroup = true;
+                $shouldIncludeGroup->dummyGroup = true;
+                $shouldIncludeGroup->userIsNotAMember = true;
+                $shouldIncludeGroup->id = $shouldIncludeGroupId;
+                $shouldIncludeGroup->imageurl = $CFG->wwwroot . '/local/learningcompanions/pix/group.svg';
+                $shouldIncludeGroup->name = get_string('group_closed', 'local_learningcompanions');
             }
+            $return = array_merge([$shouldIncludeGroup], $return);
         }
 
         return $return;
