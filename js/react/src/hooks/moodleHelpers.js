@@ -47,7 +47,7 @@ export function useSetChatInput(isPreviewGroup, chatid) {
 }
 
 
-export function useHideForm() {
+export function hideForm() {
     const form = document.querySelector('.chat-post-form');
     form.classList.add('d-none');
 }

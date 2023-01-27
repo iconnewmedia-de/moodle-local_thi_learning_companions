@@ -2,22 +2,11 @@
 // import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Grouplist from "./components/Grouplist";
-import Postlist from "./components/Postlist";
 
-const root1 = ReactDOM.createRoot(document.getElementById('learningcompanions_groups-content'));
-const root2 = ReactDOM.createRoot(document.getElementById('learningcompanions_chat-content'));
-// if (typeof learningcompanions_groupid === "undefined") {
-//     var learningcompanions_groupid = 1;
-// }
-// const previewGroup = (new URLSearchParams(window.location.search)).get('previewGroup');
-
-root1.render(
+ReactDOM.render(
     <React.StrictMode>
         <Grouplist activeGroupid={window.learningcompanions_groupid}/>
-    </React.StrictMode>
+    </React.StrictMode>,
+    document.getElementById('learningcompanions_groups-content')
 );
-root2.render(
-    <React.StrictMode>
-        <Postlist activeGroupid={window.learningcompanions_groupid}/>
-    </React.StrictMode>
-);
+

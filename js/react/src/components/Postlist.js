@@ -5,39 +5,22 @@ import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
 
-export default function Postlist({activeGroupid: startGroupId}) {
-    if (typeof window.M === "undefined") {
-        window.M = {cfg: {wwwroot: ''}};
-    }
-
+export default function Postlist({activeGroupid, groups}) {
     const [posts, setPosts] = useState([]);
-    const [activeGroupid, setActiveGroupid] = useState(startGroupId);
-    const [groups, setGroups] = useState([]);
     const [chattimer, setChattimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
-
-    console.log('Postlist', {startGroupId, activeGroupid});
 
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
     const group = groups.find(group => +group.id === +activeGroupid);
     const isInPreviewMode = group?.isPreviewGroup ?? false;
     let updateRunning = false;
 
-    if (activeGroupid === undefined && groups.length) {
-        setActiveGroupid(groups[0].id);
-    }
-
-    // Create them using useCallback, so we dont have to recreate them on every render.
-    const handleGroupChanged = useCallback((data) => {
-        console.log(data);
-        setActiveGroupid(data.groupid);
+    useEffect(() => {
         setIsLoading(true);
-    }, []);
-    const handleGroupsUpdated = useCallback((data) => {
-        setGroups(data.groups);
-    }, []);
+    }, [activeGroupid]);
+
     const handlePostDeleted = useCallback(({postid}) => {
         setPosts(oldPosts => oldPosts.map(post => {
             if (+post.id === +postid) {
@@ -83,17 +66,13 @@ export default function Postlist({activeGroupid: startGroupId}) {
     }, [activeGroupid, highlightedPostId]);
 
     useEffect(() => {
-        eventBus.on(eventBus.events.GROUP_CHANGED, handleGroupChanged);
         eventBus.on(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
         eventBus.on(eventBus.events.MESSAGE_REPORTED, handlePostReported);
-        eventBus.on(eventBus.events.GROUPS_UPDATED, handleGroupsUpdated);
 
         // ICTODO: This doesn´t remove the event listeners.
         return () => {
-            eventBus.off(eventBus.events.GROUP_CHANGED, handleGroupChanged);
             eventBus.off(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
             eventBus.off(eventBus.events.MESSAGE_REPORTED, handlePostReported);
-            eventBus.off(eventBus.events.GROUPS_UPDATED, handleGroupsUpdated);
         }
     }, []);
 
@@ -113,9 +92,8 @@ export default function Postlist({activeGroupid: startGroupId}) {
     function getMorePosts() {
         if (firstPostId === null) return;
 
-        if (updateRunning) {
-            return;
-        }
+        if (updateRunning) return;
+
         updateRunning = true;
 
         const controller = new AbortController();

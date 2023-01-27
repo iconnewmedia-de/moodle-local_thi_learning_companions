@@ -2,8 +2,9 @@
 import {useState, useEffect} from "react";
 import Group from "./Group";
 import LoadingIndicator from "./LoadingIndicator";
-import eventBus from "../helpers/EventBus";
-import {useHideForm, useSetChatInput} from "../hooks/moodleHelpers.js";
+import {hideForm, useSetChatInput} from "../hooks/moodleHelpers.js";
+import Postlist from "./Postlist.js";
+import ReactDOM from "react-dom";
 
 const shouldIncludeId = (new URLSearchParams(window.location.search)).get('groupid') || window.learningcompanions_groupid;
 
@@ -31,7 +32,6 @@ export default function Grouplist({activeGroupid}) {
     }, [activeGroupId, groups]);
 
     function handleGroupSelect(groupid) {
-        eventBus.dispatch(eventBus.events.GROUP_CHANGED, {groupid});
 
         const searchParams = new URLSearchParams(window.location.search);
         searchParams.set('groupid', groupid); //Update the current group Param
@@ -60,10 +60,9 @@ export default function Grouplist({activeGroupid}) {
                 console.log('Groups', groups);
                 setGroups(groups);
                 setIsLoading(false);
-                eventBus.dispatch(eventBus.events.GROUPS_UPDATED, {groups});
 
                 if (groups.length === 0) {
-                    useHideForm();
+                    hideForm();
                 }
             })
             .catch(error => {
@@ -84,13 +83,17 @@ export default function Grouplist({activeGroupid}) {
         }
     }, []);
 
+    const chatPlaceholder = document.getElementById('learningcompanions_chat-content');
     return (
-        <div id="learningcompanions_chat-grouplist">
-            {isLoading && <LoadingIndicator/>}
-            {groups.map(group => (
-                <Group key={group.id} handleGroupSelect={handleGroupSelect} group={group} activeGroupid={activeGroupId} />
-            ))}
-            {groups.length === 0 && !isLoading && <p>No groups found</p>}
-        </div>
+        <>
+            <div id="learningcompanions_chat-grouplist">
+                {isLoading && <LoadingIndicator/>}
+                {groups.map(group => (
+                    <Group key={group.id} handleGroupSelect={handleGroupSelect} group={group} activeGroupid={activeGroupId}/>
+                ))}
+                {groups.length === 0 && !isLoading && <p>No groups found</p>}
+            </div>
+            {ReactDOM.createPortal(<Postlist activeGroupid={activeGroupId} groups={groups}/>, chatPlaceholder)}
+        </>
     );
 };
