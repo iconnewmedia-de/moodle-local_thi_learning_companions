@@ -10,17 +10,19 @@ class chat {
         global $DB;
         $this->groupid = $groupid;
         $this->chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => 1]);
-        if (!$this->chat) {
-            $chat = new \stdClass();
-            $chat->chattype = 1;
-            $chat->relatedid = $groupid;
-            $chat->timecreated = time();
-            $group = $DB->get_record('lc_groups', ['id' => $groupid]);
-            $chat->course = $group->courseid;
-            $chatid = $DB->insert_record('lc_chat', $chat);
-            $this->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
+        if ($groupid) {
+            if (!$this->chat) {
+                $chat = new \stdClass();
+                $chat->chattype = 1;
+                $chat->relatedid = $groupid;
+                $chat->timecreated = time();
+                $group = $DB->get_record('lc_groups', ['id' => $groupid]);
+                $chat->course = $group->courseid;
+                $chatid = $DB->insert_record('lc_chat', $chat);
+                $this->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
+            }
+            $this->chatid = $this->chat->id;
         }
-        $this->chatid = $this->chat->id;
         $this->context = \context_system::instance();
         $this->filestorage = get_file_storage();
     }
@@ -192,7 +194,7 @@ class chat {
      * @return mixed
      */
     public function get_chat_module() {
-        global $USER, $OUTPUT, $CFG;
+        global $USER, $OUTPUT;
         $reactscript = \local_learningcompanions\get_chat_reactscript_path();
         $form = $this->get_submission_form(['chatid' => $this->chatid]);
         $languageStrings = $this->get_language_strings();
@@ -200,7 +202,7 @@ class chat {
             'userid' => $USER->id,
             'reactscript' => $reactscript,
             'chatid' => $this->chatid,
-            'groupid' => $this->groupid,
+            'groupid' => $this->groupid ?? 'undefined',
             'form' => $form,
             'languageStrings' => $languageStrings,
         ];

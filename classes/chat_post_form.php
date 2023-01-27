@@ -6,6 +6,11 @@ require_once $CFG->dirroot . DIRECTORY_SEPARATOR . 'repository' . DIRECTORY_SEPA
 require_once __DIR__ . '/lccustomeditor.php';
 class chat_post_form extends \moodleform {
 
+    public function __construct($action = null, $customdata = null, $method = 'post', $target = '', $attributes = null, $editable = true, $ajaxformdata = null) {
+        $attributes['class'] = 'chat-post-form';
+        parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
+    }
+
     /**
      * Returns the options array to use in filemanager for chat attachments
      *

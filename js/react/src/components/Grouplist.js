@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 import Group from "./Group";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
-import {useSetChatInput} from "../hooks/moodleHelpers.js";
+import {useHideForm, useSetChatInput} from "../hooks/moodleHelpers.js";
 
 const shouldIncludeId = (new URLSearchParams(window.location.search)).get('groupid') || window.learningcompanions_groupid;
 
@@ -16,6 +16,10 @@ export default function Grouplist({activeGroupid}) {
     const [activeGroupId, setActiveGroupId] = useState(activeGroupid);
     const [updateGroups, setUpdateGroups] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
+    if (activeGroupId === undefined && groups.length) {
+        setActiveGroupId(groups[0].id);
+    }
 
     useEffect(() => {
         const group = groups.find(group => +group.id === +activeGroupId);
@@ -57,6 +61,10 @@ export default function Grouplist({activeGroupid}) {
                 setGroups(groups);
                 setIsLoading(false);
                 eventBus.dispatch(eventBus.events.GROUPS_UPDATED, {groups});
+
+                if (groups.length === 0) {
+                    useHideForm();
+                }
             })
             .catch(error => {
                 if (error.name !== "AbortError") {
@@ -82,6 +90,7 @@ export default function Grouplist({activeGroupid}) {
             {groups.map(group => (
                 <Group key={group.id} handleGroupSelect={handleGroupSelect} group={group} activeGroupid={activeGroupId} />
             ))}
+            {groups.length === 0 && !isLoading && <p>No groups found</p>}
         </div>
     );
 };

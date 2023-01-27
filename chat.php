@@ -14,7 +14,7 @@ if (!in_array($layout, $layoutwhitelist)) {
 }
 $PAGE->set_pagelayout($layout);
 $PAGE->set_title(get_string('learninggroups', 'local_learningcompanions'));
-$groupid = optional_param('groupid', 1, PARAM_INT); // ictodo: change default, or maybe remove this completely, or make it required, ...
+$groupid = optional_param('groupid', null, PARAM_INT);
 $cmid = optional_param('cmid', 0, PARAM_INT);
 $courseid = optional_param('courseid', 0, PARAM_INT);
 $PAGE->requires->js_call_amd('local_learningcompanions/learningcompanions_chat', 'init');

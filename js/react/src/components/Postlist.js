@@ -18,13 +18,20 @@ export default function Postlist({activeGroupid: startGroupId}) {
     const [lastPostId, setLastPostId] = useState(null); //Used, to get only new Posts
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
 
+    console.log('Postlist', {startGroupId, activeGroupid});
+
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
     const group = groups.find(group => +group.id === +activeGroupid);
     const isInPreviewMode = group?.isPreviewGroup ?? false;
     let updateRunning = false;
 
+    if (activeGroupid === undefined && groups.length) {
+        setActiveGroupid(groups[0].id);
+    }
+
     // Create them using useCallback, so we dont have to recreate them on every render.
     const handleGroupChanged = useCallback((data) => {
+        console.log(data);
         setActiveGroupid(data.groupid);
         setIsLoading(true);
     }, []);
@@ -184,7 +191,7 @@ export default function Postlist({activeGroupid: startGroupId}) {
             <GroupHeader group={group}/>
             {isInPreviewMode && <span>Is Preview</span>}
             {isLoading && <LoadingIndicator/>}
-            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
+            {!isLoading && groups.length > 0 && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
         </div>
     );
 };
