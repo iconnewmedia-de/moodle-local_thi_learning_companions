@@ -205,3 +205,6 @@ $string['assign_new_admin_while_leaving_description'] = 'You are the last admin 
 $string['choose_new_admin'] = 'Choose a new admin. The default is the last active member.';
 $string['user_is_not_group_admin'] = 'You are not allowed to do this. You are not the admin of this group.';
 $string['new_admin_is_not_member'] = 'The new admin is not a member of this group. Please choose a new admin.';
+
+$string['bigbluebutton_title'] = 'Video conference with BigBlueButton';
+$string['bigbluebutton_join_text'] = 'Click here to join the BigBlueButton video conference';
