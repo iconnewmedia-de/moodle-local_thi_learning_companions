@@ -44,14 +44,14 @@ class chat_post_form extends \moodleform {
             'trusttext'=> true,
             'return_types'=> FILE_INTERNAL | FILE_EXTERNAL,
             'subdirs' => file_area_contains_subdirs($context, 'local_learningcompanions', 'message', $postid),
-            /*'atto:toolbar' => 'collapse = collapse
+            'atto:toolbar' => 'collapse = collapse
 style1 = title, bold, italic
 list = unorderedlist, orderedlist, indent
 links = link
 files = emojipicker, image, media, recordrtc, managefiles
 style2 = underline, strike, subscript, superscript
 align = align
-undo = undo'*/
+undo = undo'
         );
     }
 
@@ -63,12 +63,12 @@ undo = undo'*/
 
         $chatid = $this->_customdata['chatid'];
 
-//        $mform->addElement('lccustomeditor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
-        $mform->addElement('editor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
+        $mform->addElement('lccustomeditor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
+//        $mform->addElement('editor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
         $mform->setType('message', PARAM_RAW);
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
 
-        $mform->addElement('html', '<div class="js-chat-preview preview-wrapper d-flex flex-column p-6 align-items-center">
+        $mform->addElement('html', '<div class="js-chat-preview preview-wrapper d-flex flex-column p-6 align-items-center d-none">
         <span class="preview-text">' . get_string('previewing_group', 'local_learningcompanions') . '</span>' .
             '<a href="/local/learningcompanions/join.php?groupid='.optional_param('groupid', null, PARAM_INT).'" class="preview-link">' . get_string('join_group_link_text', 'local_learningcompanions') . '</a></div>');
 

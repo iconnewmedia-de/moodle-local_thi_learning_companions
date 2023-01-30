@@ -3,7 +3,6 @@
 define('AJAX_SCRIPT', true);
 
 require_once dirname(__DIR__, 3). '/config.php';
-require_once __DIR__ . "/classes/chat_post_form.php";
 require_once __DIR__ . "/locallib.php";
 global $DB, $PAGE;
 
