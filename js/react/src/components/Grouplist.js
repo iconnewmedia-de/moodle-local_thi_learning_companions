@@ -52,7 +52,7 @@ export default function Grouplist({activeGroupid}) {
             urlParams.set('shouldIncludeId', shouldIncludeId);
         }
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajaxgrouplist.php?${urlParams}`, {
+        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxgrouplist.php?${urlParams}`, {
             signal: controller.signal
         })
             .then(response => response.json())

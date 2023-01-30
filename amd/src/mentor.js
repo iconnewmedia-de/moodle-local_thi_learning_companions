@@ -97,7 +97,7 @@ define([
                 const questionid = $(this).data('qid');
 
                 $.ajax({
-                    url: M.cfg.wwwroot + '/local/learningcompanions/ajax.php',
+                    url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php',
                     method: 'POST',
                     dataType: 'json',
                     data: {

@@ -14,13 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+define('AJAX_SCRIPT', true);
+
 /**
  * @package     local_learningcompanions
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once((dirname(__DIR__, 2)).'/config.php');
+require_once dirname(__DIR__, 3).'/config.php';
 
 global $CFG, $DB, $OUTPUT;
 

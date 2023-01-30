@@ -53,15 +53,16 @@ const addBBBlinkButton = function() {
     var string = str.get_string(  'bigbluebutton_title', 'local_learningcompanions');
     string.then((title) => {
         $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_bbb_button" title="' + title + '")>BigBlueButton</button></div>').appendTo('.atto_toolbar_row:first-child');
-    })
-}
+    });
+};
 const handleBBBButton = function(e){
     e.preventDefault();
     var sel = window.getSelection();
     let messageEditorSelected = false;
     const messageEditor = document.getElementById('id_messageeditable');
+    // eslint-disable-next-line no-cond-assign
     while (sel = sel.parentNode){
-        if (sel.id == 'id_messageeditable') {
+        if (sel.id === 'id_messageeditable') {
             messageEditorSelected = true;
             break;
         }
@@ -84,7 +85,7 @@ const handleBBBButton = function(e){
     });
     // ICTODO: Create a new BBB room, then create a link that the users can use to join the room, all via AJAX
     return false;
-}
+};
 const pasteHtmlAtCaret = function(html) {
     var sel, range;
     if (window.getSelection) {
@@ -118,7 +119,7 @@ const pasteHtmlAtCaret = function(html) {
         // IE < 9
         document.selection.createRange().pasteHTML(html);
     }
-}
+};
 const handleCommentDelete = async function(e) {
     const postId = +e.target.dataset.id;
 
@@ -135,7 +136,7 @@ const handleCommentDelete = async function(e) {
 
     modal.getRoot().on(ModalEvents.save, function() {
         $.ajax({
-            url: M.cfg.wwwroot + '/local/learningcompanions/ajaxdeletecomment.php',
+            url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajaxdeletecomment.php',
             method: 'POST',
             dataType: 'json',
             data: {
@@ -213,7 +214,7 @@ const handleCommentReport = async function(e) {
         modal.getRoot().on(ModalEvents.save, function() {
             console.log('about to call ajaxdeletecomment.php with comment id', postId);
             $.ajax({
-                url: `${M.cfg.wwwroot}/local/learningcompanions/ajaxreport.php`,
+                url: `${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxreport.php`,
                 method: 'POST',
                 dataType: 'json',
                 data: {
@@ -245,7 +246,7 @@ const handleEditGroup = async function(e) {
         const groupname = e.target.dataset.title;
         console.log('getting group modal for ', groupid, groupname, this, e);
         const groupDetails = $.ajax({
-            url: M.cfg.wwwroot + '/local/learningcompanions/ajax.php',
+            url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php',
             method: 'POST',
             dataType: 'json',
             data: {
@@ -290,7 +291,7 @@ const handleNewMessageSubmit = (e) => {
     $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'false');
     $('#learningcompanions_chat form input,  #learningcompanions_chat form textarea, #local_learningcompanions_chat-send').attr('disabled', true);
     $.post(
-        M.cfg.wwwroot + "/local/learningcompanions/ajaxsubmit.php",
+        M.cfg.wwwroot + "/local/learningcompanions/ajax/ajaxsubmit.php",
         data
     ).done(function(a, b, c) {
         // ICTODO: give a success message, like with a toast or so

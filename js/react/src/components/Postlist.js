@@ -40,7 +40,7 @@ export default function Postlist({activeGroupid, groups}) {
     const getInitialPosts = useCallback(() => {
         const controller = new AbortController();
 
-        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajaxchat.php?' + new URLSearchParams({
+        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajaxchat.php?' + new URLSearchParams({
             groupid: activeGroupid,
             includedPostId: highlightedPostId,
         }), {
@@ -98,7 +98,7 @@ export default function Postlist({activeGroupid, groups}) {
 
         const controller = new AbortController();
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajaxchat.php?`+ new URLSearchParams({
+        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxchat.php?`+ new URLSearchParams({
             groupid: activeGroupid,
             firstPostId: firstPostId,
         }), {
@@ -128,7 +128,7 @@ export default function Postlist({activeGroupid, groups}) {
 
         const controller = new AbortController();
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}`, {
+        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}`, {
             signal: controller.signal
         })
         .then(response => response.json())

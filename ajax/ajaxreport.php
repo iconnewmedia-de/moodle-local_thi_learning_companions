@@ -1,8 +1,11 @@
 <?php
+
+define('AJAX_SCRIPT', true);
+
 // AJAX script for reporting a chat message that is abusive/racist/sexist/whatever
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
-require_once(__DIR__ . "/../../config.php");
+require_once dirname(__DIR__, 3). '/config.php';
 require_once(__DIR__ . "/classes/groups.php");
 require_login();
 global $USER;

@@ -65,7 +65,7 @@ const handleTableRowClick = async function(e) {
     const groupid = $(this).data('gid');
     const groupname = $(this).data('title');
 
-    const groupDetailsPromise = promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+    const groupDetailsPromise = promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php', {
         action: 'getgroupdetails',
         groupid: groupid
     });
@@ -121,13 +121,13 @@ export const handleGroupLeaveButton = async function(e) {
     /**
      * @type {{needsNewAdmin: ?bool, leaved: bool, isLastMember: ?bool}}
      */
-    const response = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+    const response = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php', {
         action: 'leavegroup',
         groupid: groupId
     });
 
     if (response.needsNewAdmin) {
-        const possibleNewAdminsBodyPromise = promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+        const possibleNewAdminsBodyPromise = promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php', {
             action: 'getpossiblenewadmins',
             groupid: groupId
         });
@@ -190,7 +190,7 @@ export const handleGroupLeaveButton = async function(e) {
 export const handleGroupRequestButton = async function(e) {
     e.preventDefault();
 
-    const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax.php', {
+    const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php', {
         action: 'requestgroupjoin',
         groupid: $(this).data('groupid')
     });
