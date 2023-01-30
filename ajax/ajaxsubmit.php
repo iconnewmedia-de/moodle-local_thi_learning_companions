@@ -3,7 +3,7 @@
 define('AJAX_SCRIPT', true);
 
 require_once dirname(__DIR__, 3). '/config.php';
-require_once __DIR__ . "/locallib.php";
+require_once dirname(__DIR__) . "/locallib.php";
 global $DB, $PAGE;
 
 $context = context_system::instance();

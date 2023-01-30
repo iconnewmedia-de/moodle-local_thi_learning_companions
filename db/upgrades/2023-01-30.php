@@ -12,3 +12,13 @@ if ($oldversion < 2023013001) {
 
     upgrade_plugin_savepoint(true, 2023013001, 'local', 'learningcompanions');
 }
+
+if ($oldversion < 2023013002) {
+    $dbman = $DB->get_manager();
+
+    $table = new xmldb_table('lc_chat_comment');
+    $dbman->drop_index($table, new xmldb_index('lcchatcomm_use_uix', XMLDB_INDEX_NOTUNIQUE, ['userid']));
+    $dbman->drop_index($table, new xmldb_index('lcchatcomm_cha_uix', XMLDB_INDEX_NOTUNIQUE, ['chatid']));
+
+    upgrade_plugin_savepoint(true, 2023013002, 'local', 'learningcompanions');
+}
