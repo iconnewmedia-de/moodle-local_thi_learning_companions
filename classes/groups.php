@@ -177,8 +177,7 @@ class groups {
      */
     public static function get_all_keywords() {
         global $DB;
-        $keywords = $DB->get_records('lc_keywords', null, '', 'keyword');
-        return array_keys($keywords);
+        return $DB->get_records_menu('lc_keywords');
     }
 
     /**
