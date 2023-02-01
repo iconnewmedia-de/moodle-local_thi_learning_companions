@@ -34,7 +34,6 @@ export default function Post({highlighted, post, isPreview}) {
                 {!isPreview && showDeleteButton && <DeleteButton id={id} />}
                 {!isPreview && showReportButton && !+reported && <ReportButton id={id} />}
             </div>
-            <span>ID: {id}</span>
             {highlighted && (
                 <>
                     <br />
