@@ -27,11 +27,12 @@ if ($courseid > 0) {
     $creategroupurl .= '?courseid=' . $courseid;
     $coursenamefilter = $DB->get_field('course', 'fullname', array('id' => $courseid));
 }
+$keywords = array_values(\local_learningcompanions\groups::get_all_keywords());
 echo $OUTPUT->render_from_template('local_learningcompanions/group/group_search', array(
     'cfg' => $CFG,
     'groups' => array_values($groups),
     'hasgroups' => $hasgroups,
-    'keywords' => \local_learningcompanions\groups::get_all_keywords(),
+    'keywords' => $keywords,
     'creategroupurl' => $creategroupurl,
     'coursenamefilter' => $coursenamefilter
 ));
