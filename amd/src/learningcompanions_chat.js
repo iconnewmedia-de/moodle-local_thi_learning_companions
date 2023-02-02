@@ -302,6 +302,7 @@ const handleNewMessageSubmit = (e) => {
                 el.value = '';
             }
         });
+        document.dispatchEvent(new CustomEvent('learningcompanions_message_send'));
     }).fail(function(a, b, c) {
         console.warn('Failed sending via AJAX', a, b, c);
         window.alert("couldn't save"); // ICTODO: give proper message, via get_string and ideally with a modal

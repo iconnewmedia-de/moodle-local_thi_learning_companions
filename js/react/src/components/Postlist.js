@@ -37,6 +37,9 @@ export default function Postlist({activeGroupid, groups}) {
             return post;
         }));
     }, []);
+    const handlePostSend = useCallback(() => {
+        setChattimer(chattimer => chattimer + 1);
+    }, []);
     const getInitialPosts = useCallback(() => {
         const controller = new AbortController();
 
@@ -68,11 +71,13 @@ export default function Postlist({activeGroupid, groups}) {
     useEffect(() => {
         eventBus.on(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
         eventBus.on(eventBus.events.MESSAGE_REPORTED, handlePostReported);
+        eventBus.on(eventBus.events.MESSAGE_SEND, handlePostSend);
 
         // ICTODO: This doesn´t remove the event listeners.
         return () => {
             eventBus.off(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
             eventBus.off(eventBus.events.MESSAGE_REPORTED, handlePostReported);
+            eventBus.off(eventBus.events.MESSAGE_SEND, handlePostSend);
         }
     }, []);
 
@@ -150,8 +155,8 @@ export default function Postlist({activeGroupid, groups}) {
     //Wrap the setInterval in a useEffect hook, so it doesn´t add a new interval on every render.
     useEffect(() => {
         const intervalId = window.setInterval(() => {
-            setChattimer((chattimer) => chattimer + 1);
-        }, 30000);
+            setChattimer(chattimer => chattimer + 1);
+        }, 10000);
 
         return () => {
             window.clearInterval(intervalId);
