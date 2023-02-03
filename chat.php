@@ -15,8 +15,6 @@ if (!in_array($layout, $layoutwhitelist)) {
 $PAGE->set_pagelayout($layout);
 $PAGE->set_title(get_string('learninggroups', 'local_learningcompanions'));
 $groupid = optional_param('groupid', null, PARAM_INT);
-$cmid = optional_param('cmid', 0, PARAM_INT);
-$courseid = optional_param('courseid', 0, PARAM_INT);
 $PAGE->requires->js_call_amd('local_learningcompanions/learningcompanions_chat', 'init');
 
 $PAGE->requires->js(new moodle_url('https://unpkg.com/react@18/umd/react.development.js'), true);
@@ -25,8 +23,8 @@ $PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18/umd/react-dom
 //$PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js'), true);
 $PAGE->requires->js(new moodle_url('/local/learningcompanions/js/react/build/learningcompanions-chat.min.js'));
 
-echo $OUTPUT->header();
+$chat = \local_learningcompanions\chat::createGroupChat($groupid);
 
-$chat = new \local_learningcompanions\chat($groupid);
+echo $OUTPUT->header();
 echo $chat->get_chat_module();
 echo $OUTPUT->footer();

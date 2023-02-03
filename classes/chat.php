@@ -6,12 +6,14 @@ class chat {
     protected $chat;
     protected $context;
 
-    public function __construct($groupid) {
+    public static function createGroupChat($groupid): self {
         global $DB;
-        $this->groupid = $groupid;
-        $this->chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => 1]);
+
+        $new_chat = new self();
+        $new_chat->groupid = $groupid;
+        $new_chat->chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => 1]);
         if ($groupid) {
-            if (!$this->chat) {
+            if (!$new_chat->chat) {
                 $chat = new \stdClass();
                 $chat->chattype = 1;
                 $chat->relatedid = $groupid;
@@ -19,12 +21,13 @@ class chat {
                 $group = $DB->get_record('lc_groups', ['id' => $groupid]);
                 $chat->course = $group->courseid;
                 $chatid = $DB->insert_record('lc_chat', $chat);
-                $this->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
+                $new_chat->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
             }
-            $this->chatid = $this->chat->id;
+            $new_chat->chatid = $new_chat->chat->id;
         }
-        $this->context = \context_system::instance();
-        $this->filestorage = get_file_storage();
+        $new_chat->context = \context_system::instance();
+        $new_chat->filestorage = get_file_storage();
+        return $new_chat;
     }
 
     private function get_language_strings(): string {

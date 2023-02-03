@@ -13,9 +13,8 @@ $groupid = optional_param('groupid', 1, PARAM_INT); // ICTODO: turn this into a 
 $chatid = optional_param('chatid', 1, PARAM_INT); // ICTODO: turn this into a required param. Just using optional with default for testing/development purposes
 $firstPostId = optional_param('firstPostId', null, PARAM_INT);
 $includedPostId = optional_param('includedPostId', 0, PARAM_INT);
-//$previewGroup = optional_param('previewGroup', null, PARAM_INT);
 
-$chat = new local_learningcompanions\chat($groupid);
+$chat = \local_learningcompanions\chat::createGroupChat($groupid);
 $chat->set_latestviewedcomment($chatid);
 $posts = $chat->get_posts_for_chat($firstPostId, $includedPostId);
 

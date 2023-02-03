@@ -22,7 +22,12 @@ if ($data = $form->get_data()) {
 
     \local_learningcompanions\question::ask_new_open_question($question, $subject, $topic);
 
-    redirect(new moodle_url('/local/learningcompanions/mentor/'));
+    redirect(new moodle_url('/local/learningcompanions/mentor/'),
+        get_string('question_asked', 'local_learningcompanions'),
+        null,
+        \core\output\notification::NOTIFY_SUCCESS
+    );
+    die();
 }
 
 echo $OUTPUT->header();
