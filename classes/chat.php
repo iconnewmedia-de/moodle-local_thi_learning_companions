@@ -30,6 +30,31 @@ class chat {
         return $new_chat;
     }
 
+    public static function createQuestionChat($questionid): self {
+        global $DB;
+
+        $new_chat = new self();
+        $new_chat->groupid = $questionid;
+        $new_chat->context = \context_system::instance();
+        $new_chat->filestorage = get_file_storage();
+        $new_chat->chat = $DB->get_record('lc_chat', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
+        if ($questionid) {
+            if (!$new_chat->chat) {
+                $chat = new \stdClass();
+                $chat->chattype = groups::CHATTYPE_MENTOR;
+                $chat->relatedid = $questionid;
+                $chat->timecreated = time();
+                $chat->course = 0;
+                $chatid = $DB->insert_record('lc_chat', $chat);
+                $new_chat->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
+            }
+            $new_chat->chatid = $new_chat->chat->id;
+        }
+
+        return $new_chat;
+    }
+
+
     private function get_language_strings(): string {
         $stringKeys = [
             'delete_post',
@@ -198,18 +223,29 @@ class chat {
      */
     public function get_chat_module() {
         global $USER, $OUTPUT;
-        $reactscript = \local_learningcompanions\get_chat_reactscript_path();
         $form = $this->get_submission_form(['chatid' => $this->chatid]);
         $languageStrings = $this->get_language_strings();
         $context = [
             'userid' => $USER->id,
-            'reactscript' => $reactscript,
-            'chatid' => $this->chatid,
             'groupid' => $this->groupid ?? 'undefined',
             'form' => $form,
             'languageStrings' => $languageStrings,
         ];
         return $OUTPUT->render_from_template('local_learningcompanions/chat', $context);
+    }
+
+    public function get_question_chat_module() {
+        global $USER, $OUTPUT;
+        $form = $this->get_submission_form(['chatid' => $this->chatid]);
+        $languageStrings = $this->get_language_strings();
+        $context = [
+            'userid' => $USER->id,
+            'groupid' => $this->groupid ?? 'undefined',
+            'form' => $form,
+            'languageStrings' => $languageStrings,
+            'questionGroup' => json_encode(groups::get_group_by_id(1)) //ICTODO: get the correct question group
+        ];
+        return $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_question_chat', $context);
     }
 
     protected function get_submission_form($customdata) {

@@ -5,7 +5,6 @@ import Postlist from "./components/Postlist.js";
 
 function startChat() {
     const root = ReactDOM.createRoot(document.getElementById('learningcompanions_groups-content'));
-
     root.render(
         <React.StrictMode>
             <Grouplist activeGroupid={window.learningcompanions_groupid}/>
@@ -14,13 +13,12 @@ function startChat() {
 }
 
 function startQuestionChat() {
-    const root = ReactDOM.createRoot(document.getElementById('learningcompanions_groups-content'));
-    const activeGroupid = window.learningcompanions_groupid;
+    const root = ReactDOM.createRoot(document.getElementById('learningcompanions_chat-content'));
     const questionGroup = [window.learningcompanions_questionGroup];
 
     root.render(
         <React.StrictMode>
-            <Postlist activeGroupid={activeGroupid} groups={questionGroup}/>
+            <Postlist activeGroupid={window.learningcompanions_groupid} groups={questionGroup}/>
         </React.StrictMode>
     );
 }

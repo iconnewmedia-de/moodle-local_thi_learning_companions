@@ -1,0 +1,19 @@
+<h1>Mentoring</h1>
+<div id="learningcompanions_chat">
+    <div class="row">
+        <div id="learningcompanions_chat" class="col-s-12">
+            <div id="learningcompanions_chat-content"></div>
+            {{{form}}}
+        </div>
+    </div>
+</div>
+
+{{#js}}
+    var learningcompanions_chat_userid = {{userid}};
+    var learningcompanions_groupid = {{groupid}};
+    var learningcompanions_questionGroup = {{{questionGroup}}};
+    {{{languageStrings}}}
+    setTimeout(function() {
+        window.Chat.startQuestionChat();
+    }, 0);
+{{/js}}

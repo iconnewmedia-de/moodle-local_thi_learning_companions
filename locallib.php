@@ -1,13 +1,5 @@
 <?php
 namespace local_learningcompanions;
-function get_chat_reactscript_path() {
-    global $CFG;
-    $reactscript = glob( $CFG->dirroot . '/local/learningcompanions/js/react/build/assets/index*.js');
-    $reactscript = $reactscript[0];
-    $reactscript = '/local/learningcompanions/js/react/build/assets/' . pathinfo($reactscript, PATHINFO_BASENAME);
-
-    return $reactscript;
-}
 
 /**
  * @param $data

@@ -5,7 +5,7 @@ import GroupHeader from "./GroupHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
 
-export default function Postlist({activeGroupid, groups}) {
+export default function Postlist({activeGroupid, group}) {
     const [posts, setPosts] = useState([]);
     const [chattimer, setChattimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +13,7 @@ export default function Postlist({activeGroupid, groups}) {
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
 
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
-    const group = groups.find(group => +group.id === +activeGroupid);
+    // const group = groups.find(group => +group?.id === +activeGroupid);
     const isInPreviewMode = group?.isPreviewGroup ?? false;
     let updateRunning = false;
 
@@ -174,7 +174,7 @@ export default function Postlist({activeGroupid, groups}) {
             <GroupHeader group={group}/>
             {isInPreviewMode && <span>Is Preview</span>}
             {isLoading && <LoadingIndicator/>}
-            {!isLoading && groups.length > 0 && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
+            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
         </div>
     );
 };
