@@ -76,7 +76,8 @@ const handleBBBButton = function(e){
         document.getSelection().addRange(range);
     }
     var string = str.get_string('bigbluebutton_join_text', 'local_learningcompanions');
-    var bbbURLs = $.ajax(M.cfg.wwwroot + '/local/learningcompanions/ajax_videocall.php');
+    var chatid = $('.chat-post-form input[name="chatid"]').val();
+    var bbbURLs = $.ajax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax_videocall.php', {data: {chatid:chatid}});
     Promise.all([string,bbbURLs]).then((data) => {
         const urls = data[1];
         window.open(urls['moderator'], '_blank');

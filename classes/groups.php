@@ -35,6 +35,28 @@ class groups {
     }
 
     /**
+     * @param int $chatid
+     * @return group
+     * @throws \dml_exception
+     */
+    public static function get_group_by_chatid(int $chatid): group {
+        $groupid = self::get_groupid_of_chatid($chatid);
+        $group = new group($groupid);
+        return $group;
+    }
+
+    /**
+     * @param int $chatid
+     * @return int
+     * @throws \dml_exception
+     */
+    public static function get_groupid_of_chatid(int $chatid): int {
+        global $DB;
+        $groupid = $DB->get_field('lc_chat', 'relatedid', array('id' => $chatid, 'chattype' => self::CHATTYPE_GROUP));
+        return $groupid;
+    }
+
+    /**
      * @param int $userid
      * @param string $sortby possible values: latestcomment, earliestcomment, mylatestcomment, myearliestcomment
      * @return group[]
@@ -544,5 +566,28 @@ class groups {
             return 0;
         }
         return count($commentsSinceLastVisit);
+    }
+
+    /**
+     * @param int $userid
+     * @param int $groupid
+     * @return bool
+     * @throws \dml_exception
+     */
+    public static function is_group_member(int $userid, int $groupid) {
+        global $DB;
+        return $DB->record_exists('lc_group_members', array('userid' => $userid, 'groupid' => $groupid));
+    }
+
+    /**
+     * @param int $groupid
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function may_view_group(int $groupid) {
+        global $USER;
+        $context = \context_system::instance();
+        return self::is_group_member($USER->id, $groupid) || has_capability('local/learningcompanions:group_manage', $context);
     }
 }
