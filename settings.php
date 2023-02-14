@@ -56,6 +56,12 @@ if ($hassiteconfig) {
     'assign,assignment,book,choice,data,feedback,folder,glossary,h5pactivity,lesson,lit,quiz,resource,page,scorm,survey,workshop'
     ));
 
+    $settings->add(new admin_setting_configtext('local_learningcompanions/badgetypes_for_mentors',
+        get_string('setting_badgetypes_for_mentors', 'local_learningcompanions'),
+        get_string('configbadgetypes_for_mentors', 'local_learningcompanions'),
+    'expert'
+    ));
+
     $category = new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions'));
     if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings
         $ADMIN->add('root', $category);

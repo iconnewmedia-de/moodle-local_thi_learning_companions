@@ -241,4 +241,25 @@ class mentors {
 
         return $keywords;
     }
+
+    /**
+     * returns an array of courses for which the user is qualified to become a mentor but hasn't become yet
+     * @return array
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
+    public static function get_mentor_qualifications() {
+        global $USER, $DB, $CFG;
+        require_once $CFG->dirroot . '/lib/badgeslib.php';
+        $userBadges = \badges_get_user_badges($USER->id);
+        $mentorCourses = $DB->get_records('lc_mentors', array('userid' => $USER->id), '', 'courseid');
+        $mentorCourseIDs = array_keys($mentorCourses);
+        $qualifiedCourses = [];
+        foreach($userBadges as $userBadge) {
+            if (!is_null($userBadge->courseid) && !in_array($userBadge->courseid, $mentorCourseIDs)) {
+                $qualifiedCourses[$userBadge->courseid] = $DB->get_record('course', array('id' => $userBadge->courseid));
+            }
+        }
+        return $qualifiedCourses;
+    }
 }

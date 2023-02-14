@@ -47,6 +47,15 @@ export const init = async() => {
     body.on('click', '.js-request-join-group', handleGroupRequestButton);
     body.on('click', '.js-invite-member', handleGroupInviteButton);
     body.on('click', '.learningcompanions_bbb_button', handleBBBButton);
+    let item = document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments');
+    item.addEventListener('dragstart', function(e) {
+        console.log('started dragging', e);
+        e.target.classList.add('upload-visible');
+    });
+    item.addEventListener('dragend', function(e) {
+        console.log('stopped dragging', e);
+        e.target.classList.remove('upload-visible');
+    });
 };
 
 const addBBBlinkButton = function() {

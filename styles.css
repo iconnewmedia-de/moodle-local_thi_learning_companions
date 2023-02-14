@@ -336,3 +336,11 @@
     background-size: cover;
     color: transparent;
 }
+#page-local-learningcompanions-chat #fitem_id_attachments {
+    opacity: 0;
+    pointer-events: none;
+}
+#page-local-learningcompanions-chat #fitem_id_attachments.upload-visible {
+    visibility: visible;
+    pointer-events: all;
+}

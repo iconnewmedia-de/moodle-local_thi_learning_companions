@@ -74,7 +74,7 @@ class groups {
         $return = [];
 
         foreach($groups as $group) {
-            $returnGroup = new group($group->id, $userid);
+            $returnGroup = new group($group->id, $userid); // ICTODO: check why this changes the PAGE context to context_system
             $return[] = $returnGroup;
         }
 

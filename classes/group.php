@@ -472,8 +472,8 @@ class group {
         }
         global $DB, $CFG, $OUTPUT, $PAGE;
 
-        $context = \context_system::instance();
-        $PAGE->set_context($context);
+//        $context = \context_system::instance(); // WHY? Commented out for now, need to find out why this has been added
+//        $PAGE->set_context($context); // WHY?! This would change the context on all pages to context_system. Even in courses and course modules
 
         $sql = 'SELECT u.*,
                        gm.joined

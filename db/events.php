@@ -24,4 +24,8 @@ $observers = [
         'callback' => '\local_learningcompanions\eventobservers::course_module_created',
         'internal' => false,
     ],
+    [
+        'eventname'   => '\core\event\badge_awarded',
+        'callback'    => '\local_learningcompanions\eventobservers::badge_awarded'
+    ]
 ];

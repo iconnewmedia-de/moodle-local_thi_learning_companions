@@ -1,6 +1,7 @@
 <?php
 function local_learningcompanions_extend_settings_navigation() {
     global $PAGE;
+    return; // ICUNDO
     if (!isloggedin()){
         return;
     }
@@ -59,6 +60,7 @@ function local_learningcompanions_get_attachments_of_chat_comments(array $commen
 }
 
 function local_learningcompanions_extend_navigation(global_navigation $nav) {
+    return; // ICUNDO
     if (has_capability('tool/learningcompanions:manage', context_system::instance())) {
         global $CFG, $PAGE;
         $rootNode = $nav->find('home', $nav::TYPE_ROOTNODE)->parent;

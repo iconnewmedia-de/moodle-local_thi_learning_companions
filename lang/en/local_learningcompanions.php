@@ -208,3 +208,6 @@ $string['new_admin_is_not_member'] = 'The new admin is not a member of this grou
 
 $string['bigbluebutton_title'] = 'Video conference with BigBlueButton';
 $string['bigbluebutton_join_text'] = 'Click here to join the BigBlueButton video conference';
+
+$string['setting_badgetypes_for_mentors'] = 'Mentor badges';
+$string['configbadgetypes_for_mentors'] = 'Which badges qualify for the mentor role? Comma-separated list of badge names.';
