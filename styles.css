@@ -342,5 +342,6 @@
 }
 #page-local-learningcompanions-chat #fitem_id_attachments.upload-visible {
     visibility: visible;
+    opacity: 1;
     pointer-events: all;
 }

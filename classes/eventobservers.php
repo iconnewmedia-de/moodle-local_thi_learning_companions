@@ -83,6 +83,7 @@ class eventobservers {
         $message->name = 'notification_qualified_mentor'; // Your notification name from message.php
         $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
         $message->userto = $user;
+        // ICTODO: get course topic instead and display that in the email. We will have to use a custom course profile field
         $course = $DB->get_record('course', array('id' => $courseid));
         $link = $CFG->wwwroot . '/local/learningcompanions/mentor/manage.php';
         $message->subject = get_string('message_qualified_mentor_subject', 'local_learningcompanions', array('user' => $user, 'course' => $course, 'link' => $link));

@@ -45,12 +45,7 @@ class chat_post_form extends \moodleform {
             'return_types'=> FILE_INTERNAL | FILE_EXTERNAL,
             'subdirs' => file_area_contains_subdirs($context, 'local_learningcompanions', 'message', $postid),
             'atto:toolbar' => 'collapse = collapse
-style1 = title, bold, italic
-list = unorderedlist, orderedlist, indent
-links = link
-files = emojipicker, image, media, recordrtc, managefiles
-style2 = underline, strike, subscript, superscript
-align = align
+style1 = bold, italic
 undo = undo'
         );
     }

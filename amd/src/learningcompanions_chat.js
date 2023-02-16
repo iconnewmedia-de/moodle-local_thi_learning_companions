@@ -48,20 +48,25 @@ export const init = async() => {
     body.on('click', '.js-invite-member', handleGroupInviteButton);
     body.on('click', '.learningcompanions_bbb_button', handleBBBButton);
     let item = document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments');
-    item.addEventListener('dragstart', function(e) {
+    document.body.addEventListener('dragenter', function(e) {
         console.log('started dragging', e);
-        e.target.classList.add('upload-visible');
+        document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.add('upload-visible');
     });
-    item.addEventListener('dragend', function(e) {
+    document.body.addEventListener('dragstop', function(e) {
         console.log('stopped dragging', e);
-        e.target.classList.remove('upload-visible');
+        document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.remove('upload-visible');
     });
 };
 
 const addBBBlinkButton = function() {
     var string = str.get_string(  'bigbluebutton_title', 'local_learningcompanions');
     string.then((title) => {
-        $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_bbb_button" title="' + title + '")>BigBlueButton</button></div>').appendTo('.atto_toolbar_row:first-child');
+        if ($('.atto_editor_row').length > 0) {
+            var appendTo = '#page-local-learningcompanions-chat .atto_toolbar_row:first-child';
+        } else {
+            var appendTo = '#page-local-learningcompanions-chat .editor_atto_toolbar';
+        }
+        $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_bbb_button" title="' + title + '")>BigBlueButton</button></div>').appendTo(appendTo);
     });
 };
 const handleBBBButton = function(e){
