@@ -250,13 +250,16 @@ class mentors {
      */
     public static function get_mentor_qualifications() {
         global $USER, $DB, $CFG;
-        return []; // ICTODO: remove this when queries below are done
+//        return []; // ICTODO: remove this when queries below are done
         require_once $CFG->dirroot . '/lib/badgeslib.php';
         $userBadges = \badges_get_user_badges($USER->id);
         $mentorTopics = $DB->get_records('lc_mentors', array('userid' => $USER->id), '', 'topic');
+        if (empty($mentorTopics)) {
+            return;
+        }
         list($condition, $params) = $DB->get_in_or_equal(array_keys($mentorTopics));
         $mentorCourses = $DB->get_records_sql('SELECT * FROM {course} c
-JOIN {course_profile_field} cp ON cp.');
+JOIN {customfield_field} cf ON cf.');
         $mentorCourseIDs = array_keys($mentorCourses);
         $qualifiedCourses = [];
         foreach($userBadges as $userBadge) {

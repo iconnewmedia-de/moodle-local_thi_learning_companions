@@ -52,10 +52,10 @@ export const init = async() => {
         console.log('started dragging', e);
         document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.add('upload-visible');
     });
-    document.body.addEventListener('dragstop', function(e) {
-        console.log('stopped dragging', e);
-        document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.remove('upload-visible');
-    });
+    // document.body.addEventListener('dragstop', function(e) {
+    //     console.log('stopped dragging', e);
+    //     document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.remove('upload-visible');
+    // });
 };
 
 const addBBBlinkButton = function() {

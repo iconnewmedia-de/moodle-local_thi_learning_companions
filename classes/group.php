@@ -152,6 +152,11 @@ class group {
      */
     public $may_edit;
 
+    /**
+     * @var bool
+     */
+    public $is_admin;
+
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER;
 
@@ -204,7 +209,7 @@ class group {
         $this->get_course();
 //        $this->get_keywords();
         $this->get_keywords_list();
-        $this->may_edit = has_capability('local/learningcompanions:group_manage', \context_system::instance()) || array_key_exists($USER->id, $this->admins);
+        $this->may_edit = $this->is_admin || has_capability('local/learningcompanions:group_manage', \context_system::instance());
         // ICTODO: fetch course and course category along with relevant metadata from course and course category, like topic and such
     }
 
@@ -470,8 +475,8 @@ class group {
         if (!is_null($this->admins)) {
             return $this->admins;
         }
-        global $DB, $CFG, $OUTPUT, $PAGE;
-
+        global $DB, $CFG, $OUTPUT, $USER;
+        $this->is_admin = false;
 //        $context = \context_system::instance(); // WHY? Commented out for now, need to find out why this has been added
 //        $PAGE->set_context($context); // WHY?! This would change the context on all pages to context_system. Even in courses and course modules
 
@@ -484,6 +489,9 @@ class group {
 
         $admins = $DB->get_records_sql($sql, [$this->id]);
         foreach ($admins as $admin) {
+            if ($admin->id === $USER->id) {
+                $this->is_admin = true;
+            }
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;
             unset($admin->password);
