@@ -93,7 +93,7 @@ export default function Grouplist({activeGroupid}) {
                 ))}
                 {groups.length === 0 && !isLoading && <p>No groups found</p>}
             </div>
-            {ReactDOM.createPortal(<Postlist activeGroupid={activeGroupId} groups={groups}/>, chatPlaceholder)}
+            {ReactDOM.createPortal(<Postlist activeGroupid={activeGroupId} group={groups.find(group => +group?.id === +activeGroupid)}/>, chatPlaceholder)}
         </>
     );
 };

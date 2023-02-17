@@ -12,7 +12,7 @@ require_login();
 $groupId = required_param('groupId', PARAM_INT);
 $lastPostId = required_param('lastPostId', PARAM_INT);
 
-$chat = new local_learningcompanions\chat($groupId);
+$chat = \local_learningcompanions\chat::createGroupChat($groupId);
 $posts = $chat->get_newest_posts($lastPostId);
 
 echo json_encode(['posts' => array_values($posts)]);
