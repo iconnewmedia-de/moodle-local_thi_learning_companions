@@ -35,6 +35,7 @@ class ask_open_question extends \moodleform {
 
     private function addTopic() {
         $mform = $this->_form;
+        // ICTODO: to be discussed - should the topics be related to groups? Mentors get their role based on their courses, not their groups
         $topics = [0 => get_string('please_choose', 'local_learningcompanions')] + groups::get_all_keywords();
 
         $mform->addElement('select', 'topic', get_string('topic', 'local_learningcompanions'), $topics);
