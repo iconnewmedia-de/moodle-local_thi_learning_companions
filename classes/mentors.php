@@ -1,7 +1,6 @@
 <?php
-
 namespace local_learningcompanions;
-
+require_once __DIR__ . "/../locallib.php";
 class mentors {
 
     /**
@@ -146,13 +145,11 @@ class mentors {
 
         if ($extended) {
             $sql = 'SELECT q.*,
-                           k.keyword,
                            FROM_UNIXTIME(q.timecreated, "%d.%m.%Y") AS dateasked,
                            FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i") AS dateclosed,
                            (SELECT COUNT(a.id) FROM {lc_mentor_answers} a WHERE a.questionid = q.id) answercount,
                            (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y") FROM {lc_mentor_answers} a WHERE a.questionid = q.id) lastactivity
-                      FROM {lc_mentor_questions} q
-                 LEFT JOIN {lc_keywords} k ON k.id = q.topic';
+                      FROM {lc_mentor_questions} q';
             $params = array();
             $conditions = 0;
 
@@ -171,8 +168,9 @@ class mentors {
             }
 
             if (!is_null($topics)) {
-                $topiclist = implode(',', $topics);
-                $sql .= ($conditions < 1) ? ' WHERE q.topic IN ('.$topiclist.')' : ' AND q.topic IN ('.$topiclist.')';
+                list($conditionTopics, $paramsTopics) = $DB->get_in_or_equal($topics);
+                $sql .= ($conditions < 1) ? ' WHERE q.topic ' . $conditionTopics : ' AND q.topic ' . $conditionTopics;
+                $params = $params + $paramsTopics;
                 $conditions++;
             }
 
@@ -248,25 +246,160 @@ class mentors {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function get_mentor_qualifications() {
+    public static function get_mentor_qualifications($userid = null) {
         global $USER, $DB, $CFG;
-//        return []; // ICTODO: remove this when queries below are done
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
         require_once $CFG->dirroot . '/lib/badgeslib.php';
-        $userBadges = \badges_get_user_badges($USER->id);
-        $mentorTopics = $DB->get_records('lc_mentors', array('userid' => $USER->id), '', 'topic');
-        if (empty($mentorTopics)) {
+        $userBadges = \badges_get_user_badges($userid);
+        if (empty($userBadges)) {
             return;
         }
-        list($condition, $params) = $DB->get_in_or_equal(array_keys($mentorTopics));
-        $mentorCourses = $DB->get_records_sql('SELECT * FROM {course} c
-JOIN {customfield_field} cf ON cf.');
-        $mentorCourseIDs = array_keys($mentorCourses);
-        $qualifiedCourses = [];
+        $mentorTopics = self::get_mentorship_topics($userid);
+        $badgeTopics = [];
         foreach($userBadges as $userBadge) {
-            if (!is_null($userBadge->courseid) && !in_array($userBadge->courseid, $mentorCourseIDs)) {
-                $qualifiedCourses[$userBadge->courseid] = $DB->get_record('course', array('id' => $userBadge->courseid));
+            if (empty($userBadge->courseid)) {
+                continue;
+            }
+            $courseTopics = \local_learningcompanions\get_course_topics($userBadge->courseid);
+            $badgeTopics = array_merge($badgeTopics, $courseTopics);
+        }
+        $badgeTopics = array_unique($badgeTopics);
+        $newQualifications = array_diff($badgeTopics, $mentorTopics);
+        return $newQualifications;
+    }
+
+    /**
+     * returns an array of topics for which a given users has already accepted mentorship
+     * @param $userid
+     * @return int[]|string[]
+     * @throws \dml_exception
+     */
+    public static function get_mentorship_topics($userid = null) {
+        global $USER, $DB;
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+        $mentorTopics = $DB->get_records('lc_mentors', array('userid' => $userid), '', 'topic');
+        $topics = array_keys($mentorTopics);
+        return $topics;
+    }
+
+    /**
+     * make the user mentor for a topic
+     * @param $userid
+     * @param $topic
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
+    public static function assign_mentorship($userid, $topic) {
+        global $DB;
+        $availableTopics = self::get_mentor_qualifications($userid);
+        $topicClean = addslashes(strip_tags($topic)); // for XSS-safe output on the page
+        if (!in_array($topic, $availableTopics)) {
+            $assignedTopics = self::get_mentorship_topics($userid);
+            if (in_array($topic, $assignedTopics)) {
+                $message = get_string('mentorship_already_assigned', 'local_learningcompanions', $topicClean);
+                \core\notification::info($message);
+                return;
+            } else {
+                print_error('mentorship_error_invalid_topic_assignment', 'local_learningcompaions', $topicClean);
+                return;
             }
         }
-        return $qualifiedCourses;
+        try {
+            $obj = new \stdClass();
+            $obj->userid = $userid;
+            $obj->topic = $topic;
+            $DB->insert_record('lc_mentors', $obj);
+            self::assign_mentor_role($userid);
+            \core\notification::success(get_string('mentorship_assigned_to_topic', 'local_learningcompanions', $topicClean));
+        } catch(\Exception $e) {
+            \core\notification::error(get_string('mentorship_error_unknown', 'local_learningcompanions', $e->getMessage()));
+        }
     }
+
+    /**
+     * assigns the mentor role to a user (if the user doesn't have it yet)
+     * @param $userid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function assign_mentor_role($userid) {
+        global $DB;
+        $roleid = $DB->get_field('role', 'id', array('shortname' => 'lc_mentor'));
+        if (!$roleid) {
+            $roleid = self::create_mentor_role();
+        }
+        if (user_has_role_assignment($userid, $roleid)) {
+            return;
+        }
+        $context = \context_system::instance();
+        role_assign($roleid, $userid, $context);
+    }
+
+    /**
+     * @param int $askedby
+     * @param int $mentorid
+     * @param string $topic
+     * @param string $title
+     * @param string $question
+     * @return void
+     * @throws \dml_exception
+     */
+    public static function add_mentor_question(int $askedby, int $mentorid, string $topic, string $title, string $question) {
+        global $DB;
+        $obj = new \stdClass();
+        $obj->askedby = $askedby;
+        $obj->mentorid = $mentorid;
+        $obj->topic = $topic;
+        $obj->title = $title;
+        $obj->question = $question;
+        $obj->timeclosed = 0;
+        $obj->timecreated = time();
+        $DB->insert_record('lc_mentor_questions', $obj);
+    }
+
+    /**
+     * returns all mentors that have qualified for topics of courses that a given user is enrolled in
+     * @param $userid
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function get_mentors_of_users_courses($userid = null) {
+        global $USER, $DB;
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+        $courseTopics = \local_learningcompanions\get_topics_of_user_courses($userid);
+        list($topicsCondition, $topicsParams) = $DB->get_in_or_equal($courseTopics);
+        $mentors = $DB->get_records_sql(
+            "SELECT DISTINCT u.* FROM {user} u
+                JOIN {lc_mentors} m ON m.userid = u.id
+                WHERE u.deleted = 0
+                AND m.topic " . $topicsCondition,
+            $topicsParams
+        );
+        return $mentors;
+    }
+
+    /**
+     * creates the mentor role if it doesn't exist yet
+     * @return int
+     * @throws \coding_exception
+     */
+    protected static function create_mentor_role() {
+        $name = get_string('mentor_role', 'local_learningcompanions');
+        $shortname = 'lc_mentor';
+        $description = get_string('mentor_role_description', 'local_learningcompanions');
+        $roleid = \create_role($name, $shortname, $description);
+        // ICTODO: assign capabilities to the role
+        return $roleid;
+    }
+
 }

@@ -150,7 +150,7 @@
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="askedby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="mentorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="can be NULL when question is asked to all mentors"/>
-                <FIELD NAME="topic" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="topic" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="title" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="question" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="timeclosed" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
