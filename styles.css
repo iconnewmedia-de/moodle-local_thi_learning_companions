@@ -345,3 +345,6 @@
     opacity: 1;
     pointer-events: all;
 }
+body[id^="page-local-learningcompanions"].pagelayout-standard #page.drawers .main-inner {
+    max-width: none;
+}
