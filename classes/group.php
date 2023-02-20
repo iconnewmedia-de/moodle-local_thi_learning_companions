@@ -158,7 +158,8 @@ class group {
     public $is_admin;
 
     public function __construct($groupid, $userid = null) {
-        global $DB, $CFG, $USER;
+        global $DB, $CFG, $USER, $PAGE;
+        $PAGE->set_context(\context_system::instance());
 
         if (is_null($userid)) {
             $userid = $USER->id;
@@ -196,7 +197,7 @@ class group {
             $this->shortdescription .= " ...";
         }
         $this->chatid = $chat->id;
-        $this->chat = new chat($this->id);
+        $this->chat = chat::createGroupChat($this->id);
         $this->last_active_time = $this->chat->get_last_active_time() ?? 0;
         $this->last_active_time_dmy = !$this->last_active_time ? '-' : date('d.m.Y',$this->last_active_time);
         $this->last_active_userid = $this->chat->get_last_active_userid();

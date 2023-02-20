@@ -3,7 +3,7 @@ require_once '../../../config.php';
 require_once '../lib.php';
 
 $context = context_system::instance();
-require_capability( 'local/learningcompanions:group_search', $context);
+//require_capability( 'local/learningcompanions:group_search', $context);
 
 $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/learningcompanions/group/search.php');

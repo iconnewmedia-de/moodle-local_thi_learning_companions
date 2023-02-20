@@ -6,6 +6,8 @@ class chat {
     protected $chat;
     protected $context;
 
+    private function __construct() {}
+
     public static function createGroupChat($groupid): self {
         global $DB;
 
