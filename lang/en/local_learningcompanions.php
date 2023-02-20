@@ -29,6 +29,7 @@ $string['pluginname'] = 'Learning Companions';
 $string['learningcompanions:group_create'] = 'Create groups';
 $string['learningcompanions:group_manage'] = 'Manage groups';
 $string['learningcompanions:delete_comments_of_others'] = 'Delete comments of other users';
+$string['learningcompanions:mentor_view'] = 'View mentors';
 $string['adminareaname'] = 'Learning Companions';
 $string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
 

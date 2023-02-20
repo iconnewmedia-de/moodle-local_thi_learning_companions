@@ -41,11 +41,16 @@ function get_course_topics($courseid) {
  */
 function get_topics_of_user_courses(int $userid = null) {
     global $DB, $USER;
-    if (is_null($userid)) {
+    if (is_null($userid) && isloggedin()) {
         $userid = $USER->id;
+    } elseif(!isloggedin()) {
+        return [];
     }
     $userEnrolments = enrol_get_all_users_courses($userid);
     $userEnrolments = array_keys($userEnrolments);
+    if (empty($userEnrolments)) {
+        return [];
+    }
     list($courseCondition, $courseParams) = $DB->get_in_or_equal($userEnrolments);
     $records = $DB->get_records_sql(
         "SELECT DISTINCT cd.value

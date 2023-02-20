@@ -3,8 +3,9 @@
 require_once '../../../config.php';
 require_once '../lib.php';
 
+require_login();
 $context = context_system::instance();
-//require_capability('local/learningcompanions:mentor_view', $context);
+require_capability('local/learningcompanions:mentor_view', $context);
 
 $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot . '/local/learningcompanions/mentor/ask_question.php');

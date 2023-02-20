@@ -373,10 +373,15 @@ class mentors {
      */
     public static function get_mentors_of_users_courses($userid = null) {
         global $USER, $DB;
-        if (is_null($userid)) {
+        if (is_null($userid) && isloggedin()) {
             $userid = $USER->id;
+        } elseif(!isloggedin()) {
+            return [];
         }
         $courseTopics = \local_learningcompanions\get_topics_of_user_courses($userid);
+        if (empty($courseTopics)) {
+            return [];
+        }
         list($topicsCondition, $topicsParams) = $DB->get_in_or_equal($courseTopics);
         $mentors = $DB->get_records_sql(
             "SELECT DISTINCT u.* FROM {user} u
