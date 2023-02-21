@@ -167,7 +167,7 @@ $string['profile_field_category_status_default'] = '<span lang="en" class="multi
 $string['filter_all_status'] = 'All groups';
 $string['filter_open_status'] = 'Open groups';
 $string['filter_closed_status'] = 'Closed groups';
-$string['filter_members_count'] = 'Min. number of members';
+$string['filter_members_count'] = 'Count members';
 $string['filter_all_topics'] = 'All topics';
 $string['filter_keywords_placeholder'] = 'Name/Keyword';
 $string['filter_badges'] = 'Badge';

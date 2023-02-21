@@ -3,16 +3,16 @@ require_once '../../../config.php';
 require_once '../lib.php';
 
 $context = context_system::instance();
-//require_capability( 'local/learningcompanions:group_search', $context);
+require_capability( 'local/learningcompanions:group_search', $context);
 
 $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/learningcompanions/group/search.php');
 $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_learningcompanions/group', 'init');
 $PAGE->requires->js_call_amd('local_learningcompanions/group', 'select2');
-$PAGE->requires->css('/local/learningcompanions/vendor/DataTables/datatables.min.css');
-$PAGE->requires->css('/local/learningcompanions/vendor/select2.min.css');
-$PAGE->requires->css('/local/learningcompanions/vendor/balloon.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/select2.min.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/balloon.css');
 $PAGE->navbar->add(get_string('navbar_groups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/index.php'));
 $PAGE->navbar->add(get_string('navbar_findgroups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/search.php'));
 
