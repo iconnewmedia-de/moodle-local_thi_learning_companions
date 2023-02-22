@@ -127,6 +127,7 @@ $string['name'] = 'Name';
 $string['join'] = 'Joining';
 $string['membercount'] = 'Members';
 $string['course'] = 'Course';
+$string['nousersfound'] = 'Could not find any users matching your search.';
 $string['createdon'] = 'Created on';
 $string['lastactivity'] = 'Last activity';
 $string['nogroupsfound'] = 'Could not find any group.';

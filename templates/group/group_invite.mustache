@@ -2,10 +2,11 @@
     <div class="input-group mb-3">
         <input type="text" class="js-invite-member-input form-control" placeholder="{{#str}}invite_member, local_learningcompanions{{/str}}" aria-label="{{#str}}invite_member, local_learningcompanions{{/str}}" aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <span class="input-group-text js-invite-member-search-btn" data-groupid="{{groupId}}" id="basic-addon2"><i class="fa fa-search fa-fw " aria-hidden="true"></i></span>
+            <span class="input-group-text js-invite-member-search-btn" role="button" data-groupid="{{groupId}}" id="basic-addon2"><i class="fa fa-search fa-fw " aria-hidden="true"></i></span>
         </div>
     </div>
-    <ul class="js-invite-member-list invite-member-list"></ul>
 
-    <button class="btn btn-primary js-invite-member-btn" data-groupid="{{groupId}}">Invite</button>
+    <div class="js-invite-member-list"></div>
+
+    <button class="btn btn-primary js-invite-member-btn" disabled data-groupid="{{groupId}}">Invite</button>
 </div>
