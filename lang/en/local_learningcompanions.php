@@ -231,3 +231,6 @@ $string['ask_mentor'] = 'Ask a mentor';
 $string['submit_question'] = 'Submit question';
 $string['mentor_question_added'] = 'Your question has been submitted.';
 $string['my_questions'] = 'My questions';
+$string['private_questions_to_me'] = 'Private questions to me';
+$string['open_questions_to_my_topics'] = 'Open questions to my topics';
+$string['no_permission_for_this_chat'] = 'You don\'t have permission to view this chat';

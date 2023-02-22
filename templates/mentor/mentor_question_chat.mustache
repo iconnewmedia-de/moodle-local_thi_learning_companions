@@ -7,11 +7,12 @@
         </div>
     </div>
 </div>
-
-{{#js}}
+<script type="text/javascript">
+    var learningcompanions_questionid = {{questionid}};
     var learningcompanions_chat_userid = {{userid}};
-    var learningcompanions_groupid = {{groupid}};
-    var learningcompanions_questionGroup = {{{questionGroup}}};
+    var learningcompanions_groupid = null;
+</script>
+{{#js}}
     {{{languageStrings}}}
     setTimeout(function() {
         window.Chat.startQuestionChat();

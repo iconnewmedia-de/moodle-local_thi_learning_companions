@@ -15,12 +15,12 @@
             <tr>
                 <td>
                     <span data-balloon="{{question}}" data-balloon-pos="right">
-                        {{title}}
+                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
                     </span>
                 </td>
                 <td>
                     {{#answercount}}
-                        <a href="#">{{answercount}}</a>
+                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{answercount}}</a>
                     {{/answercount}}
                     {{^answercount}}
                         0

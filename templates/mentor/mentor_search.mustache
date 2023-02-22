@@ -31,10 +31,12 @@
                         {{/issupermentor}}
                     </td>
                     <td>
-                        Badges
+                        {{#badges}}
+                        <span title="{{name}}" alt="{{name}}">{{{image}}}</span>
+                        {{/badges}}
                     </td>
                     <td>
-                        {{topiclist}}
+                        <div>{{#topiclist}}<span class="lc_comma-separated">{{topic}}</span>{{/topiclist}}</div>
                     </td>
                     <td>
                         <i class="fa fa-chevron-right local_learningcompanions_chevron"></i>

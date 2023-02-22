@@ -14,11 +14,10 @@ function startChat() {
 
 function startQuestionChat() {
     const root = ReactDOM.createRoot(document.getElementById('learningcompanions_chat-content'));
-    const questionGroup = [window.learningcompanions_questionGroup];
-
+    const questionid = window.learningcompanions_questionid;
     root.render(
         <React.StrictMode>
-            <Postlist activeGroupid={window.learningcompanions_groupid} groups={questionGroup}/>
+            <Postlist questionid={questionid}/>
         </React.StrictMode>
     );
 }

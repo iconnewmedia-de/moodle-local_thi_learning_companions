@@ -1,48 +1,53 @@
 <?php
 namespace local_learningcompanions;
 require_once __DIR__ . "/../locallib.php";
+require_once $CFG->libdir . "/badgeslib.php";
+require_once $CFG->dirroot . "/badges/classes/badge.php";
 class mentors {
 
     /**
      * @param $topic
      * @param $supermentorsonly
+     * @param bool $excludecurrentuser allows to exclude the current user from the mentor search
      * @return array
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function get_mentors($topic = null, $supermentorsonly = false): array {
-        global $CFG, $DB, $OUTPUT;
+    public static function get_mentors($topic = null, $supermentorsonly = false, $excludecurrentuser = false): array {
+        global $CFG, $DB, $OUTPUT, $USER;
         // ICTODO: There is definitely a better way to query this.
         // ICTODO: Maybe split into basic and extended function.
 
         require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
 
-        $sql = 'SELECT DISTINCT m.userid,
+        $sql = 'SELECT DISTINCT m.userid, GROUP_CONCAT(m.topic) as topics,
                        u.*
                   FROM {lc_mentors} m
-             LEFT JOIN {user} u ON u.id = m.userid';
+             LEFT JOIN {user} u ON u.id = m.userid
+             ';
         $params = array();
-
+        $conditions = [];
         if (!is_null($topic)) {
-            $sql .= ' WHERE m.topic = ?';
-            $params[] = (int)$topic;
+            $conditions[] = ' m.topic = ?';
+            $params[] = $topic;
         }
 
+        if ($excludecurrentuser) {
+            $conditions[] = ' m.userid <> ?';
+            $params[] = $USER->id;
+        }
+        if (!empty($conditions)) {
+            $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        }
+        $sql .= ' GROUP BY u.id';
         $mentors = $DB->get_records_sql($sql, $params);
 
-        $sql = 'SELECT m.topic,
-                       k.keyword
-                  FROM {lc_mentors} m
-             LEFT JOIN {lc_keywords} k ON k.id = m.topic
-                 WHERE m.userid = ?';
-
+        $context = \context_system::instance();
         foreach ($mentors as $mentor) {
-            $mentor->issupermentor = self::is_supermentor($mentor->userid);
-
             if ($supermentorsonly && !$mentor->issupermentor) {
                 unset($mentors[$mentor->userid]);
             } else {
-                $mentor->topics = $DB->get_records_sql($sql, [$mentor->userid]);
+//                $mentor->topics = $DB->get_records_sql($sql, [$mentor->userid]);
                 $mentor->fullname = fullname($mentor);
                 $mentor->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$mentor->userid;
                 $mentor->userpic = $OUTPUT->user_picture($mentor, [
@@ -50,12 +55,24 @@ class mentors {
                     'class' => 'userpicture'
                 ]);
                 $mentor->status = get_user_status($mentor->userid);
-
-                $topiclist = [];
-                foreach ($mentor->topics as $mentorTopic) {
-                    $topiclist[] = $mentorTopic->keyword;
+                $mentor->issupermentor = self::is_supermentor($mentor->userid);
+                $mentor->badges = badges_get_user_badges($mentor->id, 0, 0, 0, '', true);
+                $mentor->badges = array_values($mentor->badges);
+                foreach($mentor->badges as $badge) {
+                    $badgeObj = new \badge($badge->id);
+                    if (!is_null($badge->courseid)) {
+                        $badgeContext = \context_course::instance($badge->courseid);
+                    } else {
+                        $badgeContext = $context;
+                    }
+                    $badge->image = print_badge_image($badgeObj, $badgeContext);
                 }
-                $mentor->topiclist = implode(', ', $topiclist);
+                $topiclist = [];
+                $topics = explode(',', $mentor->topics);
+                foreach ($topics as $mentorTopic) {
+                    $topiclist[] = array('topic' => trim($mentorTopic));
+                }
+                $mentor->topiclist = $topiclist;
             }
         }
 
@@ -81,6 +98,17 @@ class mentors {
         $context = \context_system::instance();
         $userid = is_null($userid) ? $USER->id : $userid;
         return has_capability('local/learningcompanions:mentor_ismentor', $context, $userid); // Maybe access restriction by database entry
+    }
+
+    /**
+     * @param $userid
+     * @param $topic
+     * @return bool
+     * @throws \dml_exception
+     */
+    public static function is_mentor_for_topic($userid, $topic) {
+        global $DB;
+        return $DB->record_exists('lc_mentor', array('userid' => $userid, 'topic' => $topic));
     }
 
     /**
@@ -146,7 +174,7 @@ class mentors {
         if ($extended) {
             $sql = 'SELECT q.*,
                            FROM_UNIXTIME(q.timecreated, "%d.%m.%Y") AS dateasked,
-                           FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i") AS dateclosed,
+                           IF(q.timeclosed=0, "-", FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i")) AS dateclosed,
                            (SELECT COUNT(a.id) FROM {lc_mentor_answers} a WHERE a.questionid = q.id) answercount,
                            (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y") FROM {lc_mentor_answers} a WHERE a.questionid = q.id) lastactivity
                       FROM {lc_mentor_questions} q';
@@ -390,6 +418,9 @@ class mentors {
                 AND m.topic " . $topicsCondition,
             $topicsParams
         );
+        foreach($mentors as $mentor) {
+            $mentor->badges = badges_get_user_badges($mentor->id);
+        }
         return $mentors;
     }
 

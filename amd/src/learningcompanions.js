@@ -76,7 +76,6 @@ define(['jquery', 'core/str', 'core/yui', 'core/modal_factory'], function($, Str
 
             });
             */
-
         }
     };
 });

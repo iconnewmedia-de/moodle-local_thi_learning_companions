@@ -1,0 +1,127 @@
+<h2>{{#str}}private_questions_to_me, local_learningcompanions{{/str}}</h2>
+{{#hasquestionstome}}
+    <table class="stripe hover compact lc_datatable" id="lc_private_mentor_questions" data-paging="true" data-page-length="50">
+        <thead>
+        <tr>
+            <th>{{#str}}title, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}status, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#questionstome}}
+            <tr>
+                <td>
+                    <span data-balloon="{{question}}" data-balloon-pos="right">
+                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
+                    </span>
+                </td>
+                <td>
+                    {{#answercount}}
+                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{answercount}}</a>
+                    {{/answercount}}
+                    {{^answercount}}
+                        0
+                    {{/answercount}}
+                </td>
+                <td>
+                    {{#dateclosed}}
+                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+                            <i class="fa fa-check icon-check-green"></i>
+                        </span>
+                    {{/dateclosed}}
+                    {{^dateclosed}}
+                        <i class="fa fa-rotate-right"></i>
+                    {{/dateclosed}}
+                </td>
+                <td>
+                    {{#lastactivity}}
+                        {{lastactivity}}
+                    {{/lastactivity}}
+                    {{^lastactivity}}
+                        {{dateasked}}
+                    {{/lastactivity}}
+                </td>
+                <td>
+                    {{dateasked}}
+                </td>
+                <td>
+                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                        <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
+                    </span>
+                </td>
+            </tr>
+        {{/questionstome}}
+        </tbody>
+    </table>
+{{/hasquestionstome}}
+{{^hasquestionstome}}
+    <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+{{/hasquestionstome}}
+
+<h2 class="mt-5">{{#str}}open_questions_to_my_topics, local_learningcompanions{{/str}}</h2>
+{{#hasquestionstoallmentors}}
+<table class="stripe hover compact lc_datatable" id="mentorquestionstable" data-paging="true" data-page-length="50">
+    <thead>
+    <tr>
+        <th>{{#str}}title, local_learningcompanions{{/str}}</th>
+        <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
+        <th>{{#str}}status, local_learningcompanions{{/str}}</th>
+        <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
+        <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#questionstoallmentors}}
+    <tr>
+        <td>
+                    <span data-balloon="{{question}}" data-balloon-pos="right">
+                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
+                    </span>
+        </td>
+        <td>
+            {{#answercount}}
+            <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{answercount}}</a>
+            {{/answercount}}
+            {{^answercount}}
+            0
+            {{/answercount}}
+        </td>
+        <td>
+            {{#dateclosed}}
+            <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+                            <i class="fa fa-check icon-check-green"></i>
+                        </span>
+            {{/dateclosed}}
+            {{^dateclosed}}
+            <i class="fa fa-rotate-right"></i>
+            {{/dateclosed}}
+        </td>
+        <td>
+            {{#lastactivity}}
+            {{lastactivity}}
+            {{/lastactivity}}
+            {{^lastactivity}}
+            {{dateasked}}
+            {{/lastactivity}}
+        </td>
+        <td>
+            {{dateasked}}
+        </td>
+        <td>
+                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                        <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
+                    </span>
+        </td>
+    </tr>
+    {{/questionstoallmentors}}
+    </tbody>
+</table>
+{{/hasquestionstoallmentors}}
+{{^hasquestionstoallmentors}}
+<p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+{{/hasquestionstoallmentors}}

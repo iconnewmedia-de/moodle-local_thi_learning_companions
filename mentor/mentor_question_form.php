@@ -3,6 +3,7 @@ namespace local_learningcompanions\mentor;
 use local_learningcompanions\mentors;
 defined('MOODLE_INTERNAL') || die();
 require_once $CFG->dirroot . '/lib/formslib.php';
+require_once __DIR__ . "/../locallib.php";
 class mentor_question_form extends \moodleform {
     public function definition()
     {

@@ -22,18 +22,23 @@ class chats {
 
     }
 
+    /**
+     * @param $comment
+     * @param $formdata
+     * @param $editoroptions
+     * @return bool|int
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function post_comment($comment, $formdata, $editoroptions) {
         global $USER, $DB;
 
         //Check if the user is a member of the group
         $chatId = $comment->chatid;
-        $groupId = $DB->get_field('lc_chat', 'relatedid', ['id' => $chatId]);
-        $isMember = $DB->record_exists('lc_group_members', ['groupid' => $groupId, 'userid' => $USER->id]);
-
-        if (!$isMember) {
-            throw new \Exception("You are not a member of this group");
+        $mayViewChat = self::may_view_chat($chatId);
+        if (!$mayViewChat) {
+            throw new \Exception(get_string('no_permission_for_this_chat', 'local_learningcompanions'));
         }
-
 
         $context    = \context_system::instance();
         $comment->timecreated = time();
@@ -84,6 +89,38 @@ class chats {
         self::set_latest_comment($comment->chatid);
 
         return $comment->id;
+    }
+
+    /**
+     * @param $chatId
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function may_view_chat($chatId) {
+        global $DB;
+        $chat = $DB->get_record('lc_chat', ['id' => $chatId], '*', MUST_EXIST);
+        if ($chat->chattype == \local_learningcompanions\groups::CHATTYPE_GROUP) {
+            return \local_learningcompanions\groups::may_view_group($chat->relatedid);
+        }
+        return self::may_view_mentorchat($chat->relatedid);
+    }
+
+    /**
+     * @param $questionId
+     * @return bool
+     * @throws \dml_exception
+     */
+    public static function may_view_mentorchat($questionId) {
+        global $DB, $USER;
+        $question = $DB->get_record('lc_mentor_questions', ['id' => $questionId], '*', MUST_EXIST);
+        if ($USER->id === $question->mentorid) {
+            return true;
+        }
+        if (!empty($question->mentorid)) {
+            return false;
+        }
+        return \local_learningcompanions\mentors::is_mentor_for_topic($USER->id, $question->topic);
     }
 
     /**

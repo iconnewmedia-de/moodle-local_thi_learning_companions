@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-semi, no-undef, jsdoc/require-jsdoc, jsdoc/require-param, no-eq-null, no-console, no-unused-vars */
 /*!
  * Select2 4.0.9
  * https://select2.github.io

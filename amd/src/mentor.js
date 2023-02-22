@@ -10,7 +10,6 @@ define([
     'local_learningcompanions/datatables',
     'local_learningcompanions/select2'
 ], function($, c, str, ModalFactory, ModalEvents, datatablesHelpers) {
-
     async function initDatatables() {
         datatablesHelpers.initMinSearch('.js-mentor-filter--min');
         datatablesHelpers.initIncludeSearch('.js-mentor-filter--includes');
@@ -20,16 +19,25 @@ define([
         $('#askedquestionstable').DataTable({
             language: {
                 url: languageUrl
+            },
+            initComplete: function() {
+                datatablesHelpers.makeTablesFullWidth();
             }
         });
         $('#mymentorquestionstable').DataTable({
             language: {
                 url: languageUrl
+            },
+            initComplete: function() {
+                datatablesHelpers.makeTablesFullWidth();
             }
         });
         $('#allmentorquestionstable').DataTable({
             language: {
                 url: languageUrl
+            },
+            initComplete: function() {
+                datatablesHelpers.makeTablesFullWidth();
             }
         });
         $('#allmentorstable').DataTable({
@@ -43,10 +51,19 @@ define([
                 datatablesHelpers.setupSearchRules('.js-mentor-filter--search', table);
 
                 datatablesHelpers.addRedrawEvent('.js-mentor-filter', table);
+                datatablesHelpers.makeTablesFullWidth();
             },
             columnDefs: [
                 {orderable: false, visible: false, targets: 'no-show'}
             ]
+        });
+        $('.lc_datatable').DataTable({
+            language: {
+                url: languageUrl
+            },
+            initComplete: function() {
+                datatablesHelpers.makeTablesFullWidth();
+            }
         });
     }
 

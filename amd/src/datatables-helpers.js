@@ -173,3 +173,13 @@ const getTargetColumnIndex = (settings, element) => {
     // It´s a string? Try to find the index by the class name.
     return getIndexByClass(settings, target);
 };
+
+export const makeTablesFullWidth = function () {
+    if (document.querySelector('.dataTable') !== null) {
+        // make page and table full width
+        document.querySelector('body').classList.add('hasDatatable');
+        $('.dataTable').css('width', '');
+    } else {
+        // console.log('no datatables found'); // ICTODO: remove me
+    }
+}

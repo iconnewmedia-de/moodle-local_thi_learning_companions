@@ -2,10 +2,11 @@
 import {useState, useEffect, useCallback} from "react";
 import Posts from "./Posts";
 import GroupHeader from "./GroupHeader";
+import QuestionHeader from "./QuestionHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
 
-export default function Postlist({activeGroupid, group}) {
+export default function Postlist({activeGroupid, group, questionid}) {
     const [posts, setPosts] = useState([]);
     const [chattimer, setChattimer] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +15,11 @@ export default function Postlist({activeGroupid, group}) {
 
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
     // const group = groups.find(group => +group?.id === +activeGroupid);
-    const isInPreviewMode = group?.isPreviewGroup ?? false;
+    const isInPreviewMode = (!questionid && group)?group.isPreviewGroup:false;
+    // console.log('questionid:', questionid);
+    // console.log('group:', group);
+    // console.log('group?.isPreviewGroup:', group?.isPreviewGroup);
+    // console.log('isInPreviewMode:', isInPreviewMode);
     let updateRunning = false;
 
     useEffect(() => {
@@ -42,10 +47,11 @@ export default function Postlist({activeGroupid, group}) {
     }, []);
     const getInitialPosts = useCallback(() => {
         const controller = new AbortController();
-
+        console.log('fetching initial posts for questionid: ', questionid); // ICUNDO!
         fetch(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajaxchat.php?' + new URLSearchParams({
             groupid: activeGroupid,
             includedPostId: highlightedPostId,
+            questionid: questionid,
         }), {
             signal: controller.signal
         })
@@ -106,6 +112,7 @@ export default function Postlist({activeGroupid, group}) {
         fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxchat.php?`+ new URLSearchParams({
             groupid: activeGroupid,
             firstPostId: firstPostId,
+            questionid: questionid
         }), {
             signal: controller.signal
         })
@@ -133,14 +140,14 @@ export default function Postlist({activeGroupid, group}) {
 
         const controller = new AbortController();
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}`, {
+        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}&questinogroup=${questionid}`, {
             signal: controller.signal
         })
         .then(response => response.json())
         .then(data => {
             const newPosts = data.posts;
 
-            if (newPosts.length) {
+            if (newPosts && newPosts.length) {
                 setPosts((posts) => [...newPosts, ...posts]);
                 setLastPostId(newPosts[0].id);
             }
@@ -168,10 +175,28 @@ export default function Postlist({activeGroupid, group}) {
             getMorePosts();
         }
     };
+    var header;
+    const getHeader = () => {
+        if (questionid) {
+            console.log('we have a question id, make a question header. Question ID: ', questionid);
+            header = (
+                <QuestionHeader questionid={questionid}/>
+            );
+        } else {
+            console.log('no question id, make a group header. Group: ', group);
+            header = (
+                <GroupHeader group={group}/>
+            );
+        }
+    };
+    useEffect(getHeader, [group, questionid]);
+    getHeader();
 
+    // console.log('our header:', header);
     return (
         <div id="learningcompanions_chat-postlist">
-            <GroupHeader group={group}/>
+            {/*<QuestionHeader questionid={questionid}/>*/}
+            {header}
             {isInPreviewMode && <span>Is Preview</span>}
             {isLoading && <LoadingIndicator/>}
             {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}

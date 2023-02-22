@@ -25,10 +25,13 @@ export default function Grouplist({activeGroupid}) {
     useEffect(() => {
         const group = groups.find(group => +group.id === +activeGroupId);
         const chatid = group?.chatid;
-        const isPreviewGroup = group?.isPreviewGroup ?? false;
+        // console.log('window.learningcompanions_questionid:', window.learningcompanions_questionid);
+        // console.log('group:', group);
+        // console.log('(!window.learningcompanions_questionid && group):', (!window.learningcompanions_questionid && group));
+        const isPreviewGroup = (!window.learningcompanions_questionid && group)?group.isPreviewGroup:false;
 
         useSetChatInput(isPreviewGroup, chatid);
-        console.log(`setting active group id to: ${activeGroupId} and chatid to: ${chatid}`);
+        // console.log(`setting active group id to: ${activeGroupId} and chatid to: ${chatid}`);
     }, [activeGroupId, groups]);
 
     function handleGroupSelect(groupid) {
@@ -57,7 +60,7 @@ export default function Grouplist({activeGroupid}) {
         })
             .then(response => response.json())
             .then(({groups}) => {
-                console.log('Groups', groups);
+                // console.log('Groups', groups);
                 setGroups(groups);
                 setIsLoading(false);
 

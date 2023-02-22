@@ -345,6 +345,17 @@
     opacity: 1;
     pointer-events: all;
 }
-body[id^="page-local-learningcompanions"].pagelayout-standard #page.drawers .main-inner {
+body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page.drawers .main-inner {
     max-width: none;
+}
+.lc_comma-separated::after {
+    content: ', ';
+    display: inline-block;
+}
+.lc_comma-separated:last-child::after {
+    content: none;
+}
+
+#page-local-learningcompanions-mentor-question #learningcompanions_chat {
+    margin-left: 16px;
 }

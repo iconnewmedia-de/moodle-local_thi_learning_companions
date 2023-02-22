@@ -16,7 +16,7 @@ $PAGE->requires->css('/local/learningcompanions/vendor/balloon.css');
 $PAGE->navbar->add(get_string('navbar_mentors', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/mentor/index.php'));
 $PAGE->navbar->add(get_string('navbar_findmentors', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/mentor/search.php'));
 
-$mentors = \local_learningcompanions\mentors::get_mentors();
+$mentors = \local_learningcompanions\mentors::get_mentors(null, false, true);
 $hasmentors = count($mentors) > 0;
 
 echo $OUTPUT->header();

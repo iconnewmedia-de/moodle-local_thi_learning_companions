@@ -3,7 +3,7 @@ require_once '../../../config.php';
 require_once '../lib.php';
 
 $context = context_system::instance();
-
+require_login();
 $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/learningcompanions/mentor/my_questions_to_mentors.php');
 $PAGE->set_pagelayout('standard');

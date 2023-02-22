@@ -39,13 +39,12 @@ const setupDatatables = async() => {
 
             datatablesHelpers.setupSearchRules('.js-group-filter--search', table);
             datatablesHelpers.addRedrawEvent('.js-group-filter', table);
-
+            datatablesHelpers.makeTablesFullWidth();
             // trigger onchange event for course name filter upon page load in case we prefilter by course name
             var theinput = document.querySelector('input[data-target="course"]');
             theinput.dispatchEvent(new Event('change'));
         },
     });
-
 
 };
 

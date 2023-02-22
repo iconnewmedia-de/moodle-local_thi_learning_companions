@@ -20,7 +20,7 @@ class question {
         return 'lc_mentor_questions';
     }
 
-    public function __construct(int $askedby, int $mentorid, string $question, string $title, int $topic) {
+    public function __construct(int $askedby, int $mentorid, string $question, string $title, string $topic) {
         $this->askedby = $askedby;
         $this->mentorid = $mentorid;
         $this->question = $question;
@@ -57,5 +57,30 @@ class question {
     public function mark_closed(): self {
         $this->timeclosed = time();
         return $this;
+    }
+
+    /**
+     * @param $questionid
+     * @return \local_learningcompanions\question
+     * @throws \dml_exception
+     */
+    public static function get_question_by_id($questionid) {
+        global $DB;
+        $record = $DB->get_record('lc_mentor_questions', array('id' => $questionid));
+        // ICTODO: make sure the user has the right to see the question
+        return self::from_record($record);
+    }
+
+    public function to_array() {
+        return array(
+            'id' => $this->id,
+            'askedby' => $this->askedby,
+            'mentorid' => $this->mentorid,
+            'question' => $this->question,
+            'title' => $this->title,
+            'topic' => $this->topic,
+            'timecreated' => $this->timecreated,
+            'timeclosed' => $this->timeclosed,
+        );
     }
 }
