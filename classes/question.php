@@ -83,4 +83,19 @@ class question {
             'timeclosed' => $this->timeclosed,
         );
     }
+
+    /**
+     * @return int
+     */
+    public function get_askedby(): int {
+        return $this->askedby;
+    }
+
+    public function is_closed() {
+        return $this->timeclosed !== null;
+    }
+
+    public function get_id() {
+        return $this->id;
+    }
 }
