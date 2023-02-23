@@ -151,6 +151,7 @@ $string['request_join_group'] = 'Request to join group';
 $string['group_join_not_possible'] = 'Joining the group is not possible now.';
 $string['group_request_not_possible'] = 'Request to joining the group is not possible now.';
 $string['group_edit_not_allowed'] = 'You don\'t have permission to edit this group.';
+$string['group_edited'] = 'Group edited successfully.';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';

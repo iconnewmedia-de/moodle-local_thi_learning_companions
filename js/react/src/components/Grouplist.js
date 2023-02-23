@@ -28,7 +28,6 @@ export default function Grouplist({activeGroupid}) {
         const isPreviewGroup = group?.isPreviewGroup ?? false;
 
         useSetChatInput(isPreviewGroup, chatid);
-        console.log(`setting active group id to: ${activeGroupId} and chatid to: ${chatid}`);
     }, [activeGroupId, groups]);
 
     function handleGroupSelect(groupid) {
@@ -57,7 +56,6 @@ export default function Grouplist({activeGroupid}) {
         })
             .then(response => response.json())
             .then(({groups}) => {
-                console.log('Groups', groups);
                 setGroups(groups);
                 setIsLoading(false);
 

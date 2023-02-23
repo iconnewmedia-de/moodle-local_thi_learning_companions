@@ -61,7 +61,7 @@ export default function Postlist({activeGroupid, group}) {
                 setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
             }).catch(error => {
             if (error.name !== 'AbortError') {
-                console.log(error);
+                console.log("Error: " + error.message);
             }
         });
 
@@ -119,7 +119,7 @@ export default function Postlist({activeGroupid, group}) {
             }
         }).catch(error => {
             if (error.name !== 'AbortError') {
-                console.log(error);
+                console.log("Error: " + error.message);
             }
         }).finally(() => {
             updateRunning = false;
