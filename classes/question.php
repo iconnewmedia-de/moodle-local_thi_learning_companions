@@ -92,7 +92,7 @@ class question {
     }
 
     public function is_closed() {
-        return $this->timeclosed !== null;
+        return $this->timeclosed !== null && intval($this->timeclosed) !== 0;
     }
 
     public function get_id() {
