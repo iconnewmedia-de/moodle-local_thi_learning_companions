@@ -7,14 +7,17 @@ use local_learningcompanions\traits\is_db_saveable;
 class question {
     use is_db_saveable;
 
-    private $id;
-    private $askedby;
-    private $mentorid;
-    private $question;
-    private $title;
-    private $topic;
-    private $timecreated;
-    private $timeclosed;
+    public $id;
+    public $askedby;
+    public $mentorid;
+    public $question;
+    public $title;
+    public $topic;
+    public $timecreated;
+    public $timeclosed;
+
+    public $last_active;
+    public $last_active_dmy;
 
     private static function get_table_name(): string {
         return 'lc_mentor_questions';
@@ -71,6 +74,49 @@ class question {
         return self::from_record($record);
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return self[]
+     * @throws \dml_exception
+     */
+    public static function get_all_questions_for_user(int $userid) {
+        global $DB;
+
+        $records = $DB->get_records('lc_mentor_questions', ['askedby' => $userid]);
+        $questions = [];
+        foreach ($records as $record) {
+            $questions[] = self::find($record->id);
+        }
+        return $questions;
+    }
+
+    public function get_last_activity() {
+        global $DB;
+
+        if (isset($this->last_active)) {
+            return $this->last_active;
+        }
+
+        if ($this->timeclosed !== null) {
+            return $this->timeclosed;
+        }
+
+        $chat = $this->get_chat();
+
+        return $this->last_active = $DB->get_field('lc_chat_comment', 'MAX(timecreated)', ['chatid' => $chat->id, 'timedeleted' => null]);
+    }
+
+    private function get_chat() {
+        global $DB;
+
+        if (isset($this->chat)) {
+            return $this->chat;
+        }
+
+        return $this->chat = $DB->get_record('lc_chat', ['relatedid' => $this->id, 'chattype' => groups::CHATTYPE_MENTOR]);
+    }
+
     public function to_array() {
         return array(
             'id' => $this->id,
@@ -95,7 +141,32 @@ class question {
         return $this->timeclosed !== null && intval($this->timeclosed) !== 0;
     }
 
+    public function get_closed_time() {
+        return userdate($this->timeclosed, get_string('strftimedatefullshort', 'langconfig'));
+    }
+
     public function get_id() {
         return $this->id;
+    }
+
+    public function get_last_activity_dmy() {
+        $date = $this->get_last_activity();
+        if ($date === null) {
+            return '-';
+        }
+        return userdate($this->get_last_activity(), get_string('strftimedatefullshort', 'langconfig'));
+    }
+
+    public function get_timecreated_dmy() {
+        return userdate($this->timecreated, get_string('strftimedatefullshort', 'langconfig'));
+    }
+
+    public function get_answer_count() {
+        global $DB;
+
+        if (isset($this->answer_count)) {
+            return $this->answer_count;
+        }
+        return $this->answer_count = $DB->count_records('lc_chat_comment', ['chatid' => $this->get_chat()->id, 'timedeleted' => null]);
     }
 }

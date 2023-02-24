@@ -2,6 +2,8 @@
 require_once '../../../config.php';
 require_once '../lib.php';
 
+require_login();
+
 $context = context_system::instance();
 //require_capability( 'local/learningcompanions:mentor_view', $context);
 

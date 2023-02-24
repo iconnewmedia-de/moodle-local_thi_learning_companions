@@ -155,24 +155,11 @@ class mentors {
     /**
      * @param int  $userid
      * @param bool $extended
-     * @return array
+     * @return question[]
      * @throws \dml_exception
      */
     public static function get_my_asked_questions(int $userid, bool $extended = false): array {
-        global $DB;
-
-        if ($extended) {
-            $sql = 'SELECT q.*,
-                           FROM_UNIXTIME(q.timecreated, "%d.%m.%Y") AS dateasked,
-                           IF(q.timeclosed > 0, FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i"), "") AS dateclosed,
-                           (SELECT COUNT(distinct a.id) FROM {lc_chat_comment} a JOIN {lc_chat} ch ON a.chatid = ch.id WHERE ch.relatedid = q.id AND ch.chattype = ' . groups::CHATTYPE_MENTOR . ') AS answercount,
-                           (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y") FROM {lc_mentor_answers} a WHERE a.questionid = q.id) lastactivity
-                      FROM {lc_mentor_questions} q
-                     WHERE q.askedby = ?';
-            return $DB->get_records_sql($sql, array($userid));
-        }
-
-        return $DB->get_records('lc_mentor_questions', array('askedby' => $userid));
+        return question::get_all_questions_for_user($userid);
     }
 
     /**

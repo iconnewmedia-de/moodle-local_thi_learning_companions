@@ -15,40 +15,35 @@
             <tr>
                 <td>
                     <span data-balloon="{{question}}" data-balloon-pos="right">
-                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
+                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{get_id}}">{{title}}</a>
                     </span>
                 </td>
                 <td>
-                    {{#answercount}}
-                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{answercount}}</a>
-                    {{/answercount}}
-                    {{^answercount}}
+                    {{#get_answer_count}}
+                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
+                    {{/get_answer_count}}
+                    {{^get_answer_count}}
                         0
-                    {{/answercount}}
+                    {{/get_answer_count}}
                 </td>
                 <td>
-                    {{#dateclosed}}
-                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+                    {{#is_closed}}
+                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
-                    {{/dateclosed}}
-                    {{^dateclosed}}
+                    {{/is_closed}}
+                    {{^is_closed}}
                         <i class="fa fa-rotate-right"></i>
-                    {{/dateclosed}}
+                    {{/is_closed}}
+                </td>
+                <td data-order="{{get_last_activity}}">
+                    {{get_last_activity_dmy}}
+                </td>
+                <td data-order="{{timecreated}}">
+                    {{get_timecreated_dmy}}
                 </td>
                 <td>
-                    {{#lastactivity}}
-                        {{lastactivity}}
-                    {{/lastactivity}}
-                    {{^lastactivity}}
-                        {{dateasked}}
-                    {{/lastactivity}}
-                </td>
-                <td>
-                    {{dateasked}}
-                </td>
-                <td>
-                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="left">
                         <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
                     </span>
                 </td>
