@@ -496,6 +496,12 @@ class mentors {
         return $mentors;
     }
 
+    /**
+     * @param $userid
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function get_learning_nugget_comments($userid = null) {
         global $USER, $DB;
         $userid = is_null($userid)?$USER->id:$userid;
@@ -510,11 +516,8 @@ class mentors {
         }
         $learningNuggetIDs = array_keys($learningNuggets);
         list($condition, $params) = $DB->get_in_or_equal($learningNuggetIDs);
-        /**
-         * FROM mdl_comments comment
-        JOIN mdl_context ctx1 ON comment.contextid = ctx1.id AND ctx1.contextlevel = 70
-        JOIN mdl_course_modules bi ON bi.id = ctx1.instanceid
-         */
+        $config = get_config('local_learningcompanions');
+        $limit = intval($config->latest_comments_max_amount);
         $latestComments = $DB->get_records_sql(
             "SELECT DISTINCT comment.*,
                     u.id AS userid, u.firstname, u.lastname, u.email, u.username,
@@ -528,7 +531,8 @@ class mentors {
                     JOIN {course} c ON c.id = cm.course
                     JOIN {user} u ON u.id = comment.userid
                     WHERE cm.id " . $condition . "
-                    ORDER BY comment.timecreated DESC",
+                    ORDER BY comment.timecreated DESC
+                    LIMIT " . $limit,
             $params
         );
         foreach($latestComments as $latestComment) {
@@ -538,7 +542,12 @@ class mentors {
         return $latestComments;
     }
 
-
+    /**
+     * @param $courseIDs
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     protected static function get_learning_nuggets_of_courses($courseIDs) {
         global $DB;
         list($condition, $params) = $DB->get_in_or_equal($courseIDs);

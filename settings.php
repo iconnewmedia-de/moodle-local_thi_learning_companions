@@ -68,6 +68,12 @@ if ($hassiteconfig) {
         10
     ));
 
+    $settings->add(new admin_setting_configtext('local_learningcompanions/latest_comments_max_amount',
+        get_string('setting_latestcomments_max_amount', 'local_learningcompanions'),
+        get_string('configlatestcomments_max_amount', 'local_learningcompanions'),
+        20
+    ));
+
     $category = new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions'));
     if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings
         $ADMIN->add('root', $category);
