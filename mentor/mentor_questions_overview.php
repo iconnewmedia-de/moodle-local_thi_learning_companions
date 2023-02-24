@@ -20,12 +20,17 @@ $questionsToAllMentors = \local_learningcompanions\mentors::get_all_mentor_quest
 $questionsToAllMentors = array_values($questionsToAllMentors);
 $hasQuestionsToMe = count($questionsToMe) > 0;
 $hasQuestionsToAllMentors = count($questionsToAllMentors) > 0;
+$learningNuggetComments = \local_learningcompanions\mentors::get_learning_nugget_comments();
+$learningNuggetComments = array_values($learningNuggetComments);
+$hasComments = count($learningNuggetComments) > 0;
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_questions_overview', array(
     'questionstome' => $questionsToMe,
     'hasquestionstome' => $hasQuestionsToMe,
     'questionstoallmentors' => $questionsToAllMentors,
     'hasquestionstoallmentors' => $hasQuestionsToAllMentors,
+    'latestcomments' => $learningNuggetComments,
+    'hascomments' => $hasComments,
     'cfg' => $CFG
 ));
 

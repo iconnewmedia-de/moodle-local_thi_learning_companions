@@ -251,3 +251,7 @@ $string['youve_become_supermentor_subject'] = 'You\'re now a supermentor';
 $string['youve_become_supermentor_short'] = 'Congratulations, your comments are popular. You\'re now a supermentor.';
 $string['youve_become_supermentor_body'] = 'Congratulations, you\'ve earned {$a} positive ratings on your comments and have thereby become a supermentor. This means that you\'ll appear as a supermentor in the mentor search, thereby signifying that you\'re especially qualified to help.';
 $string['deleted_user'] = 'Deleted user';
+$string['latest_comments'] = 'Latest comments';
+$string['learning_nugget'] = 'Learning nugget';
+$string['comment_from'] = 'Comment from';
+$string['date_from'] = 'from';

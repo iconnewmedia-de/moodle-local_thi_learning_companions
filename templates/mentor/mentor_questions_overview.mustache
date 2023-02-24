@@ -125,3 +125,15 @@
 {{^hasquestionstoallmentors}}
 <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
 {{/hasquestionstoallmentors}}
+
+{{#hascomments}}
+<h2 class="mt-5">{{#str}}latest_comments, local_learningcompanions{{/str}}</h2>
+    {{#latestcomments}}
+        <div class="lc_comment">
+            <p class="lc_comment_content"><strong>{{content}}</a></strong></p>
+            <p class="lc_comment_path">{{#str}}learning_nugget, local_learningcompanions{{/str}}: <a href="{{cfg.wwwroot}}/course/view.php?id={{courseid}}">{{coursefullname}}</a> &gt; <a href="{{cfg.wwwroot}}/mod/{{modulename}}/view.php?id={{cmid}}">{{nuggettitle}}</a></p>
+            <p class="lc_comment_author-info">{{#str}}comment_from, local_learningcompanions{{/str}} <a href="{{cfg.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_learningcompanions{{/str}} {{#userdate}}{{timecreated}}}{{/userdate}}</p>
+            <hr>
+        </div>
+    {{/latestcomments}}
+{{/hascomments}}
