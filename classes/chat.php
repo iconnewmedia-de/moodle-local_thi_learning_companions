@@ -275,9 +275,11 @@ class chat {
         global $USER, $OUTPUT;
         $form = $this->get_submission_form(['chatid' => $this->chatid]);
         $languageStrings = $this->get_language_strings();
+
+        $question = question::get_question_by_id($this->chat->relatedid);
         $context = [
             'userid' => $USER->id,
-            'questionid' => $this->chat->relatedid,
+            'question' => $question,
             'form' => $form,
             'languageStrings' => $languageStrings,
         ];

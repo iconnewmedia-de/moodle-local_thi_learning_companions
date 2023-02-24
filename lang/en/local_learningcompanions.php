@@ -126,6 +126,9 @@ $string['findmentor'] = 'Find a mentor';
 $string['askquestiontomentor'] = 'Ask question';
 $string['nomentorsfound'] = 'Could not find any mentors';
 $string['issupermentor'] = 'Super mentor';
+$string['not_question_owner'] = 'You are not the owner of this question. You are not allowed to close it.';
+$string['question_closed'] = 'Question closed';
+$string['close_question'] = 'Mark question as solved';
 
 // Group
 $string['findgroup'] = 'Find group';
