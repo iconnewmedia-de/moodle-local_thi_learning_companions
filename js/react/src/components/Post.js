@@ -2,12 +2,21 @@
 import Attachmentlist from "./Attachmentlist";
 import DeleteButton from "./PostButtons/DeleteButton";
 import ReportButton from "./PostButtons/ReportButton";
+import RatingButton from "./PostButtons/RatingButton";
 import Dateformatter from './Dateformatter';
 
-export default function Post({highlighted, post, isPreview}) {
+export default function Post({highlighted, post, isPreview, questionid}) {
     const {author, id, timecreated, comment, attachments, flagged: reported, timedeleted: deleted} = post;
     let showDeleteButton = false;
     let showReportButton = false;
+
+    // let showRatingButton = true;
+    // console.log('questionid: ', questionid);
+    // console.log('author.id: ', window.learningcompanions_chat_userid);
+    let showRatingButton = (questionid > 0 && +author.id !== +window.learningcompanions_chat_userid);
+
+    // console.log('post:', post); // ICUNDO!
+    // ICTODO: also get the information if the current user has already rated the post
     let cssClass;
 
     // ICTODO: find a way to use get_string with React. Perhaps a global variable that holds the translated strings
@@ -33,6 +42,7 @@ export default function Post({highlighted, post, isPreview}) {
             <div className="action-button-wrapper">
                 {!isPreview && showDeleteButton && <DeleteButton id={id} />}
                 {!isPreview && showReportButton && !+reported && <ReportButton id={id} />}
+                {!isPreview && showRatingButton && <RatingButton id={id} isratedbyuser={post.isratedbyuser} />}
             </div>
             {highlighted && (
                 <>

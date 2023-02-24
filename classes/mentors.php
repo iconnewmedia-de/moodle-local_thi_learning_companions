@@ -44,6 +44,7 @@ class mentors {
 
         $context = \context_system::instance();
         foreach ($mentors as $mentor) {
+            $mentor->issupermentor = self::is_supermentor($mentor->userid);
             if ($supermentorsonly && !$mentor->issupermentor) {
                 unset($mentors[$mentor->userid]);
             } else {
@@ -55,7 +56,6 @@ class mentors {
                     'class' => 'userpicture'
                 ]);
                 $mentor->status = get_user_status($mentor->userid);
-                $mentor->issupermentor = self::is_supermentor($mentor->userid);
                 $mentor->badges = badges_get_user_badges($mentor->id, 0, 0, 0, '', true);
                 $mentor->badges = array_values($mentor->badges);
                 foreach($mentor->badges as $badge) {
@@ -118,10 +118,25 @@ class mentors {
      * @throws \dml_exception
      */
     public static function is_supermentor($userid = null) {
-        global $USER;
-        $context = \context_system::instance();
+        global $USER, $DB;
         $userid = is_null($userid) ? $USER->id : $userid;
-        return has_capability('local/learningcompanions:mentor_issupermentor', $context, $userid); // Maybe access restriction by database entry
+        $config = get_config('local_learningcompanions');
+        $minimumRatings = intval($config->supermentor_minimum_ratings);
+        $countMentorRatings = self::count_mentor_ratings($userid);
+        return $countMentorRatings >= $minimumRatings;
+    }
+
+    public static function count_mentor_ratings($userid = null) {
+        global $USER, $DB;
+        $userid = is_null($userid) ? $USER->id : $userid;
+        $countMentorRatings = $DB->count_records_sql(
+            "SELECT count(distinct cr.id)
+                    FROM {lc_chat_comment} c
+                     JOIN {lc_chat_comment_ratings} cr ON cr.commentid = c.id
+                     WHERE c.userid = ?",
+            array($userid)
+        );
+        return $countMentorRatings;
     }
 
     /**
@@ -149,8 +164,8 @@ class mentors {
         if ($extended) {
             $sql = 'SELECT q.*,
                            FROM_UNIXTIME(q.timecreated, "%d.%m.%Y") AS dateasked,
-                           FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i") AS dateclosed,
-                           (SELECT COUNT(a.id) FROM {lc_mentor_answers} a WHERE a.questionid = q.id) answercount,
+                           IF(q.timeclosed > 0, FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i"), "") AS dateclosed,
+                           (SELECT COUNT(distinct a.id) FROM {lc_chat_comment} a JOIN {lc_chat} ch ON a.chatid = ch.id WHERE ch.relatedid = q.id AND ch.chattype = ' . groups::CHATTYPE_MENTOR . ') AS answercount,
                            (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y") FROM {lc_mentor_answers} a WHERE a.questionid = q.id) lastactivity
                       FROM {lc_mentor_questions} q
                      WHERE q.askedby = ?';
@@ -233,6 +248,7 @@ class mentors {
      */
     public static function delete_asked_question($questionid): bool {
         global $DB;
+        // ICTODO: delete records from lc_chat_comment instead, we don't use lc_mentor_answers anymore
         return $DB->delete_records('lc_mentor_answers', array('questionid' => $questionid))
             && $DB->delete_records('lc_mentor_questions', array('id' => $questionid));
     }
@@ -274,8 +290,19 @@ class mentors {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function get_mentor_qualifications($userid = null) {
+    public static function get_new_mentorship_qualifications($userid = null) {
         global $USER, $DB, $CFG;
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+        $mentorTopics = self::get_mentorship_topics($userid);
+        $badgeTopics = self::get_all_mentorship_qualifications($userid);
+        $newQualifications = array_diff($badgeTopics, $mentorTopics);
+        return $newQualifications;
+    }
+
+    public static function get_all_mentorship_qualifications($userid = null) {
+        global $CFG, $USER;
         if (is_null($userid)) {
             $userid = $USER->id;
         }
@@ -284,7 +311,6 @@ class mentors {
         if (empty($userBadges)) {
             return;
         }
-        $mentorTopics = self::get_mentorship_topics($userid);
         $badgeTopics = [];
         foreach($userBadges as $userBadge) {
             if (empty($userBadge->courseid)) {
@@ -293,9 +319,7 @@ class mentors {
             $courseTopics = \local_learningcompanions\get_course_topics($userBadge->courseid);
             $badgeTopics = array_merge($badgeTopics, $courseTopics);
         }
-        $badgeTopics = array_unique($badgeTopics);
-        $newQualifications = array_diff($badgeTopics, $mentorTopics);
-        return $newQualifications;
+        return $badgeTopics;
     }
 
     /**
@@ -325,7 +349,7 @@ class mentors {
      */
     public static function assign_mentorship($userid, $topic) {
         global $DB;
-        $availableTopics = self::get_mentor_qualifications($userid);
+        $availableTopics = self::get_new_mentorship_qualifications($userid);
         $topicClean = addslashes(strip_tags($topic)); // for XSS-safe output on the page
         if (!in_array($topic, $availableTopics)) {
             $assignedTopics = self::get_mentorship_topics($userid);

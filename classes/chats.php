@@ -114,7 +114,7 @@ class chats {
     public static function may_view_mentorchat($questionId) {
         global $DB, $USER;
         $question = $DB->get_record('lc_mentor_questions', ['id' => $questionId], '*', MUST_EXIST);
-        if ($USER->id === $question->mentorid) {
+        if ($USER->id === $question->mentorid || $USER->id === $question->askedby) {
             return true;
         }
         if (!empty($question->mentorid)) {
@@ -200,6 +200,46 @@ class chats {
         return $DB->update_record('lc_chat_comment', $comment);
     }
 
+    /**
+     * toggles a user's rating for a comment
+     * if the comment was already rated by the user, remove the rating
+     * otherwise add a new rating
+     * @param int $commentid
+     * @return bool true if the comment is rated by the current user after calling this function, otherwise false
+     * @throws \dml_exception
+     */
+    public static function rate_comment(int $commentid) {
+        global $USER, $DB;
+        $rating = array('commentid' => $commentid, 'userid' => $USER->id);
+        if ($DB->record_exists('lc_chat_comment_ratings', $rating)) {
+            $DB->delete_records('lc_chat_comment_ratings', $rating);
+            return false;
+        }
+        $DB->insert_record('lc_chat_comment_ratings', $rating);
+        $comment_author = $DB->get_field('lc_chat_comment', 'userid', array('id' => $commentid));
+        self::check_supermentor_qualification($comment_author);
+        return true;
+    }
+
+    /**
+     * checks if a user has just reached the ammount of comments needed to become a supermentor
+     * @param $userid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    protected static function check_supermentor_qualification($userid) {
+        global $DB;
+        $config = get_config('local_learningcompanions');
+        $minComments = intval($config->supermentor_minimum_ratings);
+        $ratingCount = \local_learningcompanions\mentors::count_mentor_ratings($userid);
+        if ($ratingCount === $minComments) {
+            \local_learningcompanions\messages::notify_supermentor($userid);
+        }
+    }
+
+
+
     public static function get_all_flagged_comments(bool $extended = false, bool $cut = false): array {
         global $CFG, $DB;
         require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
@@ -226,7 +266,7 @@ class chats {
 
         foreach($comments as $comment) {
             $comment->author = $DB->get_record('user', ['id' => $comment->userid]);
-            $comment->author_fullname = fullname($comment->author);
+            $comment->author_fullname = chat::get_author_fullname($comment->author);
             $comment->author_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$comment->userid;
             $comment->flaggedbyuser = $DB->get_record('user', ['id' => $comment->flaggedby]);
             $comment->flaggedbyuser_fullname = fullname($comment->flaggedbyuser);

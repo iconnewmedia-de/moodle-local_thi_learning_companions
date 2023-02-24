@@ -62,6 +62,12 @@ if ($hassiteconfig) {
     'expert'
     ));
 
+    $settings->add(new admin_setting_configtext('local_learningcompanions/supermentor_minimum_ratings',
+        get_string('setting_supermentor_minimum_ratings', 'local_learningcompanions'),
+        get_string('configsupermentor_minimum_ratings', 'local_learningcompanions'),
+        10
+    ));
+
     $category = new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions'));
     if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings
         $ADMIN->add('root', $category);

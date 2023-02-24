@@ -23,7 +23,7 @@ if ($action === 'acceptmentorship') {
     $topic = required_param('topic', PARAM_TEXT);
     \local_learningcompanions\mentors::assign_mentorship($USER->id, $topic);
 }
-$qualifications = \local_learningcompanions\mentors::get_mentor_qualifications();
+$qualifications = \local_learningcompanions\mentors::get_new_mentorship_qualifications();
 $mentorships = \local_learningcompanions\mentors::get_mentorship_topics();
 echo $OUTPUT->header();
 array_walk($qualifications, function(&$obj) {

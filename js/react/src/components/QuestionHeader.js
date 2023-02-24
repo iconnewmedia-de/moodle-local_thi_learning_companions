@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
 
 export default function QuestionHeader({questionid}) {
-    console.log('create questionheader for questionid: ', questionid);
+    // console.log('create questionheader for questionid: ', questionid);
     if (questionid === undefined) return;
     const [question, setQuestion] = useState({
         id: questionid, askedby: 0, mentorid: 0, question: "", title: "", topic: 0, timecreated: "0", timeclosed: "0"
     });
     function getQuestion() {
-        console.log('inside questionheader, getting question for questionid: ', questionid);
+        // console.log('inside questionheader, getting question for questionid: ', questionid);
         if (questionid === null) return;
 
         const controller = new AbortController();
@@ -17,8 +17,8 @@ export default function QuestionHeader({questionid}) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('reqceived question: ', data);
-                console.log('data.length', data.length);
+                // console.log('reqceived question: ', data);
+                // console.log('data.length', data.length);
                 if (data) {
                     setQuestion(data);
                 }

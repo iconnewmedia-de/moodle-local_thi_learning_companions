@@ -138,6 +138,7 @@
 
 
 .learningcompanions_edit_comment,
+.learningcompanions_rate_comment,
 .learningcompanions_delete_comment,
 .learningcompanions_report_comment {
     width: 20px;
@@ -151,6 +152,17 @@
 .learningcompanions_edit_comment {
     background-image: url([[pix:local_learningcompanions|edit-pen]]);
     z-index: 10;
+}
+.learningcompanions_rate_comment {
+    background-image: url([[pix:local_learningcompanions|thumbs-up]]);
+    opacity: 0.5;
+}
+.learningcompanions_rate_comment.learningcompanions_israted_by_current_user {
+    display: inline-block;
+}
+learningcompanions_rate_comment:hover,
+.learningcompanions_rate_comment.learningcompanions_israted_by_current_user {
+    opacity: 1;
 }
 .icon-learningcompanions-edit {
     width: 20px;
@@ -184,6 +196,7 @@
 
 .learningcompanions_chat-post:hover .learningcompanions_report_comment,
 .learningcompanions_chat-post:hover .learningcompanions_delete_comment,
+.learningcompanions_chat-post:hover .learningcompanions_rate_comment,
 .learningcompanions_chat-post:hover .learningcompanions_edit_comment  {
     display: inline-block;
     color: transparent;
@@ -358,4 +371,8 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 
 #page-local-learningcompanions-mentor-question #learningcompanions_chat {
     margin-left: 16px;
+}
+
+#page-local-learningcompanions-mentor-question .chat-post-form {
+    position: relative;
 }

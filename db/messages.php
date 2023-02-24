@@ -15,6 +15,18 @@ $messageproviders = [
             'email' => MESSAGE_PERMITTED
         ],
     ],
+    'notification_qualified_mentor' => [
+        'defaults' => [
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'email' => MESSAGE_PERMITTED
+        ],
+    ],
+    'appointed_to_supermentor' => [
+        'defaults' => [
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'email' => MESSAGE_PERMITTED
+        ],
+    ],
     'group_join_accepted' => [
         'defaults' => [
             'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,

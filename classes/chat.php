@@ -133,7 +133,10 @@ class chat {
             $firstPostId++;
         }
 
-        $sql = 'SELECT * FROM {lc_chat_comment} WHERE chatid = :chatid AND id < :firstpostid ';
+        $sql = 'SELECT c.*, GROUP_CONCAT(r.userid) as ratings
+                    FROM {lc_chat_comment} c
+                    LEFT JOIN {lc_chat_comment_ratings} r ON r.commentid = c.id
+                    WHERE c.chatid = :chatid AND c.id < :firstpostid ';
         $params = ['chatid' => $this->chatid, 'firstpostid' => $firstPostId];
 
         if ($includedPostId !== 0) {
@@ -141,26 +144,18 @@ class chat {
             $params['includedpostid'] = $includedPostId;
         }
 
+        $sql .= ' GROUP BY c.id ';
         $sql .= 'ORDER BY timecreated DESC ';
-
         if ($includedPostId === 0) {
             $sql .= ' LIMIT 0, '.$stepSize;
         }
         $comments = $DB->get_records_sql($sql, $params);
 
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
-        $context = \context_system::instance();
 
         // ICTODO: also get inline attachments
         foreach($comments as $comment) {
-            $comment->datetime = userdate($comment->timecreated);
-            $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
-            $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
-            if (array_key_exists($comment->id, $attachments)) {
-                $comment->attachments = $attachments[$comment->id];
-            } else {
-                $comment->attachments = [];
-            }
+            self::comment_add_details($comment, $attachments);
         }
 
         if ($includedPostId !== 0) {
@@ -170,26 +165,70 @@ class chat {
         return $comments;
     }
 
+    /**
+     * adds further details to a comment like author's name, email, username
+     * and datetime which is a human readable version of the timecreated timestamp
+     * @param $comment
+     * @param $attachments
+     * @return void
+     * @throws \dml_exception
+     */
+    public static function comment_add_details(&$comment, $attachments) {
+        global $DB;
+        $context = \context_system::instance();
+        $comment->datetime = userdate($comment->timecreated);
+        $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
+        $comment->author_fullname = self::get_author_fullname($comment->userid);
+        $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
+        if (array_key_exists($comment->id, $attachments)) {
+            $comment->attachments = $attachments[$comment->id];
+        } else {
+            $comment->attachments = [];
+        }
+        $comment->ratings = is_null($comment->ratings)?[]:explode(",", $comment->ratings);
+        $comment->isratedbyuser = self::is_comment_rated_by_current_user($comment);
+    }
+
+    public static function get_author_fullname($userid) {
+        global $DB;
+        $user = $DB->get_record('user', ['id' => $userid]);
+        if (!$user || $user->deleted == 1) {
+            return get_string('deleted_user', 'local_learningcompanions');
+        }
+        return fullname($user);
+    }
+
+    /**
+     * @param $comment
+     * @return bool
+     */
+    public static function is_comment_rated_by_current_user($comment) {
+        global $USER;
+        if (empty($ratings) || !in_array($USER->id, $ratings)) {
+            return false;
+        }
+        return true;
+    }
+
     public function get_newest_posts(int $lastViewedPostId) {
         global $DB;
 
         //Get the newest comments
-        $comments = $DB->get_records_sql('SELECT * FROM {lc_chat_comment} WHERE chatid = ? AND id > ? ORDER BY timecreated DESC', [$this->chatid, $lastViewedPostId]);
+        $comments = $DB->get_records_sql('SELECT c.*, GROUP_CONCAT(r.userid) as ratings
+                    FROM {lc_chat_comment} c
+                        LEFT JOIN {lc_chat_comment_ratings} r ON r.commentid = c.id
+                    WHERE c.chatid = ?
+                      AND c.id > ?
+                    GROUP BY c.id
+                    ORDER BY timecreated DESC', [$this->chatid, $lastViewedPostId]);
+
         $this->set_latestviewedcomment($this->chatid);
 
         //Get the attachments
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
-        $context = \context_system::instance();
 
         foreach($comments as $comment) {
-            $comment->datetime = userdate($comment->timecreated);
-            $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
-            $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
-            if (array_key_exists($comment->id, $attachments)) {
-                $comment->attachments = $attachments[$comment->id];
-            } else {
-                $comment->attachments = [];
-            }
+            self::comment_add_details($comment, $attachments);
         }
         return $comments;
     }

@@ -145,6 +145,19 @@
                 <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
             </INDEXES>
         </TABLE>
+        <TABLE NAME="lc_chat_comment_ratings" COMMENT="Users can give a thumbs up to comments. These entries land here in this table">
+            <FIELDS>
+                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                 <FIELD NAME="commentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+             </FIELDS>
+             <KEYS>
+                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+             </KEYS>
+             <INDEXES>
+                 <INDEX NAME="commentid_userid" UNIQUE="true" FIELDS="commentid,userid"/>
+             </INDEXES>
+        </TABLE>
         <TABLE NAME="lc_mentor_questions" COMMENT="contains the questions asked to mentors">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -160,7 +173,7 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="lc_mentor_answers" COMMENT="contains the answers to a question asked to mentors">
+        <TABLE NAME="lc_mentor_answers" COMMENT="contains the answers to a question asked to mentors - ICTODO: check if we still need this as we`re actually using the regular chat table">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>

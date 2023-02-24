@@ -1,8 +1,6 @@
 <?php
 namespace local_learningcompanions;
 
-use core\message\message;
-
 class eventobservers {
     /**
      * Observer for \core\event\course_module_created event.
@@ -65,37 +63,9 @@ class eventobservers {
             }
         }
         if ($sendNotification) {
-            self::send_mentor_qualification_message($data['courseid'], $data['relateduserid']);
+            \local_learningcompanions\messages::send_mentor_qualification_message($data['courseid'], $data['relateduserid']);
         }
     }
 
-    /**
-     * @param $courseid
-     * @return false|int|mixed
-     * @throws \coding_exception
-     * @throws \dml_exception
-     */
-    protected static function send_mentor_qualification_message($courseid, $userid) {
-        global $DB, $CFG;
-        $user = $DB->get_record('user', array('id' => $userid));
-        $message = new \core\message\message();
-        $message->component = 'local_learningcompanions'; // Your plugin's name
-        $message->name = 'notification_qualified_mentor'; // Your notification name from message.php
-        $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
-        $message->userto = $user;
-        // ICTODO: get course topic instead and display that in the email. We will have to use a custom course profile field
-        $course = $DB->get_record('course', array('id' => $courseid));
-        $link = $CFG->wwwroot . '/local/learningcompanions/mentor/manage.php';
-        $message->subject = get_string('message_qualified_mentor_subject', 'local_learningcompanions', array('user' => $user, 'course' => $course, 'link' => $link));
-        $message->fullmessagehtml = get_string('message_qualified_mentor_body', 'local_learningcompanions', array('user' => $user, 'course' => $course));
-        $message->fullmessage = strip_tags($message->fullmessagehtml);
-        $message->fullmessageformat = FORMAT_PLAIN;
-        $message->fullmessagehtml = $message->fullmessage;
-        $message->smallmessage = get_string('message_qualified_mentor_smallmessage', 'local_learningcompanions', array('user' => $user, 'course' => $course));
-        $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
-        $message->contexturl = (new \moodle_url('/course/'))->out(false);
-        $message->contexturlname = 'Course list';
-        $messageid = message_send($message);
-        return $messageid;
-    }
+
 }

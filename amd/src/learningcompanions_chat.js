@@ -41,6 +41,7 @@ export const init = async() => {
     body.on('click', '.learningcompanions_delete_comment', handleCommentDelete);
     body.on('click', '.learningcompanions_edit_comment', handleCommentEdit);
     body.on('click', '.learningcompanions_report_comment', handleCommentReport);
+    body.on('click', '.learningcompanions_rate_comment', handleCommentRating);
     body.on('click', '.learningcompanions_editgroup', handleEditGroup);
 
     body.on('click', '.js-leave-group', handleGroupLeaveButton);
@@ -49,7 +50,7 @@ export const init = async() => {
     body.on('click', '.learningcompanions_bbb_button', handleBBBButton);
     let item = document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments');
     document.body.addEventListener('dragenter', function(e) {
-        console.log('started dragging', e);
+        // console.log('started dragging', e);
         document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.add('upload-visible');
     });
     // document.body.addEventListener('dragstop', function(e) {
@@ -135,6 +136,27 @@ const pasteHtmlAtCaret = function(html) {
         document.selection.createRange().pasteHTML(html);
     }
 };
+const handleCommentRating = function(e) {
+    const postId = +e.target.dataset.id;
+    $.ajax({
+        url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax_ratecomment.php',
+        method: 'POST',
+        dataType: 'json',
+        data: {
+            commentid: postId
+        },
+        success: function(data) {
+            // modal.destroy();
+            if (data === 'fail') {
+                // ICTODO: output fail message
+            } else {
+                // ICTODO: output success message
+            }
+            document.dispatchEvent(new CustomEvent('learningcompanions_message_rated', {detail: {postid: postId, newvalue: data.israted}}));
+            // document.dispatchEvent(new ModalEvents.hidden);
+        }
+    });
+}
 const handleCommentDelete = async function(e) {
     const postId = +e.target.dataset.id;
 
@@ -147,7 +169,7 @@ const handleCommentDelete = async function(e) {
             '</div>',
     });
 
-    console.log('comment id from data:', postId);
+    // console.log('comment id from data:', postId);
 
     modal.getRoot().on(ModalEvents.save, function() {
         $.ajax({
@@ -173,11 +195,11 @@ const handleCommentDelete = async function(e) {
     modal.show();
 };
 const handleCommentEdit = async function(e) {
-    console.log('clicked edit comment. event object:', e);
-    console.log('clicked edit comment for comment id:', e.target.dataset.id);
+    // console.log('clicked edit comment. event object:', e);
+    // console.log('clicked edit comment for comment id:', e.target.dataset.id);
     var commentid = e.target.dataset.id;
-    console.log('commentid before creating modal:', commentid);
-    console.log(ModalFactory);
+    // console.log('commentid before creating modal:', commentid);
+    // console.log(ModalFactory);
     return ModalFactory.create({
         type: ModalFactory.types.SAVE_CANCEL,
         title: strings[3],
@@ -191,7 +213,7 @@ const handleCommentEdit = async function(e) {
         //     '<button class="btn btn-secondary" aria-hidden="true" id="learningcompanions-deletecomment-modal-close" data-action="hide">' + strings[3] + '</button>' +
         //     '</div>'
     }).then(function(modal) {
-        console.log('edit comment id from data:', commentid);
+        // console.log('edit comment id from data:', commentid);
 
         modal.setSaveButtonText(strings[5]);
         $.ajax(
@@ -204,7 +226,7 @@ const handleCommentEdit = async function(e) {
                 }
             }
         ).done(function(a, b, c) {
-            console.log('inside edit comment. a:', a, 'b:', b, 'c:', c);
+            // console.log('inside edit comment. a:', a, 'b:', b, 'c:', c);
             modal.setText(a.text);
         });
         // modal.getRoot().on(ModalEvents.hidden, function () {
@@ -224,10 +246,10 @@ const handleCommentReport = async function(e) {
             '<div id="learningcompanions-reportcomment-modal-text">' + strings[6] + '</div>' +
             '</div>'
     }).then(function(modal) {
-        console.log('comment id from data:', postId);
+        // console.log('comment id from data:', postId);
 
         modal.getRoot().on(ModalEvents.save, function() {
-            console.log('about to call ajaxdeletecomment.php with comment id', postId);
+            // console.log('about to call ajaxdeletecomment.php with comment id', postId);
             $.ajax({
                 url: `${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxreport.php`,
                 method: 'POST',
@@ -252,14 +274,14 @@ const handleCommentReport = async function(e) {
     });
 };
 const handleEditGroup = async function(e) {
-    console.log('clicked on gear icon', this, e);
+    // console.log('clicked on gear icon', this, e);
 
     async function callGroupModal(e) {
         e.preventDefault();
 
         const groupid = e.target.dataset.gid;
         const groupname = e.target.dataset.title;
-        console.log('getting group modal for ', groupid, groupname, this, e);
+        // console.log('getting group modal for ', groupid, groupname, this, e);
         const groupDetails = $.ajax({
             url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php',
             method: 'POST',
@@ -271,8 +293,8 @@ const handleEditGroup = async function(e) {
             success: function(data) {
                 const title = str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
                 title.then(function(string) {
-                    console.log('got group title string:', title);
-                    console.log('got group details data:', data);
+                    // console.log('got group title string:', title);
+                    // console.log('got group details data:', data);
                     ModalFactory.create({
                         title: string,
                         body: data.html,

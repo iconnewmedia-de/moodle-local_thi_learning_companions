@@ -3,8 +3,8 @@ require_once '../../../config.php';
 require_once '../lib.php';
 
 $context = context_system::instance();
-require_capability( 'local/learningcompanions:mentor_search', $context);
-
+//require_capability( 'local/learningcompanions:mentor_search', $context);
+require_login();
 $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/learningcompanions/mentor/search.php');
 $PAGE->set_pagelayout('standard');

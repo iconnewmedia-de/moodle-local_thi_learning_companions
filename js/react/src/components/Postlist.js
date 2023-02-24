@@ -42,12 +42,20 @@ export default function Postlist({activeGroupid, group, questionid}) {
             return post;
         }));
     }, []);
+    const handlePostRated = useCallback(({postid, newvalue}) => {
+       setPosts(oldPosts => oldPosts.map(post => {
+           if (+post.id === +postid) {
+               post.isratedbyuser = newvalue;
+           }
+           return post;
+       }));
+    });
     const handlePostSend = useCallback(() => {
         setChattimer(chattimer => chattimer + 1);
     }, []);
     const getInitialPosts = useCallback(() => {
         const controller = new AbortController();
-        console.log('fetching initial posts for questionid: ', questionid); // ICUNDO!
+        // console.log('fetching initial posts for questionid: ', questionid); // ICUNDO!
         fetch(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajaxchat.php?' + new URLSearchParams({
             groupid: activeGroupid,
             includedPostId: highlightedPostId,
@@ -67,7 +75,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
                 setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
             }).catch(error => {
             if (error.name !== 'AbortError') {
-                console.log(error);
+                // console.log(error);
             }
         });
 
@@ -78,12 +86,14 @@ export default function Postlist({activeGroupid, group, questionid}) {
         eventBus.on(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
         eventBus.on(eventBus.events.MESSAGE_REPORTED, handlePostReported);
         eventBus.on(eventBus.events.MESSAGE_SEND, handlePostSend);
+        eventBus.on(eventBus.events.MESSAGE_RATED, handlePostRated);
 
         // ICTODO: This doesn´t remove the event listeners.
         return () => {
             eventBus.off(eventBus.events.MESSAGE_DELETED, handlePostDeleted);
             eventBus.off(eventBus.events.MESSAGE_REPORTED, handlePostReported);
             eventBus.off(eventBus.events.MESSAGE_SEND, handlePostSend);
+            eventBus.off(eventBus.events.MESSAGE_RATED, handlePostRated);
         }
     }, []);
 
@@ -126,7 +136,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
             }
         }).catch(error => {
             if (error.name !== 'AbortError') {
-                console.log(error);
+                // console.log(error);
             }
         }).finally(() => {
             updateRunning = false;
@@ -140,7 +150,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
 
         const controller = new AbortController();
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}&questinogroup=${questionid}`, {
+        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}&questionid=${questionid}`, {
             signal: controller.signal
         })
         .then(response => response.json())
@@ -178,12 +188,12 @@ export default function Postlist({activeGroupid, group, questionid}) {
     var header;
     const getHeader = () => {
         if (questionid) {
-            console.log('we have a question id, make a question header. Question ID: ', questionid);
+            // console.log('we have a question id, make a question header. Question ID: ', questionid);
             header = (
                 <QuestionHeader questionid={questionid}/>
             );
         } else {
-            console.log('no question id, make a group header. Group: ', group);
+            // console.log('no question id, make a group header. Group: ', group);
             header = (
                 <GroupHeader group={group}/>
             );
@@ -199,7 +209,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
             {header}
             {isInPreviewMode && <span>Is Preview</span>}
             {isLoading && <LoadingIndicator/>}
-            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} />}
+            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} questionid={questionid} />}
         </div>
     );
 };
