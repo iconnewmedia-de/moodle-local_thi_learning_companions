@@ -210,7 +210,7 @@ class mentors {
                 $conditions++;
             }
 
-            if (!is_null($topics)) {
+            if (is_array($topics) && count($topics) > 0) {
                 list($conditionTopics, $paramsTopics) = $DB->get_in_or_equal($topics);
                 $sql .= ($conditions < 1) ? ' WHERE q.topic ' . $conditionTopics : ' AND q.topic ' . $conditionTopics;
                 $params = $params + $paramsTopics;
