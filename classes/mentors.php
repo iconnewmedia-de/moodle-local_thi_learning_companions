@@ -242,10 +242,6 @@ class mentors {
 
     }
 
-    public static function get_latest_nugget_comments($userid, $cmid = null) {
-        return array();
-    }
-
     /**
      * @param $questionid
      * @return bool
