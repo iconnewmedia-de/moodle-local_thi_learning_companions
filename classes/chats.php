@@ -253,6 +253,7 @@ class chats {
                 } else {
                     $comment->attachments = [];
                 }
+                $comment->plaintext = strip_tags($comment->comment);
             }
             if ($extended) {
                 return self::add_extended_fields_to_comments($comments, $cut);
@@ -266,7 +267,7 @@ class chats {
 
         foreach($comments as $comment) {
             $comment->author = $DB->get_record('user', ['id' => $comment->userid]);
-            $comment->author_fullname = chat::get_author_fullname($comment->author);
+            $comment->author_fullname = chat::get_author_fullname($comment->author->id);
             $comment->author_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$comment->userid;
             $comment->flaggedbyuser = $DB->get_record('user', ['id' => $comment->flaggedby]);
             $comment->flaggedbyuser_fullname = fullname($comment->flaggedbyuser);
