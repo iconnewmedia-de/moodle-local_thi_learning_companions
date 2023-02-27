@@ -1,16 +1,21 @@
 <div class="mentorship-qualifications">
-    <h2>{{#str}}my_mentorships, local_learningcompanions{{/str}}</h2>
-    <h3>{{#str}}your_mentorship_qualifications, local_learningcompanions{{/str}}</h3>
-    {{^qualifications}}
-    <span>{{#str}}no_mentorship_qualifications, local_learningcompanions{{/str}}</span>
-    {{/qualifications}}
-    {{#qualifications}}
-    <span>{{name}} <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/manage.php?action=acceptmentorship&topic={{name_urlencoded}}">{{#str}}become_mentor, local_learningcompanions{{/str}}</a></span>
-    {{/qualifications}}
+    <div class="mb-5">
+        <h2>{{#str}}my_mentorships, local_learningcompanions{{/str}}</h2>
+        <h3>{{#str}}your_mentorship_qualifications, local_learningcompanions{{/str}}</h3>
+        {{^qualifications}}
+        <span>{{#str}}no_mentorship_qualifications, local_learningcompanions{{/str}}</span>
+        {{/qualifications}}
+        {{#qualifications}}
+        <span>{{name}} <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/manage.php?action=acceptmentorship&topic={{name_urlencoded}}">{{#str}}become_mentor, local_learningcompanions{{/str}}</a></span>
+        {{/qualifications}}
+    </div>
     {{#hasmentorships}}
-    <h3>{{#str}}your_mentorships, local_learningcompanions{{/str}}</h3>
-    {{#mentorships}}
-    <span>{{name}}</span>
-    {{/mentorships}}
+    <div>
+        <hr>
+        <h3 class="mt-3">{{#str}}your_mentorships, local_learningcompanions{{/str}}</h3>
+        {{#mentorships}}
+        <span>{{name}}</span>
+        {{/mentorships}}
+    </div>
     {{/hasmentorships}}
 </div>

@@ -376,3 +376,13 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 #page-local-learningcompanions-mentor-question .chat-post-form {
     position: relative;
 }
+.lc_comment strong {
+    font-style: italic;
+    color: var(--warning);
+}
+.lc_comment_author-info {
+    text-align: right;
+}
+#page-local-learningcompanions-mentor-mentor_questions_overview .dataTables_wrapper {
+    overflow: hidden;
+}
