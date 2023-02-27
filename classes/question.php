@@ -51,6 +51,9 @@ class question {
     }
 
     private static function from_record($record): self {
+        if (is_null($record->mentorid)) {
+            $record->mentorid = 0;
+        }
         $question = new self($record->askedby, $record->mentorid, $record->question, $record->title, $record->topic);
         $question->id = $record->id;
         $question->timecreated = $record->timecreated;

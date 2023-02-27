@@ -496,7 +496,7 @@ class group {
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;
             unset($admin->password);
-            $admin->status = get_user_status($admin->id);
+            list($admin->status, $admin->statustext) = get_user_status($admin->id);
             $admin->userpic = $OUTPUT->user_picture($admin, [
                 'link' => false, 'visibletoscreenreaders' => false,
                 'class' => 'userpicture'

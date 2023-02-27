@@ -55,7 +55,7 @@ class mentors {
                     'link' => false, 'visibletoscreenreaders' => false,
                     'class' => 'userpicture'
                 ]);
-                $mentor->status = get_user_status($mentor->userid);
+                list($mentor->status, $mentor->statustext) = get_user_status($mentor->userid);
                 $mentor->badges = badges_get_user_badges($mentor->id, 0, 0, 0, '', true);
                 $mentor->badges = array_values($mentor->badges);
                 foreach($mentor->badges as $badge) {

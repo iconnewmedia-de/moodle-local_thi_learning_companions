@@ -5,41 +5,8 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG, $DB;
 
 if ($oldversion < 2022112506) {
-    /*** Adding new profile category 'Status' ***/
-    $categoryId = $DB->insert_record('user_info_category', [
-        'name' => get_string('profile_field_category_status_default'),
-        'sortorder' => 1
-    ]);
-
-    /*** Adding new profile field 'lc_user_status' ***/
-
-    require_once($CFG->dirroot.'/user/profile/definelib.php');
-    require_once($CFG->dirroot.'/user/profile/field/menu/define.class.php');
-    $fieldtype = new profile_define_menu();
-
-    $newfield = new stdClass();
-    $newfield->shortname = 'lc_user_status';
-    $newfield->name = 'Learning companions user status';
-    $newfield->datatype = 'menu';
-    $newfield->description = '';
-    $newfield->required = 0;
-    $newfield->locked = 0;
-    $newfield->forceunique = 0;
-    $newfield->signup = 0;
-    $newfield->visible = 2;
-    $newfield->categoryid = $categoryId;
-    // Multi language, take a look at the strings.
-    $newfield->defaultdata = get_string('profile_field_status_default_default', 'local_learningcompanions');
-    $newfield->param1 = get_string('profile_field_status_default_options', 'local_learningcompanions');
-
-    $fieldtype->define_save($newfield);
-    profile_reorder_fields();
-    profile_reorder_categories();
-
-    // Active and configure filter for multi language.
-    filter_set_global_state('multilang', TEXTFILTER_ON);
-    $stringfilters = $CFG->stringfilters.',multilang';
-    set_config('stringfilters', $stringfilters);
+    require_once __DIR__ . '/../lib.php';
+    local_learningcompanions\db\create_status_profile_field();
 
     upgrade_plugin_savepoint(true, 2022112506, 'local', 'learningcompanions');
 }
