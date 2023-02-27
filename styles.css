@@ -336,10 +336,6 @@ learningcompanions_rate_comment:hover,
     background: #0ff;
 }
 
-#allgroupstable tr {
-    cursor: pointer;
-}
-
 .preview-wrapper.preview-wrapper {
     background-color: var(--light);
     margin-left: -15px;
