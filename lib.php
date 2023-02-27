@@ -112,10 +112,10 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
  * @param $userid   int|null The user id to get the status for
  * @param $readable bool Whether to return the status as a sentence or as a class string
  *
- * @return string
+ * @return array    first value is for css classes, second value is the actual readable value, in the user's language
  * @throws dml_exception
  */
-function get_user_status(int $userid = null): string {
+function get_user_status(int $userid = null): array {
     global $CFG, $DB, $USER;
 
     require_once($CFG->dirroot.'/user/profile/lib.php');
@@ -136,7 +136,7 @@ function get_user_status(int $userid = null): string {
     // 'Please do not disturb' => 'pleasedonotdisturb'
     $statusIcon = str_replace(' ', '', $status);
     $statusIcon = strtolower($statusIcon);
-
+    $statusfield = format_string($statusfield, true, ['context' => context_system::instance()]);
     return array($statusIcon, $statusfield);
 }
 
