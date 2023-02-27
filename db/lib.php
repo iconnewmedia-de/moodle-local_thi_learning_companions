@@ -33,3 +33,57 @@ function create_course_customfields() {
         $field->save();
     }
 }
+
+/**
+ * creates a new profile field to hold the user status
+ * @return void
+ * @throws \coding_exception
+ * @throws \dml_exception
+ */
+function create_status_profile_field() {
+    global $DB, $CFG;
+    /*** Adding new profile category 'Status' ***/
+    $categoryId = $DB->get_field('user_info_category', 'id', [
+        'name' => get_string('profile_field_category_status_default', 'local_learningcompanions')
+    ]);
+    if (!$categoryId) {
+        $categoryId = $DB->insert_record('user_info_category', [
+            'name' => get_string('profile_field_category_status_default', 'local_learningcompanions'),
+            'sortorder' => 1
+        ]);
+    }
+
+    /*** Adding new profile field 'lc_user_status' ***/
+    require_once($CFG->dirroot.'/user/profile/definelib.php');
+    require_once($CFG->dirroot.'/user/profile/field/menu/define.class.php');
+    $newfield = $DB->get_record('user_info_field', array('shortname' => 'lc_user_status'));
+    $fieldtype = new \profile_define_menu();
+    if ($newfield) {
+        // update default data and param1 if the field already exists, we've got new default values
+        $newfield->defaultdata = get_string('profile_field_status_default_default', 'local_learningcompanions');
+        $newfield->param1 = get_string('profile_field_status_default_options', 'local_learningcompanions');
+    } else {
+        $newfield = new \stdClass();
+        $newfield->shortname = 'lc_user_status';
+        $newfield->name = 'Learning companions user status';
+        $newfield->datatype = 'menu';
+        $newfield->description = '';
+        $newfield->required = 0;
+        $newfield->locked = 0;
+        $newfield->forceunique = 0;
+        $newfield->signup = 0;
+        $newfield->visible = 2;
+        $newfield->categoryid = $categoryId;
+        // Multi language, take a look at the strings.
+        $newfield->defaultdata = get_string('profile_field_status_default_default', 'local_learningcompanions');
+        $newfield->param1 = get_string('profile_field_status_default_options', 'local_learningcompanions');
+    }
+    $fieldtype->define_save($newfield);
+    profile_reorder_fields();
+    profile_reorder_categories();
+
+    // Active and configure filter for multi language.
+    filter_set_global_state('multilang', TEXTFILTER_ON);
+    $stringfilters = $CFG->stringfilters.',multilang';
+    set_config('stringfilters', $stringfilters);
+}

@@ -115,10 +115,11 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
  * @return string
  * @throws dml_exception
  */
-function get_user_status(int $userid = null, bool $readable = false): string {
+function get_user_status(int $userid = null): string {
     global $CFG, $DB, $USER;
 
     require_once($CFG->dirroot.'/user/profile/lib.php');
+    require_once($CFG->dirroot.'/message/classes/helper.php');
 
     $userid = is_null($userid) ? $USER->id : $userid;
     $user = $DB->get_record('user', ['id' => $userid]);
@@ -127,14 +128,16 @@ function get_user_status(int $userid = null, bool $readable = false): string {
     $statusfield = $user->profile_field_lc_user_status;
     $status = explode('<span lang="en" class="multilang">', $statusfield)[1];
     $status = explode('</span>', $status)[0];
-
-    // 'Please do not disturb' => 'pleasedonotdisturb'
-    if (!$readable) {
-        $status = str_replace(' ', '', $status);
-        $status = strtolower($status);
+    if ($status === 'Online' && $userid !== $USER->id) {
+        if (!\core_message\helper::is_online($user->lastaccess)) {
+            $status = 'Offline';
+        }
     }
+    // 'Please do not disturb' => 'pleasedonotdisturb'
+    $statusIcon = str_replace(' ', '', $status);
+    $statusIcon = strtolower($statusIcon);
 
-    return $status;
+    return array($statusIcon, $statusfield);
 }
 
 function set_user_status($status, $userid = null) {
