@@ -255,3 +255,5 @@ $string['latest_comments'] = 'Latest comments';
 $string['learning_nugget'] = 'Learning nugget';
 $string['comment_from'] = 'Comment from';
 $string['date_from'] = 'from';
+$string['setting_latestcomments_max_amount'] = 'Latest comments: Max. amount';
+$string['configlatestcomments_max_amount'] = 'Maximum amount of comments listed in "latest comments" for mentors';
