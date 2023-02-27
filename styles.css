@@ -189,9 +189,11 @@ learningcompanions_rate_comment:hover,
 .learningcompanions_chat-post {
     position: relative;
 }
-#learningcompanions_chat-postlist {
-    margin-left: -15px;
-    margin-right: -15px;
+@media (min-width: 992px) {
+    #learningcompanions_chat-postlist {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
 }
 
 .learningcompanions_chat-post:hover .learningcompanions_report_comment,

@@ -9,8 +9,8 @@ $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/learningcompanions/group/index.php');
 $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_learningcompanions/group', 'init');
-$PAGE->requires->css('/local/learningcompanions/vendor/DataTables/datatables.min.css');
-$PAGE->requires->css('/local/learningcompanions/vendor/balloon.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/balloon.css');
 
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_learningcompanions/group/group_index', array(

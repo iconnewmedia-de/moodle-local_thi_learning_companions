@@ -1,11 +1,19 @@
-{{#users}}
-    <li>
-        <input type="radio" class="js-invite-radio invite-radio" id="user-invite-{{id}}" value="{{id}}" name="userid">
-        <label for="user-invite-{{id}}">
-            {{{profilepicture}}}
-            <span>
-                {{fullname}}
-            </span>
-        </label>
-    </li>
+{{#users.length}}
+    <ul  class="invite-member-list">
+        {{#users}}
+            <li>
+                <input type="radio" class="js-invite-radio invite-radio" {{#checked}}checked{{/checked}} id="user-invite-{{id}}" value="{{id}}" name="userid">
+                <label for="user-invite-{{id}}">
+                    {{{profilepicture}}}
+                    <span>
+                        {{fullname}}
+                    </span>
+                </label>
+            </li>
+        {{/users}}
+    </ul>
+{{/users.length}}
+
+{{^users}}
+    <div class="mb-3">{{#str}}nousersfound, local_learningcompanions{{/str}}</div>
 {{/users}}

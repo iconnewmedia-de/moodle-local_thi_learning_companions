@@ -10,9 +10,9 @@ $PAGE->set_url($CFG->wwwroot.'/local/learningcompanions/mentor/search.php');
 $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_learningcompanions/mentor', 'init');
 $PAGE->requires->js_call_amd('local_learningcompanions/mentor', 'select2');
-$PAGE->requires->css('/local/learningcompanions/vendor/DataTables/datatables.min.css');
-$PAGE->requires->css('/local/learningcompanions/vendor/select2.min.css');
-$PAGE->requires->css('/local/learningcompanions/vendor/balloon.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/select2.min.css');
+$PAGE->requires->css('/local/learningcompanions/js_lib/balloon.css');
 $PAGE->navbar->add(get_string('navbar_mentors', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/mentor/index.php'));
 $PAGE->navbar->add(get_string('navbar_findmentors', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/mentor/search.php'));
 

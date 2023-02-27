@@ -158,7 +158,8 @@ class group {
     public $is_admin;
 
     public function __construct($groupid, $userid = null) {
-        global $DB, $CFG, $USER;
+        global $DB, $CFG, $USER, $PAGE;
+        $PAGE->set_context(\context_system::instance());
 
         if (is_null($userid)) {
             $userid = $USER->id;

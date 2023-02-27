@@ -15,20 +15,33 @@ const handleSearchInviteButton = async function(e) {
 
     const groupId = $(this).data('groupid');
     const searchString = $('.js-invite-member-input').val();
+    $('.js-invite-member-btn').attr('disabled', true);
 
     const users = await getInvitableUsers(searchString, groupId);
+    const checked = users.length === 1 ? 'checked' : '';
 
     const {html} = await Template.renderForPromise('local_learningcompanions/group/group_invite_list', {
-        users
+        users,
+        checked,
     });
 
+    if (checked) {
+        enableSubmitbutton();
+    }
+
     $('.js-invite-member-list').html(html);
+    $('.js-invite-radio').click(enableSubmitbutton);
 };
 
 const handleSearchKeyup = function(e) {
     if (e.keyCode === KeyCodes.enter) {
         handleSearchInviteButton.bind($('.js-invite-member-search-btn'))(e);
     }
+};
+
+const enableSubmitbutton = function() {
+    const submitButton = $('.js-invite-member-btn');
+    submitButton.removeAttr('disabled');
 };
 
 const handleInviteSubmit = async function(e) {

@@ -137,6 +137,7 @@ $string['name'] = 'Name';
 $string['join'] = 'Joining';
 $string['membercount'] = 'Members';
 $string['course'] = 'Course';
+$string['nousersfound'] = 'Could not find any users matching your search.';
 $string['createdon'] = 'Created on';
 $string['lastactivity'] = 'Last activity';
 $string['nogroupsfound'] = 'Could not find any group.';
@@ -160,6 +161,7 @@ $string['request_join_group'] = 'Request to join group';
 $string['group_join_not_possible'] = 'Joining the group is not possible now.';
 $string['group_request_not_possible'] = 'Request to joining the group is not possible now.';
 $string['group_edit_not_allowed'] = 'You don\'t have permission to edit this group.';
+$string['group_edited'] = 'Group edited successfully.';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';
@@ -177,9 +179,9 @@ $string['profile_field_category_status_default'] = '<span lang="en" class="multi
 $string['filter_all_status'] = 'All groups';
 $string['filter_open_status'] = 'Open groups';
 $string['filter_closed_status'] = 'Closed groups';
-$string['filter_members_count'] = 'Min. number of members';
+$string['filter_members_count'] = 'Count members';
 $string['filter_all_topics'] = 'All topics';
-$string['filter_keywords_placeholder'] = 'Name/Keyword';
+$string['filter_keywords_placeholder'] = 'Group designation';
 $string['filter_badges'] = 'Badge';
 $string['filter_super_mentor'] = 'Super mentor';
 
