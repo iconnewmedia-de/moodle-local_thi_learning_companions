@@ -12,6 +12,7 @@ import DynamicForm from 'core_form/dynamicform';
 import Templates from 'core/templates';
 import {init as inviteInit} from 'local_learningcompanions/invite_members';
 
+
 export const select2 = () => {
     $('.select2').select2();
 };

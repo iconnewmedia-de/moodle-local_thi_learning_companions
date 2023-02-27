@@ -3,6 +3,7 @@ import $ from 'jquery';
 // import 'local_learningcompanions/jquery.dataTables';
 import 'local_learningcompanions/datatables';
 
+
 /**
  * Adds a default "value is included in the column" search to the datatables search.
  *
@@ -241,4 +242,4 @@ export const makeTablesFullWidth = function () {
     } else {
         // console.log('no datatables found'); // ICTODO: remove me
     }
-}
+};
