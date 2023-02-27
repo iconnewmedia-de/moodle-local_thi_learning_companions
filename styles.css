@@ -320,7 +320,8 @@ learningcompanions_rate_comment:hover,
 }
 
 .post-wrapper {
-    max-height: 200px;
+    max-height: calc(100vh - 430px);
+    min-height: 250px;
     overflow-y: auto;
     display: flex;
     flex-direction: column-reverse;
@@ -347,14 +348,17 @@ learningcompanions_rate_comment:hover,
     background-size: cover;
     color: transparent;
 }
+.learningcompanions_upload_button {
+    width: 30px;
+    background-size: cover;
+    color: black;
+}
+
 #page-local-learningcompanions-chat #fitem_id_attachments {
-    opacity: 0;
-    pointer-events: none;
+    display: none;
 }
 #page-local-learningcompanions-chat #fitem_id_attachments.upload-visible {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: all;
+    display: flex;
 }
 body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page.drawers .main-inner {
     max-width: none;

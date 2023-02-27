@@ -26,7 +26,7 @@ class chats {
      * @param $comment
      * @param $formdata
      * @param $editoroptions
-     * @return bool|int
+     * @return bool success status of saving the file attachment (if any). returns false if the maximum limit of file sizes has been reached for this chat
      * @throws \coding_exception
      * @throws \dml_exception
      */
@@ -85,10 +85,10 @@ class chats {
         $comment->comment = file_save_draft_area_files($draftitemid, $context->id, 'local_learningcompanions', 'message', $comment->id,
             $editoroptions, $comment->message);
         $DB->set_field('lc_chat_comment', 'comment', $comment->comment, ['id'=>$comment->id]);
-        self::add_attachment($comment, $formdata);
+        $success = self::add_attachment($comment, $formdata);
         self::set_latest_comment($comment->chatid);
 
-        return $comment->id;
+        return $success;
     }
 
     /**
@@ -148,8 +148,53 @@ class chats {
     protected static function add_attachment($comment, $formdata) {
         // add the attachment
         $context = \context_system::instance();
+        // ICTODO: make sure that the user doesn't exceed the chat's total limit for file uploads
+        $chatMaxUploadExceeded = self::check_uploadsize_total_exceeded($comment, $formdata);
+        if ($chatMaxUploadExceeded) {
+            return false;
+        }
         file_save_draft_area_files($comment->attachments, $context->id, 'local_learningcompanions', 'attachments', $comment->id,
             \local_learningcompanions\chat_post_form::attachment_options());
+        return true;
+    }
+
+    /**
+     * checks if the maximum of bytes for uploaded attachments gets exceeded with the new comment
+     * @param $comment
+     * @return bool
+     * @throws \dml_exception
+     */
+    protected static function check_uploadsize_total_exceeded($comment) {
+        global $CFG;
+        require_once $CFG->dirroot . '/lib/setuplib.php';
+        $config = get_config('local_learningcompanions');
+        $maxbytes = intval($config->upload_limit_per_chat) . "M";
+        $maxbytes = get_real_size($maxbytes);
+        $draftinfo = file_get_draft_area_info($comment->attachments);
+        $areasize = $draftinfo['filesize_without_references'];
+
+//        if ($includereferences) {
+//            $areasize = $draftinfo['filesize'];
+//        }
+        if ($areasize === 0) {
+            return false;
+        }
+        $chat = \local_learningcompanions\chat::get_chat_by_id($comment->chatid);
+        $totalsize = $areasize;
+        $comments = $chat->get_comments();
+        $attachments = $chat->get_attachments_of_comments($comments, 'attachments');
+        foreach($attachments as $attachment) {
+            if (!is_array($attachment)) {
+                continue;
+            }
+            foreach($attachment as $file) {
+                $totalsize += $file['filesize'];
+            }
+        }
+        if ($totalsize > $maxbytes) {
+            return true;
+        }
+        return false;
     }
 
     public static function report_comment($commentid) {

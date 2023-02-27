@@ -74,6 +74,18 @@ if ($hassiteconfig) {
         20
     ));
 
+    $settings->add(new admin_setting_configtext('local_learningcompanions/upload_limit_per_message',
+        get_string('setting_uploadlimit_per_message', 'local_learningcompanions'),
+        get_string('configuploadlimit_per_message', 'local_learningcompanions'),
+        5
+    ));
+
+    $settings->add(new admin_setting_configtext('local_learningcompanions/upload_limit_per_chat',
+        get_string('setting_uploadlimit_per_chat', 'local_learningcompanions'),
+        get_string('configuploadlimit_per_chat', 'local_learningcompanions'),
+        100
+    ));
+
     $category = new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions'));
     if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings
         $ADMIN->add('root', $category);

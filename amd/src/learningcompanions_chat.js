@@ -21,6 +21,7 @@ export const init = async() => {
     sendButton.on('click', handleNewMessageSubmit);
 
     addBBBlinkButton();
+    addUploadButton();
 
     const stringsObj = [
         {key: 'modal-deletecomment-title', component: 'local_learningcompanions'},
@@ -48,6 +49,7 @@ export const init = async() => {
     body.on('click', '.js-request-join-group', handleGroupRequestButton);
     body.on('click', '.js-invite-member', handleGroupInviteButton);
     body.on('click', '.learningcompanions_bbb_button', handleBBBButton);
+    body.on('click', '.learningcompanions_upload_button', handleUploadButton);
     let item = document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments');
     document.body.addEventListener('dragenter', function(e) {
         // console.log('started dragging', e);
@@ -70,6 +72,19 @@ const addBBBlinkButton = function() {
         $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_bbb_button" title="' + title + '")>BigBlueButton</button></div>').appendTo(appendTo);
     });
 };
+
+const addUploadButton = function() {
+    var string = str.get_string(  'upload_title', 'local_learningcompanions');
+    string.then((title) => {
+        if ($('.atto_editor_row').length > 0) {
+            var appendTo = '#page-local-learningcompanions-chat .atto_toolbar_row:first-child';
+        } else {
+            var appendTo = '#page-local-learningcompanions-chat .editor_atto_toolbar';
+        }
+        $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_upload_button" title="' + title + '"><i class="fa fa-upload"></i></button></div>').appendTo(appendTo);
+    });
+};
+
 const handleBBBButton = function(e){
     e.preventDefault();
     var sel = window.getSelection();
@@ -102,6 +117,22 @@ const handleBBBButton = function(e){
     // ICTODO: Create a new BBB room, then create a link that the users can use to join the room, all via AJAX
     return false;
 };
+
+const handleUploadButton = function(e){
+    e.preventDefault();
+    const uploadfield = document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments');
+    let target = e.target;
+    if (target.tagName == "I") {
+        target = target.parentElement;
+    }
+    if (uploadfield.classList.contains('upload-visible')) {
+        uploadfield.classList.remove('upload-visible');
+        target.classList.remove('highlight');
+    } else {
+        uploadfield.classList.add('upload-visible');
+        target.classList.add('highlight');
+    }
+}
 const pasteHtmlAtCaret = function(html) {
     var sel, range;
     if (window.getSelection) {
@@ -333,6 +364,19 @@ const handleNewMessageSubmit = (e) => {
     ).done(function(a, b, c) {
         // ICTODO: give a success message, like with a toast or so
         // reset the form to empty values after successfully sending the form
+        console.log('message sent. Got return object:', a);
+        if (a.warning_body) {
+            console.log('output warning');
+            ModalFactory.create({
+                title: a.warning_title,
+                body: a.warning_body,
+                footer: '',
+                large: false,
+                type: ModalFactory.types.ALERT,
+            }).then(modal => {
+                modal.show();
+            });
+        }
         $('#learningcompanions_chat form #id_messageeditable').text("");
         $('#learningcompanions_chat form input, #learningcompanions_chat form textarea').each((index, el) => {
             if (el.name == "textarea" || el.type !== "hidden") {
@@ -343,7 +387,8 @@ const handleNewMessageSubmit = (e) => {
     }).fail(function(a, b, c) {
         console.warn('Failed sending via AJAX', a, b, c);
         window.alert("couldn't save"); // ICTODO: give proper message, via get_string and ideally with a modal
-    }).always(function() {
+    }).always(function(a, b, c) {
+        console.log('done sending, got returned:', a, b, c);
         // reactivate the form/ungrey it when data has been sent
         $('#learningcompanions_chat #id_messageeditable').css('opacity', '1');
         $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'true');

@@ -18,14 +18,29 @@ class chat_post_form extends \moodleform {
      */
     public static function attachment_options() {
         global $PAGE, $CFG;
-        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes);
+        $maxbytes = self::get_upload_size_limit();
+//        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes);
         return array(
             'subdirs' => 0,
             'maxbytes' => $maxbytes,
+            'areamaxbytes' => $maxbytes,
             'maxfiles' => 3,
             'accepted_types' => '*',
             'return_types' => FILE_INTERNAL | FILE_CONTROLLED_LINK
         );
+    }
+
+    /**
+     * @return float|int
+     * @throws \dml_exception
+     */
+    public static function get_upload_size_limit() {
+        global $CFG;
+        require_once $CFG->dirroot . '/lib/setuplib.php';
+        $config = get_config('local_learningcompanions');
+        $maxbytes = intval($config->upload_limit_per_message) . "M";
+        $maxbytes = get_real_size($maxbytes);
+        return $maxbytes;
     }
 
     /**
@@ -37,7 +52,8 @@ class chat_post_form extends \moodleform {
     public static function editor_options($postid) {
         global $PAGE, $CFG;
         $context = \context_system::instance();
-        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $CFG->maxbytes);
+        $maxbytes = self::get_upload_size_limit();
+//        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $CFG->maxbytes);
         return array(
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'maxbytes' => $maxbytes,
