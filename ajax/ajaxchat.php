@@ -7,7 +7,8 @@ header("Access-Control-Allow-Headers: *");
 require_once dirname(__DIR__, 3). '/config.php';
 
 require_login();
-global $USER;
+global $USER, $PAGE;
+$PAGE->set_context(context_system::instance());
 
 $groupid = optional_param('groupid', 1, PARAM_INT); // ICTODO: turn this into a required param. Just using optional with default for testing/development purposes
 $questionid = optional_param('questionid', 0, PARAM_INT); // ICTODO: turn this into a required param. Just using optional with default for testing/development purposes
