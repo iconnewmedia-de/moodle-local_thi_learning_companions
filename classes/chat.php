@@ -6,6 +6,8 @@ class chat {
     protected $chat;
     protected $context;
 
+    private function __construct() {}
+
     public static function createGroupChat($groupid): self {
         global $DB;
 
@@ -140,7 +142,7 @@ class chat {
         $params = ['chatid' => $this->chatid, 'firstpostid' => $firstPostId];
 
         if ($includedPostId !== 0) {
-            $sql .= ' AND id >= :includedpostid ';
+            $sql .= ' AND c.id >= :includedpostid ';
             $params['includedpostid'] = $includedPostId;
         }
 

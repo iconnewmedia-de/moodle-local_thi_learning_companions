@@ -24,7 +24,11 @@ define('AJAX_SCRIPT', true);
 
 require_once dirname(__DIR__, 3).'/config.php';
 
-global $CFG, $DB, $OUTPUT;
+require_login();
+
+global $CFG, $DB, $OUTPUT, $PAGE;
+
+$PAGE->set_context(context_system::instance());
 
 $action = required_param('action', PARAM_TEXT);
 

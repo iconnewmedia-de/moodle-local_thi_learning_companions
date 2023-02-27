@@ -60,7 +60,6 @@ export default function Grouplist({activeGroupid}) {
         })
             .then(response => response.json())
             .then(({groups}) => {
-                // console.log('Groups', groups);
                 setGroups(groups);
                 setIsLoading(false);
 

@@ -7,7 +7,9 @@ header("Access-Control-Allow-Headers: *");
 require_once dirname(__DIR__, 3). '/config.php';
 
 require_login();
-global $USER;
+global $USER, $PAGE;
+
+$PAGE->set_context(context_system::instance());
 
 $previewGroup = optional_param('shouldIncludeId', null, PARAM_INT);
 

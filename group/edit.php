@@ -39,7 +39,7 @@ if ($data = $form->get_data()) {
         \local_learningcompanions\groups::group_update(
             $data->groupid,
             $data->name,
-            $data->description,
+            $data->description_editor['text'],
             $data->closedgroup,
             $data->keywords,
             $data->courseid,

@@ -3,6 +3,7 @@ import $ from 'jquery';
 // import 'local_learningcompanions/jquery.dataTables';
 import 'local_learningcompanions/datatables';
 
+
 /**
  * Adds a default "value is included in the column" search to the datatables search.
  *
@@ -29,6 +30,49 @@ export const setupSearchRules = (selector, table) => {
             }
             column.search(elementValue).draw();
         });
+    });
+};
+
+/**
+ * Adds the elements to the datatables search, for an OR value search.
+ * The elements need a data-target attribute, which is the column index or class to search.
+ *
+ * @param selector
+ */
+export const initOrSearch = (selector) => {
+    $(selector).each(function() {
+        addOrSearch($(this));
+    });
+};
+
+/**
+ * Adds a specific element to the datatables search, for an OR value search.
+ *
+ * @param element {jQuery} The element the search relates to.
+ */
+export const addOrSearch = (element) => {
+    $.fn.dataTable.ext.search.push(function(settings, data) {
+        let searchVal = element.val() ?? '';
+
+        //If the search value is empty, don´t filter it.
+        if (!searchVal) {
+            return true;
+        }
+
+        const indexes = getTargetColumnIndexes(settings, element);
+        if (indexes === null) {
+            return true;
+        }
+
+        for (const index of indexes) {
+            /**
+             * @type {string}
+             */
+            if (data[index].includes(searchVal)) {
+                return true;
+            }
+        }
+        return false;
     });
 };
 
@@ -62,10 +106,11 @@ export const addMinSearch = (element) => {
             min = minDate.getTime() / 1000;
         }
 
-        const index = getTargetColumnIndex(settings, element);
+        let index = getTargetColumnIndexes(settings, element);
         if (index === null) {
             return true;
         }
+        index = index[0];
 
         /**
          * @type {number}
@@ -103,10 +148,11 @@ export const addIncludeSearch = (element) => {
          */
         const include = element.val() ?? [];
 
-        const index = getTargetColumnIndex(settings, element);
+        let index = getTargetColumnIndexes(settings, element);
         if (index === null) {
             return true;
         }
+        index = index[0];
 
         /**
          * @type {string}
@@ -153,25 +199,39 @@ const getIndexByClass = (settings, className) => {
  *
  * @param settings {*}
  * @param element {jQuery}
- * @returns {null|int}
+ * @returns {null|int[]}
  */
-const getTargetColumnIndex = (settings, element) => {
-    const target = element.data('target');
+const getTargetColumnIndexes = (settings, element) => {
+    const targetData = element.data('target');
 
     // It´s not set? Return null.
-    if (target === undefined) {
+    if (targetData === undefined) {
         // eslint-disable-next-line no-console
         console.error('data-target is not defined or not a number for', element);
         return null;
     }
 
-    // It´s a number? Return it.
-    if (!isNaN(target)) {
-        return target;
+    //if it´s just a single number, return it
+    if (!isNaN(targetData)) {
+        return [targetData];
     }
 
-    // It´s a string? Try to find the index by the class name.
-    return getIndexByClass(settings, target);
+    // eslint-disable-next-line no-console
+    console.log(targetData);
+
+    //Split it, so we can support multiple classes.
+    const targetArray = targetData.split(',');
+
+    //Map the array to the index.
+    return targetArray.map((target) => {
+        // It´s a number? Return it.
+        if (!isNaN(target)) {
+            return target;
+        }
+
+        // It´s a string? Try to find the index by the class name.
+        return getIndexByClass(settings, target);
+    });
 };
 
 export const makeTablesFullWidth = function () {
@@ -182,4 +242,4 @@ export const makeTablesFullWidth = function () {
     } else {
         // console.log('no datatables found'); // ICTODO: remove me
     }
-}
+};

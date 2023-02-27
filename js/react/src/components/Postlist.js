@@ -55,7 +55,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
     }, []);
     const getInitialPosts = useCallback(() => {
         const controller = new AbortController();
-        // console.log('fetching initial posts for questionid: ', questionid); // ICUNDO!
+
         fetch(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajaxchat.php?' + new URLSearchParams({
             groupid: activeGroupid,
             includedPostId: highlightedPostId,
@@ -202,7 +202,6 @@ export default function Postlist({activeGroupid, group, questionid}) {
     useEffect(getHeader, [group, questionid]);
     getHeader();
 
-    // console.log('our header:', header);
     return (
         <div id="learningcompanions_chat-postlist">
             {/*<QuestionHeader questionid={questionid}/>*/}
