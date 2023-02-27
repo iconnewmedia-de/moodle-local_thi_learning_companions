@@ -7,6 +7,8 @@ use local_learningcompanions\traits\is_db_saveable;
 class question {
     use is_db_saveable;
 
+    private static $topic_list = [];
+
     public $id;
     public $askedby;
     public $mentorid;
@@ -91,6 +93,36 @@ class question {
         return $questions;
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return array
+     * @throws \dml_exception
+     */
+    public static function get_all_questions_for_mentor_user(int $userid) {
+        global $DB;
+
+        $records = $DB->get_records('lc_mentor_questions', ['mentorid' => $userid]);
+        $questions = [];
+        foreach ($records as $record) {
+            $questions[] = self::find($record->id);
+        }
+        return $questions;
+    }
+
+    public static function get_all_questions_by_topics(array $topics) {
+        global $DB;
+
+        [$sql, $params] = $DB->get_in_or_equal($topics);
+
+        $records = $DB->get_records_sql('SELECT * FROM {lc_mentor_questions} WHERE topic '.$sql, $params);
+        $questions = [];
+        foreach ($records as $record) {
+            $questions[] = self::find($record->id);
+        }
+        return $questions;
+    }
+
     public function get_last_activity() {
         global $DB;
 
@@ -168,5 +200,21 @@ class question {
             return $this->answer_count;
         }
         return $this->answer_count = $DB->count_records('lc_chat_comment', ['chatid' => $this->get_chat()->id, 'timedeleted' => null]);
+    }
+
+    public function get_topic() {
+        if ($this->topic === '0') {
+            return '-';
+        }
+
+        if (array_key_exists($this->topic, self::$topic_list)) {
+            return self::$topic_list[$this->topic];
+        }
+
+        global $DB;
+
+        $topic =  $DB->get_field('lc_keywords', 'keyword', ['id' => $this->topic]) ?? '-';
+        self::$topic_list[$this->topic] = $topic;
+        return $topic;
     }
 }

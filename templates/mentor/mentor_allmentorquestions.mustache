@@ -15,41 +15,36 @@
         {{#allmentorquestions}}
             <tr>
                 <td>
-                    <span data-balloon="{{question}}" data-balloon-pos="right">
+                    <a data-balloon="{{question}}" data-balloon-pos="right" href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">
                         {{title}}
-                    </span>
+                    </a>
                 </td>
                 <td>
-                    {{keyword}}
+                    {{get_topic}}
                 </td>
                 <td>
-                    {{#answercount}}
-                        <a href="#">{{answercount}}</a>
-                    {{/answercount}}
-                    {{^answercount}}
+                    {{#get_answer_count}}
+                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
+                    {{/get_answer_count}}
+                    {{^get_answer_count}}
                         0
-                    {{/answercount}}
+                    {{/get_answer_count}}
                 </td>
                 <td>
-                    {{#dateclosed}}
-                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+                    {{#is_closed}}
+                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
-                    {{/dateclosed}}
-                    {{^dateclosed}}
+                    {{/is_closed}}
+                    {{^is_closed}}
                         <i class="fa fa-rotate-right"></i>
-                    {{/dateclosed}}
+                    {{/is_closed}}
                 </td>
-                <td>
-                    {{#lastactivity}}
-                        {{lastactivity}}
-                    {{/lastactivity}}
-                    {{^lastactivity}}
-                        {{dateasked}}
-                    {{/lastactivity}}
+                <td data-order="{{get_last_activity}}">
+                    {{get_last_activity_dmy}}
                 </td>
-                <td>
-                    {{dateasked}}
+                <td data-order="{{timecreated}}">
+                    {{get_timecreated_dmy}}
                 </td>
             </tr>
         {{/allmentorquestions}}

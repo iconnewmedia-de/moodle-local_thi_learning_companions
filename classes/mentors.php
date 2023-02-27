@@ -154,12 +154,30 @@ class mentors {
 
     /**
      * @param int  $userid
-     * @param bool $extended
      * @return question[]
      * @throws \dml_exception
      */
-    public static function get_my_asked_questions(int $userid, bool $extended = false): array {
+    public static function get_my_asked_questions(int $userid): array {
         return question::get_all_questions_for_user($userid);
+    }
+
+    /**
+     * @param int $userid
+     *
+     * @return array
+     * @throws \dml_exception
+     */
+    public static function get_mentor_questions_by_user_id(int $userid): array {
+        return question::get_all_questions_for_mentor_user($userid);
+    }
+
+    /**
+     * @param int[] $topicIds
+     *
+     * @return array
+     */
+    public static function get_mentor_questions_by_topics(array $topicIds): array {
+        return question::get_all_questions_by_topics($topicIds);
     }
 
     /**

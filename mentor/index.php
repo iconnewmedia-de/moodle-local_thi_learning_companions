@@ -19,8 +19,8 @@ $PAGE->navbar->add(get_string('navbar_mentorquestions', 'local_learningcompanion
 $mentortopics = \local_learningcompanions\mentors::get_all_mentor_keywords($USER->id, true);
 
 $askedquestions = \local_learningcompanions\mentors::get_my_asked_questions($USER->id, true);
-$mymentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions($USER->id, null, false, true);
-$allmentorquestions = \local_learningcompanions\mentors::get_all_mentor_questions(null, $mentortopics, false, true);
+$mymentorquestions = \local_learningcompanions\mentors::get_mentor_questions_by_user_id($USER->id);
+$allmentorquestions = \local_learningcompanions\mentors::get_mentor_questions_by_topics($mentortopics);
 $learningnuggetcomments = \local_learningcompanions\mentors::get_latest_nugget_comments($USER->id); // ICTODO
 
 echo $OUTPUT->header();
@@ -36,7 +36,7 @@ $hasmentorquestions = count($mymentorquestions) > 0;
 $hasallmentorquestions = count($allmentorquestions) > 0;
 $haslearningnuggetcomments = count($learningnuggetcomments) > 0;
 
-echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_index', array(
+echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_index', [
     'hasaskedquestions' => $hasaskedquestions,
     'hasmentorquestions' => $hasmentorquestions,
     'hasallmentorquestions' => $hasallmentorquestions,
@@ -46,6 +46,6 @@ echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_index
     'ismentor' => \local_learningcompanions\mentors::is_mentor(),
     'istutor' => \local_learningcompanions\mentors::is_tutor(),
     'cfg' => $CFG
-));
+]);
 
 echo $OUTPUT->footer();
