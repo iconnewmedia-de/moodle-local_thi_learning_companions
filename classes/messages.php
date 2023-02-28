@@ -169,6 +169,7 @@ class messages {
         $message->userto = $user;
         // ICTODO: get course topic instead and display that in the email. We will have to use a custom course profile field
         $course = $DB->get_record('course', array('id' => $courseid));
+
         $link = $CFG->wwwroot . '/local/learningcompanions/mentor/manage.php';
         $message->subject = get_string('message_qualified_mentor_subject', 'local_learningcompanions', array('user' => $user, 'course' => $course, 'link' => $link));
         $message->fullmessagehtml = get_string('message_qualified_mentor_body', 'local_learningcompanions', array('user' => $user, 'course' => $course));
@@ -176,6 +177,28 @@ class messages {
         $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = $message->fullmessage;
         $message->smallmessage = get_string('message_qualified_mentor_smallmessage', 'local_learningcompanions', array('user' => $user, 'course' => $course));
+        $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
+        $message->contexturl = (new \moodle_url('/course/'))->out(false);
+        $message->contexturlname = 'Course list';
+        $messageid = message_send($message);
+        return $messageid;
+    }
+
+    public static function send_tutor_unanswered_question_message($tutor, $question) {
+        global $DB, $CFG;
+        $message = new \core\message\message();
+        $message->component = 'local_learningcompanions'; // Your plugin's name
+        $message->name = 'notification_unanswered_question'; // Your notification name from message.php
+        $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
+        $message->userto = $tutor;
+//        $course = $DB->get_record('course', array('id' => $courseid));
+//        $link = $CFG->wwwroot . '/local/learningcompanions/mentor/manage.php';
+        $message->subject = get_string('message_unanswered_question_subject', 'local_learningcompanions', array('user' => $tutor, 'question' => $question));
+        $message->fullmessagehtml = get_string('message_unanswered_question_body', 'local_learningcompanions', array('user' => $tutor, 'question' => $question));
+        $message->fullmessage = strip_tags($message->fullmessagehtml);
+        $message->fullmessageformat = FORMAT_PLAIN;
+        $message->fullmessagehtml = $message->fullmessage;
+        $message->smallmessage = get_string('message_unanswered_question_smallmessage', 'local_learningcompanions', array('user' => $tutor, 'question' => $question));
         $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
         $message->contexturl = (new \moodle_url('/course/'))->out(false);
         $message->contexturlname = 'Course list';

@@ -45,5 +45,11 @@ $messageproviders = [
             'email' => MESSAGE_PERMITTED
         ],
     ],
+    'notification_unanswered_question' => [
+        'defaults' => [
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'email' => MESSAGE_PERMITTED
+        ],
+    ]
 
 ];

@@ -239,5 +239,19 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
               </KEYS>
           </TABLE>
+          <TABLE NAME="lc_tutor_notifications" COMMENT="this table holds information about when which tutor was informed about unanswered questions to tutors">
+               <FIELDS>
+                  <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                  <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                  <FIELD NAME="tutorid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                  <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+              </FIELDS>
+               <KEYS>
+                  <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                </KEYS>
+                <INDEXES>
+                    <INDEX NAME="questionid" UNIQUE="false" FIELDS="questionid" />
+                </INDEXES>
+          </TABLE>
   </TABLES>
 </XMLDB>

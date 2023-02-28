@@ -86,6 +86,20 @@ if ($hassiteconfig) {
         100
     ));
 
+    // inform_tutors_about_unanswered_questions_after_x_days
+    $settings->add(new admin_setting_configtext('local_learningcompanions/inform_tutors_about_unanswered_questions_after_x_days',
+        get_string('setting_inform_tutors_about_unanswered_questions_after_x_days', 'local_learningcompanions'),
+        get_string('configinform_tutors_about_unanswered_questions_after_x_days', 'local_learningcompanions'),
+        14
+    ));
+
+    // inform_tutors_about_unanswered_questions_after_x_days
+    $settings->add(new admin_setting_configtext('local_learningcompanions/tutorrole_shortname',
+        get_string('setting_tutorrole_shortname', 'local_learningcompanions'),
+        get_string('configtutorrole_shortname', 'local_learningcompanions'),
+        'teacher'
+    ));
+
     $category = new admin_category('lcconfig', get_string('adminareaname', 'local_learningcompanions'));
     if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings
         $ADMIN->add('root', $category);

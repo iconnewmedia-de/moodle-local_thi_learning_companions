@@ -267,3 +267,7 @@ $string['setting_uploadlimit_per_chat'] = 'Upload limit per chat';
 $string['configuploadlimit_per_chat'] = 'The total sum of files that get uploaded to one chat group may not exceed this amount of MB';
 $string['attachment_chat_filesize_excdeeded'] = 'The attachment couldn\'t be saved. The upload limit of {$a} has been reached for this group.';
 $string['warning'] = 'Warning';
+$string['setting_inform_tutors_about_unanswered_questions_after_x_days'] = 'Inform tutors about unanswered questions after x days';
+$string['configinform_tutors_about_unanswered_questions_after_x_days'] = 'Sometimes when users ask a question to mentors, these might remain unanswered. In these cases a tutor shall get informed about the unanswered question, so that he/she can assist.';
+$string['setting_tutorrole_shortname'] = 'Shortname of tutor role';
+$string['configtutorrole_shortname'] = 'Please insert the shortname of the role that your system uses for tutors here.';
