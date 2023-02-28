@@ -108,7 +108,6 @@ $string['group_created'] = 'Your group was created successfully';
 $string['listgroups'] = 'Group list';
 $string['learninggroups'] = 'Learning groups';
 $string['loading'] = 'Loading';
-$string['loading'] = 'Loading';
 $string['reply'] = 'Reply';
 $string['attachment'] = 'Attachment';
 $string['attachment_help'] = 'You can optionally attach one or more files to a forum post. If you attach an image, it will be displayed after the message.';
@@ -131,6 +130,7 @@ $string['issupermentor'] = 'Super mentor';
 $string['not_question_owner'] = 'You are not the owner of this question. You are not allowed to close it.';
 $string['question_closed'] = 'Question closed';
 $string['close_question'] = 'Mark question as solved';
+$string['questionnotfound'] = 'Question not found';
 
 // Group
 $string['findgroup'] = 'Find group';
@@ -165,6 +165,7 @@ $string['group_request_not_possible'] = 'Request to joining the group is not pos
 $string['group_edit_not_allowed'] = 'You don\'t have permission to edit this group.';
 $string['group_edited'] = 'Group edited successfully.';
 $string['modal-groupdetails-leavetitle'] = 'Leave group';
+$string['groupnotfound'] = 'Group not found.';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';
