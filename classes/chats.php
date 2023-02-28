@@ -1,6 +1,8 @@
 <?php
 namespace local_learningcompanions;
 
+use core\antivirus\scanner;
+
 class chats {
     const CHAT_TYPE_MENTOR = 0;
     const CHAT_TYPE_GROUP = 1;
@@ -151,12 +153,14 @@ class chats {
         // ICTODO: make sure that the user doesn't exceed the chat's total limit for file uploads
         $chatMaxUploadExceeded = self::check_uploadsize_total_exceeded($comment, $formdata);
         if ($chatMaxUploadExceeded) {
-            return false;
+            return false; // ICTODO return an error message instead
         }
+
         file_save_draft_area_files($comment->attachments, $context->id, 'local_learningcompanions', 'attachments', $comment->id,
             \local_learningcompanions\chat_post_form::attachment_options());
         return true;
     }
+
 
     /**
      * checks if the maximum of bytes for uploaded attachments gets exceeded with the new comment
