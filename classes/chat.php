@@ -54,6 +54,19 @@ class chat {
         return $new_chat;
     }
 
+    /**
+     * @param $chatid
+     * @return chat
+     * @throws \dml_exception
+     */
+    public static function get_chat_by_id($chatid) {
+        global $DB;
+        $chat = new self();
+        $chat->chat = $DB->get_record('lc_chat', ['id' => $chatid], '*', MUST_EXIST);
+        $chat->chatid = $chatid;
+        return $chat;
+    }
+
 
     private function get_language_strings(): string {
         $stringKeys = [

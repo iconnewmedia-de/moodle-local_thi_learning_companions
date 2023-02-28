@@ -1,7 +1,7 @@
 <?php
 function local_learningcompanions_extend_settings_navigation() {
     global $PAGE;
-    return; // ICUNDO
+//    return; // ICUNDO
     if (!isloggedin()){
         return;
     }

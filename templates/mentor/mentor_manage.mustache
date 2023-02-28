@@ -2,20 +2,29 @@
     <div class="mb-5">
         <h2>{{#str}}my_mentorships, local_learningcompanions{{/str}}</h2>
         <h3>{{#str}}your_mentorship_qualifications, local_learningcompanions{{/str}}</h3>
+        <div class="container mt-5">
         {{^qualifications}}
         <span>{{#str}}no_mentorship_qualifications, local_learningcompanions{{/str}}</span>
         {{/qualifications}}
         {{#qualifications}}
-        <span>{{name}} <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/manage.php?action=acceptmentorship&topic={{name_urlencoded}}">{{#str}}become_mentor, local_learningcompanions{{/str}}</a></span>
+
+            <div class="row border-bottom py-4">
+                <div class="col col-xl-4"><strong>{{name}}</strong></div>
+                <div class="col col-xl-8"><a class="btn btn-primary" href="{{cfg.wwwroot}}/local/learningcompanions/mentor/manage.php?action=acceptmentorship&topic={{name_urlencoded}}">{{#str}}become_mentor, local_learningcompanions{{/str}}</a></div>
+            </div>
         {{/qualifications}}
     </div>
     {{#hasmentorships}}
     <div>
         <hr>
         <h3 class="mt-3">{{#str}}your_mentorships, local_learningcompanions{{/str}}</h3>
+        <div class="container mt-5">
         {{#mentorships}}
-        <span>{{name}}</span>
+            <div class="row border-bottom py-4">
+                <div class="col"><strong>{{name}}</strong></div>
+            </div>
         {{/mentorships}}
+        </div>
     </div>
     {{/hasmentorships}}
 </div>

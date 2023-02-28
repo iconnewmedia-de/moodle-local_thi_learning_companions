@@ -101,6 +101,22 @@ class mentors {
     }
 
     /**
+     * returns an array with all badge names that are available within a given set of mentors
+     * @param $mentors
+     * @return array
+     */
+    public static function get_selectable_badgetypes($mentors) {
+        $uniqueBadgeNames = [];
+        foreach($mentors as $mentor) {
+            foreach($mentor->badges as $badge) {
+                $uniqueBadgeNames[] = $badge->name;
+            }
+        }
+        $uniqueBadgeNames = array_unique($uniqueBadgeNames);
+        return $uniqueBadgeNames;
+    }
+
+    /**
      * @param $userid
      * @param $topic
      * @return bool
@@ -355,6 +371,15 @@ class mentors {
         }
         $mentorTopics = $DB->get_records('lc_mentors', array('userid' => $userid), '', 'topic');
         $topics = array_keys($mentorTopics);
+        return $topics;
+    }
+
+    public static function get_mentorship_topics_of_mentors($mentors) {
+        $topics = [];
+        foreach($mentors as $mentor) {
+            $topics = array_merge($topics, self::get_mentorship_topics($mentor->userid));
+        }
+        $topics = array_unique($topics);
         return $topics;
     }
 

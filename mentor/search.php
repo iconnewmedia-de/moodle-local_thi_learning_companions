@@ -18,13 +18,15 @@ $PAGE->navbar->add(get_string('navbar_findmentors', 'local_learningcompanions'),
 
 $mentors = \local_learningcompanions\mentors::get_mentors(null, false, true);
 $hasmentors = count($mentors) > 0;
-
+$availableBadges = \local_learningcompanions\mentors::get_selectable_badgetypes($mentors);
+$topics = \local_learningcompanions\mentors::get_mentorship_topics_of_mentors($mentors);
+$topics = array_values($topics);
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_search', array(
     'cfg' => $CFG,
     'mentors' => array_values($mentors),
     'hasmentors' => $hasmentors,
-    'badges' => ['Badges', 'Expert', 'Tutor', '100% Completed'], //ICTODO: Get the correct Badges, when they are implemented
-    'topics' => \local_learningcompanions\groups::get_all_keywords(),
+    'badges' => $availableBadges,
+    'topics' => $topics,
 ));
 echo $OUTPUT->footer();

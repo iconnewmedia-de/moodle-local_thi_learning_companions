@@ -3,7 +3,6 @@
 namespace local_learningcompanions;
 
 use local_learningcompanions\forms\create_edit_group_form;
-use Matrix\Exception;
 
 class groups {
     const CHATTYPE_MENTOR = 0;
@@ -483,6 +482,12 @@ class groups {
         return $requests;
     }
 
+    /**
+     * @param $groupId
+     * @param $userId
+     * @return bool|int
+     * @throws \dml_exception
+     */
     protected static function add_group_join_request($groupId, $userId) {
         global $DB;
         $record = new \stdClass();
@@ -492,6 +497,11 @@ class groups {
         return $DB->insert_record('lc_group_requests', $record);
     }
 
+    /**
+     * @param $requestId
+     * @return void
+     * @throws \dml_exception
+     */
     public static function accept_group_join_request($requestId) {
         global $DB;
 
@@ -504,6 +514,11 @@ class groups {
         messages::send_group_join_accepted_notification($request->userid, $request->groupid);
     }
 
+    /**
+     * @param $requestId
+     * @return void
+     * @throws \dml_exception
+     */
     public static function deny_group_join_request($requestId) {
         global $DB;
         $request = $DB->get_record('lc_group_requests', ['id' => $requestId]);
@@ -529,9 +544,19 @@ class groups {
         return self::group_add_member($groupId, $userId);
     }
 
+    /**
+     * @param int $groupId
+     * @return void
+     * @throws \dml_exception
+     * @throws \dml_transaction_exception
+     */
     public static function delete_group(int $groupId) {
         global $DB;
         $transaction = $DB->start_delegated_transaction();
+        //Get Chat ID
+        $chatId = $DB->get_field('lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]);
+        // Delete file attachments
+        self::delete_attachments_of_chat($chatId);
         // Delete the group members
         $DB->delete_records('lc_group_members', ['groupid' => $groupId]);
         // Delete the group requests
@@ -540,8 +565,6 @@ class groups {
         $DB->delete_records('lc_groups_keywords', ['groupid' => $groupId]);
         // Delete the group
         $DB->delete_records('lc_groups', ['id' => $groupId]);
-        //Get Chat ID
-        $chatId = $DB->get_field('lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]);
         //Delete Chat
         $DB->delete_records('lc_chat', ['id' => $chatId]);
         //Delete Chat Messages
@@ -549,6 +572,31 @@ class groups {
         $transaction->allow_commit();
     }
 
+    /**
+     * deletes all the files that were uploaded to comments of a chat
+     * @param int $chatid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_attachments_of_chat($chatid) {
+        global $DB;
+        //Delete Chat Messages
+        $comments = $DB->get_records('lc_chat_comment', ['chatid' => $chatid]);
+        $fs = new \file_storage();
+        $context = \context_system::instance();
+        foreach($comments as $comment) {
+            foreach($comment->attachments as $attachment) {
+                $fs->delete_area_files($context->id,'local_learningcompanions', 'message', $comment->id);
+                $fs->delete_area_files($context->id,'local_learningcompanions', 'attachments', $comment->id);
+            }
+        }
+    }
+
+    /**
+     * @param $groupid
+     * @return int
+     * @throws \dml_exception
+     */
     public static function count_comments_since_last_visit($groupid) {
         global $DB, $USER;
         $chatId = $DB->get_field('lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
