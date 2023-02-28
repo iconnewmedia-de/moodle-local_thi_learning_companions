@@ -1,6 +1,7 @@
 <?php
-require_once '../../../config.php';
-require_once '../lib.php';
+
+require_once dirname(__DIR__,3).'/config.php';
+require_once dirname(__DIR__).'/lib.php';
 
 $context = context_system::instance();
 //require_capability( 'local/learningcompanions:mentor_search', $context);
@@ -21,6 +22,7 @@ $hasmentors = count($mentors) > 0;
 $availableBadges = \local_learningcompanions\mentors::get_selectable_badgetypes($mentors);
 $topics = \local_learningcompanions\mentors::get_mentorship_topics_of_mentors($mentors);
 $topics = array_values($topics);
+
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_search', array(
     'cfg' => $CFG,

@@ -2,8 +2,8 @@
 
 use local_learningcompanions\mentors;
 
-require_once '../../../config.php';
-require_once '../lib.php';
+require_once dirname(__DIR__, 3).'/config.php';
+require_once dirname(__DIR__).'/lib.php';
 
 require_login();
 
@@ -20,8 +20,7 @@ $PAGE->navbar->add(get_string('navbar_mentors', 'local_learningcompanions'));
 $PAGE->navbar->add(get_string('navbar_mentorquestions', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/mentor/index.php'));
 
 $mentortopics = mentors::get_all_mentor_keywords($USER->id, true);
-
-$askedquestions = mentors::get_my_asked_questions($USER->id, true);
+$askedquestions = mentors::get_my_asked_questions($USER->id);
 $mymentorquestions = mentors::get_mentor_questions_by_user_id($USER->id);
 $allmentorquestions = mentors::get_mentor_questions_by_topics($mentortopics);
 $learningNuggetComments = mentors::get_learning_nugget_comments();

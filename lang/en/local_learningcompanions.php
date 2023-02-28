@@ -131,6 +131,7 @@ $string['not_question_owner'] = 'You are not the owner of this question. You are
 $string['question_closed'] = 'Question closed';
 $string['close_question'] = 'Mark question as solved';
 $string['questionnotfound'] = 'Question not found';
+$string['manage_mentorships'] = 'Manage mentorships';
 
 // Group
 $string['findgroup'] = 'Find group';

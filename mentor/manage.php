@@ -12,6 +12,7 @@ require_login();
 $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot . '/local/learningcompanions/mentor/manage.php');
 $PAGE->set_pagelayout('standard');
+$PAGE->set_title(get_string('manage_mentorships', 'local_learningcompanions'));
 $PAGE->requires->js_call_amd('local_learningcompanions/mentor', 'init');
 $PAGE->requires->css('/local/learningcompanions/js_lib/DataTables/datatables.min.css');
 $PAGE->requires->css('/local/learningcompanions/js_lib/balloon.css');

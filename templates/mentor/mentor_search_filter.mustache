@@ -1,9 +1,9 @@
 <form class="local_learningcompanions_mentor_search_filter">
-    <div class="align-items-center mb-3" style="gap: 1em;">
+    <div class="d-flex align-items-center mb-3" style="gap: 1em;">
         <label for="topic-search">
             <select data-placeholder="{{#str}}filter_all_topics, local_learningcompanions{{/str}}"
                     data-target="topics" multiple class="js-mentor-filter js-mentor-filter--includes select2"
-                    name="topics" id="topic-search">
+                    name="topics" id="topic-search" style="min-width: 100px;">
                 {{#topics}}
                     <option value="{{.}}">{{.}}</option>
                 {{/topics}}
@@ -18,7 +18,7 @@
         <label for="badge-search">
             <select data-placeholder="{{#str}}filter_badges, local_learningcompanions{{/str}}"
                     data-target="badges" multiple class="js-mentor-filter js-mentor-filter--includes select2"
-                    name="badges" id="badge-search">
+                    name="badges" id="badge-search" style="min-width: 100px;">
                 {{#badges}}
                     <option value="{{.}}">{{.}}</option>
                 {{/badges}}
