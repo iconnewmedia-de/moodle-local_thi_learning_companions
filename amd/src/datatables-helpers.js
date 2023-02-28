@@ -1,8 +1,6 @@
 /* eslint-disable jsdoc/require-param-type, valid-jsdoc */
 import $ from 'jquery';
-// import 'local_learningcompanions/jquery.dataTables';
 import 'local_learningcompanions/datatables';
-
 
 /**
  * Adds a default "value is included in the column" search to the datatables search.
@@ -216,9 +214,6 @@ const getTargetColumnIndexes = (settings, element) => {
         return [targetData];
     }
 
-    // eslint-disable-next-line no-console
-    console.log(targetData);
-
     //Split it, so we can support multiple classes.
     const targetArray = targetData.split(',');
 
@@ -239,7 +234,5 @@ export const makeTablesFullWidth = function () {
         // make page and table full width
         document.querySelector('body').classList.add('hasDatatable');
         $('.dataTable').css('width', '');
-    } else {
-        // console.log('no datatables found'); // ICTODO: remove me
     }
 };
