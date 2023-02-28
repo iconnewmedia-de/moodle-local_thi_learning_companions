@@ -371,6 +371,10 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
     margin-left: 16px;
 }
 
+.ask-new-question-wrapper {
+    column-gap: 1em;
+}
+
 #page-local-learningcompanions-mentor-question .chat-post-form {
     position: relative;
 }

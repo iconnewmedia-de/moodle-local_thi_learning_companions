@@ -20,36 +20,31 @@
                     </span>
                 </td>
                 <td>
-                    {{#answercount}}
-                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{answercount}}</a>
-                    {{/answercount}}
-                    {{^answercount}}
+                    {{#get_answer_count}}
+                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
+                    {{/get_answer_count}}
+                    {{^get_answer_count}}
                         0
-                    {{/answercount}}
+                    {{/get_answer_count}}
                 </td>
                 <td>
-                    {{#dateclosed}}
-                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+                    {{#is_closed}}
+                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
-                    {{/dateclosed}}
-                    {{^dateclosed}}
+                    {{/is_closed}}
+                    {{^is_closed}}
                         <i class="fa fa-rotate-right"></i>
-                    {{/dateclosed}}
+                    {{/is_closed}}
+                </td>
+                <td data-order="{{get_last_activity}}">
+                    {{get_last_activity_dmy}}
+                </td>
+                <td data-order="{{timecreated}}">
+                    {{get_timecreated_dmy}}
                 </td>
                 <td>
-                    {{#lastactivity}}
-                        {{lastactivity}}
-                    {{/lastactivity}}
-                    {{^lastactivity}}
-                        {{dateasked}}
-                    {{/lastactivity}}
-                </td>
-                <td>
-                    {{dateasked}}
-                </td>
-                <td>
-                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="left">
                         <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
                     </span>
                 </td>
@@ -79,43 +74,38 @@
     {{#questionstoallmentors}}
     <tr>
         <td>
-                    <span data-balloon="{{question}}" data-balloon-pos="right">
-                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
-                    </span>
+            <span data-balloon="{{question}}" data-balloon-pos="right">
+               <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
+            </span>
         </td>
         <td>
-            {{#answercount}}
-            <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{answercount}}</a>
-            {{/answercount}}
-            {{^answercount}}
+            {{#get_answer_count}}
+            <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
+            {{/get_answer_count}}
+            {{^get_answer_count}}
             0
-            {{/answercount}}
+            {{/get_answer_count}}
         </td>
         <td>
-            {{#dateclosed}}
-            <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{dateclosed}}{{/str}}" data-balloon-pos="up">
+            {{#is_closed}}
+                <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
-            {{/dateclosed}}
-            {{^dateclosed}}
-            <i class="fa fa-rotate-right"></i>
-            {{/dateclosed}}
+            {{/is_closed}}
+            {{^is_closed}}
+                <i class="fa fa-rotate-right"></i>
+            {{/is_closed}}
+        </td>
+        <td data-order="{{get_last_activity}}">
+            {{get_last_activity_dmy}}
+        </td>
+        <td data-order="{{timecreated}}">
+            {{get_timecreated_dmy}}
         </td>
         <td>
-            {{#lastactivity}}
-            {{lastactivity}}
-            {{/lastactivity}}
-            {{^lastactivity}}
-            {{dateasked}}
-            {{/lastactivity}}
-        </td>
-        <td>
-            {{dateasked}}
-        </td>
-        <td>
-                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="up">
-                        <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
-                    </span>
+            <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="left">
+                <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
+            </span>
         </td>
     </tr>
     {{/questionstoallmentors}}
@@ -132,7 +122,7 @@
         <div class="lc_comment">
             <p class="lc_comment_content"><strong>{{content}}</a></strong></p>
             <p class="lc_comment_path">{{#str}}learning_nugget, local_learningcompanions{{/str}}: <a href="{{cfg.wwwroot}}/course/view.php?id={{courseid}}">{{coursefullname}}</a> &gt; <a href="{{cfg.wwwroot}}/mod/{{modulename}}/view.php?id={{cmid}}">{{nuggettitle}}</a></p>
-            <p class="lc_comment_author-info">{{#str}}comment_from, local_learningcompanions{{/str}} <a href="{{cfg.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_learningcompanions{{/str}} {{#userdate}}{{timecreated}}}{{/userdate}}</p>
+            <p class="lc_comment_author-info">{{#str}}comment_from, local_learningcompanions{{/str}} <a href="{{cfg.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_learningcompanions{{/str}} {{#userdate}}{{timecreated}}{{/userdate}}</p>
             <hr>
         </div>
     {{/latestcomments}}
