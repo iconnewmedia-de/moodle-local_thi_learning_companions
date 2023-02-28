@@ -1,8 +1,6 @@
 <?php
 namespace local_learningcompanions;
 
-use core\antivirus\scanner;
-
 class chats {
     const CHAT_TYPE_MENTOR = 0;
     const CHAT_TYPE_GROUP = 1;

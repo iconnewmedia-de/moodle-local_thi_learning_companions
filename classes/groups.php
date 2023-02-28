@@ -3,7 +3,6 @@
 namespace local_learningcompanions;
 
 use local_learningcompanions\forms\create_edit_group_form;
-use Matrix\Exception;
 
 class groups {
     const CHATTYPE_MENTOR = 0;
