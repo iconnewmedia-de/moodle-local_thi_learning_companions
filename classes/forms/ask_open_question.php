@@ -12,7 +12,7 @@ class ask_open_question extends \moodleform {
     protected function definition() {
         $mform = $this->_form;
 
-        $mform->addElement('static', 'description', get_string('ask_open_question_description', 'local_learningcompanions'));
+        $mform->addElement('html', get_string('ask_open_question_description', 'local_learningcompanions'));
         $this->addTopic();
         $this->addSubject();
         $this->addQuestion();

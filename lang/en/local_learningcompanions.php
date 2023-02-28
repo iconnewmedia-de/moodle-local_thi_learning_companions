@@ -94,9 +94,11 @@ $string['actions'] = 'Actions';
 $string['lastactivity'] = 'Last activity';
 $string['questiondate'] = 'Question date';
 $string['noquestionsfound'] = 'No questions found.';
-$string['asknewquestion'] = 'Ask new question';
+$string['ask_new_question'] = 'Ask new question';
+$string['ask_new_open_question'] = 'Ask new open question';
 $string['ask_open_question'] = 'Submit question to all mentors';
-$string['ask_open_question_description'] = 'All mentors who`re qualified for the selected topic will be able to reply to the question';
+$string['search_mentor'] = 'Search mentor';
+$string['ask_open_question_description'] = '<p>All mentors who`re qualified for the selected topic will be able to reply to the question</p>';
 $string['ask_question'] = 'Submit question';
 $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
@@ -105,7 +107,6 @@ $string['configcommentactivities'] = 'Comma-separated whitelist of activities th
 $string['group_created'] = 'Your group was created successfully';
 $string['listgroups'] = 'Group list';
 $string['learninggroups'] = 'Learning groups';
-$string['loading'] = 'Loading';
 $string['loading'] = 'Loading';
 $string['reply'] = 'Reply';
 $string['attachment'] = 'Attachment';
@@ -129,6 +130,7 @@ $string['issupermentor'] = 'Super mentor';
 $string['not_question_owner'] = 'You are not the owner of this question. You are not allowed to close it.';
 $string['question_closed'] = 'Question closed';
 $string['close_question'] = 'Mark question as solved';
+$string['questionnotfound'] = 'Question not found';
 
 // Group
 $string['findgroup'] = 'Find group';
@@ -162,6 +164,8 @@ $string['group_join_not_possible'] = 'Joining the group is not possible now.';
 $string['group_request_not_possible'] = 'Request to joining the group is not possible now.';
 $string['group_edit_not_allowed'] = 'You don\'t have permission to edit this group.';
 $string['group_edited'] = 'Group edited successfully.';
+$string['modal-groupdetails-leavetitle'] = 'Leave group';
+$string['groupnotfound'] = 'Group not found.';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';
@@ -213,7 +217,7 @@ $string['join_group_link_text'] = 'Join group';
 $string['group_invite_title'] = 'Invite User to group';
 $string['no_open_requests'] = 'There are currently no open requests.';
 $string['process_requests'] = 'Process requests';
-$string['last_user_leaves_closed_group_description'] = 'You are trying to leave a closed group. If you leave the group, the group will be deleted. This can not be undone.';
+$string['last_user_leaves_closed_group_description'] = '<p>You are trying to leave a closed group. If you leave the group, the group will be deleted. This can not be undone.</p>';
 $string['leave_group'] = 'Leave group';
 $string['assign_new_admin_while_leaving_description'] = 'You are the last admin of this group. If you leave the group, you have to assign a new admin.';
 $string['choose_new_admin'] = 'Choose a new admin. The default is the last active member.';

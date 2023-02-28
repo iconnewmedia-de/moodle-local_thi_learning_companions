@@ -11,9 +11,13 @@ class chat {
     public static function createGroupChat($groupid): self {
         global $DB;
 
+        if (!$DB->record_exists('lc_groups', ['id' => $groupid])) {
+            throw new \moodle_exception('groupnotfound', 'local_learningcompanions');
+        }
+
         $new_chat = new self();
         $new_chat->groupid = $groupid;
-        $new_chat->chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => 1]);
+        $new_chat->chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
         if ($groupid) {
             if (!$new_chat->chat) {
                 $chat = new \stdClass();
@@ -34,6 +38,10 @@ class chat {
 
     public static function createQuestionChat($questionid): self {
         global $DB;
+
+        if (!$DB->record_exists('lc_questions', ['id' => $questionid])) {
+            throw new \moodle_exception('questionnotfound', 'local_learningcompanions');
+        }
 
         $new_chat = new self();
         $new_chat->context = \context_system::instance();
