@@ -275,3 +275,20 @@ $string['setting_inform_tutors_about_unanswered_questions_after_x_days'] = 'Info
 $string['configinform_tutors_about_unanswered_questions_after_x_days'] = 'Sometimes when users ask a question to mentors, these might remain unanswered. In these cases a tutor shall get informed about the unanswered question, so that he/she can assist.';
 $string['setting_tutorrole_shortname'] = 'Shortname of tutor role';
 $string['configtutorrole_shortname'] = 'Please insert the shortname of the role that your system uses for tutors here.';
+$string['message_unanswered_question_subject'] = 'Unanswered question by {$a->askedby_firstname} {$a->askedby_lastname} from {$a->dateasked}';
+$string['message_unanswered_question_body'] = 'Dear {$a->user_firstname} {$a->user_lastname}
+
+A question by  {$a->askedby_firstname} {$a->askedby_lastname} has remained unanswered since it was asked on {$a->dateasked}:
+
+Topic: {$a->topic}
+Subject: {$a->title}
+Question: {$a->question}
+
+____________________________
+
+Could you please assist and help the user?
+
+Kind regards
+Your automatic \'{$a->sitename}\' system notifier';
+$string['message_unanswered_question_smallmessage'] = 'Unanswered question pending';
+$string['crontask'] = 'Regular tasks for Learningcompanions';

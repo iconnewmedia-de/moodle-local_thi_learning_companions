@@ -17,7 +17,7 @@
 /**
  * Definition of scheduled tasks.
  *
- * @package   local_learingcompanions
+ * @package   local_learningcompanions
  * @category  task
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,9 +26,9 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = array(
     array(
-        'classname' => 'local_learingcompanions\task\cron_task',
+        'classname' => 'local_learningcompanions\task\cron_task',
         'blocking' => 0,
-        'minute' => '*',
+        'minute' => '0',
         'hour' => '*',
         'day' => '*',
         'month' => '*',

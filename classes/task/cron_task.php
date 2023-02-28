@@ -48,13 +48,12 @@ class cron_task extends \core\task\scheduled_task {
      * Execute the scheduled task.
      */
     public function execute() {
-        global $CFG, $DB;
         $this->send_unanswered_questions_to_tutor();
     }
 
-    protected static function send_unanswered_questions_to_tutor() {
+    protected function send_unanswered_questions_to_tutor() {
         global $DB;
-        $unansweredQuestions = self::get_unanswered_questions();
+        $unansweredQuestions = $this->get_unanswered_questions();
         if (empty($unansweredQuestions)) {
             return;
         }
@@ -76,16 +75,20 @@ class cron_task extends \core\task\scheduled_task {
                   JOIN {user} u ON u.id = r.userid
                   JOIN {user_enrolments} ue ON ue.userid = u.id
                   JOIN {enrol} e ON e.id = ue.enrolid
-                  JOIN {customfield_data} cd ON cd.courseid = e.courseid
-                  JOIN {customfield_field} cf ON cf.id = cd.fieldid
+                  JOIN {context} ctx ON ctx.instanceid = e.courseid AND ctx.contextlevel = '" . CONTEXT_COURSE . "'
+                  JOIN {customfield_data} cd ON cd.contextid = ctx.id
+                  JOIN {customfield_field} cf ON cf.id = cd.fieldid AND cf.shortname = 'topic'
                   WHERE r.roleid = ?
                     AND u.deleted = 0
-                    AND cd.value = ?
-                    AND cf.shortname = 'topic'",
+                    AND cd.value = ?",
                 array($tutorRoleID, $question->topic)
             );
             foreach($tutors as $tutor) {
-                \local_learningcompanions\messages::send_tutor_unanswered_question_message($tutor, $question);
+               $success =  \local_learningcompanions\messages::send_tutor_unanswered_question_message($tutor, $question);
+               if ($success) {
+                   $DB->insert_record('lc_tutor_notifications',
+                       array('questionid' => $question->id, 'tutorid' => $tutor->id, 'timecreated' => time()));
+               }
             }
         }
     }
@@ -98,7 +101,7 @@ class cron_task extends \core\task\scheduled_task {
         $unanswered = $DB->get_records_sql("SELECT q.*
             FROM {lc_mentor_questions} q
             LEFT JOIN {lc_chat} c ON c.relatedid = q.id AND c.chattype = '" . groups::CHATTYPE_MENTOR . "'
-            LEFT JOIN {lc_chat_comments} cmnt ON cmnt.chatid = c.id
+            LEFT JOIN {lc_chat_comment} cmnt ON cmnt.chatid = c.id
             LEFT JOIN {lc_tutor_notifications} n ON n.questionid = q.id
             WHERE q.timecreated < ?
             AND cmnt.id IS NULL
