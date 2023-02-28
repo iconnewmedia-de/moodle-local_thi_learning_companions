@@ -162,6 +162,7 @@ $string['group_join_not_possible'] = 'Joining the group is not possible now.';
 $string['group_request_not_possible'] = 'Request to joining the group is not possible now.';
 $string['group_edit_not_allowed'] = 'You don\'t have permission to edit this group.';
 $string['group_edited'] = 'Group edited successfully.';
+$string['modal-groupdetails-leavetitle'] = 'Leave group';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';
@@ -212,7 +213,7 @@ $string['join_group_link_text'] = 'Join group';
 $string['group_invite_title'] = 'Invite User to group';
 $string['no_open_requests'] = 'There are currently no open requests.';
 $string['process_requests'] = 'Process requests';
-$string['last_user_leaves_closed_group_description'] = 'You are trying to leave a closed group. If you leave the group, the group will be deleted. This can not be undone.';
+$string['last_user_leaves_closed_group_description'] = '<p>You are trying to leave a closed group. If you leave the group, the group will be deleted. This can not be undone.</p>';
 $string['leave_group'] = 'Leave group';
 $string['assign_new_admin_while_leaving_description'] = 'You are the last admin of this group. If you leave the group, you have to assign a new admin.';
 $string['choose_new_admin'] = 'Choose a new admin. The default is the last active member.';

@@ -15,7 +15,7 @@ class last_user_leaves_closed_group_form extends \core_form\dynamic_form {
         $mform = $this->_form;
 
         $mform->addElement('hidden', 'groupId', $this->_ajaxformdata['groupId']);
-        $mform->addElement('static', 'description', get_string('last_user_leaves_closed_group_description', 'local_learningcompanions'));
+        $mform->addElement('html', get_string('last_user_leaves_closed_group_description', 'local_learningcompanions'));
         $this->add_action_buttons(true, get_string('leave_group', 'local_learningcompanions'));
     }
 
