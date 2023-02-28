@@ -388,3 +388,12 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 #page-local-learningcompanions-mentor-mentor_questions_overview .dataTables_wrapper {
     overflow: hidden;
 }
+.local_learningcompanions_mentor_keywordsearch {
+    vertical-align: bottom;
+}
+.local_learningcompanions_mentor_keywordsearch input {
+    border-radius: 4px !important;
+}
+.local_learningcompanions_mentor_search_filter label {
+    vertical-align: bottom;
+}

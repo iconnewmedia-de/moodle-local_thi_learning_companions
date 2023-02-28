@@ -182,6 +182,7 @@ $string['filter_closed_status'] = 'Closed groups';
 $string['filter_members_count'] = 'Count members';
 $string['filter_all_topics'] = 'All topics';
 $string['filter_keywords_placeholder'] = 'Group designation';
+$string['filter_mentor_keywords_placeholder'] = 'Name/Keywords';
 $string['filter_badges'] = 'Badge';
 $string['filter_super_mentor'] = 'Super mentor';
 

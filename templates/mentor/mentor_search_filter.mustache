@@ -1,5 +1,5 @@
-<form>
-    <div class="d-flex align-items-center mb-3" style="gap: 1em;">
+<form class="local_learningcompanions_mentor_search_filter">
+    <div class="align-items-center mb-3" style="gap: 1em;">
         <label for="topic-search">
             <select data-placeholder="{{#str}}filter_all_topics, local_learningcompanions{{/str}}"
                     data-target="topics" multiple class="js-mentor-filter js-mentor-filter--includes select2"
@@ -10,9 +10,9 @@
             </select>
         </label>
 
-        <label class="flex-grow-1">
-            <input data-target="name" class="js-mentor-filter js-mentor-filter--search w-100" name="keyword" type="text"
-                   placeholder="{{#str}}filter_keywords_placeholder, local_learningcompanions{{/str}}">
+        <label class="flex-grow-1 local_learningcompanions_mentor_keywordsearch">
+            <input data-target="name" class="form-control js-mentor-filter js-mentor-filter--search w-100" name="keyword" type="text"
+                   placeholder="{{#str}}filter_mentor_keywords_placeholder, local_learningcompanions{{/str}}">
         </label>
 
         <label for="badge-search">
