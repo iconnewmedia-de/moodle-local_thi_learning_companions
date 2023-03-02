@@ -149,6 +149,11 @@ class chat {
     public function get_posts_for_chat(int $firstPostId = null, int $includedPostId = 0) {
         global $DB;
 
+        //If the user is not allowed to see the chat, return an empty array
+        if (!$this->can_view_chat()) {
+            return [];
+        }
+
         $stepSize = 5;
 
         if (is_null($firstPostId)) {
@@ -371,6 +376,34 @@ class chat {
         $sql .= ' ORDER BY cc.timecreated DESC LIMIT 1;';
 
         return $DB->get_field_sql($sql, $params);
+    }
+
+    private function can_view_chat(): bool {
+        global $USER;
+
+        //Admins can see all chats
+        if (has_capability('local/learningcompanions:group_manage', \context_system::instance())) {
+            return true;
+        }
+
+        //If it´s a group chat, the user has to be a member, or the group must be public
+        if ((int)$this->chat->chattype === groups::CHATTYPE_GROUP) {
+            $group = groups::get_group_by_id($this->chat->relatedid);
+            if ($group->is_user_member($USER->id)) {
+                return true;
+            }
+            if (!$group->closedgroup) {
+                return true;
+            }
+            return false;
+        }
+
+        //If it´s a question chat, the user has to be a mentor, or the question creator
+        if ((int)$this->chat->chattype === groups::CHATTYPE_MENTOR) {
+            return question::get_question_by_id($this->chat->relatedid)->can_user_view($USER->id);
+        }
+
+        return false;
     }
 
 }

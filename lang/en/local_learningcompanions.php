@@ -167,6 +167,7 @@ $string['group_edit_not_allowed'] = 'You don\'t have permission to edit this gro
 $string['group_edited'] = 'Group edited successfully.';
 $string['modal-groupdetails-leavetitle'] = 'Leave group';
 $string['groupnotfound'] = 'Group not found.';
+$string['group_closed'] = 'Closed group';
 
 // Navigation
 $string['lcadministration_comments'] = 'Tagged comments';

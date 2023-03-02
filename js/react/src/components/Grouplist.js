@@ -25,13 +25,9 @@ export default function Grouplist({activeGroupid}) {
     useEffect(() => {
         const group = groups.find(group => +group.id === +activeGroupId);
         const chatid = group?.chatid;
-        // console.log('window.learningcompanions_questionid:', window.learningcompanions_questionid);
-        // console.log('group:', group);
-        // console.log('(!window.learningcompanions_questionid && group):', (!window.learningcompanions_questionid && group));
-        const isPreviewGroup = (!window.learningcompanions_questionid && group)?group.isPreviewGroup:false;
+        const isPreviewGroup = (!window.learningcompanions_questionid && group) ? group.isPreviewGroup : false;
 
         useSetChatInput(isPreviewGroup, chatid);
-        // console.log(`setting active group id to: ${activeGroupId} and chatid to: ${chatid}`);
     }, [activeGroupId, groups]);
 
     function handleGroupSelect(groupid) {
@@ -86,6 +82,8 @@ export default function Grouplist({activeGroupid}) {
     }, []);
 
     const chatPlaceholder = document.getElementById('learningcompanions_chat-content');
+
+    const group = groups.find(group => +group?.id === +activeGroupId);
     return (
         <>
             <div id="learningcompanions_chat-grouplist">
@@ -95,7 +93,7 @@ export default function Grouplist({activeGroupid}) {
                 ))}
                 {groups.length === 0 && !isLoading && <p>No groups found</p>}
             </div>
-            {ReactDOM.createPortal(<Postlist activeGroupid={activeGroupId} group={groups.find(group => +group?.id === +activeGroupid)}/>, chatPlaceholder)}
+            {ReactDOM.createPortal(<Postlist activeGroupid={activeGroupId} group={group}/>, chatPlaceholder)}
         </>
     );
 };

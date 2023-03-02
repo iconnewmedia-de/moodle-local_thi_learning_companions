@@ -96,6 +96,29 @@ class question {
         return $questions;
     }
 
+    public function can_user_view(int $userId): bool {
+        global $DB;
+
+        //If it´s the user who asked the question, they can view it.
+        if ($this->askedby === $userId) {
+            return true;
+        }
+
+        //If its the user who is the mentor, they can view it.
+        if ($this->mentorid === $userId) {
+            return true;
+        }
+
+        //If a mentor is assigned, and the user does not match from the previous checks, they cannot view it.
+        if ($this->mentorid) {
+            return false;
+        }
+
+        //There is no mentor assigned, so we need to check the topics
+        $mentorTopics = $DB->get_records_menu('lc_mentors', ['userid' => $userId], '', 'topic');
+        return in_array($this->topic, $mentorTopics, true);
+    }
+
     /**
      * @param int $userid
      *

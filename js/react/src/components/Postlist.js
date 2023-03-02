@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 import {useState, useEffect, useCallback} from "react";
 import Posts from "./Posts";
-import GroupHeader from "./GroupHeader";
-import QuestionHeader from "./QuestionHeader";
 import LoadingIndicator from "./LoadingIndicator";
 import eventBus from "../helpers/EventBus";
+import Header from "./Header";
 
 export default function Postlist({activeGroupid, group, questionid}) {
     const [posts, setPosts] = useState([]);
@@ -14,12 +13,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
 
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
-    // const group = groups.find(group => +group?.id === +activeGroupid);
     const isInPreviewMode = (!questionid && group)?group.isPreviewGroup:false;
-    // console.log('questionid:', questionid);
-    // console.log('group:', group);
-    // console.log('group?.isPreviewGroup:', group?.isPreviewGroup);
-    // console.log('isInPreviewMode:', isInPreviewMode);
     let updateRunning = false;
 
     useEffect(() => {
@@ -185,28 +179,10 @@ export default function Postlist({activeGroupid, group, questionid}) {
             getMorePosts();
         }
     };
-    var header;
-    const getHeader = () => {
-        if (questionid) {
-            // console.log('we have a question id, make a question header. Question ID: ', questionid);
-            header = (
-                <QuestionHeader questionid={questionid}/>
-            );
-        } else {
-            // console.log('no question id, make a group header. Group: ', group);
-            header = (
-                <GroupHeader group={group}/>
-            );
-        }
-    };
-    useEffect(getHeader, [group, questionid]);
-    getHeader();
 
     return (
         <div id="learningcompanions_chat-postlist">
-            {/*<QuestionHeader questionid={questionid}/>*/}
-            {header}
-            {isInPreviewMode && <span>Is Preview</span>}
+            <Header group={group} questionid={questionid} />
             {isLoading && <LoadingIndicator/>}
             {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} questionid={questionid} />}
         </div>
