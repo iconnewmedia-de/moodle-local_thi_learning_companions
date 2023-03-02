@@ -5,8 +5,8 @@
         <table class="stripe hover compact" id="allgroupstable" data-paging="true" data-page-length="50">
             <thead>
                 <tr>
-                    <th class="topic">{{#str}}topic, local_learningcompanions{{/str}}</th>
                     <th class="course">{{#str}}course, local_learningcompanions{{/str}}</th>
+                    <th class="topic">{{#str}}topic, local_learningcompanions{{/str}}</th>
                     <th class="name">{{#str}}name, local_learningcompanions{{/str}}</th>
                     <th class="join">{{#str}}join, local_learningcompanions{{/str}}</th>
                     <th class="member-count">{{#str}}membercount, local_learningcompanions{{/str}}</th>
@@ -18,10 +18,10 @@
             {{#groups}}
                 <tr class="grouprow" data-gid="{{id}}" data-title="{{name}}">
                     <td>
-                        {{keywords_list}}
+                        {{course.fullname}}
                     </td>
                     <td>
-                        {{course.fullname}}
+                        {{keywords_list}}
                     </td>
                     <td>
                         {{name}}
