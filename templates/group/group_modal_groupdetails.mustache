@@ -85,8 +85,9 @@
         <div class="group-details-modal-button">
             {{#group.currentUserIsMember}}
             {{! If the User is in the Group, show the Leave Group and Invite Button }}
-                <a href="#" class="btn btn-primary js-leave-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{#str}}leavegroup, local_learningcompanions{{/str}}</a>
-                <a href="#" class="btn btn-secondary js-invite-member" data-groupid="{{group.id}}"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}invite_to_group, local_learningcompanions{{/str}}</a>
+            <a href="#" class="btn btn-primary js-leave-group" data-groupid="{{group.id}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{#str}}leavegroup, local_learningcompanions{{/str}}</a>
+            <a href="/local/learningcompanions/chat.php?groupid={{group.id}}" class="btn btn-primary"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_learningcompanions{{/str}}</a>
+            <a href="#" class="btn btn-secondary js-invite-member" data-groupid="{{group.id}}"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}invite_to_group, local_learningcompanions{{/str}}</a>
             {{/group.currentUserIsMember}}
             {{^group.currentUserIsMember}}
                 {{#group.closedgroup}}
