@@ -127,17 +127,13 @@ function requestGroupJoin() {
     $groupid = required_param('groupid', PARAM_INT);
 
     try {
-        $requested = \local_learningcompanions\groups::request_group_join($USER->id, $groupid);
+        $errorCode = \local_learningcompanions\groups::request_group_join($USER->id, $groupid);
     } catch (dml_write_exception $e) {
-        echo '1';
+        echo \local_learningcompanions\groups::JOIN_REQUEST_OTHER_ERROR;
         return;
     }
 
-    if ($requested) {
-        echo '0';
-    } else {
-        echo '1';
-    }
+    echo $errorCode;
 }
 
 function joinGroup() {

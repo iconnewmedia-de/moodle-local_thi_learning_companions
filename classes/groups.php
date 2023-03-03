@@ -8,6 +8,12 @@ class groups {
     const CHATTYPE_MENTOR = 0;
     const CHATTYPE_GROUP = 1;
 
+    const JOIN_REQUEST_CREATED = 0;
+    const JOIN_REQUEST_ALREADY_REQUESTED = 1;
+    const JOIN_REQUEST_ALREADY_MEMBER = 2;
+    const JOIN_REQUEST_FAILED = 3;
+    const JOIN_REQUEST_OTHER_ERROR = 666;
+
     /**
      * @return group[]
      * @throws \dml_exception
@@ -437,9 +443,19 @@ class groups {
         // Check if the group is closed
         $group = new group($groupId);
 
+        // If the user is already a member, don't do anything
+        if ($group->is_user_member($userId)) {
+            return self::JOIN_REQUEST_ALREADY_MEMBER;
+        }
+
         // If the group is not closed, there is no need to request to join. Just join
         if (!$group->closedgroup) {
             return self::group_add_member($groupId, $userId);
+        }
+
+        // If the user has already requested to join, don't do anything
+        if (self::join_is_requested($userId, $groupId)) {
+            return self::JOIN_REQUEST_ALREADY_REQUESTED;
         }
 
         $inserted = self::add_group_join_request($groupId, $userId);
@@ -450,7 +466,12 @@ class groups {
             }
         }
 
-        return $inserted;
+        return $inserted ? self::JOIN_REQUEST_CREATED : self::JOIN_REQUEST_FAILED;
+    }
+
+    public static function join_is_requested(int $userId, int $groupId) {
+        global $DB;
+        return $DB->record_exists('lc_group_requests', ['groupid' => $groupId, 'userid' => $userId]);
     }
 
     /**

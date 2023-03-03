@@ -192,15 +192,15 @@ export const handleGroupLeaveButton = async function(e) {
 export const handleGroupRequestButton = async function(e) {
     e.preventDefault();
 
-    const error = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php', {
+    const errorCode = await promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php', {
         action: 'requestgroupjoin',
         groupid: $(this).data('groupid')
     });
 
-    if (!error) {
+    if (!errorCode) { // All good
         window.location.reload();
-    } else {
-        const errorMessage = await str.get_string('group_request_not_possible', 'local_learningcompanions');
+    } else { // Error happened
+        const errorMessage = await str.get_string(`group_request_error_code_${errorCode}`, 'local_learningcompanions');
         alert(errorMessage);
     }
 };
