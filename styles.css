@@ -400,3 +400,7 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 .local_learningcompanions_mentor_search_filter label {
     vertical-align: bottom;
 }
+
+#page-local-learningcompanions-group-confirm_requested_join .col-form-label {
+    padding-top: 0;
+}

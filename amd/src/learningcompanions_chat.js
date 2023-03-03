@@ -319,7 +319,8 @@ const handleEditGroup = async function(e) {
             dataType: 'json',
             data: {
                 action: 'getgroupdetails',
-                groupid: groupid
+                groupid: groupid,
+                referrer: 'chat'
             },
             success: function(data) {
                 const title = str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);

@@ -69,7 +69,8 @@ const handleTableRowClick = async function(e) {
 
     const groupDetailsPromise = promiseAjax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php', {
         action: 'getgroupdetails',
-        groupid: groupid
+        groupid: groupid,
+        'referrer': 'groupsearch'
     });
     const titlePromise = str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
 
