@@ -85,8 +85,8 @@
     color: orangered;
 }
 .learningcompanions_group_image_small {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     background-repeat: no-repeat;
     border-radius: 50%;
     background-size: cover;
@@ -403,4 +403,28 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 
 #page-local-learningcompanions-group-confirm_requested_join .col-form-label {
     padding-top: 0;
+}
+
+.learningcompanions_group_infos em {
+    font-style: italic;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 120px;
+    display: inline-block;
+}
+
+.learningcompanions_mygroups_group_newposts_count_circle {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    padding-top: 1px;
+    background: #00A070;
+    border: 0;
+    color: #ffffff;
+    text-align: center;
+    display: block;
+    font-size: 12px;
+    line-height: 1.5em;
 }
