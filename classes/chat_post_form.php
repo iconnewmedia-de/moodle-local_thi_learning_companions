@@ -55,6 +55,7 @@ class chat_post_form extends \moodleform {
         $maxbytes = self::get_upload_size_limit();
 //        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $CFG->maxbytes);
         return array(
+            'rows' => '5',
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'maxbytes' => $maxbytes,
             'trusttext'=> true,
@@ -63,7 +64,7 @@ class chat_post_form extends \moodleform {
             'return_types'=> FILE_INTERNAL | FILE_EXTERNAL,
             'subdirs' => file_area_contains_subdirs($context, 'local_learningcompanions', 'message', $postid),
             'atto:toolbar' => 'collapse = collapse
-style1 = title, bold, italic, image, managefiles
+style1 = title, bold, italic, image
 style2 = underline, strike'
         );
     }
@@ -76,7 +77,7 @@ style2 = underline, strike'
 
         $chatid = $this->_customdata['chatid'];
 
-        $mform->addElement('lccustomeditor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
+        $mform->addElement('lccustomeditor', 'message', get_string('message', 'local_learningcompanions'), ['rows' => 5], self::editor_options((empty($chatid) ? null : $chatid)));
 //        $mform->addElement('editor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
         $mform->setType('message', PARAM_RAW);
         $mform->addRule('message', get_string('required'), 'required', null, 'client');

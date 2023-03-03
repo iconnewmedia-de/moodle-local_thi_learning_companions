@@ -114,8 +114,8 @@
 }
 
 #learningcompanions_chat #id_messageeditable {
-    min-height: 0 !important;
-    height: 100px !important;
+    min-height: 100px !important;
+    height: 100px;
     opacity: 1;
     width: calc(100% - 50px);
     border: none;
