@@ -34,7 +34,14 @@ $form = new \local_learningcompanions\forms\create_edit_group_form(
 );
 
 $form->setGroupData($group);
-if ($data = $form->get_data()) {
+$referrer = optional_param('referrer', 'groupsearch', PARAM_TEXT);
+$groupid = required_param('groupid', PARAM_INT);
+$redirect = false;
+$redirectMessage = '';
+$redirectMessageType = \core\output\notification::NOTIFY_SUCCESS;
+if ($form->is_cancelled()) {
+    $redirect = true;
+} elseif ($data = $form->get_data()) {
     try {
         \local_learningcompanions\groups::group_update(
             $data->groupid,
@@ -49,7 +56,8 @@ if ($data = $form->get_data()) {
         if ($layout === 'popup' || $layout === 'embedded') {
             echo "<script>document.querySelector('.modal').dispatchEvent((new Event('modal:hidden')))</script>";
         } else {
-            redirect((new moodle_url('/local/learningcompanions/group/search.php')), get_string('group_edited', 'local_learningcompanions'));
+            $redirect = true;
+            $redirectMessage = get_string('group_edited', 'local_learningcompanions');
         }
     } catch(Exception $e) {
         $warning = new \core\output\notification(
@@ -60,7 +68,21 @@ if ($data = $form->get_data()) {
     // ICTODO: handle exceptions and output a warning if exception thrown or groupid === false
     // ICTODO: redirect user if everything went well and output a success message
 }
+if ($redirect) {
+    switch($referrer) {
+        case 'chat':
+            redirect(new moodle_url('/local/learningcompanions/chat.php?groupid=' . $groupid), $redirectMessage, null, $redirectMessageType);
+            break;
+        case 'groupsearch':
+        default:
+            redirect(new moodle_url('/local/learningcompanions/group/search.php'), $redirectMessage, null, $redirectMessageType);
+            break;
+    }
+}
 
 echo $OUTPUT->header();
+if (isset($warning)) {
+    echo $OUTPUT->render($warning);
+}
 echo $form->render();
 echo $OUTPUT->footer();

@@ -69,10 +69,12 @@ function deleteQuetion() {
 function getGroupDetails() {
     global $OUTPUT, $CFG;
     $groupid = required_param('groupid', PARAM_INT);
+    $referrer = optional_param('referrer', 'groupsearch', PARAM_TEXT);
     $group = \local_learningcompanions\groups::get_group_by_id($groupid);
     $cm = $group->cm;
     echo json_encode(['html' => $OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', [
         'group' => $group,
+        'referrer' => $referrer,
         'groupadmins' => $group->admins,
         'cfg' => $CFG,
         'cm' => $cm

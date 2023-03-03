@@ -47,5 +47,8 @@ if ($data = $form->get_data()) {
     // ICTODO: redirect user if everything went well and output a success message
 }
 echo $OUTPUT->header();
+if (isset($warning)) {
+    echo $OUTPUT->render($warning);
+}
 echo $form->render();
 echo $OUTPUT->footer();
