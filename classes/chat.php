@@ -80,7 +80,8 @@ class chat {
         $stringKeys = [
             'delete_post',
             'report_post',
-            'no_posts_available'
+            'no_posts_available',
+            'not_allowed_to_see_posts'
         ];
         $strings = get_strings($stringKeys, 'local_learningcompanions');
         $stringsString = json_encode($strings);
@@ -239,6 +240,11 @@ class chat {
     }
 
     public function get_newest_posts(int $lastViewedPostId) {
+        //If the user is not allowed to see the chat, return an empty array
+        if (!$this->can_view_chat()) {
+            return [];
+        }
+
         global $DB;
 
         //Get the newest comments

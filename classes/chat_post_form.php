@@ -54,7 +54,7 @@ class chat_post_form extends \moodleform {
         $context = \context_system::instance();
         $maxbytes = self::get_upload_size_limit();
 //        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $CFG->maxbytes);
-        return array(
+        return [
             'rows' => '5',
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'maxbytes' => $maxbytes,
@@ -66,25 +66,30 @@ class chat_post_form extends \moodleform {
             'atto:toolbar' => 'collapse = collapse
 style1 = title, bold, italic, image
 style2 = underline, strike'
-        );
+        ];
     }
 
     function definition() {
-        global $OUTPUT;
+        global $OUTPUT, $DB;
 
         $mform =& $this->_form;
         $mform->disable_form_change_checker();
+        $groupId = optional_param('groupid', null, PARAM_INT);
+        //if the group is closed, use the "request to join" string, otherwise use the "join group" string
+        $joinGroupString = get_string('join_group_link_text', 'local_learningcompanions');
+        if ($DB->get_record('lc_groups', ['id' => $groupId])->closedgroup) {
+            $joinGroupString = get_string('request_join_group', 'local_learningcompanions');
+        }
 
         $chatid = $this->_customdata['chatid'];
 
         $mform->addElement('lccustomeditor', 'message', get_string('message', 'local_learningcompanions'), ['rows' => 5], self::editor_options((empty($chatid) ? null : $chatid)));
-//        $mform->addElement('editor', 'message', get_string('message', 'local_learningcompanions'), null, self::editor_options((empty($chatid) ? null : $chatid)));
         $mform->setType('message', PARAM_RAW);
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
 
         $mform->addElement('html', '<div class="js-chat-preview preview-wrapper flex-column p-6 align-items-center d-none">
         <span class="preview-text">' . get_string('previewing_group', 'local_learningcompanions') . '</span>' .
-            '<a href="/local/learningcompanions/join.php?groupid='.optional_param('groupid', null, PARAM_INT).'" class="preview-link">' . get_string('join_group_link_text', 'local_learningcompanions') . '</a></div>');
+            '<a href="/local/learningcompanions/join.php?groupid=' . $groupId . '" class="btn btn-primary preview-link">' . $joinGroupString . '</a></div>');
 
         $mform->addElement('filemanager', 'attachments', get_string('attachment', 'local_learningcompanions'), null,
             self::attachment_options());

@@ -13,7 +13,8 @@ export default function Postlist({activeGroupid, group, questionid}) {
     const [firstPostId, setFirstPostId] = useState(null); //Used to get older Posts
 
     const highlightedPostId = (new URLSearchParams(window.location.search)).get('postId');
-    const isInPreviewMode = (!questionid && group)?group.isPreviewGroup:false;
+    const isInPreviewMode = (!questionid && group) ? group.isPreviewGroup : false;
+    const isDummyGroup = (!questionid && group) ? group.dummyGroup : false;
     let updateRunning = false;
 
     useEffect(() => {
@@ -184,7 +185,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
         <div id="learningcompanions_chat-postlist">
             <Header group={group} questionid={questionid} />
             {isLoading && <LoadingIndicator/>}
-            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} highlightedPostId={highlightedPostId} questionid={questionid} />}
+            {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} isDummyGroup={isDummyGroup} highlightedPostId={highlightedPostId} questionid={questionid} />}
         </div>
     );
 };

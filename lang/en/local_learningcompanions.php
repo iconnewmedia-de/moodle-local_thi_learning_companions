@@ -161,6 +161,7 @@ $string['gotogroupbutton'] = 'Go to group';
 $string['leavegroup'] = 'Leave Group';
 $string['invite_to_group'] = 'Invite';
 $string['request_join_group'] = 'Request to join group';
+$string['request_sent'] = 'The join request has been sent to the group administrator.';
 $string['group_join_not_possible'] = 'Joining the group is not possible now.';
 $string['group_request_error_code_1'] = 'A Request has already been sent.';
 $string['group_request_error_code_2'] = 'You can not request to join, because you are already a member of this group.';

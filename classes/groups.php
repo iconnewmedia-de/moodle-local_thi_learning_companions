@@ -14,6 +14,9 @@ class groups {
     const JOIN_REQUEST_FAILED = 3;
     const JOIN_REQUEST_OTHER_ERROR = 666;
 
+    const JOIN_CREATED = 0;
+    const JOIN_FAILED = 3;
+
     /**
      * @return group[]
      * @throws \dml_exception
@@ -436,10 +439,10 @@ class groups {
      * @param $userId
      * @param $groupId
      *
-     * @return bool|int
+     * @return int
      * @throws \dml_exception
      */
-    public static function request_group_join($userId, $groupId) {
+    public static function request_group_join($userId, $groupId): int {
         // Check if the group is closed
         $group = new group($groupId);
 
@@ -552,17 +555,20 @@ class groups {
      * @param int $userId
      * @param int $groupId
      *
-     * @return bool
+     * @return int
      * @throws \dml_exception
      */
-    public static function join_group(int $userId, int $groupId) {
+    public static function join_group(int $userId, int $groupId): int {
         // Check if the group is open
         $group = new group($groupId);
+
         // If the group is not open, there is no need to join. Just request to join
         if ($group->closedgroup) {
             return self::request_group_join($userId, $groupId);
         }
-        return self::group_add_member($groupId, $userId);
+
+        $inserted = self::group_add_member($groupId, $userId);
+        return $inserted ? self::JOIN_CREATED : self::JOIN_FAILED;
     }
 
     /**
