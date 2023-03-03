@@ -25,8 +25,8 @@ export default function Group({handleGroupSelect, group, activeGroupid}) {
                 <span>{lastcomment}</span>
             </div>
             <Dateformatter timestamp={latestcomment ?? timecreated} />
-            <div className="block_learningcompanions_mygroups_group_newposts_count">
-                {has_new_comments &&  <span className="block_learningcompanions_mygroups_group_newposts_count_circle">
+            <div className="learningcompanions_mygroups_group_newposts_count">
+                {has_new_comments &&  <span className="learningcompanions_mygroups_group_newposts_count_circle">
                     {comments_since_last_visit}
                 </span>}
             </div>
