@@ -13,6 +13,13 @@ $layoutwhitelist = ['base', 'standard', 'course', 'incourse', 'popup', 'embedded
 if (!in_array($layout, $layoutwhitelist)) {
     $layout = $defaultlayout;
 }
+
+$groupid = optional_param('groupid', null, PARAM_INT);
+$group = new \local_learningcompanions\group($groupid);
+$mayViewGroup = \local_learningcompanions\groups::may_view_group($groupid);
+if ($group->closedgroup && !$mayViewGroup) {
+    \local_learningcompanions\chat::redirectToOtherGroupChat();
+}
 $PAGE->set_pagelayout($layout);
 $PAGE->set_title(get_string('learninggroups', 'local_learningcompanions'));
 $groupid = optional_param('groupid', null, PARAM_INT);

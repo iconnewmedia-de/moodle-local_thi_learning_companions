@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Learning Companions';
+$string['learningcompanions'] = 'Learning Companions';
 $string['learningcompanions:group_create'] = 'Create groups';
 $string['learningcompanions:group_manage'] = 'Manage groups';
 $string['learningcompanions:delete_comments_of_others'] = 'Delete comments of other users';
@@ -294,3 +295,7 @@ Kind regards
 Your automatic \'{$a->sitename}\' system notifier';
 $string['message_unanswered_question_smallmessage'] = 'Unanswered question pending';
 $string['crontask'] = 'Regular tasks for Learningcompanions';
+$string['groupjoin_request_group'] = 'Group: {$a}';
+$string['groupjoin_request_user'] = 'User: {$a}';
+$string['confirm_requested_join'] = 'Handle group join requests';
+$string['cant_chat_no_group_memberships'] = '<strong>Notice</strong>: You tried to join a chat for a group that either doesn\'t exist (anymore) or that is a closed group and that you haven\'t joined yet. In case of the latter: You can send a join request to the group administrator.';

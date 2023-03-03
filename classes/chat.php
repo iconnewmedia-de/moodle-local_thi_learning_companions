@@ -36,6 +36,29 @@ class chat {
         return $new_chat;
     }
 
+    /**
+     * gets called when users try to access the group chat of a closed group without being member
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
+    public static function redirectToOtherGroupChat() {
+        global $USER;
+        $userGroups = groups::get_groups_of_user($USER->id);
+        if (empty($userGroups)) {
+            redirect('/local/learningcompanions/group/search.php',
+                get_string('cant_chat_no_group_memberships', 'local_learningcompanions'),
+                null,
+            \core\output\notification::NOTIFY_INFO
+            );
+        } else {
+            $firstGroup = current($userGroups);
+            $groupid = $firstGroup->id;
+            redirect('/local/learningcompanions/chat.php?groupid=' . $groupid);
+        }
+    }
+
     public static function createQuestionChat($questionid): self {
         global $DB;
 

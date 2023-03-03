@@ -31,5 +31,6 @@ if ($data = $requestForm->get_data()) {
 $requestForm = new \local_learningcompanions\forms\proccess_open_join_requests_form();
 
 echo $OUTPUT->header();
-$requestForm->display();
+$templateContext = array('form' => $requestForm->render());
+echo $OUTPUT->render_from_template('local_learningcompanions/group/group_confirm_requested_join', $templateContext);
 echo $OUTPUT->footer();
