@@ -40,7 +40,16 @@ export default function Grouplist({activeGroupid}) {
             "Chat",
             `${window.M.cfg.wwwroot}/local/learningcompanions/chat.php?${searchParams}`
         );
+
         setActiveGroupId(groupid);
+        setGroups(oldGroups =>
+            oldGroups.map(group => {
+                if (+group.id === +groupid) {
+                    group.comments_since_last_visit = 0;
+                    group.has_new_comments = false;
+                }
+                return group;
+            }));
     }
 
     useEffect(() => {

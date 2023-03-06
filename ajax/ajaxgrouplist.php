@@ -14,6 +14,15 @@ $PAGE->set_context(context_system::instance());
 $previewGroup = optional_param('shouldIncludeId', null, PARAM_INT);
 
 $groups = local_learningcompanions\groups::get_groups_of_user($USER->id, $previewGroup);
+foreach($groups as $group) {
+    $group->comments_since_last_visit = \local_learningcompanions\groups::count_comments_since_last_visit($group->id);
+    $group->has_new_comments = $group->comments_since_last_visit > 0;
+    $lastcomment = strip_tags($group->get_last_comment());
+    $group->lastcomment = $lastcomment;
+    if (strlen($lastcomment) > 100) {
+        $group->lastcomment = substr($lastcomment, 0, 97).'...';
+    }
+}
 header('Content-Type: application/json');
 $response = json_encode(["groups" => $groups]);
 echo $response;
