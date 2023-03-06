@@ -7,11 +7,12 @@ namespace local_learningcompanions;
  * @return array|bool[]
  */
 function chat_handle_submission($data, $form) {
-    require_once __DIR__ . '/classes/chat_post_form.php';
-    require_once __DIR__ . '/classes/chat.php';
+    global $DB;
     try {
+        $transaction = $DB->start_delegated_transaction();
         $data->message = $data->message["text"];
         $attachmentsaved = \local_learningcompanions\chats::post_comment($data, $form, chat_post_form::editor_options(0));
+        $transaction->allow_commit();
         $return = ["success" => true];
         if (!$attachmentsaved) {
             $config = get_config('local_learningcompanions');
@@ -21,7 +22,11 @@ function chat_handle_submission($data, $form) {
         }
         return $return;
     } catch(\Exception $e) {
-        return ["success" => false, "error" => $e->getMessage()];
+        try {
+            $transaction->rollback($e);
+        } catch(\file_exception $e) {
+            return ["success" => false, "error" => $e->getMessage()];
+        }
     }
 }
 
@@ -64,7 +69,7 @@ function get_topics_of_user_courses(int $userid = null) {
         FROM {customfield_data} cd
         JOIN {customfield_field} cf ON cd.fieldid = cf.id AND cf.shortname = 'topic'
         JOIN {customfield_category} cg ON cg.id = cf.categoryid AND cg.name = 'Learningcompanions'
-        JOIN {context} ctx 
+        JOIN {context} ctx
             ON ctx.id = cd.contextid
             AND ctx.contextlevel = '" . CONTEXT_COURSE . "'
             AND ctx.instanceid " . $courseCondition,
