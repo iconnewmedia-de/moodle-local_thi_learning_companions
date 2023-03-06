@@ -71,13 +71,29 @@ function getGroupDetails() {
     $groupid = required_param('groupid', PARAM_INT);
     $referrer = optional_param('referrer', 'groupsearch', PARAM_TEXT);
     $group = \local_learningcompanions\groups::get_group_by_id($groupid);
+    $mayViewGroupmembers = $group->closedgroup == 0 || \local_learningcompanions\groups::may_view_group($groupid);
+    if ($mayViewGroupmembers) {
+        $group->groupmembers = array_values($group->groupmembers);
+        foreach ($group->groupmembers as $groupmember) {
+            list($groupmember->status, $groupmember->statustext) = \local_learningcompanions_get_user_status($groupmember->id);
+            $groupmember->userpic = $OUTPUT->user_picture($groupmember, [
+                'link' => false, 'visibletoscreenreaders' => false,
+                'class' => 'userpicture'
+            ]);
+        }
+    } else {
+        $group->groupmembers = [];
+    }
+
     $cm = $group->cm;
     echo json_encode(['html' => $OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', [
         'group' => $group,
         'referrer' => $referrer,
         'groupadmins' => $group->admins,
         'cfg' => $CFG,
-        'cm' => $cm
+        'cm' => $cm,
+        'groupmembers' => $group->groupmembers,
+        'mayviewmembers' => $mayViewGroupmembers
     ])], JSON_THROW_ON_ERROR);
 }
 

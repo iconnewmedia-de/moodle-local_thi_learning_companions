@@ -115,7 +115,7 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
  * @return array    first value is for css classes, second value is the actual readable value, in the user's language
  * @throws dml_exception
  */
-function get_user_status(int $userid = null): array {
+function local_learningcompanions_get_user_status(int $userid = null): array {
     global $CFG, $DB, $USER;
 
     require_once($CFG->dirroot.'/user/profile/lib.php');
