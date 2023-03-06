@@ -428,3 +428,14 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
     font-size: 12px;
     line-height: 1.5em;
 }
+
+#page-local-learningcompanions-group-search label[for="topic-search"],
+#page-local-learningcompanions-group-search label[for="group-status"] {
+    min-width: 150px;
+    width: 15% !important;
+}
+
+#page-local-learningcompanions-group-search label[for="topic-search"] .select2-container,
+#page-local-learningcompanions-group-search label[for="group-status"] .select2-container {
+    width: 100% !important;
+}
