@@ -439,3 +439,90 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 #page-local-learningcompanions-group-search label[for="group-status"] .select2-container {
     width: 100% !important;
 }
+
+
+/* ------------------------------------------- */
+/* --------RESPONSIVENESS--------------------- */
+/* ------------------------------------------- */
+@media screen and (min-width: 768px) {
+    #page-local-learningcompanions-chat .learningcompanions_groupheader h1 {
+        max-width: calc(100vw - 330px);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width:992px) {
+
+    /* -------------- CHAT -------------- */
+    #page-local-learningcompanions-chat .learningcompanions_group_infos em {
+        max-width:calc(100vw - 210px);
+    }
+}
+@media screen and (max-width:767.98px) {
+    /* ------------------- GROUP SEARCH --------------- */
+    #page-local-learningcompanions-group-search #allgroupstable th:nth-child(2),
+    #page-local-learningcompanions-group-search #allgroupstable th:nth-child(6),
+    #page-local-learningcompanions-group-search #allgroupstable td:nth-child(2),
+    #page-local-learningcompanions-group-search #allgroupstable td:nth-child(6) {
+        display: none;
+    }
+
+
+    /* -------------- CHAT -------------- */
+    #page-local-learningcompanions-chat .learningcompanions_editgroup {
+        display: inline-block;
+    }
+
+    #page-local-learningcompanions-chat .learningcompanions_groupheader .learningcompanions_groupimage {
+        width: 30px;
+        height: 30px;
+        vertical-align: top;
+        margin-right: 10px;
+        margin-top: 4px;
+    }
+
+    #page-local-learningcompanions-chat .learningcompanions_groupheader h1 {
+        max-width: calc(100vw - 180px);
+        overflow: hidden;
+        height: 1.25em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: top;
+    }
+
+    #page-local-learningcompanions-chat .learningcompanions_groupheader {
+        height: 70px;
+        padding: 10px;
+    }
+}
+@media screen and (max-width:480px) {
+    /* ------------------- GROUP SEARCH --------------- */
+    #page-local-learningcompanions-group-search #allgroupstable th {
+        display: none;
+    }
+    #page-local-learningcompanions-group-search #allgroupstable td {
+        display: block;
+        width: 100%;
+    }
+    #page-local-learningcompanions-group-search #allgroupstable td::before {
+        content: attr(title);
+        display: inline-block;
+        width: 100px;
+        font-weight: bold;
+    }
+    #page-local-learningcompanions-group-search #allgroupstable .learningcompanions_group_icon {
+        display: inline-block;
+    }
+    #page-local-learningcompanions-group-search #local_learningcompanions_group_search label {
+        display: block;
+        width: 100%;
+    }
+    #page-local-learningcompanions-group-search #local_learningcompanions_group_search form > .d-flex {
+        display: block !important;
+    }
+    #page-local-learningcompanions-group-search label[for="topic-search"],
+    #page-local-learningcompanions-group-search label[for="group-status"] {
+        width: 100% !important;
+    }
+}
