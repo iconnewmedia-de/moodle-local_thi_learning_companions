@@ -132,7 +132,7 @@ const handleUploadButton = function(e){
         uploadfield.classList.add('upload-visible');
         target.classList.add('highlight');
     }
-}
+};
 const pasteHtmlAtCaret = function(html) {
     var sel, range;
     if (window.getSelection) {
@@ -187,7 +187,7 @@ const handleCommentRating = function(e) {
             // document.dispatchEvent(new ModalEvents.hidden);
         }
     });
-}
+};
 const handleCommentDelete = async function(e) {
     const postId = +e.target.dataset.id;
 
@@ -365,7 +365,6 @@ const handleNewMessageSubmit = (e) => {
     ).done(function(a, b, c) {
         // ICTODO: give a success message, like with a toast or so
         // reset the form to empty values after successfully sending the form
-        console.log('message sent. Got return object:', a);
         if (a.warning_body) {
             console.log('output warning');
             ModalFactory.create({
@@ -384,12 +383,22 @@ const handleNewMessageSubmit = (e) => {
                 el.value = '';
             }
         });
+
+        //Update the itemid, because otherwise, if the user tries to upload a file with the same name as the previous one,
+        //it will fail.
+        $('input[type=hidden][name=message\\[itemid\\]]').val(a.itemid);
+        //We also need to update the itemid inside the template options. Getting the first clientId, which is random, and then
+        //updating the itemid in the options.
+        const clientId = Object.keys(window.M.core_filepicker.instances).pop();
+        if (clientId) {
+            window.M.core_filepicker.instances[clientId].options.itemid = a.itemid;
+        }
+
         document.dispatchEvent(new CustomEvent('learningcompanions_message_send'));
     }).fail(function(a, b, c) {
         console.warn('Failed sending via AJAX', a, b, c);
         window.alert("couldn't save"); // ICTODO: give proper message, via get_string and ideally with a modal
     }).always(function(a, b, c) {
-        console.log('done sending, got returned:', a, b, c);
         // reactivate the form/ungrey it when data has been sent
         $('#learningcompanions_chat #id_messageeditable').css('opacity', '1');
         $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'true');

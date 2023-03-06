@@ -4,7 +4,8 @@ define('AJAX_SCRIPT', true);
 
 require_once dirname(__DIR__, 3). '/config.php';
 require_once dirname(__DIR__) . "/locallib.php";
-global $DB, $PAGE;
+global $DB, $PAGE, $CFG;
+require_once $CFG->libdir . '/filelib.php';
 
 $context = context_system::instance();
 $PAGE->set_context($context);
@@ -25,5 +26,7 @@ if ($data = $form->get_data()) {
 } else {
     http_response_code(400);
 }
+
+$status['itemid'] = file_get_unused_draft_itemid();
 echo json_encode($status);
 die();
