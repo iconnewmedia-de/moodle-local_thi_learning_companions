@@ -17,16 +17,16 @@
             <tbody>
             {{#groups}}
                 <tr class="grouprow" data-gid="{{id}}" data-title="{{name}}">
-                    <td>
+                    <td title="{{#str}}course, local_learningcompanions{{/str}}">
                         {{course.fullname}}
                     </td>
-                    <td>
+                    <td title="{{#str}}topic, local_learningcompanions{{/str}}">
                         {{keywords_list}}
                     </td>
-                    <td>
+                    <td title="{{#str}}name, local_learningcompanions{{/str}}">
                         {{name}}
                     </td>
-                    <td data-search="{{closedgroup}}" data-order="{{closedgroup}}">
+                    <td data-search="{{closedgroup}}" data-order="{{closedgroup}}" title="{{#str}}join, local_learningcompanions{{/str}}">
                         {{#closedgroup}}
                             <span data-balloon="{{#str}}closedgroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
                                 <div class="learningcompanions_group_icon learningcompanions_group_icon--closed"></div>
@@ -38,13 +38,13 @@
                             </span>
                         {{/closedgroup}}
                     </td>
-                    <td>
+                    <td title="{{#str}}membercount, local_learningcompanions{{/str}}">
                         {{membercount}}
                     </td>
-                    <td data-order="{{timecreated}}" data-search="{{timecreated}}">
+                    <td data-order="{{timecreated}}" data-search="{{timecreated}}" title="{{#str}}createdon, local_learningcompanions{{/str}}">
                         {{timecreated_dmY}}
                     </td>
-                    <td data-order="{{last_active_time}}">
+                    <td data-order="{{last_active_time}}" title="{{#str}}lastactivity, local_learningcompanions{{/str}}">
                         {{last_active_time_dmy}}
                     </td>
                 </tr>

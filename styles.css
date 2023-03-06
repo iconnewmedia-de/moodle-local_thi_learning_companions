@@ -439,3 +439,35 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 #page-local-learningcompanions-group-search label[for="group-status"] .select2-container {
     width: 100% !important;
 }
+
+
+/* ------------------------------------------- */
+/* --------RESPONSIVENESS--------------------- */
+/* ------------------------------------------- */
+
+@media screen and (max-width:760px) {
+    #page-local-learningcompanions-group-search #allgroupstable th:nth-child(2),
+    #page-local-learningcompanions-group-search #allgroupstable th:nth-child(6),
+    #page-local-learningcompanions-group-search #allgroupstable td:nth-child(2),
+    #page-local-learningcompanions-group-search #allgroupstable td:nth-child(6) {
+        display: none;
+    }
+}
+@media screen and (max-width:480px) {
+    #page-local-learningcompanions-group-search #allgroupstable th {
+        display: none;
+    }
+    #page-local-learningcompanions-group-search #allgroupstable td {
+        display: block;
+        width: 100%;
+    }
+    #page-local-learningcompanions-group-search #allgroupstable td::before {
+        content: attr(title);
+        display: inline-block;
+        width: 100px;
+        font-weight: bold;
+    }
+    #page-local-learningcompanions-group-search #allgroupstable .learningcompanions_group_icon {
+        display: inline-block;
+    }
+}
