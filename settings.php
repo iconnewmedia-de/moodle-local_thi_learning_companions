@@ -27,26 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
     global $DB;
-    $rootcategories = $DB->get_records('course_categories', array('parent' => 0), 'sortorder');
-
-    $options = array();
-    foreach($rootcategories as $rootcategory) {
-        $options[$rootcategory->id] = $rootcategory->name;
-        $subcategories = $DB->get_records('course_categories', array('parent' => $rootcategory->id), 'sortorder');
-        foreach($subcategories as $subcategory) {
-            $options[$subcategory->id] = $rootcategory->name . ' &gt; ' . $subcategory->name;
-        }
-    }
     $settings = new admin_settingpage( 'local_learningcompanions', get_string('learningcompanions_settings', 'local_learningcompanions') );
-
-    $settings->add(new admin_setting_configtext('local_learningcompanions/button_css_selector', get_string('button_css_selector', 'local_learningcompanions'),
-        get_string('configbuttoncssselector', 'local_learningcompanions'), '.activityinstance, .activity-item'));
-    $settings->add(new admin_setting_configtext('local_learningcompanions/button_bg', get_string('button_bg_color', 'local_learningcompanions'),
-        get_string('configbuttonbg', 'local_learningcompanions'), '#333'));
-    $settings->add(new admin_setting_configtext('local_learningcompanions/button_color', get_string('button_text_color', 'local_learningcompanions'),
-        get_string('configbuttoncolor', 'local_learningcompanions'), '#fff'));
-    $settings->add(new admin_setting_configtext('local_learningcompanions/button_radius', get_string('button_radius', 'local_learningcompanions'),
-        get_string('configbuttonradius', 'local_learningcompanions'), '20', PARAM_INT));
     $settings->add(new admin_setting_configtext('local_learningcompanions/groupimage_maxbytes', get_string('groupimage_maxbytes', 'local_learningcompanions'),
         get_string('configgroupimagemaxbytes', 'local_learningcompanions'), 1000000, PARAM_INT));
 

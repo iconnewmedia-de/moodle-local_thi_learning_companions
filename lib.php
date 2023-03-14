@@ -1,20 +1,4 @@
 <?php
-function local_learningcompanions_extend_settings_navigation() {
-    global $PAGE;
-//    return; // ICUNDO
-    if (!isloggedin()){
-        return;
-    }
-    $config = get_config('local_learningcompanions');
-    $params = array(
-        isset($config->button_css_selector)?$config->button_css_selector:'.activityinstance, .activity-item',
-        isset($config->button_bg_color)?$config->button_bg_color:'#333',
-        isset($config->button_text_color)?$config->button_text_color:'#fff',
-        isset($config->button_radius)?$config->button_radius:'20',
-    );
-    $PAGE->requires->js_call_amd('local_learningcompanions/learningcompanions', 'init', $params);
-}
-
 /**
  * @param array $comments
  * @param string $area

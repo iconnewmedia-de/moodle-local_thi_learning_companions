@@ -474,6 +474,10 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
         display: inline-block;
     }
 
+    #learningcompanions_chat #fitem_id_message {
+        padding:5px;
+    }
+
     #page-local-learningcompanions-chat .learningcompanions_groupheader .learningcompanions_groupimage {
         width: 30px;
         height: 30px;
