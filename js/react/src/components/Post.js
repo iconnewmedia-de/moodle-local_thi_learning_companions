@@ -15,15 +15,17 @@ export default function Post({highlighted, post, isPreview, questionid}) {
     // console.log('author.id: ', window.learningcompanions_chat_userid);
     let showRatingButton = (questionid > 0 && +author.id !== +window.learningcompanions_chat_userid);
 
-    // console.log('post:', post); // ICUNDO!
     // ICTODO: also get the information if the current user has already rated the post
     let cssClass;
 
+    let isDeleted = !(typeof deleted === "undefined" || deleted === null || deleted === 0);
     // ICTODO: find a way to use get_string with React. Perhaps a global variable that holds the translated strings
-    if (typeof window.learningcompanions_chat_userid !== undefined && +author.id === +window.learningcompanions_chat_userid) {
+    if (typeof window.learningcompanions_chat_userid !== undefined
+        && +author.id === +window.learningcompanions_chat_userid
+        && !isDeleted) {
         showDeleteButton = true;
         cssClass = 'learningcompanions_chat-my-post';
-    } else {
+    } else if (!isDeleted) {
         showReportButton = true;
         cssClass = 'learningcompanions_chat-other-post';
     }
