@@ -34,7 +34,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configtext('local_learningcompanions/commentactivities',
         get_string('setting_commentactivities', 'local_learningcompanions'),
         get_string('configcommentactivities', 'local_learningcompanions'),
-    'assign,assignment,book,choice,data,feedback,folder,glossary,h5pactivity,lesson,lit,quiz,resource,page,scorm,survey,workshop'
+    'assign,assignment,book,choice,data,feedback,folder,glossary,h5pactivity,lesson,lti,quiz,resource,page,scorm,survey,workshop'
     ));
 
     $settings->add(new admin_setting_configtext('local_learningcompanions/badgetypes_for_mentors',
