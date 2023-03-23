@@ -134,3 +134,28 @@ function set_user_status($status, $userid = null) {
 
     // ICTODO
 }
+
+
+/**
+ * gets called as a service from JS in group.js, handleGroupInviteButton:
+ * const templatePromise = Fragment.loadFragment('local_learningcompanions', 'invitation_form', groupId, {});
+ * Moodle dynamically constructs the function to call - so don't believe your IDE when it tells you that this is unused!
+ * Serve the manual enrol users form as a fragment.
+ *
+ * @param array $args List of named arguments for the fragment loader.
+ * @return string
+ */
+function local_learningcompanions_output_fragment_invitation_form($args) {
+    $args = (object) $args;
+    $context = $args->context;
+    $o = '';
+    require_once __DIR__ . '/classes/forms/select_users_to_invite_form.php';
+    $mform = new local_learningcompanions\select_users_to_invite_form(null, $args);
+
+    ob_start();
+    $mform->display();
+    $o .= ob_get_contents();
+    ob_end_clean();
+
+    return $o;
+}

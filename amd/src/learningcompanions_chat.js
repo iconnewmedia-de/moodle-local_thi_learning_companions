@@ -323,6 +323,7 @@ const handleEditGroup = async function(e) {
                 referrer: 'chat'
             },
             success: function(data) {
+                console.log('got group details modal with data: ', data);
                 const title = str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
                 title.then(function(string) {
                     // console.log('got group title string:', title);

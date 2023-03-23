@@ -11,6 +11,7 @@ import 'local_learningcompanions/select2';
 import DynamicForm from 'core_form/dynamicform';
 import Templates from 'core/templates';
 import {init as inviteInit} from 'local_learningcompanions/invite_members';
+import Fragment from "../../../../lib/amd/src/fragment";
 
 
 export const select2 = () => {
@@ -94,16 +95,19 @@ export const handleGroupInviteButton = async function(e) {
 
     const groupId = $(this).data('groupid');
 
-    const templatePromise = Templates.renderForPromise('local_learningcompanions/group/group_invite', {
-        groupId
-    });
+    // const templatePromise = Templates.renderForPromise('local_learningcompanions/group/group_invite', {
+    //     groupId
+    // });
+    console.log('calling invitation form template with group id: ', groupId);
+    const templatePromise = Fragment.loadFragment('local_learningcompanions', 'invitation_form', groupId, {});
     const titlePromise = str.get_string('group_invite_title', 'local_learningcompanions');
 
-    const [{html}, title] = await Promise.all([templatePromise, titlePromise]);
+    const [template, title] = await Promise.all([templatePromise, titlePromise]);
+    console.log('got template for group invitation:', template); // ICUNDO!
 
     const modal = await ModalFactory.create({
         title: title,
-        body: html,
+        body: template,
         footer: '',
         large: false
     });

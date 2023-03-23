@@ -172,6 +172,17 @@ class groups {
         return $return;
     }
 
+    /**
+     * @param array $userids
+     * @param int $groupid
+     * @return void
+     */
+    public static function invite_users_to_group(array $userids, int $groupid) {
+        foreach($userids as $userid) {
+            self::invite_user_to_group($userid, $groupid);
+        }
+    }
+
     public static function invite_user_to_group($userid, $groupid) {
         global $DB, $USER;
 

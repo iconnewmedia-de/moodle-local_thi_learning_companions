@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_learningcompanions;
 defined('MOODLE_INTERNAL') || die();
-
+global $CFG;
 require_once("$CFG->libdir/externallib.php");
 class external extends \external_api {
     public static function list_nuggets($courseid, $query) {
@@ -63,7 +63,7 @@ class external extends \external_api {
 
     public static function get_invitable_users(string $query, int $groupId, int $limit = 10) {
         global $DB, $USER, $OUTPUT, $PAGE;
-
+        return array(1=>'Pascal Collins', 2 => 'John Doe'); // ICUNDO!
         $PAGE->set_context(\context_system::instance());
 
         $params = self::validate_parameters(self::get_invitable_users_parameters(),
