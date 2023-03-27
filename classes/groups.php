@@ -178,9 +178,11 @@ class groups {
      * @return void
      */
     public static function invite_users_to_group(array $userids, int $groupid) {
+        $success = false;
         foreach($userids as $userid) {
-            self::invite_user_to_group($userid, $groupid);
+            $success = $success || self::invite_user_to_group($userid, $groupid);
         }
+        return $success;
     }
 
     public static function invite_user_to_group($userid, $groupid) {

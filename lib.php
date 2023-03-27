@@ -146,16 +146,11 @@ function set_user_status($status, $userid = null) {
  * @return string
  */
 function local_learningcompanions_output_fragment_invitation_form($args) {
+    global $CFG;
     $args = (object) $args;
     $context = $args->context;
     $o = '';
     require_once __DIR__ . '/classes/forms/select_users_to_invite_form.php';
-    $mform = new local_learningcompanions\select_users_to_invite_form(null, $args);
-
-    ob_start();
-    $mform->display();
-    $o .= ob_get_contents();
-    ob_end_clean();
-
-    return $o;
+    $mform = new local_learningcompanions\select_users_to_invite_form($CFG->wwwroot . "/local/learningcompanions/chat.php?groupid=" . intval($context->id), $args);
+    return $mform->render();
 }

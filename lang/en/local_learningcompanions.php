@@ -36,6 +36,7 @@ $string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/d
 
 $string['create_new_group'] = 'Create new group';
 $string['no_permission_create_group'] = 'You don\'t have the permission to create groups';
+$string['no_permission_invite_group'] = 'You don\'t have the permission to invite users to this group';
 $string['failed_create_group'] = 'Unexpected error. Creating a new group failed with the error message: ';
 $string['category_for_groups'] = 'Category for Groups';
 $string['configcategory'] = 'Please select the category which shall hold the courses for each group';
@@ -303,3 +304,8 @@ $string['groupjoin_request_group'] = 'Group: {$a}';
 $string['groupjoin_request_user'] = 'User: {$a}';
 $string['confirm_requested_join'] = 'Handle group join requests';
 $string['cant_chat_no_group_memberships'] = '<strong>Notice</strong>: You tried to join a chat for a group that either doesn\'t exist (anymore) or that is a closed group and that you haven\'t joined yet. In case of the latter: You can send a join request to the group administrator.';
+$string['inviteusers'] = 'Invite user(s)';
+$string['selectusers'] = 'Select user(s)';
+$string['group_invite_placeholder'] = 'Please type to search for users';
+$string['group_invite_noselection'] = 'No users selected yet';
+$string['users_invited'] = 'The selected user(s) got invited';

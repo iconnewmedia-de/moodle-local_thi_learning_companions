@@ -28,7 +28,6 @@ class external extends \external_api {
         $courseid = $params['courseid'];
         $query = $params['query'];
 
-        file_put_contents(__DIR__ . "/logexternalapi.txt", "called at " . date('d.m.Y H:i:s') . "\r\n", FILE_APPEND);
         if (is_null($courseid)) {
             return [];
         }
@@ -61,19 +60,18 @@ class external extends \external_api {
         );
     }
 
-    public static function get_invitable_users(string $query, int $groupId, int $limit = 10) {
+    public static function get_invitable_users(string $query, int $groupid, int $limit = 10) {
         global $DB, $USER, $OUTPUT, $PAGE;
-        return array(1=>'Pascal Collins', 2 => 'John Doe'); // ICUNDO!
         $PAGE->set_context(\context_system::instance());
 
         $params = self::validate_parameters(self::get_invitable_users_parameters(),
             [
                 'query' => $query,
-                'groupId' => $groupId,
+                'groupid' => $groupid,
             ]);
 
         $query = $params['query'];
-        $groupId = $params['groupId'];
+        $groupId = $params['groupid'];
 
         $sl = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
@@ -105,8 +103,8 @@ class external extends \external_api {
         return new \external_function_parameters(
             [
                 'query' => new \external_value(PARAM_TEXT, 'The text to search for', VALUE_REQUIRED, null),
-                'groupId' => new \external_value(PARAM_INT, 'The group id', VALUE_REQUIRED, null),
-                'limit' => new \external_value(PARAM_INT, 'The number of results to return', VALUE_OPTIONAL, 10)
+                'groupid' => new \external_value(PARAM_INT, 'The group id', VALUE_REQUIRED, null),
+//                'limit' => new \external_value(PARAM_INT, 'The number of results to return', VALUE_OPTIONAL, 10)
             ],
             '',
             VALUE_REQUIRED
@@ -126,8 +124,8 @@ class external extends \external_api {
     public static function invite_user(int $userId, int $groupId) {
         $params = self::validate_parameters(self::invite_user_parameters(),
             [
-                'userId' => $userId,
-                'groupId' => $groupId,
+                'userid' => $userId,
+                'groupid' => $groupId,
             ]);
 
         $userId = $params['userId'];
@@ -143,8 +141,8 @@ class external extends \external_api {
     public static function invite_user_parameters() {
         return new \external_function_parameters(
             [
-                'userId' => new \external_value(PARAM_INT, 'To userid of the user to invite', VALUE_REQUIRED, null),
-                'groupId' => new \external_value(PARAM_INT, 'The group id', VALUE_REQUIRED, null),
+                'userid' => new \external_value(PARAM_INT, 'To userid of the user to invite', VALUE_REQUIRED, null),
+                'groupid' => new \external_value(PARAM_INT, 'The group id', VALUE_REQUIRED, null),
             ],
             '',
             VALUE_REQUIRED

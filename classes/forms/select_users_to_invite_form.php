@@ -38,20 +38,24 @@ class select_users_to_invite_form extends \moodleform
      */
     public function definition()
     {
-        global $PAGE, $DB, $CFG;
         $context = $this->_customdata->context;
         $groupid = $context->id;
+        if (groups::may_view_group($groupid)) {
+            print_error('no_permission_invite_group', 'local_learningcompanions');
+        }
         $mform = $this->_form;
         $mform->setDisableShortforms();
         $mform->disable_form_change_checker();
-      // ICTODO: Check if the user has the permission to invite users to this group. (S)he must be part of this group, for example
+        $mform->addElement('hidden', 'action', 'invite');
+        $mform->setType('action', PARAM_TEXT);
         $mform->addElement('header', 'main', get_string('inviteusers', 'local_learningcompanions'));
         $options = array(
-            'ajax' => 'local_learningcompanions_get_invitable_users',
+            'ajax' => 'local_learningcompanions/invitation_potential_user_selector',
             'multiple' => true,
             'groupid' => $groupid,
-            'perpage' => $CFG->maxusersperpage
+            'perpage' => 100
         );
+
         $mform->addElement('autocomplete', 'userlist', get_string('selectusers', 'local_learningcompanions'), array(), $options);
         $this->add_action_buttons();
     }

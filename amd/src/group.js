@@ -11,8 +11,11 @@ import 'local_learningcompanions/select2';
 import DynamicForm from 'core_form/dynamicform';
 import Templates from 'core/templates';
 import {init as inviteInit} from 'local_learningcompanions/invite_members';
-import Fragment from "../../../../lib/amd/src/fragment";
-
+import Fragment from "core/fragment";
+import Pending from "core/pending";
+import * as Str from "core/str";
+import * as Notification from "core/notification";
+import * as Autocomplete from "core/form-autocomplete";
 
 export const select2 = () => {
     $('.select2').select2();
@@ -92,21 +95,20 @@ const handleTableRowClick = async function(e) {
 
 export const handleGroupInviteButton = async function(e) {
     e.preventDefault();
-
+    const pendingPromise = new Pending('local_learningcompanions/group:handleGroupInviteButton');
     const groupId = $(this).data('groupid');
 
-    // const templatePromise = Templates.renderForPromise('local_learningcompanions/group/group_invite', {
-    //     groupId
-    // });
-    console.log('calling invitation form template with group id: ', groupId);
     const templatePromise = Fragment.loadFragment('local_learningcompanions', 'invitation_form', groupId, {});
-    const titlePromise = str.get_string('group_invite_title', 'local_learningcompanions');
+    const stringsPromise = str.get_strings([
+        {key: 'group_invite_title', component: 'local_learningcompanions'},
+        {key: 'group_invite_placeholder', component: 'local_learningcompanions'},
+        {key: 'group_invite_noselection', component: 'local_learningcompanions'},
+    ]);
 
-    const [template, title] = await Promise.all([templatePromise, titlePromise]);
-    console.log('got template for group invitation:', template); // ICUNDO!
+    const [template, strings] = await Promise.all([templatePromise, stringsPromise]);
 
     const modal = await ModalFactory.create({
-        title: title,
+        title: strings[0],
         body: template,
         footer: '',
         large: false
@@ -116,8 +118,25 @@ export const handleGroupInviteButton = async function(e) {
         modal.destroy();
     });
     modal.show();
+    $('#id_cancel').on('click', function(e){
+        e.preventDefault();
+        modal.destroy();
+        return false;
+    });
+    Autocomplete.enhance("#id_userlist", true, 'local_learningcompanions/invitation_potential_user_selector', strings[1],
+        false, true, strings[2], true);
+    Promise.all([modal, modal.getBodyPromise()])
+        .then(([modal, body]) => {
+          console.log('modal:', modal, 'body:', body);
 
-    inviteInit();
+            return modal;
+        })
+        .then(modal => {
+            pendingPromise.resolve();
+
+            return modal;
+        })
+        .catch(Notification.exception);
 };
 
 export const handleGroupLeaveButton = async function(e) {

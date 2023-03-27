@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__DIR__, 2).'/config.php';
+require_once dirname(__DIR__, 2) . '/config.php';
 require_once __DIR__ . "/locallib.php";
 
 require_login();
@@ -20,6 +20,7 @@ $mayViewGroup = \local_learningcompanions\groups::may_view_group($groupid);
 if ($group->closedgroup && !$mayViewGroup) {
     \local_learningcompanions\chat::redirectToOtherGroupChat();
 }
+
 $PAGE->set_pagelayout($layout);
 $PAGE->set_title(get_string('learninggroups', 'local_learningcompanions'));
 $groupid = optional_param('groupid', null, PARAM_INT);
@@ -34,5 +35,15 @@ $PAGE->requires->js(new moodle_url('/local/learningcompanions/js/react/build/lea
 $chat = \local_learningcompanions\chat::createGroupChat($groupid);
 
 echo $OUTPUT->header();
+if (isset($_POST['action'])) {
+    // using switch/case just in case we might add further actions later.
+    switch ($_POST['action']) {
+        case "invite":
+            \local_learningcompanions\invite_users();
+            break;
+        default:
+            // nothing to do
+    }
+}
 echo $chat->get_chat_module();
 echo $OUTPUT->footer();

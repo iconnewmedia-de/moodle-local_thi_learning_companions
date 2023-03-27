@@ -77,3 +77,15 @@ function get_topics_of_user_courses(int $userid = null) {
     );
     return array_keys($records);
 }
+
+function invite_users() {
+    global $OUTPUT;
+    $groupid = required_param('groupid', PARAM_INT);
+    $userlist = required_param_array('userlist', PARAM_INT);
+    if (empty($userlist)) {
+        return;
+    }
+    groups::invite_users_to_group($userlist, $groupid);
+    $notification = $OUTPUT->render(new \core\output\notification(get_string('users_invited', 'local_learningcompanions'), \core\output\notification::NOTIFY_SUCCESS));
+    echo $notification;
+}

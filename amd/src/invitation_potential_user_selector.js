@@ -16,16 +16,17 @@
 /**
  * Potential user selector module.
  *
- * @module     enrol_manual/form-potential-user-selector
- * @copyright  2016 Damyon Wiese
+ * @module     local_learningcompanions/invitation_potential_user_selector
+ * @copyright  2023 ICON Vernetzte Kommunikation GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, Templates, Str) {
 
-    return /** @alias module:enrol_manual/form-potential-user-selector */ {
+    return /** @alias module:local_learningcompanions/invitation_potential_user_selector */ {
 
         processResults: function(selector, results) {
+            console.log('called processResults with params:', selector, results);
             var users = [];
             if ($.isArray(results)) {
                 $.each(results, function(index, user) {
@@ -42,6 +43,7 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
         },
 
         transport: function(selector, query, success, failure) {
+            console.log('called transport with params:', selector, query, success, failure);
             var promise;
             var groupid = $(selector).attr('groupid');
             var userfields = ['firstname', 'lastname'];
@@ -52,13 +54,13 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
             }
 
             promise = Ajax.call([{
-                methodname: 'local_learningcompanions_get_invitable_users',
+                methodname: 'local_learningcompanions_get_invitable_users', // see local_learningcompanions\external::get_invitable_users
                 args: {
                     groupid: groupid,
-                    search: query,
-                    searchanywhere: true,
-                    page: 0,
-                    perpage: perpage + 1
+                    query: query,
+                    // searchanywhere: true,
+                    // page: 0,
+                    // perpage: perpage + 1
                 }
             }]);
 
