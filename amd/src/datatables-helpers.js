@@ -49,7 +49,7 @@ export const initOrSearch = (selector) => {
  * @param element {jQuery} The element the search relates to.
  */
 export const addOrSearch = (element) => {
-    $.fn.dataTable.ext.search.push(function(settings, data) {
+    $.fn.dataTable.ext.search.push((settings, data) => {
         let searchVal = element.val() ?? '';
 
         //If the search value is empty, don´t filter it.
@@ -92,7 +92,7 @@ export const initMinSearch = (selector) => {
  * @param element {jQuery} The element the search relates to.
  */
 export const addMinSearch = (element) => {
-    $.fn.dataTable.ext.search.push(function(settings, data) {
+    $.fn.dataTable.ext.search.push((settings, data) => {
         let min = element.val() ?? '';
 
         if (!min) {
@@ -140,7 +140,7 @@ export const initIncludeSearch = (selector) => {
  * @param element {jQuery} The element the search relates to.
  */
 export const addIncludeSearch = (element) => {
-    $.fn.dataTable.ext.search.push(function(settings, data) {
+    $.fn.dataTable.ext.search.push((settings, data) => {
         /**
          * @type {string[]}
          */

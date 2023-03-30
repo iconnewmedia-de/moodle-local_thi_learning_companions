@@ -197,6 +197,7 @@ $string['filter_keywords_placeholder'] = 'Group designation';
 $string['filter_mentor_keywords_placeholder'] = 'Name/Keywords';
 $string['filter_badges'] = 'Badge';
 $string['filter_super_mentor'] = 'Super mentor';
+$string['filter_creation_date'] = 'Minimum creation date';
 
 require '_messages.php';
 require '_navbar.php';
