@@ -62,10 +62,6 @@ class chat {
     public static function createQuestionChat($questionid): self {
         global $DB;
 
-        if (!$DB->record_exists('lc_questions', ['id' => $questionid])) {
-            throw new \moodle_exception('questionnotfound', 'local_learningcompanions');
-        }
-
         $new_chat = new self();
         $new_chat->context = \context_system::instance();
         $new_chat->filestorage = get_file_storage();
