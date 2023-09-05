@@ -30,6 +30,11 @@ function chat_handle_submission($data, $form) {
     }
 }
 
+/**
+ * @param $courseid
+ * @return int[]|string[]
+ * @throws \dml_exception
+ */
 function get_course_topics($courseid) {
     global $DB;
     $records = $DB->get_records_sql(
@@ -78,6 +83,10 @@ function get_topics_of_user_courses(int $userid = null) {
     return array_keys($records);
 }
 
+/**
+ * @return void
+ * @throws \coding_exception
+ */
 function invite_users() {
     global $OUTPUT;
     $groupid = required_param('groupid', PARAM_INT);
@@ -88,4 +97,63 @@ function invite_users() {
     groups::invite_users_to_group($userlist, $groupid);
     $notification = $OUTPUT->render(new \core\output\notification(get_string('users_invited', 'local_learningcompanions'), \core\output\notification::NOTIFY_SUCCESS));
     echo $notification;
+}
+
+/**
+ * @return false|string[]
+ * @throws \dml_exception
+ */
+function get_moduletypes_for_commentblock() {
+    $config = get_config('local_learningcompanions');
+    $whitelist = explode(',', $config->commentactivities);
+    array_walk($whitelist, 'trim');
+    return $whitelist;
+}
+
+/**
+ * @param $parentcontextid
+ * @param $modulename
+ * @return void
+ * @throws \dml_exception
+ */
+function create_comment_block($parentcontextid, $modulename) {
+    global $DB;
+    $block = new \stdClass();
+    $block->blockname = 'comments';
+    $block->parentcontextid = $parentcontextid;
+    $block->showinsubcontexts = '';
+    $block->pagetypepattern = 'mod-' . $modulename . '-*';
+    $block->subpagepattern = '';
+    $block->defaultregion = 'side-pre';
+    $block->defaultweight = '2';
+    $block->configdata = '';
+    $block->timecreated = time();
+    $block->timemodified = time();
+
+    $DB->insert_record('block_instances', $block);
+}
+
+/**
+ * @return void
+ * @throws \coding_exception
+ * @throws \dml_exception
+ */
+function add_comment_blocks() {
+    global $DB;
+    $whitelist = get_moduletypes_for_commentblock();
+    list($sqlWhereIn, $params) = $DB->get_in_or_equal($whitelist);
+    $activitiesWithoutCommentBlock = $DB->get_records_sql(
+        "SELECT ctx.id as contextid, m.name as modulename
+                FROM {context} ctx  
+                JOIN {course_modules} cm ON cm.id = ctx.instanceid
+                JOIN {modules} m ON m.id = cm.module
+                LEFT JOIN {block_instances} bi ON ctx.id = bi.parentcontextid AND bi.blockname = 'comments'
+                WHERE bi.id IS NULL
+                AND ctx.contextlevel = 70
+                AND m.name " . $sqlWhereIn,
+        $params
+    );
+    foreach($activitiesWithoutCommentBlock as $activity) {
+        create_comment_block($activity->contextid, $activity->modulename);
+    }
 }

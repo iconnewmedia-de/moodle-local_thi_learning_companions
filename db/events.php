@@ -27,5 +27,9 @@ $observers = [
     [
         'eventname'   => '\core\event\badge_awarded',
         'callback'    => '\local_learningcompanions\eventobservers::badge_awarded'
+    ],
+    [
+        'eventname'   => '\core\event\config_log_created',
+        'callback'    => '\local_learningcompanions\eventobservers::config_log_created'
     ]
 ];

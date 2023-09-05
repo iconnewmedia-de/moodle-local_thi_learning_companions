@@ -12,27 +12,13 @@ class eventobservers {
         global $DB;
         $data = $event->get_data();
         $modulename = $data['other']['modulename'];
-        $config = get_config('local_learningcompanions');
-        $whitelist = explode(',', $config->commentactivities);
-        array_walk($whitelist, 'trim');
+        $whitelist = get_moduletypes_for_commentblock();
         if (!in_array($modulename, $whitelist)) {
             return;
         }
         $parentcontextid = $data['contextid'];
-        $block = new \stdClass();
-
-        $block->blockname = 'comments';
-        $block->parentcontextid = $parentcontextid;
-        $block->showinsubcontexts = '';
-        $block->pagetypepattern = 'mod-' . $modulename . '-*';
-        $block->subpagepattern = '';
-        $block->defaultregion = 'side-pre';
-        $block->defaultweight = '2';
-        $block->configdata = '';
-        $block->timecreated = time();
-        $block->timemodified = time();
-
-        $DB->insert_record('block_instances', $block);
+        require_once __DIR__ . '/../locallib.php';
+        create_comment_block($parentcontextid, $modulename);
     }
 
     /**
@@ -67,5 +53,24 @@ class eventobservers {
         }
     }
 
-
+    /**
+     * checks if the settings for local_learningcompanions | commentactivities have changed
+     * if yes, calls the function that ensures that all listed activity types have a comment block
+     * @param \core\event\config_log_created $event
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function config_log_created(\core\event\config_log_created $event) {
+        $data = $event->get_data();
+        $info = $data['other'];
+        if ($info['plugin'] !== 'local_learningcompanions' || $info['name'] !== 'commentactivities') {
+            return;
+        }
+        if ($info['oldvalue'] == $info['value']) {
+            return;
+        }
+        require_once __DIR__ . "/../locallib.php";
+        \local_learningcompanions\add_comment_blocks();
+    }
 }
