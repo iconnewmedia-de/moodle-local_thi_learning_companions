@@ -171,12 +171,23 @@ class messages {
         $course = $DB->get_record('course', array('id' => $courseid));
 
         $link = $CFG->wwwroot . '/local/learningcompanions/mentor/manage.php';
-        $message->subject = get_string('message_qualified_mentor_subject', 'local_learningcompanions', array('user' => $user, 'course' => $course, 'link' => $link));
-        $message->fullmessagehtml = get_string('message_qualified_mentor_body', 'local_learningcompanions', array('user' => $user, 'course' => $course));
+        $placeholders = array(
+          'username' => $user->username,
+          'firstname' => $user->firstname,
+          'lastname' => $user->lastname,
+          'email' => $user->email,
+          'userfullname' => trim(join(' ', array($user->firstname, $user->lastname))),
+          'courseid' => $courseid,
+          'coursefullname' => $course->fullname,
+          'courseshortname' => $course->shortname,
+          'link' => $link
+        );
+        $message->subject = get_string('message_qualified_mentor_subject', 'local_learningcompanions', $placeholders);
+        $message->fullmessagehtml = get_string('message_qualified_mentor_body', 'local_learningcompanions', $placeholders);
         $message->fullmessage = strip_tags($message->fullmessagehtml);
         $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = nl2br($message->fullmessage);
-        $message->smallmessage = get_string('message_qualified_mentor_smallmessage', 'local_learningcompanions', array('user' => $user, 'course' => $course));
+        $message->smallmessage = get_string('message_qualified_mentor_smallmessage', 'local_learningcompanions', $placeholders);
         $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
         $message->contexturl = (new \moodle_url('/course/'))->out(false);
         $message->contexturlname = 'Course list';

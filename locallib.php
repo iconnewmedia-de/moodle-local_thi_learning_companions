@@ -46,6 +46,9 @@ function get_course_topics($courseid) {
     array($courseid)
     );
     $topics = array_keys($records);
+    if (count($topics) === 1 && empty(trim($topics[0]))) {
+        return null;
+    }
     return $topics;
 }
 
