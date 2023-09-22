@@ -17,6 +17,8 @@
 /**
  * Plugin strings are defined here.
  *
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
  * @package     local_learningcompanions
  * @category    string
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
