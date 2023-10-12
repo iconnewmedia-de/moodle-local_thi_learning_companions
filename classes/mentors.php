@@ -352,7 +352,9 @@ class mentors {
                 continue;
             }
             $courseTopics = \local_learningcompanions\get_course_topics($userBadge->courseid);
-            $badgeTopics = array_merge($badgeTopics, $courseTopics);
+            if (!empty($courseTopics)) {
+                $badgeTopics = array_merge($badgeTopics, $courseTopics);
+            }
         }
         $badgeTopics = array_unique($badgeTopics);
         return $badgeTopics;

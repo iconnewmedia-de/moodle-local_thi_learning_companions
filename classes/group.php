@@ -159,7 +159,7 @@ class group {
 
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER, $PAGE;
-        $PAGE->set_context(\context_system::instance());
+//        $PAGE->set_context(\context_system::instance()); // ICTODO: figure out why this was added in the first place - it can cause warnings if the context has already been set
 
         if (is_null($userid)) {
             $userid = $USER->id;

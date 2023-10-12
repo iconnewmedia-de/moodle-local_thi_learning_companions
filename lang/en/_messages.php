@@ -60,10 +60,10 @@ $string['message_invited_to_group_body_html'] = '<h4>Hello {$a->receivername},</
 <p>
 {$a->sendername} has invited you into the group "{$a->groupname}".</p>';
 
-$string['message_qualified_mentor_subject'] = 'You have qualified as a mentor for the course {$course->fullname}';
-$string['message_qualified_mentor_body'] = 'Dear {$user->firstname},
-You have completed the course "{$course->fullname}" with a great score and have thereby qualified to become a mentor for that course.
+$string['message_qualified_mentor_subject'] = 'You have qualified as a mentor for the course {$a->coursefullname}';
+$string['message_qualified_mentor_body'] = 'Dear {$a->firstname},
+You have completed the course "{$a->coursefullname}" with a great score and have thereby qualified to become a mentor for that course.
 Becoming a mentor means that fellow students can use this platform to contact you and ask questions regarding the topics that you\'ve qualified for.
 Whether you become a mentor or not is up to you, it is optional and completely voluntary.
-To become a mentor, please follow this link: <a href="{$link}">{$link}</a>';
+To become a mentor, please follow this link: <a href="{$a->link}">{$a->link}</a>';
 $string['message_qualified_mentor_smallmessage'] = 'Want to become a mentor?';

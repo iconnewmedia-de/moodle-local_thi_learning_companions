@@ -17,6 +17,8 @@
 /**
  * Plugin strings are defined here.
  *
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
  * @package     local_learningcompanions
  * @category    string
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
@@ -199,10 +201,6 @@ $string['filter_badges'] = 'Badge';
 $string['filter_super_mentor'] = 'Super mentor';
 $string['filter_creation_date'] = 'Minimum creation date';
 
-require '_messages.php';
-require '_navbar.php';
-require '_chat.php';
-
 $string['modal-deletecomment-title'] = 'Delete this comment?';
 $string['modal-deletecomment-text'] = 'Are you sure that you want to delete your comment? This can\'t be undone!';
 $string['modal-deletecomment-okaybutton'] = 'Delete comment';
@@ -312,3 +310,7 @@ $string['selectusers'] = 'Select user(s)';
 $string['group_invite_placeholder'] = 'Please type to search for users';
 $string['group_invite_noselection'] = 'No users selected yet';
 $string['users_invited'] = 'The selected user(s) got invited';
+
+require '_messages.php';
+require '_navbar.php';
+require '_chat.php';

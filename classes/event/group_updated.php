@@ -19,6 +19,8 @@ namespace local_learningcompanions\event;
 /**
  * The group_updated event class.
  *
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
  * @package     local_learningcompanions
  * @category    event
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <spiros.tzanetatos@iconnewmedia.de>

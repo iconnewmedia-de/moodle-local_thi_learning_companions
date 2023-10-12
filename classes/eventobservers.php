@@ -34,8 +34,6 @@ class eventobservers {
         $config = get_config('local_learningcompanions');
         $badgeTypesForMentors = $config->badgetypes_for_mentors;
         $badgeTypesForMentors = explode(',', $badgeTypesForMentors);
-        array_walk($badgeTypesForMentors, 'trim');
-        array_walk($badgeTypesForMentors, 'strtolower');
         $data = $event->get_data();
         if (empty($data['courseid'])) {
             return;
@@ -43,8 +41,9 @@ class eventobservers {
         $badge = $DB->get_record('badge', array('id' => $data['objectid']));
         $sendNotification = false;
         $badgename = strtolower($badge->name);
-        foreach($badgeTypesForMentors as $badgeTypesForMentor) {
-            if (strpos($badgeTypesForMentor, $badgename) > -1) {
+        foreach($badgeTypesForMentors as $badgeType) {
+            $badgeType = strtolower(trim($badgeType));
+            if (strpos($badgename, $badgeType) > -1) {
                 $sendNotification = true;
                 break;
             }
@@ -62,7 +61,7 @@ class eventobservers {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function config_log_created(\core\event\config_log_created $event) {
+    public static function config_log_created(\core\event\config_log_created $event) {
         $data = $event->get_data();
         $info = $data['other'];
         if ($info['plugin'] !== 'local_learningcompanions' || $info['name'] !== 'commentactivities') {
