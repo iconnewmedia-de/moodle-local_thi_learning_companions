@@ -12,6 +12,7 @@ class eventobservers {
         global $DB;
         $data = $event->get_data();
         $modulename = $data['other']['modulename'];
+        require_once __DIR__ . "/../locallib.php";
         $whitelist = get_moduletypes_for_commentblock();
         if (!in_array($modulename, $whitelist)) {
             return;

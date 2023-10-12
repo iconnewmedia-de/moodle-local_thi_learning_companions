@@ -99,4 +99,12 @@ $capabilities = [
             'manager' => CAP_ALLOW
         ],
     ],
+    'local/learningcompanions:view_all_mentor_questions' => [
+        'riskbitmask' => RISK_MANAGETRUST,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'manager' => CAP_ALLOW
+        ],
+    ],
 ];

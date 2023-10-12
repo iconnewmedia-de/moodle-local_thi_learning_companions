@@ -2,6 +2,7 @@
 
 namespace local_learningcompanions;
 
+use core\session\exception;
 use local_learningcompanions\traits\is_db_saveable;
 
 class question {
@@ -61,6 +62,15 @@ class question {
 
         return $question;
     }
+    private static function question_with_no_permission($record): self {
+        $question = new self(0, 0,
+            get_string('no_permission_for_this_question', 'local_learningcompanions'),
+            get_string('invalid_question_id', 'local_learningcompanions'), '');
+        $question->id = 0;
+        $question->timecreated = time();
+        $question->timeclosed = time();
+        return $question;
+    }
 
     public function mark_closed(): self {
         $this->timeclosed = time();
@@ -71,12 +81,25 @@ class question {
      * @param $questionid
      * @return \local_learningcompanions\question
      * @throws \dml_exception
+     * @throws \exception
      */
     public static function get_question_by_id($questionid) {
-        global $DB;
+        global $DB, $USER;
         $record = $DB->get_record('lc_mentor_questions', array('id' => $questionid));
-        // ICTODO: make sure the user has the right to see the question
-        return self::from_record($record);
+        if (!$record) {
+            throw new \exception('invalid_question_id', 'local_learningcompanions');
+        }
+        $isMentor = \local_learningcompanions\mentors::is_mentor();
+        $context = \context_system::instance();
+        if (($isMentor && $record->mentorid == 0)
+            || $USER->id == $record->askedby
+            || $USER->id == $record->mentorid
+            || has_capability('local/learningcompanions:view_all_mentor_questions', $context)
+        ) {
+            return self::from_record($record);
+        } else {
+            return self::question_with_no_permission();
+        }
     }
 
     /**
