@@ -674,7 +674,9 @@ class groups {
      */
     public static function may_view_group(int $groupid) {
         global $USER;
+        $isGroupMember = self::is_group_member($USER->id, $groupid);
         $context = \context_system::instance();
-        return self::is_group_member($USER->id, $groupid) || has_capability('local/learningcompanions:group_manage', $context);
+        $mayManageGroups = has_capability('local/learningcompanions:group_manage', $context);
+        return $isGroupMember || $mayManageGroups;
     }
 }

@@ -40,7 +40,7 @@ class select_users_to_invite_form extends \moodleform
     {
         $context = $this->_customdata->context;
         $groupid = $context->id;
-        if (groups::may_view_group($groupid)) {
+        if (!groups::may_view_group($groupid)) {
             print_error('no_permission_invite_group', 'local_learningcompanions');
         }
         $mform = $this->_form;
