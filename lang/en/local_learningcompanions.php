@@ -310,6 +310,7 @@ $string['selectusers'] = 'Select user(s)';
 $string['group_invite_placeholder'] = 'Please type to search for users';
 $string['group_invite_noselection'] = 'No users selected yet';
 $string['users_invited'] = 'The selected user(s) got invited';
+$string['modal-groupdetails-needsnewadmin'] = 'Please choose a new administrator for the group';
 
 require '_messages.php';
 require '_navbar.php';

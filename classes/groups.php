@@ -337,7 +337,28 @@ class groups {
         $record->userid = $userid;
         $record->isadmin = $isadmin;
         $record->joined = time();
-        return $DB->insert_record('lc_group_members', $record);
+        $isEmptyGroup = self::is_group_empty($groupid);
+        $recordID = $DB->insert_record('lc_group_members', $record);
+        if ($isEmptyGroup) {
+            self::make_admin($userid, $groupid);
+        }
+        return $recordID;
+    }
+
+    /**
+     * @param int $groupid
+     * @return bool
+     * @throws \dml_exception
+     */
+    public static function is_group_empty(int $groupid) {
+        global $DB;
+        return !$DB->record_exists_sql("SELECT gm.* 
+                FROM {lc_group_members} gm
+                JOIN {user} u ON gm.userid = u.id
+                    AND u.deleted = 0
+                WHERE gm.groupid = ?",
+            array($groupid)
+        );
     }
 
     /**
