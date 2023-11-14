@@ -1,5 +1,8 @@
 <?php
 namespace local_learningcompanions;
+use local_learningcompanions\event\mentor_assigned;
+use local_learningcompanions\event\question_created;
+
 require_once __DIR__ . "/../locallib.php";
 require_once $CFG->libdir . "/badgeslib.php";
 require_once $CFG->dirroot . "/badges/classes/badge.php";
@@ -442,8 +445,10 @@ class mentors {
             $obj = new \stdClass();
             $obj->userid = $userid;
             $obj->topic = $topic;
-            $DB->insert_record('lc_mentors', $obj);
+            $mentorId = $DB->insert_record('lc_mentors', $obj);
             self::assign_mentor_role($userid);
+
+            mentor_assigned::make($userid, $mentorId)->trigger();
             \core\notification::success(get_string('mentorship_assigned_to_topic', 'local_learningcompanions', $topicClean));
         } catch(\Exception $e) {
             \core\notification::error(get_string('mentorship_error_unknown', 'local_learningcompanions', $e->getMessage()));
@@ -489,7 +494,8 @@ class mentors {
         $obj->question = $question;
         $obj->timeclosed = 0;
         $obj->timecreated = time();
-        $DB->insert_record('lc_mentor_questions', $obj);
+        $questionId = $DB->insert_record('lc_mentor_questions', $obj);
+        question_created::make($askedby, $questionId)->trigger();
     }
 
     /**

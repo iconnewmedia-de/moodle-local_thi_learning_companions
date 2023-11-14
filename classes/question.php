@@ -3,6 +3,8 @@
 namespace local_learningcompanions;
 
 use core\session\exception;
+use local_learningcompanions\event\question_answered;
+use local_learningcompanions\event\question_created;
 use local_learningcompanions\traits\is_db_saveable;
 
 class question {
@@ -40,6 +42,7 @@ class question {
 
         $new_question = new self($USER->id, 0, $question, $title, $topic);
         $new_question->save();
+        question_created::make($USER->id, $new_question->id)->trigger();
         return $new_question;
     }
 
@@ -48,6 +51,7 @@ class question {
 
         $new_question = new self($USER->id, $mentorid, $question, $title, $topic);
         $new_question->save();
+        question_created::make($USER->id, $new_question->id)->trigger();
         return $new_question;
     }
 
@@ -73,7 +77,9 @@ class question {
     }
 
     public function mark_closed(): self {
+        global $USER;
         $this->timeclosed = time();
+        question_answered::make($USER->id, $this->id)->trigger();
         return $this;
     }
 

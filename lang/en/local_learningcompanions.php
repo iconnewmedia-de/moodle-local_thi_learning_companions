@@ -315,3 +315,4 @@ $string['modal-groupdetails-needsnewadmin'] = 'Please choose a new administrator
 require '_messages.php';
 require '_navbar.php';
 require '_chat.php';
+require '_events.php';

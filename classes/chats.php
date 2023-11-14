@@ -1,6 +1,11 @@
 <?php
 namespace local_learningcompanions;
 
+use local_learningcompanions\event\comment_created;
+use local_learningcompanions\event\comment_reported;
+use local_learningcompanions\event\question_responded;
+use local_learningcompanions\event\super_mentor_assigned;
+
 class chats {
     const CHAT_TYPE_MENTOR = 0;
     const CHAT_TYPE_GROUP = 1;
@@ -39,6 +44,8 @@ class chats {
         if (!$mayViewChat) {
             throw new \Exception(get_string('no_permission_for_this_chat', 'local_learningcompanions'));
         }
+
+        $chat = chat::get_chat_by_id($chatId);
 
         $context    = \context_system::instance();
         $comment->timecreated = time();
@@ -87,6 +94,12 @@ class chats {
         $DB->set_field('lc_chat_comment', 'comment', $comment->comment, ['id'=>$comment->id]);
         $success = self::add_attachment($comment, $formdata);
         self::set_latest_comment($comment->chatid);
+
+        if ((int)$chat->chattype === groups::CHATTYPE_MENTOR) {
+            question_responded::make($USER->id, $chatId, $comment->id)->trigger();
+        } else {
+            comment_created::make($USER->id, $comment->chatid, $comment->id)->trigger();
+        }
 
         return $success;
     }
@@ -210,7 +223,11 @@ class chats {
         $comment->flagged = 1;
         $comment->flaggedby = $USER->id;
         $comment->timemodified = time();
-        return $DB->update_record('lc_chat_comment', $comment);
+        $result = $DB->update_record('lc_chat_comment', $comment);
+
+        comment_reported::make($commentid, $USER->id)->trigger();
+
+        return $result;
     }
 
     public static function unflag_comment($commentid) {
@@ -282,6 +299,7 @@ class chats {
         $ratingCount = \local_learningcompanions\mentors::count_mentor_ratings($userid);
         if ($ratingCount === $minComments) {
             \local_learningcompanions\messages::notify_supermentor($userid);
+            super_mentor_assigned::make($userid)->trigger();
         }
     }
 

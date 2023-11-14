@@ -23,14 +23,43 @@ namespace local_learningcompanions\event;
  *
  * @package     local_learningcompanions
  * @category    event
- * @copyright   2022 ICON Vernetzte Kommunikation GmbH <spiros.tzanetatos@iconnewmedia.de>
+ * @copyright   2023 ICON Vernetzte Kommunikation GmbH <spiros.tzanetatos@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class group_created extends \core\event\base {
 
     // For more information about the Events API please visit {@link https://docs.moodle.org/dev/Events_API}.
-    protected function init()
-    {
-        // TODO: Implement init() method.
+    protected function init() {
+        $this->data['crud'] = 'c';
+        $this->data['edulevel'] = self::LEVEL_OTHER;
+        $this->data['objecttable'] = 'lc_groups';
+        $this->data['context'] = \context_system::instance();
+    }
+
+    protected function validate_data() {
+        parent::validate_data();
+
+        if (!isset($this->data['objectid'])) {
+            throw new \coding_exception('The \'objectid\' value must be set.');
+        }
+
+        if (!isset($this->data['userid'])) {
+            throw new \coding_exception('The \'userid\' value must be set.');
+        }
+    }
+
+    public static function get_name() {
+        return get_string('event_group_created', 'local_learningcompanions');
+    }
+
+    public function get_description() {
+        return "The user with id '$this->userid' created a group with id '$this->objectid'.";
+    }
+
+    public static function make(int $creatorId, int $groupId) {
+        return self::create([
+            'objectid' => $groupId,
+            'userid' => $creatorId,
+        ]);
     }
 }

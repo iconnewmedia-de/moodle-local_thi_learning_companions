@@ -16,8 +16,10 @@ $PAGE->requires->css('/local/learningcompanions/js_lib/balloon.css');
 $PAGE->navbar->add(get_string('navbar_groups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/index.php'));
 $PAGE->navbar->add(get_string('navbar_findgroups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/search.php'));
 
-$groups = \local_learningcompanions\groups::get_all_groups(true);
+$groups = \local_learningcompanions\groups::get_all_groups();
 $hasgroups = count($groups) > 0;
+
+\local_learningcompanions\event\group_searched::make($USER->id)->trigger();
 
 echo $OUTPUT->header();
 $creategroupurl = $CFG->wwwroot . '/local/learningcompanions/group/create.php';

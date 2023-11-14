@@ -2,6 +2,11 @@
 
 namespace local_learningcompanions;
 
+use local_learningcompanions\event\group_created;
+use local_learningcompanions\event\group_deleted;
+use local_learningcompanions\event\group_joined;
+use local_learningcompanions\event\group_left;
+use local_learningcompanions\event\group_updated;
 use local_learningcompanions\forms\create_edit_group_form;
 
 class groups {
@@ -260,6 +265,8 @@ class groups {
             self::group_add_member($groupid, $USER->id, 1);
             self::create_group_chat($groupid);
             $transaction->allow_commit();
+
+            group_created::make($USER->id, $groupid)->trigger();
             return $groupid;
         } catch (\Exception $e) {
             $transaction->rollback($e);
@@ -287,7 +294,7 @@ class groups {
      * @throws \dml_exception
      */
     public static function group_update($groupid, $name, $description, $closedgroup, $keywords, $courseid, $cmid, $image) {
-        global $DB;
+        global $DB, $USER;
         // ICTODO: make sure that user may update this group
         $group = $DB->get_record('lc_groups', ['id' => $groupid], '*', MUST_EXIST);
         $group->name = $name;
@@ -297,6 +304,9 @@ class groups {
         $group->courseid = $courseid;
         $group->cmid = $cmid;
         $DB->update_record('lc_groups', $group);
+
+        group_updated::make($USER->id, $groupid)->trigger();
+
         self::group_assign_keywords($groupid, $keywords);
         self::save_group_image($groupid, $image);
     }
@@ -342,6 +352,9 @@ class groups {
         if ($isEmptyGroup) {
             self::make_admin($userid, $groupid);
         }
+
+        group_joined::make($userid, $groupid)->trigger();
+
         return $recordID;
     }
 
@@ -446,6 +459,8 @@ class groups {
     public static function leave_group(int $userId, int $groupId) {
         global $DB;
         $deleted = $DB->delete_records('lc_group_members', ['groupid' => $groupId, 'userid' => $userId]);
+        group_left::make($userId, $groupId)->trigger();
+
         $group = new group($groupId);
 
         // If the group is a closed group, and the user was the last member, delete the group
@@ -612,7 +627,17 @@ class groups {
      * @throws \dml_transaction_exception
      */
     public static function delete_group(int $groupId) {
-        global $DB;
+        global $DB, $USER;
+
+        $event = group_deleted::make($USER->id, $groupId);
+        $event->add_record_snapshot('lc_groups', $DB->get_record('lc_groups', ['id' => $groupId]));
+        $event->add_record_snapshot('lc_chat', $DB->get_record('lc_chat', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]));
+        $groupMembers = $DB->get_records('lc_group_members', ['groupid' => $groupId]);
+        foreach ($groupMembers as $groupMember) {
+            $event->add_record_snapshot('lc_group_members', $groupMember);
+        }
+        $event->trigger();
+
         $transaction = $DB->start_delegated_transaction();
         //Get Chat ID
         $chatId = $DB->get_field('lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]);
