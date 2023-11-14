@@ -495,7 +495,7 @@ class mentors {
         $obj->timeclosed = 0;
         $obj->timecreated = time();
         $questionId = $DB->insert_record('lc_mentor_questions', $obj);
-        question_created::make($askedby, $questionId)->trigger();
+        question_created::make($askedby, $questionId, $topic, $mentorid)->trigger();
     }
 
     /**

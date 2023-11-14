@@ -6,7 +6,7 @@ class question_created extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
-        $this->data['context'] = \context_system::instance();
+        $this->context = \context_system::instance();
         $this->data['objecttable'] = 'lc_mentor_questions';
     }
 
@@ -15,6 +15,9 @@ class question_created extends \core\event\base {
     }
 
     public function get_description() {
+        if ($this->relateduserid != 0) {
+            return "The user with id '$this->userid' has created the question with id '$this->objectid' for mentor with id '$this->relateduserid'.";
+        }
         return "The user with id '$this->userid' has created the question with id '$this->objectid'.";
     }
 
@@ -26,12 +29,20 @@ class question_created extends \core\event\base {
         if (!isset($this->data['userid'])) {
             throw new \coding_exception('The \'userid\' must be set.');
         }
+
+        if (!isset($this->data['other']['topic'])) {
+            throw new \coding_exception('The \'other[topic]\' must be set.');
+        }
     }
 
-    public static function make(int $userId, int $questionId) {
+    public static function make(int $userId, int $questionId, string $topic, int $mentorId = 0) {
         return self::create([
             'objectid' => $questionId,
             'userid' => $userId,
+            'relateduserid' => $mentorId,
+            'other' => [
+                'topic' => $topic,
+            ]
         ]);
     }
 }

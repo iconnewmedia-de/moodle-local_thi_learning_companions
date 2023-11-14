@@ -42,7 +42,7 @@ class question {
 
         $new_question = new self($USER->id, 0, $question, $title, $topic);
         $new_question->save();
-        question_created::make($USER->id, $new_question->id)->trigger();
+        question_created::make($USER->id, $new_question->id, $topic)->trigger();
         return $new_question;
     }
 
@@ -51,7 +51,7 @@ class question {
 
         $new_question = new self($USER->id, $mentorid, $question, $title, $topic);
         $new_question->save();
-        question_created::make($USER->id, $new_question->id)->trigger();
+        question_created::make($USER->id, $new_question->id, $topic, $mentorid)->trigger();
         return $new_question;
     }
 

@@ -33,7 +33,6 @@ class group_created extends \core\event\base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'lc_groups';
-        $this->data['context'] = \context_system::instance();
     }
 
     protected function validate_data() {
@@ -46,6 +45,14 @@ class group_created extends \core\event\base {
         if (!isset($this->data['userid'])) {
             throw new \coding_exception('The \'userid\' value must be set.');
         }
+
+        if (!isset($this->data['other']['courseid'])) {
+            throw new \coding_exception('The \'other[courseid]\' value must be set.');
+        }
+
+        if (!isset($this->data['other']['topics'])) {
+            throw new \coding_exception('The \'other[topics]\' value must be set.');
+        }
     }
 
     public static function get_name() {
@@ -56,10 +63,22 @@ class group_created extends \core\event\base {
         return "The user with id '$this->userid' created a group with id '$this->objectid'.";
     }
 
-    public static function make(int $creatorId, int $groupId) {
-        return self::create([
+    public static function make(int $creatorId, int $groupId, array $topics = [], int $courseId = 0, int $cmId = 0) {
+        $params = [
             'objectid' => $groupId,
             'userid' => $creatorId,
-        ]);
+            'other' => [
+                'topics' => $topics,
+                'courseid' => $courseId,
+            ]
+        ];
+
+        if ($cmId) {
+            $params['contextid'] = $cmId;
+        } else {
+            $params['context'] = \context_system::instance();
+        }
+
+        return self::create($params);
     }
 }

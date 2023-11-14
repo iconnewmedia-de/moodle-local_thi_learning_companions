@@ -7,7 +7,7 @@ class comment_reported extends \core\event\base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'lc_chat_comment';
-        $this->data['context'] = \context_system::instance();
+        $this->context = \context_system::instance();
     }
 
     public static function get_name() {

@@ -266,7 +266,7 @@ class groups {
             self::create_group_chat($groupid);
             $transaction->allow_commit();
 
-            group_created::make($USER->id, $groupid)->trigger();
+            group_created::make($USER->id, $groupid, $data->keywords, $record->courseid, $record->cmid)->trigger();
             return $groupid;
         } catch (\Exception $e) {
             $transaction->rollback($e);

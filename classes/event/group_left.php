@@ -32,7 +32,7 @@ class group_left extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_OTHER;
-        $this->data['context'] = \context_system::instance();
+        $this->context = \context_system::instance();
         $this->data['objecttable'] = 'lc_groups';
     }
 
