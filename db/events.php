@@ -25,6 +25,11 @@ $observers = [
         'internal' => false,
     ],
     [
+        'eventname' => '\core\event\course_restored',
+        'callback' => '\local_learningcompanions\eventobservers::course_restored',
+        'internal' => false,
+    ],
+    [
         'eventname'   => '\core\event\badge_awarded',
         'callback'    => '\local_learningcompanions\eventobservers::badge_awarded'
     ],

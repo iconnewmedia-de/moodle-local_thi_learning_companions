@@ -23,6 +23,18 @@ class eventobservers {
     }
 
     /**
+     * @param \core\event\course_restored $event
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function course_restored(\core\event\course_restored $event) {
+        global $CFG;
+        require_once $CFG->dirroot . '/local/learningcompanions/locallib.php';
+        \local_learningcompanions\add_comment_blocks();
+    }
+
+    /**
      * When users receive a new badge: Notify them that they can become a mentor (for certain badges)
      * @param \core\event\badge_awarded $event
      * @return void
