@@ -1,11 +1,11 @@
-/* eslint-disable jsdoc/require-jsdoc, no-console, max-len */
+/* eslint-disable no-console, max-len */
 import $ from 'jquery';
 import * as str from 'core/str';
 import * as ModalFactory from 'core/modal_factory';
 import * as ModalEvents from 'core/modal_events';
 import * as datatablesHelpers from 'local_learningcompanions/datatables-helpers';
 import {promiseAjax} from "local_learningcompanions/ajax";
-// import 'local_learningcompanions/jquery.dataTables';
+// Import 'local_learningcompanions/jquery.dataTables';
 import 'local_learningcompanions/datatables';
 import 'local_learningcompanions/select2';
 import DynamicForm from 'core_form/dynamicform';
@@ -32,7 +32,7 @@ const setupDatatables = async() => {
 
     const url = await str.get_string('datatables_url', 'local_learningcompanions');
 
-    // eslint-disable-next-line promise/catch-or-return,promise/always-return
+
     $('#allgroupstable').DataTable({
         dom: 'lrtip',
         language: {
@@ -46,7 +46,7 @@ const setupDatatables = async() => {
             datatablesHelpers.makeTablesFullWidth();
             datatablesHelpers.initOrSearch('.js-group-filter--or-search', table);
 
-            // trigger onchange event for course name filter upon page load in case we prefilter by course name
+            // Trigger onchange event for course name filter upon page load in case we prefilter by course name
             var theinput = document.querySelector('input[data-target="course"]');
             theinput.dispatchEvent(new Event('change'));
         },
@@ -118,7 +118,7 @@ export const handleGroupInviteButton = async function(e) {
         modal.destroy();
     });
     modal.show();
-    $('#id_cancel').on('click', function(e){
+    $('#id_cancel').on('click', function(e) {
         e.preventDefault();
         modal.destroy();
         return false;
