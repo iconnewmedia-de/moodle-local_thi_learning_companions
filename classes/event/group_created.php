@@ -74,7 +74,7 @@ class group_created extends \core\event\base {
         ];
 
         if ($cmId) {
-            $params['contextid'] = $cmId;
+            $params['contextid'] = \context_module::instance($cmId)->id;
         } else {
             $params['context'] = \context_system::instance();
         }
