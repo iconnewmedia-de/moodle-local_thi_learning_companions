@@ -5,10 +5,10 @@ global $CFG, $DB;
 
 if ($oldversion < 2023020201) {
     $dbman = $DB->get_manager();
-    // Define table lc_bbb to be created.
-    $table = new xmldb_table('lc_bbb');
+    // Define table thi_lc_bbb to be created.
+    $table = new xmldb_table('thi_lc_bbb');
 
-    // Adding fields to table lc_bbb.
+    // Adding fields to table thi_lc_bbb.
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
     $table->add_field('type', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0');
     $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
@@ -52,10 +52,10 @@ if ($oldversion < 2023020201) {
     $table->add_field('completionengagementpollvotes', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
     $table->add_field('completionengagementemojis', XMLDB_TYPE_INTEGER, '9', null, XMLDB_NOTNULL, null, '0');
 
-    // Adding keys to table lc_bbb.
+    // Adding keys to table thi_lc_bbb.
     $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 
-    // Conditionally launch create table for lc_bbb.
+    // Conditionally launch create table for thi_lc_bbb.
     if (!$dbman->table_exists($table)) {
         $dbman->create_table($table);
     }

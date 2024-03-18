@@ -5,8 +5,8 @@ if ($oldversion < 2022101300) {
     $dbman = $DB->get_manager();
 
 
-// ##################### CREATE NEW TABLE lc_groups
-    $table = new xmldb_table('lc_groups');
+// ##################### CREATE NEW TABLE thi_thi_lc_groups
+    $table = new xmldb_table('thi_thi_lc_groups');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field name
@@ -32,8 +32,8 @@ if ($oldversion < 2022101300) {
     }
 
 
-// ##################### CREATE NEW TABLE lc_keywords
-    $table = new xmldb_table('lc_keywords');
+// ##################### CREATE NEW TABLE thi_lc_keywords
+    $table = new xmldb_table('thi_lc_keywords');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field keyword
@@ -45,8 +45,8 @@ if ($oldversion < 2022101300) {
     }
 
 
-// ##################### CREATE NEW TABLE lc_groups_keywords
-    $table = new xmldb_table('lc_groups_keywords');
+// ##################### CREATE NEW TABLE thi_thi_lc_groups_keywords
+    $table = new xmldb_table('thi_thi_lc_groups_keywords');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field groupid
@@ -61,8 +61,8 @@ if ($oldversion < 2022101300) {
     }
 
 
-// ##################### CREATE NEW TABLE lc_group_members
-    $table = new xmldb_table('lc_group_members');
+// ##################### CREATE NEW TABLE thi_thi_lc_group_requests
+    $table = new xmldb_table('thi_thi_lc_group_requests');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field groupid

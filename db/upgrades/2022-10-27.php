@@ -5,8 +5,8 @@ global $DB;
 if ($oldversion < 2022102801) {
     $dbman = $DB->get_manager();
 
-    // ##################### CREATE NEW TABLE lc_mentor_questions
-    $table = new xmldb_table('lc_mentor_questions');
+    // ##################### CREATE NEW TABLE thi_lc_mentor_questions
+    $table = new xmldb_table('thi_lc_mentor_questions');
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true);
     $table->add_field('askedby', XMLDB_TYPE_INTEGER, '10', NULL, true, false);
     $table->add_field('mentorid', XMLDB_TYPE_INTEGER, '10', NULL, false, false);
@@ -18,8 +18,8 @@ if ($oldversion < 2022102801) {
         $dbman->create_table($table);
     }
 
-    // ##################### CREATE NEW TABLE lc_mentor_answers
-    $table = new xmldb_table('lc_mentor_answers');
+    // ##################### CREATE NEW TABLE thi_lc_mentor_answers
+    $table = new xmldb_table('thi_lc_mentor_answers');
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true);
     $table->add_field('questionid', XMLDB_TYPE_INTEGER, '10', NULL, true, false);
     $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', NULL, true, false);

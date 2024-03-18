@@ -14,7 +14,7 @@ class comment {
     public function __construct($id) {
         global $DB;
         $this->id = $id;
-        $comment = $DB->get_record('lc_chat_comment', array('id' => $id));
+        $comment = $DB->get_record('thi_lc_chat_comment', array('id' => $id));
         foreach($comment as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->$key = $value;

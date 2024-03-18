@@ -4,7 +4,7 @@
      xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="lc_groups" COMMENT="the learning companion groups that were created by users">
+    <TABLE NAME="thi_lc_groups" COMMENT="the learning companion groups that were created by users">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
@@ -21,7 +21,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="lc_keywords" COMMENT="keywords that are assigned to groups">
+    <TABLE NAME="thi_lc_keywords" COMMENT="keywords that are assigned to groups">
         <FIELDS>
             <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
             <FIELD NAME="keyword" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false"/>
@@ -33,7 +33,7 @@
             <INDEX NAME="keyword" UNIQUE="true" FIELDS="keyword" COMMENT="Speed up keyword lookups and don't want the same keyword to exist twice"/>
         </INDEXES>
     </TABLE>
-    <TABLE NAME="lc_groups_keywords" COMMENT="which keywords are assigned to which group">
+    <TABLE NAME="thi_lc_groups_keywords" COMMENT="which keywords are assigned to which group">
         <FIELDS>
             <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
             <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -46,7 +46,7 @@
             <INDEX NAME="group_keyword" UNIQUE="true" FIELDS="groupid,keywordid" COMMENT="Don't want the same keyword to get assigned to a group more than once"/>
         </INDEXES>
     </TABLE>
-    <TABLE NAME="lc_group_members" COMMENT="who is member of the group, obviously ;)">
+    <TABLE NAME="thi_thi_lc_group_requests" COMMENT="who is member of the group, obviously ;)">
        <FIELDS>
             <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
             <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -80,7 +80,7 @@
        <INDEX NAME="group_user" UNIQUE="true" FIELDS="groupid,userid" COMMENT="Don't want the same user to request to join a group more than once"/>
      </INDEXES>
     </TABLE>
-    <TABLE NAME="lc_mentors" COMMENT="who is registered as a mentor">
+    <TABLE NAME="thi_lc_mentors" COMMENT="who is registered as a mentor">
         <FIELDS>
             <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
             <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -93,27 +93,27 @@
             <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
         </INDEXES>
     </TABLE>
-     <TABLE NAME="lc_users_mentors" COMMENT="which user has chosen which mentor">
+     <TABLE NAME="thi_lc_users_mentors" COMMENT="which user has chosen which mentor">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-                <FIELD NAME="mentorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="references lc_mentors.id"/>
+                <FIELD NAME="mentorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="references thi_lc_mentors.id"/>
             </FIELDS>
              <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-                <KEY NAME="fk_mentorid" TYPE="foreign" FIELDS="mentorid" REFTABLE="lc_mentors" REFFIELDS="id"/>
+                <KEY NAME="fk_mentorid" TYPE="foreign" FIELDS="mentorid" REFTABLE="thi_lc_mentors" REFFIELDS="id"/>
             </KEYS>
             <INDEXES>
                 <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
                 <INDEX NAME="useridmentor" UNIQUE="false" FIELDS="userid"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="lc_chat" COMMENT="contains the chats for groups">
+        <TABLE NAME="thi_lc_chat" COMMENT="contains the chats for groups">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="though the course id can be determined by chattype and relatedid, having it here makes it easier to fetch chats for the course"/>
                 <FIELD NAME="chattype" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="chattype can either be chat with mentors (0) or a group (1)"/>
-                <FIELD NAME="relatedid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="refers to lc_mentor_questions or lc_group, depending on chattype"/>
+                <FIELD NAME="relatedid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="refers to thi_lc_mentor_questions or lc_group, depending on chattype"/>
                 <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
             </FIELDS>
             <KEYS>
@@ -124,7 +124,7 @@
                 <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
              </INDEXES>
         </TABLE>
-        <TABLE NAME="lc_chat_comment" COMMENT="contains the individual comments inside the chat">
+        <TABLE NAME="thi_lc_chat_comment" COMMENT="contains the individual comments inside the chat">
             <FIELDS>
                  <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                  <FIELD NAME="chatid" TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -145,7 +145,7 @@
                 <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="lc_chat_comment_ratings" COMMENT="Users can give a thumbs up to comments. These entries land here in this table">
+        <TABLE NAME="thi_lc_chat_comment_ratings" COMMENT="Users can give a thumbs up to comments. These entries land here in this table">
             <FIELDS>
                  <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                  <FIELD NAME="commentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -158,7 +158,7 @@
                  <INDEX NAME="commentid_userid" UNIQUE="true" FIELDS="commentid,userid"/>
              </INDEXES>
         </TABLE>
-        <TABLE NAME="lc_mentor_questions" COMMENT="contains the questions asked to mentors">
+        <TABLE NAME="thi_lc_mentor_questions" COMMENT="contains the questions asked to mentors">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="askedby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -173,7 +173,7 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="lc_mentor_answers" COMMENT="contains the answers to a question asked to mentors - ICTODO: check if we still need this as we`re actually using the regular chat table">
+        <TABLE NAME="thi_lc_mentor_answers" COMMENT="contains the answers to a question asked to mentors - ICTODO: check if we still need this as we`re actually using the regular chat table">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -186,7 +186,7 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="lc_chat_lastvisited" COMMENT="this table remembers when a user last visited a chat, so we know how many new comments were made since then">
+        <TABLE NAME="thi_lc_chat_lastvisited" COMMENT="this table remembers when a user last visited a chat, so we know how many new comments were made since then">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -202,7 +202,7 @@
                 <INDEX NAME="chatid_userid" UNIQUE="true" FIELDS="userid,chatid" COMMENT="prevents duplicate entries for same user and chat"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="lc_bbb" COMMENT="Same as table bigbluebuttonbn but not tied to course modules">
+        <TABLE NAME="thi_lc_bbb" COMMENT="Same as table bigbluebuttonbn but not tied to course modules">
               <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="groupid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -239,7 +239,7 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
               </KEYS>
           </TABLE>
-          <TABLE NAME="lc_tutor_notifications" COMMENT="this table holds information about when which tutor was informed about unanswered questions to tutors">
+          <TABLE NAME="thi_lc_tutor_notifications" COMMENT="this table holds information about when which tutor was informed about unanswered questions to tutors">
                <FIELDS>
                   <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                   <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>

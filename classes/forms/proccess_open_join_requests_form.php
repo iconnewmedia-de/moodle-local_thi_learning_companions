@@ -25,7 +25,7 @@ class proccess_open_join_requests_form extends \moodleform {
         }
 
         foreach ($openRequests as $request) {
-            $groupname = $DB->get_field('lc_groups', 'name', array('id' => $request->groupid));
+            $groupname = $DB->get_field('thi_lc_groups', 'name', array('id' => $request->groupid));
             $username = $request->user->firstname . ' ' . $request->user->lastname . ' (' . $request->user->email . ')';
             $form->addElement('static', 'request_' . $request->id,
                 get_string('groupjoin_request_group', 'local_thi_learning_companions', $groupname),

@@ -1,8 +1,8 @@
 <?php
 if ($oldversion < 2022112900) {
     $dbman = $DB->get_manager();
-// ##################### CREATE NEW TABLE lc_chat_lastvisited
-    $table = new xmldb_table('lc_chat_lastvisited');
+// ##################### CREATE NEW TABLE thi_lc_chat_lastvisited
+    $table = new xmldb_table('thi_lc_chat_lastvisited');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field userid
@@ -24,8 +24,8 @@ if ($oldversion < 2022112900) {
 }
 
 if ($oldversion < 2022112902) {
-    // ##################### MODIFY TABLE lc_groups
-    $table = new xmldb_table('lc_groups');
+    // ##################### MODIFY TABLE thi_thi_lc_groups
+    $table = new xmldb_table('thi_thi_lc_groups');
 // ------------ add field latestcomment
     $field = new xmldb_field('latestcomment');
     $field->set_attributes(XMLDB_TYPE_INTEGER, '10', NULL, false, false, '0', NULL);

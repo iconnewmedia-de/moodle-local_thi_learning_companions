@@ -25,7 +25,7 @@ class mentors {
 
         $sql = 'SELECT DISTINCT m.userid, GROUP_CONCAT(m.topic) as topics,
                        u.*
-                  FROM {lc_mentors} m
+                  FROM {thi_lc_mentors} m
              LEFT JOIN {user} u ON u.id = m.userid
              ';
         $params = array();
@@ -150,8 +150,8 @@ class mentors {
         $userid = is_null($userid) ? $USER->id : $userid;
         $countMentorRatings = $DB->count_records_sql(
             "SELECT count(distinct cr.id)
-                    FROM {lc_chat_comment} c
-                     JOIN {lc_chat_comment_ratings} cr ON cr.commentid = c.id
+                    FROM {thi_lc_chat_comment} c
+                     JOIN {thi_lc_chat_comment_ratings} cr ON cr.commentid = c.id
                      WHERE c.userid = ?",
             array($userid)
         );
@@ -214,9 +214,9 @@ class mentors {
             $sql = 'SELECT q.*,
                            FROM_UNIXTIME(q.timecreated, "%d.%m.%Y") AS dateasked,
                            IF(q.timeclosed=0, "-", FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i")) AS dateclosed,
-                           (SELECT COUNT(a.id) FROM {lc_mentor_answers} a WHERE a.questionid = q.id) answercount,
-                           (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y") FROM {lc_mentor_answers} a WHERE a.questionid = q.id) lastactivity
-                      FROM {lc_mentor_questions} q';
+                           (SELECT COUNT(a.id) FROM {thi_lc_mentor_answers} a WHERE a.questionid = q.id) answercount,
+                           (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y") FROM {thi_lc_mentor_answers} a WHERE a.questionid = q.id) lastactivity
+                      FROM {thi_lc_mentor_questions} q';
             $params = array();
             $conditions = 0;
 
@@ -246,7 +246,7 @@ class mentors {
 
         $params = array();
         if (!is_null($userid)) $params['mentorid'] = $userid;
-        $questions = $DB->get_records('lc_mentor_questions', $params);
+        $questions = $DB->get_records('thi_lc_mentor_questions', $params);
         if ($onlyopen) {
             $questions = array_filter($questions, function($question) {
                 return is_null($question->timeclosed);
@@ -268,9 +268,9 @@ class mentors {
      */
     public static function delete_asked_question($questionid): bool {
         global $DB;
-        // ICTODO: delete records from lc_chat_comment instead, we don't use lc_mentor_answers anymore
-        return $DB->delete_records('lc_mentor_answers', array('questionid' => $questionid))
-            && $DB->delete_records('lc_mentor_questions', array('id' => $questionid));
+        // ICTODO: delete records from thi_lc_chat_comment instead, we don't use thi_lc_mentor_answers anymore
+        return $DB->delete_records('thi_lc_mentor_answers', array('questionid' => $questionid))
+            && $DB->delete_records('thi_lc_mentor_questions', array('id' => $questionid));
     }
 
     /**
@@ -287,8 +287,8 @@ class mentors {
 
         $sql = 'SELECT m.topic,
                        k.keyword
-                  FROM {lc_mentors} m
-             LEFT JOIN {lc_keywords} k ON k.id = m.topic
+                  FROM {thi_lc_mentors} m
+             LEFT JOIN {thi_lc_keywords} k ON k.id = m.topic
                  WHERE m.userid = ?';
 
         $keywords = $DB->get_records_sql($sql, array($userid));
@@ -374,7 +374,7 @@ class mentors {
         if (is_null($userid)) {
             $userid = $USER->id;
         }
-        $mentorTopics = $DB->get_records('lc_mentors', array('userid' => $userid), '', 'topic');
+        $mentorTopics = $DB->get_records('thi_lc_mentors', array('userid' => $userid), '', 'topic');
         $topics = array_keys($mentorTopics);
         return $topics;
     }
@@ -445,7 +445,7 @@ class mentors {
             $obj = new \stdClass();
             $obj->userid = $userid;
             $obj->topic = $topic;
-            $mentorId = $DB->insert_record('lc_mentors', $obj);
+            $mentorId = $DB->insert_record('thi_lc_mentors', $obj);
             self::assign_mentor_role($userid);
 
             mentor_assigned::make($userid, $mentorId)->trigger();
@@ -494,7 +494,7 @@ class mentors {
         $obj->question = $question;
         $obj->timeclosed = 0;
         $obj->timecreated = time();
-        $questionId = $DB->insert_record('lc_mentor_questions', $obj);
+        $questionId = $DB->insert_record('thi_lc_mentor_questions', $obj);
         question_created::make($askedby, $questionId, $topic, $mentorid)->trigger();
     }
 
@@ -519,7 +519,7 @@ class mentors {
         list($topicsCondition, $topicsParams) = $DB->get_in_or_equal($courseTopics);
         $mentors = $DB->get_records_sql(
             "SELECT DISTINCT u.* FROM {user} u
-                JOIN {lc_mentors} m ON m.userid = u.id
+                JOIN {thi_lc_mentors} m ON m.userid = u.id
                 WHERE u.deleted = 0
                 AND m.topic " . $topicsCondition,
             $topicsParams

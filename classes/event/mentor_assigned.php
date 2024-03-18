@@ -7,7 +7,7 @@ class mentor_assigned extends \core\event\base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->context = \context_system::instance();
-        $this->data['objecttable'] = 'lc_mentors';
+        $this->data['objecttable'] = 'thi_lc_mentors';
     }
 
     public static function get_name() {

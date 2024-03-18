@@ -33,7 +33,7 @@ class group_updated extends \core\event\base {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->context = \context_system::instance();
-        $this->data['objecttable'] = 'lc_groups';
+        $this->data['objecttable'] = 'thi_lc_groups';
     }
 
     public static function get_name() {

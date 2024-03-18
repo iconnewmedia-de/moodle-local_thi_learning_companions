@@ -7,7 +7,7 @@ global $CFG, $DB;
 if ($oldversion < 2023010301) {
     $dbman = $DB->get_manager();
 
-    $table = new xmldb_table('lc_chat_comment');
+    $table = new xmldb_table('thi_lc_chat_comment');
     $field = new xmldb_field('timedeleted', XMLDB_TYPE_INTEGER, '10', null, false, false, null, 'timecreated');
     $dbman->add_field($table, $field);
 

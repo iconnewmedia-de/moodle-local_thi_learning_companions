@@ -7,7 +7,7 @@ class question_responded extends \core\event\base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->context = \context_system::instance();
-        $this->data['objecttable'] = 'lc_chat_comment';
+        $this->data['objecttable'] = 'thi_lc_chat_comment';
     }
 
     public static function get_name() {

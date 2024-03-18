@@ -11,23 +11,23 @@ class chat {
     public static function createGroupChat($groupid): self {
         global $DB;
 
-        if (!$DB->record_exists('lc_groups', ['id' => $groupid])) {
+        if (!$DB->record_exists('thi_lc_groups', ['id' => $groupid])) {
             throw new \moodle_exception('groupnotfound', 'local_thi_learning_companions');
         }
 
         $new_chat = new self();
         $new_chat->groupid = $groupid;
-        $new_chat->chat = $DB->get_record('lc_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
+        $new_chat->chat = $DB->get_record('thi_lc_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
         if ($groupid) {
             if (!$new_chat->chat) {
                 $chat = new \stdClass();
                 $chat->chattype = 1;
                 $chat->relatedid = $groupid;
                 $chat->timecreated = time();
-                $group = $DB->get_record('lc_groups', ['id' => $groupid]);
+                $group = $DB->get_record('thi_lc_groups', ['id' => $groupid]);
                 $chat->course = $group->courseid;
-                $chatid = $DB->insert_record('lc_chat', $chat);
-                $new_chat->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
+                $chatid = $DB->insert_record('thi_lc_chat', $chat);
+                $new_chat->chat = $DB->get_record('thi_lc_chat', ['id' => $chatid]);
             }
             $new_chat->chatid = $new_chat->chat->id;
         }
@@ -65,7 +65,7 @@ class chat {
         $new_chat = new self();
         $new_chat->context = \context_system::instance();
         $new_chat->filestorage = get_file_storage();
-        $new_chat->chat = $DB->get_record('lc_chat', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
+        $new_chat->chat = $DB->get_record('thi_lc_chat', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
 
         if (!$new_chat->chat) {
             $chat = new \stdClass();
@@ -73,8 +73,8 @@ class chat {
             $chat->relatedid = $questionid;
             $chat->timecreated = time();
             $chat->course = 0;
-            $chatid = $DB->insert_record('lc_chat', $chat);
-            $new_chat->chat = $DB->get_record('lc_chat', ['id' => $chatid]);
+            $chatid = $DB->insert_record('thi_lc_chat', $chat);
+            $new_chat->chat = $DB->get_record('thi_lc_chat', ['id' => $chatid]);
         }
         $new_chat->chatid = $new_chat->chat->id;
 
@@ -89,7 +89,7 @@ class chat {
     public static function get_chat_by_id($chatid) {
         global $DB;
         $chat = new self();
-        $chat->chat = $DB->get_record('lc_chat', ['id' => $chatid], '*', MUST_EXIST);
+        $chat->chat = $DB->get_record('thi_lc_chat', ['id' => $chatid], '*', MUST_EXIST);
         $chat->chatid = $chatid;
         return $chat;
     }
@@ -125,7 +125,7 @@ class chat {
         $obj->totalscore = 0;
         $obj->timecreated = time();
         $obj->timemodified = 0;
-        $DB->insert_record('lc_chat_comment', $obj);
+        $DB->insert_record('thi_lc_chat_comment', $obj);
         // ICTODO: save attachments
     }
 
@@ -142,7 +142,7 @@ class chat {
      */
     public function get_comments() {
         global $DB;
-        $comments = $DB->get_records('lc_chat_comment', ['chatid' => $this->chatid], 'timecreated DESC');
+        $comments = $DB->get_records('thi_lc_chat_comment', ['chatid' => $this->chatid], 'timecreated DESC');
         $attachments = $this->get_attachments_of_comments($comments, 'attachments');
         $context = \context_system::instance();
         // ICTODO: also get inline attachments
@@ -177,13 +177,13 @@ class chat {
         $stepSize = 5;
 
         if (is_null($firstPostId)) {
-            $firstPostId = $DB->get_field_sql('SELECT MAX(id) FROM {lc_chat_comment} WHERE chatid = ?', [$this->chatid]);
+            $firstPostId = $DB->get_field_sql('SELECT MAX(id) FROM {thi_lc_chat_comment} WHERE chatid = ?', [$this->chatid]);
             $firstPostId++;
         }
 
         $sql = 'SELECT c.*, GROUP_CONCAT(r.userid) as ratings
-                    FROM {lc_chat_comment} c
-                    LEFT JOIN {lc_chat_comment_ratings} r ON r.commentid = c.id
+                    FROM {thi_lc_chat_comment} c
+                    LEFT JOIN {thi_lc_chat_comment_ratings} r ON r.commentid = c.id
                     WHERE c.chatid = :chatid AND c.id < :firstpostid ';
         $params = ['chatid' => $this->chatid, 'firstpostid' => $firstPostId];
 
@@ -268,8 +268,8 @@ class chat {
 
         //Get the newest comments
         $comments = $DB->get_records_sql('SELECT c.*, GROUP_CONCAT(r.userid) as ratings
-                    FROM {lc_chat_comment} c
-                        LEFT JOIN {lc_chat_comment_ratings} r ON r.commentid = c.id
+                    FROM {thi_lc_chat_comment} c
+                        LEFT JOIN {thi_lc_chat_comment_ratings} r ON r.commentid = c.id
                     WHERE c.chatid = ?
                       AND c.id > ?
                     GROUP BY c.id
@@ -288,17 +288,17 @@ class chat {
 
     public function set_latestviewedcomment(int $chatid) {
         global $DB, $USER;
-        $record = $DB->get_record('lc_chat_lastvisited', ['chatid' => $chatid, 'userid' => $USER->id]);
+        $record = $DB->get_record('thi_lc_chat_lastvisited', ['chatid' => $chatid, 'userid' => $USER->id]);
         if ($record) {
             $record->timevisited = time();
-            $DB->update_record('lc_chat_lastvisited', $record);
+            $DB->update_record('thi_lc_chat_lastvisited', $record);
             return;
         }
         $record = new \stdClass();
         $record->userid = $USER->id;
         $record->chatid = $chatid;
         $record->timevisited = time();
-        $DB->insert_record('lc_chat_lastvisited', $record);
+        $DB->insert_record('thi_lc_chat_lastvisited', $record);
     }
 
     public function get_attachments_of_comments(array $comments, string $area) {
@@ -374,7 +374,7 @@ class chat {
 
     public function get_last_active_time() {
         global $DB;
-        return $DB->get_field_sql('SELECT timecreated FROM {lc_chat_comment} WHERE chatid = ? ORDER BY timecreated DESC LIMIT 1', [$this->chatid]);
+        return $DB->get_field_sql('SELECT timecreated FROM {thi_lc_chat_comment} WHERE chatid = ? ORDER BY timecreated DESC LIMIT 1', [$this->chatid]);
     }
 
     /**
@@ -386,9 +386,9 @@ class chat {
     public function get_last_active_userid(bool $excludeCurrentUser = false) {
         global $DB, $USER;
 
-        $sql = 'SELECT cc.userid FROM mdl_lc_chat_comment cc
-    LEFT JOIN mdl_lc_chat chat ON cc.chatid = chat.id
-    LEFT JOIN mdl_lc_group_members members ON members.groupid = chat.relatedid AND chat.chattype = 1
+        $sql = 'SELECT cc.userid FROM mdl_thi_lc_chat_comment cc
+    LEFT JOIN mdl_thi_lc_chat chat ON cc.chatid = chat.id
+    LEFT JOIN mdl_thi_thi_lc_group_requests members ON members.groupid = chat.relatedid AND chat.chattype = 1
          AND cc.userid = members.userid
     WHERE chatid = ? ';
         $params = [$this->chatid];

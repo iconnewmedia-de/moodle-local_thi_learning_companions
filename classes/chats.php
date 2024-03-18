@@ -11,7 +11,7 @@ class chats {
     const CHAT_TYPE_GROUP = 1;
     public static function get_chat_of_group(int $groupid) {
         global $DB;
-        $chatid = $DB->get_field('lc_chat', 'id', array('relatedid' => $groupid, 'chattype' => self::CHAT_TYPE_GROUP));
+        $chatid = $DB->get_field('thi_lc_chat', 'id', array('relatedid' => $groupid, 'chattype' => self::CHAT_TYPE_GROUP));
         return $chatid;
     }
 
@@ -52,7 +52,7 @@ class chats {
         $comment->userid     = $USER->id;
         $comment->attachment = "";
         $comment->comment = "";
-        $comment->id = $DB->insert_record("lc_chat_comment", $comment);
+        $comment->id = $DB->insert_record("thi_lc_chat_comment", $comment);
         $draftitemid = file_get_submitted_draft_itemid('comment');
         $allowedTags = [
             '<div>',
@@ -91,7 +91,7 @@ class chats {
         $comment->message = strip_tags($comment->message, implode('', $allowedTags));
         $comment->comment = file_save_draft_area_files($draftitemid, $context->id, 'local_thi_learning_companions', 'message', $comment->id,
             $editoroptions, $comment->message);
-        $DB->set_field('lc_chat_comment', 'comment', $comment->comment, ['id'=>$comment->id]);
+        $DB->set_field('thi_lc_chat_comment', 'comment', $comment->comment, ['id'=>$comment->id]);
         $success = self::add_attachment($comment, $formdata);
         self::set_latest_comment($comment->chatid);
 
@@ -112,7 +112,7 @@ class chats {
      */
     public static function may_view_chat($chatId) {
         global $DB;
-        $chat = $DB->get_record('lc_chat', ['id' => $chatId], '*', MUST_EXIST);
+        $chat = $DB->get_record('thi_lc_chat', ['id' => $chatId], '*', MUST_EXIST);
         if ($chat->chattype == \local_thi_learning_companions\groups::CHATTYPE_GROUP) {
             return \local_thi_learning_companions\groups::may_view_group($chat->relatedid);
         }
@@ -126,7 +126,7 @@ class chats {
      */
     public static function may_view_mentorchat($questionId) {
         global $DB, $USER;
-        $question = $DB->get_record('lc_mentor_questions', ['id' => $questionId], '*', MUST_EXIST);
+        $question = $DB->get_record('thi_lc_mentor_questions', ['id' => $questionId], '*', MUST_EXIST);
         if ($USER->id === $question->mentorid || $USER->id === $question->askedby) {
             return true;
         }
@@ -144,17 +144,17 @@ class chats {
      */
     protected static function set_latest_comment($chatid) {
         global $DB;
-        $chat = $DB->get_record('lc_chat', array('id' => $chatid));
+        $chat = $DB->get_record('thi_lc_chat', array('id' => $chatid));
         if (!$chat) {
             return;
         }
         if ($chat->chattype == self::CHAT_TYPE_GROUP) {
-            $group = $DB->get_record('lc_groups', array('id' => $chat->relatedid));
+            $group = $DB->get_record('thi_lc_groups', array('id' => $chat->relatedid));
             if (!$group) {
                 return;
             }
             $group->latestcomment = time();
-            $DB->update_record('lc_groups', $group);
+            $DB->update_record('thi_lc_groups', $group);
         }
     }
 
@@ -218,12 +218,12 @@ class chats {
 
     public static function flag_comment($commentid) {
         global $DB, $USER;
-        $comment = $DB->get_record('lc_chat_comment', array('id' => $commentid));
+        $comment = $DB->get_record('thi_lc_chat_comment', array('id' => $commentid));
         // ICTODO: make sure the user has the permission to flag this comment, e.g. the user has to be in the group or have admin rights otherwise
         $comment->flagged = 1;
         $comment->flaggedby = $USER->id;
         $comment->timemodified = time();
-        $result = $DB->update_record('lc_chat_comment', $comment);
+        $result = $DB->update_record('thi_lc_chat_comment', $comment);
 
         comment_reported::make($commentid, $USER->id)->trigger();
 
@@ -232,10 +232,10 @@ class chats {
 
     public static function unflag_comment($commentid) {
         global $DB;
-        if ($comment = $DB->get_record('lc_chat_comment', array('id' => $commentid))) {
+        if ($comment = $DB->get_record('thi_lc_chat_comment', array('id' => $commentid))) {
             $comment->flagged = 0;
             $comment->timemodified = time();
-            return $DB->update_record('lc_chat_comment', $comment);
+            return $DB->update_record('thi_lc_chat_comment', $comment);
         }
         return false;
         // ICTODO: when comment gets unflagged, should field 'flaggedby' go NULL?
@@ -250,7 +250,7 @@ class chats {
     public static function delete_comment($commentid) {
         global $DB, $USER;
 
-        $comment = $DB->get_record('lc_chat_comment', ['id' => $commentid]);
+        $comment = $DB->get_record('thi_lc_chat_comment', ['id' => $commentid]);
         if (!$comment) {
             return false;
         }
@@ -261,7 +261,7 @@ class chats {
         }
 
         $comment->timedeleted = time();
-        return $DB->update_record('lc_chat_comment', $comment);
+        return $DB->update_record('thi_lc_chat_comment', $comment);
     }
 
     /**
@@ -275,12 +275,12 @@ class chats {
     public static function rate_comment(int $commentid) {
         global $USER, $DB;
         $rating = array('commentid' => $commentid, 'userid' => $USER->id);
-        if ($DB->record_exists('lc_chat_comment_ratings', $rating)) {
-            $DB->delete_records('lc_chat_comment_ratings', $rating);
+        if ($DB->record_exists('thi_lc_chat_comment_ratings', $rating)) {
+            $DB->delete_records('thi_lc_chat_comment_ratings', $rating);
             return false;
         }
-        $DB->insert_record('lc_chat_comment_ratings', $rating);
-        $comment_author = $DB->get_field('lc_chat_comment', 'userid', array('id' => $commentid));
+        $DB->insert_record('thi_lc_chat_comment_ratings', $rating);
+        $comment_author = $DB->get_field('thi_lc_chat_comment', 'userid', array('id' => $commentid));
         self::check_supermentor_qualification($comment_author);
         return true;
     }
@@ -309,7 +309,7 @@ class chats {
         global $CFG, $DB;
         require_once($CFG->dirroot.'/local/thi_learning_companions/lib.php');
 
-        if ($comments = $DB->get_records('lc_chat_comment', ['flagged' => 1], 'timecreated')) {
+        if ($comments = $DB->get_records('thi_lc_chat_comment', ['flagged' => 1], 'timecreated')) {
             $attachments = local_thi_learning_companions_get_attachments_of_chat_comments($comments, 'attachments');
 
             foreach ($comments as $comment) {
@@ -339,7 +339,7 @@ class chats {
             $comment->flaggedbyuser_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$comment->flaggedby;
             $comment->commentdate = date('d.m.Y', $comment->timecreated);
             $comment->relatedchat_url = $CFG->wwwroot;
-            $comment->groupId = $DB->get_field('lc_chat', 'relatedid', ['id' => $comment->chatid]);
+            $comment->groupId = $DB->get_field('thi_lc_chat', 'relatedid', ['id' => $comment->chatid]);
 
             $comment->origincomment = $comment->comment;
             if ($cut && strlen($comment->comment) > 100) {

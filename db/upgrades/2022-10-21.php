@@ -3,8 +3,8 @@ if ($oldversion < 2022102102) {
     $dbman = $DB->get_manager();
 
 
-// ##################### MODIFY TABLE lc_groups
-    $table = new xmldb_table('lc_groups');
+// ##################### MODIFY TABLE thi_thi_lc_groups
+    $table = new xmldb_table('thi_thi_lc_groups');
 // ------------- modify field cmid — changes made: Default value was changed from  to 0
     $field = new xmldb_field('cmid');
     $field->set_attributes($type=XMLDB_TYPE_INTEGER, $length='10', $unsigned=true, $notnull=true, $sequence=false, $default='0', $previous='closedgroup');
@@ -17,8 +17,8 @@ if ($oldversion < 2022102103) {
 
         $dbman = $DB->get_manager();
 
-// ##################### MODIFY TABLE lc_group_members
-        $table = new xmldb_table('lc_group_members');
+// ##################### MODIFY TABLE thi_thi_lc_group_requests
+        $table = new xmldb_table('thi_thi_lc_group_requests');
 // ------------ add field isadmin
         $field = new xmldb_field('isadmin');
         $field->set_attributes(XMLDB_TYPE_INTEGER, '1', NULL, true, false, '0', NULL);

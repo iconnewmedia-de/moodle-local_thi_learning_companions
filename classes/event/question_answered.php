@@ -7,7 +7,7 @@ class question_answered extends \core\event\base {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->context = \context_system::instance();
-        $this->data['objecttable'] = 'lc_mentor_questions';
+        $this->data['objecttable'] = 'thi_lc_mentor_questions';
     }
 
     public static function get_name() {

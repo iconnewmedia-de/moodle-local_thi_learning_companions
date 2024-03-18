@@ -4,8 +4,8 @@ global $DB;
 if ($oldversion < 2022102601) {
     $dbman = $DB->get_manager();
 
-// ##################### MODIFY TABLE lc_chat_comment
-    $table = new xmldb_table('lc_chat_comment');
+// ##################### MODIFY TABLE thi_lc_chat_comment
+    $table = new xmldb_table('thi_lc_chat_comment');
 // ------------ add field 'flaggedby'
     $field = new xmldb_field('flaggedby');
     $field->set_attributes(XMLDB_TYPE_INTEGER, 10, NULL, false, false);

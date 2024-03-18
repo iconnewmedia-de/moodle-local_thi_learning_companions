@@ -5,8 +5,8 @@ if ($oldversion < 2022101900) {
     $dbman = $DB->get_manager();
 
 
-// ##################### CREATE NEW TABLE lc_mentors
-    $table = new xmldb_table('lc_mentors');
+// ##################### CREATE NEW TABLE thi_lc_mentors
+    $table = new xmldb_table('thi_lc_mentors');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field userid
@@ -21,8 +21,8 @@ if ($oldversion < 2022101900) {
     }
 
 
-// ##################### CREATE NEW TABLE lc_users_mentors
-    $table = new xmldb_table('lc_users_mentors');
+// ##################### CREATE NEW TABLE thi_lc_users_mentors
+    $table = new xmldb_table('thi_lc_users_mentors');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field userid
@@ -40,8 +40,8 @@ if ($oldversion < 2022101900) {
     }
 
 
-// ##################### CREATE NEW TABLE lc_chat
-    $table = new xmldb_table('lc_chat');
+// ##################### CREATE NEW TABLE thi_lc_chat
+    $table = new xmldb_table('thi_lc_chat');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field course
@@ -61,8 +61,8 @@ if ($oldversion < 2022101900) {
     }
 
 
-// ##################### CREATE NEW TABLE lc_chat_comment
-    $table = new xmldb_table('lc_chat_comment');
+// ##################### CREATE NEW TABLE thi_lc_chat_comment
+    $table = new xmldb_table('thi_lc_chat_comment');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field chatid

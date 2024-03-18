@@ -32,7 +32,7 @@ class group_created extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
-        $this->data['objecttable'] = 'lc_groups';
+        $this->data['objecttable'] = 'thi_lc_groups';
     }
 
     protected function validate_data() {
