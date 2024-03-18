@@ -17,8 +17,8 @@ if ($oldversion < 2022102103) {
 
         $dbman = $DB->get_manager();
 
-// ##################### MODIFY TABLE thi_thi_lc_group_requests
-        $table = new xmldb_table('thi_thi_lc_group_requests');
+// ##################### MODIFY TABLE thi_lc_group_members
+        $table = new xmldb_table('thi_lc_group_members');
 // ------------ add field isadmin
         $field = new xmldb_field('isadmin');
         $field->set_attributes(XMLDB_TYPE_INTEGER, '1', NULL, true, false, '0', NULL);

@@ -81,7 +81,7 @@ class groups {
         $params = [$userid];
         $query = "SELECT g.id
                     FROM {thi_lc_groups} g
-                    JOIN {thi_thi_lc_group_requests} gm ON gm.groupid = g.id AND gm.userid = ?";
+                    JOIN {thi_lc_group_members} gm ON gm.groupid = g.id AND gm.userid = ?";
 
         $groups = $DB->get_records_sql($query, $params);
         $return = [];
@@ -163,7 +163,7 @@ class groups {
 
         $query = "SELECT g.id
                     FROM {thi_lc_groups} g
-                    JOIN {thi_thi_lc_group_requests} gm ON gm.groupid = g.id
+                    JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
                     WHERE gm.userid = ? AND gm.isadmin = 1";
         $params = [$userId];
         $groups = $DB->get_records_sql($query, $params);
@@ -193,21 +193,21 @@ class groups {
     public static function invite_user_to_group($userid, $groupid) {
         global $DB, $USER;
 
-        $userIsAlreadyInGroup = $DB->record_exists('thi_thi_lc_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
+        $userIsAlreadyInGroup = $DB->record_exists('thi_lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
         if ($userIsAlreadyInGroup) {
             // Return for now. Maybe throw exception or something later
             return false;
         }
 
         //Check if the current user is in the group
-        $userIsInGroup = $DB->record_exists('thi_thi_lc_group_requests', ['userid' => $USER->id, 'groupid' => $groupid]);
+        $userIsInGroup = $DB->record_exists('thi_lc_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
         if (!$userIsInGroup) {
             // Return for now. Maybe throw exception or something later
             return false;
         }
 
         //If there is a request for joining this group, delete it
-        $DB->delete_records('lc_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
+        $DB->delete_records('thi_lc_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
 
         $id = self::group_add_member($groupid, $userid);
 
@@ -348,7 +348,7 @@ class groups {
         $record->isadmin = $isadmin;
         $record->joined = time();
         $isEmptyGroup = self::is_group_empty($groupid);
-        $recordID = $DB->insert_record('thi_thi_lc_group_requests', $record);
+        $recordID = $DB->insert_record('thi_lc_group_members', $record);
         if ($isEmptyGroup) {
             self::make_admin($userid, $groupid);
         }
@@ -366,7 +366,7 @@ class groups {
     public static function is_group_empty(int $groupid) {
         global $DB;
         return !$DB->record_exists_sql("SELECT gm.* 
-                FROM {thi_thi_lc_group_requests} gm
+                FROM {thi_lc_group_members} gm
                 JOIN {user} u ON gm.userid = u.id
                     AND u.deleted = 0
                 WHERE gm.groupid = ?",
@@ -458,7 +458,7 @@ class groups {
      */
     public static function leave_group(int $userId, int $groupId) {
         global $DB;
-        $deleted = $DB->delete_records('thi_thi_lc_group_requests', ['groupid' => $groupId, 'userid' => $userId]);
+        $deleted = $DB->delete_records('thi_lc_group_members', ['groupid' => $groupId, 'userid' => $userId]);
         group_left::make($userId, $groupId)->trigger();
 
         $group = new group($groupId);
@@ -474,14 +474,14 @@ class groups {
 
     public static function make_admin(int $userId, int $groupId) {
         global $DB, $USER;
-        $DB->set_field('thi_thi_lc_group_requests', 'isadmin', 1, ['groupid' => $groupId, 'userid' => $userId]);
+        $DB->set_field('thi_lc_group_members', 'isadmin', 1, ['groupid' => $groupId, 'userid' => $userId]);
 
         messages::send_appointed_to_admin_notification($userId, $groupId, $USER->id);
     }
 
     public static function unmake_admin(int $userId, int $groupId) {
         global $DB;
-        $DB->set_field('thi_thi_lc_group_requests', 'isadmin', 0, ['groupid' => $groupId, 'userid' => $userId]);
+        $DB->set_field('thi_lc_group_members', 'isadmin', 0, ['groupid' => $groupId, 'userid' => $userId]);
     }
 
     /**
@@ -523,7 +523,7 @@ class groups {
 
     public static function join_is_requested(int $userId, int $groupId) {
         global $DB;
-        return $DB->record_exists('lc_group_requests', ['groupid' => $groupId, 'userid' => $userId]);
+        return $DB->record_exists('thi_lc_group_requests', ['groupid' => $groupId, 'userid' => $userId]);
     }
 
     /**
@@ -542,7 +542,7 @@ class groups {
             return [];
         }
 
-        $requests = $DB->get_records_sql('SELECT * FROM {lc_group_requests} WHERE groupid IN (' . implode(',', $groupIds) . ') and denied = 0') ?? [];
+        $requests = $DB->get_records_sql('SELECT * FROM {thi_lc_group_requests} WHERE groupid IN (' . implode(',', $groupIds) . ') and denied = 0') ?? [];
         $requestedUsersIds = array_map(static function($request) {
             return $request->userid;
         }, $requests);
@@ -567,7 +567,7 @@ class groups {
         $record->groupid = $groupId;
         $record->userid = $userId;
         $record->timecreated = time();
-        return $DB->insert_record('lc_group_requests', $record);
+        return $DB->insert_record('thi_lc_group_requests', $record);
     }
 
     /**
@@ -579,11 +579,11 @@ class groups {
         global $DB;
 
         //Get the request
-        $request = $DB->get_record('lc_group_requests', ['id' => $requestId]);
+        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestId]);
         //Add the user to the group
         self::group_add_member($request->groupid, $request->userid);
         //Delete the request
-        $DB->delete_records('lc_group_requests', ['id' => $requestId]);
+        $DB->delete_records('thi_lc_group_requests', ['id' => $requestId]);
         messages::send_group_join_accepted_notification($request->userid, $request->groupid);
     }
 
@@ -594,9 +594,9 @@ class groups {
      */
     public static function deny_group_join_request($requestId) {
         global $DB;
-        $request = $DB->get_record('lc_group_requests', ['id' => $requestId]);
+        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestId]);
 
-        $DB->set_field('lc_group_requests', 'denied', 1, ['id' => $requestId]);
+        $DB->set_field('thi_lc_group_requests', 'denied', 1, ['id' => $requestId]);
         messages::send_group_join_denied_notification($request->userid, $request->groupid);
     }
 
@@ -632,9 +632,9 @@ class groups {
         $event = group_deleted::make($USER->id, $groupId);
         $event->add_record_snapshot('thi_lc_groups', $DB->get_record('thi_lc_groups', ['id' => $groupId]));
         $event->add_record_snapshot('thi_lc_chat', $DB->get_record('thi_lc_chat', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]));
-        $groupMembers = $DB->get_records('thi_thi_lc_group_requests', ['groupid' => $groupId]);
+        $groupMembers = $DB->get_records('thi_lc_group_members', ['groupid' => $groupId]);
         foreach ($groupMembers as $groupMember) {
-            $event->add_record_snapshot('thi_thi_lc_group_requests', $groupMember);
+            $event->add_record_snapshot('thi_lc_group_members', $groupMember);
         }
         $event->trigger();
 
@@ -644,9 +644,9 @@ class groups {
         // Delete file attachments
         self::delete_attachments_of_chat($chatId);
         // Delete the group members
-        $DB->delete_records('thi_thi_lc_group_requests', ['groupid' => $groupId]);
+        $DB->delete_records('thi_lc_group_members', ['groupid' => $groupId]);
         // Delete the group requests
-        $DB->delete_records('lc_group_requests', ['groupid' => $groupId]);
+        $DB->delete_records('thi_lc_group_requests', ['groupid' => $groupId]);
         // Delete the group keywords
         $DB->delete_records('thi_lc_groups_keywords', ['groupid' => $groupId]);
         // Delete the group
@@ -709,7 +709,7 @@ class groups {
      */
     public static function is_group_member(int $userid, int $groupid) {
         global $DB;
-        return $DB->record_exists('thi_thi_lc_group_requests', array('userid' => $userid, 'groupid' => $groupid));
+        return $DB->record_exists('thi_lc_group_members', array('userid' => $userid, 'groupid' => $groupid));
     }
 
     /**

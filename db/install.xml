@@ -46,7 +46,7 @@
             <INDEX NAME="group_keyword" UNIQUE="true" FIELDS="groupid,keywordid" COMMENT="Don't want the same keyword to get assigned to a group more than once"/>
         </INDEXES>
     </TABLE>
-    <TABLE NAME="thi_thi_lc_group_requests" COMMENT="who is member of the group, obviously ;)">
+    <TABLE NAME="thi_lc_group_members" COMMENT="who is member of the group, obviously ;)">
        <FIELDS>
             <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
             <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -63,7 +63,7 @@
             <INDEX NAME="group_user" UNIQUE="true" FIELDS="groupid,userid" COMMENT="Don't want the same user to get assigned to a group more than once"/>
         </INDEXES>
     </TABLE>
-    <TABLE NAME="lc_group_requests" COMMENT="contains request to join closed groups">
+    <TABLE NAME="thi_lc_group_requests" COMMENT="contains request to join closed groups">
      <FIELDS>
          <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
          <FIELD NAME="groupid"  TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>

@@ -61,8 +61,8 @@ if ($oldversion < 2022101300) {
     }
 
 
-// ##################### CREATE NEW TABLE thi_thi_lc_group_requests
-    $table = new xmldb_table('thi_thi_lc_group_requests');
+// ##################### CREATE NEW TABLE thi_lc_group_members
+    $table = new xmldb_table('thi_lc_group_members');
 //----------------- add field id
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
 //----------------- add field groupid

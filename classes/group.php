@@ -333,7 +333,7 @@ class group {
         $groupmembers = $DB->get_records_sql(
             'SELECT DISTINCT u.*, gm.isadmin
                     FROM {user} u
-                    JOIN {thi_thi_lc_group_requests} gm ON gm.userid = u.id AND u.deleted = 0
+                    JOIN {thi_lc_group_members} gm ON gm.userid = u.id AND u.deleted = 0
                    WHERE gm.groupid = ?',
             array($this->id)
         );
@@ -483,7 +483,7 @@ class group {
 
         $sql = 'SELECT u.*,
                        gm.joined
-                  FROM {thi_thi_lc_group_requests} gm
+                  FROM {thi_lc_group_members} gm
              LEFT JOIN {user} u ON u.id = gm.userid
                  WHERE gm.groupid = ?
                    AND gm.isadmin = 1';

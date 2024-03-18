@@ -388,7 +388,7 @@ class chat {
 
         $sql = 'SELECT cc.userid FROM mdl_thi_lc_chat_comment cc
     LEFT JOIN mdl_thi_lc_chat chat ON cc.chatid = chat.id
-    LEFT JOIN mdl_thi_thi_lc_group_requests members ON members.groupid = chat.relatedid AND chat.chattype = 1
+    LEFT JOIN mdl_thi_lc_group_members members ON members.groupid = chat.relatedid AND chat.chattype = 1
          AND cc.userid = members.userid
     WHERE chatid = ? ';
         $params = [$this->chatid];
