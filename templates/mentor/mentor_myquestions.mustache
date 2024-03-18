@@ -2,11 +2,11 @@
     <table class="stripe hover compact" id="askedquestionstable" data-paging="true" data-page-length="50">
         <thead>
         <tr>
-            <th>{{#str}}title, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}status, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}title, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}answers, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}status, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}lastactivity, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}questiondate, local_thi_learning_companions{{/str}}</th>
             <th></th>
         </tr>
         </thead>
@@ -15,12 +15,12 @@
             <tr>
                 <td>
                     <span data-balloon="{{question}}" data-balloon-pos="right">
-                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{get_id}}">{{title}}</a>
+                       <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{title}}</a>
                     </span>
                 </td>
                 <td>
                     {{#get_answer_count}}
-                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
+                        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
                     {{/get_answer_count}}
                     {{^get_answer_count}}
                         0
@@ -28,7 +28,7 @@
                 </td>
                 <td>
                     {{#is_closed}}
-                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
+                        <span data-balloon="{{#str}}questionclosedon, local_thi_learning_companions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
                     {{/is_closed}}
@@ -43,7 +43,7 @@
                     {{get_timecreated_dmy}}
                 </td>
                 <td>
-                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="left">
+                    <span data-balloon="{{#str}}deletemyquestion, local_thi_learning_companions{{/str}}" data-balloon-pos="left">
                         <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
                     </span>
                 </td>
@@ -53,14 +53,14 @@
     </table>
 {{/hasaskedquestions}}
 {{^askedquestions}}
-    <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+    <p>{{#str}}noquestionsfound, local_thi_learning_companions{{/str}}</p>
 {{/askedquestions}}
 <div class="d-flex justify-content-center ask-new-question-wrapper">
-    <div class="local_learningcompanions_mentor_asknewquestion">
-        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/ask_open_question.php" class="btn btn-primary">{{#str}}ask_new_open_question, local_learningcompanions{{/str}}</a>
+    <div class="local_thi_learning_companions_mentor_asknewquestion">
+        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/ask_open_question.php" class="btn btn-primary">{{#str}}ask_new_open_question, local_thi_learning_companions{{/str}}</a>
     </div>
-    <div class="local_learningcompanions_mentor_asknewquestion">
-        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/search.php" class="btn btn-primary">{{#str}}ask_mentor, local_learningcompanions{{/str}}</a>
+    <div class="local_thi_learning_companions_mentor_asknewquestion">
+        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/search.php" class="btn btn-primary">{{#str}}ask_mentor, local_thi_learning_companions{{/str}}</a>
     </div>
 </div>
 

@@ -1,50 +1,50 @@
-<div id="local_learningcompanions_group_search">
-    <h1>{{#str}}findgroup, local_learningcompanions{{/str}}</h1>
+<div id="local_thi_learning_companions_group_search">
+    <h1>{{#str}}findgroup, local_thi_learning_companions{{/str}}</h1>
     {{#hasgroups}}
-        {{> local_learningcompanions/group/group_search_filter}}
+        {{> local_thi_learning_companions/group/group_search_filter}}
         <table class="stripe hover compact" id="allgroupstable" data-paging="true" data-page-length="50">
             <thead>
                 <tr>
-                    <th class="course">{{#str}}course, local_learningcompanions{{/str}}</th>
-                    <th class="topic">{{#str}}topic, local_learningcompanions{{/str}}</th>
-                    <th class="name">{{#str}}name, local_learningcompanions{{/str}}</th>
-                    <th class="join">{{#str}}join, local_learningcompanions{{/str}}</th>
-                    <th class="member-count">{{#str}}membercount, local_learningcompanions{{/str}}</th>
-                    <th class="created">{{#str}}createdon, local_learningcompanions{{/str}}</th>
-                    <th class="last-active">{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
+                    <th class="course">{{#str}}course, local_thi_learning_companions{{/str}}</th>
+                    <th class="topic">{{#str}}topic, local_thi_learning_companions{{/str}}</th>
+                    <th class="name">{{#str}}name, local_thi_learning_companions{{/str}}</th>
+                    <th class="join">{{#str}}join, local_thi_learning_companions{{/str}}</th>
+                    <th class="member-count">{{#str}}membercount, local_thi_learning_companions{{/str}}</th>
+                    <th class="created">{{#str}}createdon, local_thi_learning_companions{{/str}}</th>
+                    <th class="last-active">{{#str}}lastactivity, local_thi_learning_companions{{/str}}</th>
                 </tr>
             </thead>
             <tbody>
             {{#groups}}
                 <tr class="grouprow" data-gid="{{id}}" data-title="{{name}}">
-                    <td title="{{#str}}course, local_learningcompanions{{/str}}">
+                    <td title="{{#str}}course, local_thi_learning_companions{{/str}}">
                         {{course.fullname}}
                     </td>
-                    <td title="{{#str}}topic, local_learningcompanions{{/str}}">
+                    <td title="{{#str}}topic, local_thi_learning_companions{{/str}}">
                         {{keywords_list}}
                     </td>
-                    <td title="{{#str}}name, local_learningcompanions{{/str}}">
+                    <td title="{{#str}}name, local_thi_learning_companions{{/str}}">
                         {{name}}
                     </td>
-                    <td data-search="{{closedgroup}}" data-order="{{closedgroup}}" title="{{#str}}join, local_learningcompanions{{/str}}">
+                    <td data-search="{{closedgroup}}" data-order="{{closedgroup}}" title="{{#str}}join, local_thi_learning_companions{{/str}}">
                         {{#closedgroup}}
-                            <span data-balloon="{{#str}}closedgroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
-                                <div class="learningcompanions_group_icon learningcompanions_group_icon--closed"></div>
+                            <span data-balloon="{{#str}}closedgroup, local_thi_learning_companions{{/str}}" data-balloon-pos="up">
+                                <div class="thi_learning_companions_group_icon thi_learning_companions_group_icon--closed"></div>
                             </span>
                         {{/closedgroup}}
                         {{^closedgroup}}
-                            <span data-balloon="{{#str}}opengroup, local_learningcompanions{{/str}}" data-balloon-pos="up">
-                                <div class="learningcompanions_group_icon learningcompanions_group_icon--open"></div>
+                            <span data-balloon="{{#str}}opengroup, local_thi_learning_companions{{/str}}" data-balloon-pos="up">
+                                <div class="thi_learning_companions_group_icon thi_learning_companions_group_icon--open"></div>
                             </span>
                         {{/closedgroup}}
                     </td>
-                    <td title="{{#str}}membercount, local_learningcompanions{{/str}}">
+                    <td title="{{#str}}membercount, local_thi_learning_companions{{/str}}">
                         {{membercount}}
                     </td>
-                    <td data-order="{{timecreated}}" data-search="{{timecreated}}" title="{{#str}}createdon, local_learningcompanions{{/str}}">
+                    <td data-order="{{timecreated}}" data-search="{{timecreated}}" title="{{#str}}createdon, local_thi_learning_companions{{/str}}">
                         {{timecreated_dmY}}
                     </td>
-                    <td data-order="{{last_active_time}}" data-value="{{last_active_time}}" title="{{#str}}lastactivity, local_learningcompanions{{/str}}">
+                    <td data-order="{{last_active_time}}" data-value="{{last_active_time}}" title="{{#str}}lastactivity, local_thi_learning_companions{{/str}}">
                         {{last_active_time_dmy}}
                     </td>
                 </tr>
@@ -53,7 +53,7 @@
         </table>
     {{/hasgroups}}
     {{^groups}}
-        <p>{{#str}}nogroupsfound, local_learningcompanions{{/str}}</p>
+        <p>{{#str}}nogroupsfound, local_thi_learning_companions{{/str}}</p>
     {{/groups}}
-    <a href="{{creategroupurl}}" class="btn btn-primary">{{#str}}create_new_group, local_learningcompanions{{/str}}</a>
+    <a href="{{creategroupurl}}" class="btn btn-primary">{{#str}}create_new_group, local_thi_learning_companions{{/str}}</a>
 </div>

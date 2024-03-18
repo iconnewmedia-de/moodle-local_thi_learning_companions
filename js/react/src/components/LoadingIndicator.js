@@ -1,5 +1,5 @@
 export default function LoadingIndicator() {
     return (
-        <div className="learningcompanions_loading"></div>
+        <div className="thi_learning_companions_loading"></div>
     );
 }

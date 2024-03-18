@@ -1,5 +1,5 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 use mod_bigbluebuttonbn\local\helpers\files;
 use stdClass;
 use context_system;
@@ -99,7 +99,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
      * @return moodle_url
      */
     public function get_logout_url(): moodle_url {
-        return new moodle_url('/local/learningcompanions/chat.php', [
+        return new moodle_url('/local/thi_learning_companions/chat.php', [
             'id' => $this->groupid,
         ]);
     }

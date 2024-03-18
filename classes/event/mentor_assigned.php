@@ -1,6 +1,6 @@
 <?php
 
-namespace local_learningcompanions\event;
+namespace local_thi_learning_companions\event;
 
 class mentor_assigned extends \core\event\base {
     protected function init() {
@@ -11,7 +11,7 @@ class mentor_assigned extends \core\event\base {
     }
 
     public static function get_name() {
-        return get_string('event_mentor_assigned', 'local_learningcompanions');
+        return get_string('event_mentor_assigned', 'local_thi_learning_companions');
     }
 
     public function get_description() {

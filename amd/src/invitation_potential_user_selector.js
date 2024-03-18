@@ -16,14 +16,14 @@
 /**
  * Potential user selector module.
  *
- * @module     local_learningcompanions/invitation_potential_user_selector
+ * @module     local_thi_learning_companions/invitation_potential_user_selector
  * @copyright  2023 ICON Vernetzte Kommunikation GmbH
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, Templates, Str) {
 
-    return /** @alias module:local_learningcompanions/invitation_potential_user_selector */ {
+    return /** @alias module:local_thi_learning_companions/invitation_potential_user_selector */ {
 
         processResults: function(selector, results) {
             console.log('called processResults with params:', selector, results);
@@ -54,7 +54,7 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
             }
 
             promise = Ajax.call([{
-                methodname: 'local_learningcompanions_get_invitable_users', // see local_learningcompanions\external::get_invitable_users
+                methodname: 'local_thi_learning_companions_get_invitable_users', // see local_thi_learning_companions\external::get_invitable_users
                 args: {
                     groupid: groupid,
                     query: query,
@@ -94,7 +94,7 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
                             }
                         });
                         ctx.identity = identity.join(', ');
-                        promises.push(Templates.render('local_learningcompanions/invitation_suggestion', ctx));
+                        promises.push(Templates.render('local_thi_learning_companions/invitation_suggestion', ctx));
                     });
 
                     // Apply the label to the results.

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import $ from 'jquery';
-import {getInvitableUsers, inviteUser} from "local_learningcompanions/repository";
+import {getInvitableUsers, inviteUser} from "local_thi_learning_companions/repository";
 import Template from 'core/templates';
 import KeyCodes from 'core/key_codes';
 
@@ -20,7 +20,7 @@ const handleSearchInviteButton = async function(e) {
     const users = await getInvitableUsers(searchString, groupId);
     const checked = users.length === 1 ? 'checked' : '';
 
-    const {html} = await Template.renderForPromise('local_learningcompanions/group/group_invite_list', {
+    const {html} = await Template.renderForPromise('local_thi_learning_companions/group/group_invite_list', {
         users,
         checked,
     });

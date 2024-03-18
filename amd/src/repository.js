@@ -12,7 +12,7 @@ import {call} from 'core/ajax';
 export const getInvitableUsers = async(query, groupId) => {
     return call([
         {
-            methodname: 'local_learningcompanions_get_invitable_users',
+            methodname: 'local_thi_learning_companions_get_invitable_users',
             args: {
                 query,
                 groupId
@@ -24,7 +24,7 @@ export const getInvitableUsers = async(query, groupId) => {
 export const inviteUser = async(userId, groupId) => {
     return call([
         {
-            methodname: 'local_learningcompanions_invite_user',
+            methodname: 'local_thi_learning_companions_invite_user',
             args: {
                 userId,
                 groupId

@@ -19,7 +19,7 @@
  *
  * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package     local_learningcompanions
+ * @package     local_thi_learning_companions
  * @category    access
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <spiros.tzanetatos@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
 
-    'local/learningcompanions:group_create' => [
+    'local/thi_learning_companions:group_create' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -37,7 +37,7 @@ $capabilities = [
             'student' => CAP_ALLOW
         ],
     ],
-    'local/learningcompanions:group_manage' => [
+    'local/thi_learning_companions:group_manage' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -45,7 +45,7 @@ $capabilities = [
             'manager' => CAP_ALLOW
         ],
     ],
-    'local/learningcompanions:mentor_view' => [
+    'local/thi_learning_companions:mentor_view' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -53,7 +53,7 @@ $capabilities = [
             'student' => CAP_ALLOW
         ],
     ],
-    'local/learningcompanions:mentor_search' => [
+    'local/thi_learning_companions:mentor_search' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -61,22 +61,22 @@ $capabilities = [
             'manager' => CAP_ALLOW
         ],
     ],
-    'local/learningcompanions:mentor_ismentor' => [
+    'local/thi_learning_companions:mentor_ismentor' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM
     ],
-    'local/learningcompanions:mentor_issupermentor' => [
+    'local/thi_learning_companions:mentor_issupermentor' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM
     ],
-    'local/learningcompanions:mentor_istutor' => [
+    'local/thi_learning_companions:mentor_istutor' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM
     ],
-    'local/learningcompanions:group_view' => [
+    'local/thi_learning_companions:group_view' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -84,7 +84,7 @@ $capabilities = [
             'manager' => CAP_ALLOW
         ],
     ],
-    'local/learningcompanions:group_search' => [
+    'local/thi_learning_companions:group_search' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -93,7 +93,7 @@ $capabilities = [
             'user' => CAP_ALLOW
         ],
     ],
-    'local/learningcompanions:delete_comments_of_others' => [
+    'local/thi_learning_companions:delete_comments_of_others' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
@@ -101,7 +101,7 @@ $capabilities = [
             'manager' => CAP_ALLOW
         ],
     ],
-    'local/learningcompanions:view_all_mentor_questions' => [
+    'local/thi_learning_companions:view_all_mentor_questions' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,

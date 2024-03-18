@@ -1,5 +1,5 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 
 class chat {
     protected $chatid;
@@ -12,7 +12,7 @@ class chat {
         global $DB;
 
         if (!$DB->record_exists('lc_groups', ['id' => $groupid])) {
-            throw new \moodle_exception('groupnotfound', 'local_learningcompanions');
+            throw new \moodle_exception('groupnotfound', 'local_thi_learning_companions');
         }
 
         $new_chat = new self();
@@ -47,15 +47,15 @@ class chat {
         global $USER;
         $userGroups = groups::get_groups_of_user($USER->id);
         if (empty($userGroups)) {
-            redirect('/local/learningcompanions/group/search.php',
-                get_string('cant_chat_no_group_memberships', 'local_learningcompanions'),
+            redirect('/local/thi_learning_companions/group/search.php',
+                get_string('cant_chat_no_group_memberships', 'local_thi_learning_companions'),
                 null,
             \core\output\notification::NOTIFY_INFO
             );
         } else {
             $firstGroup = current($userGroups);
             $groupid = $firstGroup->id;
-            redirect('/local/learningcompanions/chat.php?groupid=' . $groupid);
+            redirect('/local/thi_learning_companions/chat.php?groupid=' . $groupid);
         }
     }
 
@@ -102,9 +102,9 @@ class chat {
             'no_posts_available',
             'not_allowed_to_see_posts'
         ];
-        $strings = get_strings($stringKeys, 'local_learningcompanions');
+        $strings = get_strings($stringKeys, 'local_thi_learning_companions');
         $stringsString = json_encode($strings);
-        return "M.str.local_learningcompanions = {...M.str.local_learningcompanions, ...$stringsString};";
+        return "M.str.local_thi_learning_companions = {...M.str.local_thi_learning_companions, ...$stringsString};";
     }
 
     /**
@@ -149,7 +149,7 @@ class chat {
         foreach($comments as $comment) {
             $comment->datetime = userdate($comment->timecreated);
             $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
-            $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
+            $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_thi_learning_companions', 'message', $comment->id);
             if (array_key_exists($comment->id, $attachments)) {
                 $comment->attachments = $attachments[$comment->id];
             } else {
@@ -227,7 +227,7 @@ class chat {
         $comment->datetime = userdate($comment->timecreated);
         $comment->author = $DB->get_record('user', ['id' => $comment->userid], 'id,firstname,lastname,email,username');
         $comment->author_fullname = self::get_author_fullname($comment->userid);
-        $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_learningcompanions', 'message', $comment->id);
+        $comment->comment = file_rewrite_pluginfile_urls($comment->comment, 'pluginfile.php', $context->id, 'local_thi_learning_companions', 'message', $comment->id);
         if (array_key_exists($comment->id, $attachments)) {
             $comment->attachments = $attachments[$comment->id];
         } else {
@@ -241,7 +241,7 @@ class chat {
         global $DB;
         $user = $DB->get_record('user', ['id' => $userid]);
         if (!$user || $user->deleted == 1) {
-            return get_string('deleted_user', 'local_learningcompanions');
+            return get_string('deleted_user', 'local_thi_learning_companions');
         }
         return fullname($user);
     }
@@ -303,8 +303,8 @@ class chat {
 
     public function get_attachments_of_comments(array $comments, string $area) {
         global $CFG;
-        require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
-        return local_learningcompanions_get_attachments_of_chat_comments($comments, $area);
+        require_once($CFG->dirroot.'/local/thi_learning_companions/lib.php');
+        return local_thi_learning_companions_get_attachments_of_chat_comments($comments, $area);
     }
 
     /**
@@ -321,7 +321,7 @@ class chat {
             'form' => $form,
             'languageStrings' => $languageStrings,
         ];
-        return $OUTPUT->render_from_template('local_learningcompanions/chat', $context);
+        return $OUTPUT->render_from_template('local_thi_learning_companions/chat', $context);
     }
 
     public function get_question_chat_module() {
@@ -336,7 +336,7 @@ class chat {
             'form' => $form,
             'languageStrings' => $languageStrings,
         ];
-        return $OUTPUT->render_from_template('local_learningcompanions/mentor/mentor_question_chat', $context);
+        return $OUTPUT->render_from_template('local_thi_learning_companions/mentor/mentor_question_chat', $context);
     }
 
     protected function get_submission_form($customdata) {
@@ -344,13 +344,13 @@ class chat {
         require_once(__DIR__. "/chat_post_form.php");
         // ICTODO: dynamically get the course and module from the currently selected group
 
-        $form = new \local_learningcompanions\chat_post_form(null, $customdata);
+        $form = new \local_thi_learning_companions\chat_post_form(null, $customdata);
         $draftitemid = file_get_submitted_draft_itemid('attachments');
         $chatid = empty($customdata["chatid"]) ? null : $customdata["chatid"];
         $postid = empty($customdata["postid"]) ? null : $customdata["postid"];
-        $attachoptions = \local_learningcompanions\chat_post_form::attachment_options();
+        $attachoptions = \local_thi_learning_companions\chat_post_form::attachment_options();
         $context = \context_system::instance();
-        file_prepare_draft_area($draftitemid, $context, 'local_learningcompanions', 'attachments', $postid, $attachoptions);
+        file_prepare_draft_area($draftitemid, $context, 'local_thi_learning_companions', 'attachments', $postid, $attachoptions);
         $draftideditor = file_get_submitted_draft_itemid('message');
 
         $form->set_data(
@@ -407,7 +407,7 @@ class chat {
         global $USER;
 
         //Admins can see all chats
-        if (has_capability('local/learningcompanions:group_manage', \context_system::instance())) {
+        if (has_capability('local/thi_learning_companions:group_manage', \context_system::instance())) {
             return true;
         }
 

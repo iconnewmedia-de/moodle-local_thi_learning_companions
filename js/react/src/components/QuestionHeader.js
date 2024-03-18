@@ -12,7 +12,7 @@ export default function QuestionHeader({questionid}) {
 
         const controller = new AbortController();
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajax_getquestion.php?questionid=${questionid}`, {
+        fetch(`${M.cfg.wwwroot}/local/thi_learning_companions/ajax/ajax_getquestion.php?questionid=${questionid}`, {
             signal: controller.signal
         })
             .then(response => response.json())
@@ -29,7 +29,7 @@ export default function QuestionHeader({questionid}) {
     useEffect(getQuestion, [questionid]);
     // getQuestion();
     return (
-        <div className='learningcompanions_questionheader'>
+        <div className='thi_learning_companions_questionheader'>
             <h1>{question.title}</h1>
             <p>{question.question}</p>
         </div>

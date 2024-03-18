@@ -15,20 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * A scheduled task for local_learningcompanions cron.
+ * A scheduled task for local_thi_learning_companions cron.
  *
- * @package    local_learningcompanions
+ * @package    local_thi_learning_companions
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace local_learningcompanions\task;
+namespace local_thi_learning_companions\task;
 
-use local_learningcompanions\groups;
+use local_thi_learning_companions\groups;
 
 defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * @package    local_learningcompanions
+ * @package    local_thi_learning_companions
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class cron_task extends \core\task\scheduled_task {
@@ -41,7 +41,7 @@ class cron_task extends \core\task\scheduled_task {
      * @return string
      */
     public function get_name() {
-        return get_string('crontask', 'local_learningcompanions');
+        return get_string('crontask', 'local_thi_learning_companions');
     }
 
     /**
@@ -57,7 +57,7 @@ class cron_task extends \core\task\scheduled_task {
         if (empty($unansweredQuestions)) {
             return;
         }
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $tutorRoleName = trim($config->tutorrole_shortname);
         $tutorRoleID = $DB->get_field('role', 'id', array('shortname' => $tutorRoleName));
         if (!$tutorRoleID) {
@@ -84,7 +84,7 @@ class cron_task extends \core\task\scheduled_task {
                 array($tutorRoleID, $question->topic)
             );
             foreach($tutors as $tutor) {
-               $success =  \local_learningcompanions\messages::send_tutor_unanswered_question_message($tutor, $question);
+               $success =  \local_thi_learning_companions\messages::send_tutor_unanswered_question_message($tutor, $question);
                if ($success) {
                    $DB->insert_record('lc_tutor_notifications',
                        array('questionid' => $question->id, 'tutorid' => $tutor->id, 'timecreated' => time()));
@@ -95,7 +95,7 @@ class cron_task extends \core\task\scheduled_task {
 
     protected function get_unanswered_questions() {
         global $DB;
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $timelimit = $config->inform_tutors_about_unanswered_questions_after_x_days;
         $xDaysAgo = time() - $timelimit * DAYSECS;
         $unanswered = $DB->get_records_sql("SELECT q.*

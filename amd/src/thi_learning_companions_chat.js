@@ -7,14 +7,14 @@ import {
     handleGroupLeaveButton,
     handleGroupRequestButton,
     handleGroupInviteButton
-} from 'local_learningcompanions/group';
+} from 'local_thi_learning_companions/group';
 
 let strings = [];
 
 export const init = async() => {
     // Put send button to the right next to the message box
     // we can't arrange it that way with just Moodle Forms API
-    const sendButton = $('#local_learningcompanions_chat-send');
+    const sendButton = $('#local_thi_learning_companions_chat-send');
     const messageBox = $('#id_messageeditable');
     messageBox.after(sendButton);
     // Add event listener to the send button to handle message sending
@@ -24,14 +24,14 @@ export const init = async() => {
     addUploadButton();
 
     const stringsObj = [
-        {key: 'modal-deletecomment-title', component: 'local_learningcompanions'},
-        {key: 'modal-deletecomment-text', component: 'local_learningcompanions'},
-        {key: 'modal-deletecomment-okaybutton', component: 'local_learningcompanions'},
-        {key: 'modal-editcomment-title', component: 'local_learningcompanions'},
-        {key: 'modal-editcomment-okaybutton', component: 'local_learningcompanions'},
-        {key: 'modal-reportcomment-title', component: 'local_learningcompanions'},
-        {key: 'modal-reportcomment-text', component: 'local_learningcompanions'},
-        {key: 'modal-reportcomment-okaybutton', component: 'local_learningcompanions'},
+        {key: 'modal-deletecomment-title', component: 'local_thi_learning_companions'},
+        {key: 'modal-deletecomment-text', component: 'local_thi_learning_companions'},
+        {key: 'modal-deletecomment-okaybutton', component: 'local_thi_learning_companions'},
+        {key: 'modal-editcomment-title', component: 'local_thi_learning_companions'},
+        {key: 'modal-editcomment-okaybutton', component: 'local_thi_learning_companions'},
+        {key: 'modal-reportcomment-title', component: 'local_thi_learning_companions'},
+        {key: 'modal-reportcomment-text', component: 'local_thi_learning_companions'},
+        {key: 'modal-reportcomment-okaybutton', component: 'local_thi_learning_companions'},
     ];
 
     // eslint-disable-next-line no-return-assign
@@ -39,49 +39,49 @@ export const init = async() => {
 
     const body = $('body');
 
-    body.on('click', '.learningcompanions_delete_comment', handleCommentDelete);
-    body.on('click', '.learningcompanions_edit_comment', handleCommentEdit);
-    body.on('click', '.learningcompanions_report_comment', handleCommentReport);
-    body.on('click', '.learningcompanions_rate_comment', handleCommentRating);
-    body.on('click', '.learningcompanions_editgroup', handleEditGroup);
+    body.on('click', '.thi_learning_companions_delete_comment', handleCommentDelete);
+    body.on('click', '.thi_learning_companions_edit_comment', handleCommentEdit);
+    body.on('click', '.thi_learning_companions_report_comment', handleCommentReport);
+    body.on('click', '.thi_learning_companions_rate_comment', handleCommentRating);
+    body.on('click', '.thi_learning_companions_editgroup', handleEditGroup);
 
     body.on('click', '.js-leave-group', handleGroupLeaveButton);
     body.on('click', '.js-request-join-group', handleGroupRequestButton);
     body.on('click', '.js-invite-member', handleGroupInviteButton);
-    body.on('click', '.learningcompanions_bbb_button', handleBBBButton);
-    body.on('click', '.learningcompanions_upload_button', handleUploadButton);
-    let item = document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments');
+    body.on('click', '.thi_learning_companions_bbb_button', handleBBBButton);
+    body.on('click', '.thi_learning_companions_upload_button', handleUploadButton);
+    let item = document.querySelector('#page-local-thi_learning_companions-chat #fitem_id_attachments');
     document.body.addEventListener('dragenter', function(e) {
         // console.log('started dragging', e);
-        document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.add('upload-visible');
+        document.querySelector('#page-local-thi_learning_companions-chat #fitem_id_attachments').classList.add('upload-visible');
     });
     // document.body.addEventListener('dragstop', function(e) {
     //     console.log('stopped dragging', e);
-    //     document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments').classList.remove('upload-visible');
+    //     document.querySelector('#page-local-thi_learning_companions-chat #fitem_id_attachments').classList.remove('upload-visible');
     // });
 };
 
 const addBBBlinkButton = function() {
-    var string = str.get_string(  'bigbluebutton_title', 'local_learningcompanions');
+    var string = str.get_string(  'bigbluebutton_title', 'local_thi_learning_companions');
     string.then((title) => {
         if ($('.atto_editor_row').length > 0) {
-            var appendTo = '#page-local-learningcompanions-chat .atto_toolbar_row:first-child';
+            var appendTo = '#page-local-thi_learning_companions-chat .atto_toolbar_row:first-child';
         } else {
-            var appendTo = '#page-local-learningcompanions-chat .editor_atto_toolbar';
+            var appendTo = '#page-local-thi_learning_companions-chat .editor_atto_toolbar';
         }
-        $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_bbb_button" title="' + title + '")>BigBlueButton</button></div>').appendTo(appendTo);
+        $().add('<div class="atto_group accessibility_group"><button class="thi_learning_companions_bbb_button" title="' + title + '")>BigBlueButton</button></div>').appendTo(appendTo);
     });
 };
 
 const addUploadButton = function() {
-    var string = str.get_string(  'upload_title', 'local_learningcompanions');
+    var string = str.get_string(  'upload_title', 'local_thi_learning_companions');
     string.then((title) => {
         if ($('.atto_editor_row').length > 0) {
-            var appendTo = '#page-local-learningcompanions-chat .atto_toolbar_row:first-child';
+            var appendTo = '#page-local-thi_learning_companions-chat .atto_toolbar_row:first-child';
         } else {
-            var appendTo = '#page-local-learningcompanions-chat .editor_atto_toolbar';
+            var appendTo = '#page-local-thi_learning_companions-chat .editor_atto_toolbar';
         }
-        $().add('<div class="atto_group accessibility_group"><button class="learningcompanions_upload_button" title="' + title + '"><i class="fa fa-upload"></i></button></div>').appendTo(appendTo);
+        $().add('<div class="atto_group accessibility_group"><button class="thi_learning_companions_upload_button" title="' + title + '"><i class="fa fa-upload"></i></button></div>').appendTo(appendTo);
     });
 };
 
@@ -105,9 +105,9 @@ const handleBBBButton = function(e){
         range.setStartAfter(messageEditor.children[childElementCount - 1]);
         document.getSelection().addRange(range);
     }
-    var string = str.get_string('bigbluebutton_join_text', 'local_learningcompanions');
+    var string = str.get_string('bigbluebutton_join_text', 'local_thi_learning_companions');
     var chatid = $('.chat-post-form input[name="chatid"]').val();
-    var bbbURLs = $.ajax(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax_videocall.php', {data: {chatid:chatid}});
+    var bbbURLs = $.ajax(M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax_videocall.php', {data: {chatid:chatid}});
     Promise.all([string,bbbURLs]).then((data) => {
         const urls = data[1];
         window.open(urls['moderator'], '_blank');
@@ -120,7 +120,7 @@ const handleBBBButton = function(e){
 
 const handleUploadButton = function(e){
     e.preventDefault();
-    const uploadfield = document.querySelector('#page-local-learningcompanions-chat #fitem_id_attachments');
+    const uploadfield = document.querySelector('#page-local-thi_learning_companions-chat #fitem_id_attachments');
     let target = e.target;
     if (target.tagName == "I") {
         target = target.parentElement;
@@ -170,7 +170,7 @@ const pasteHtmlAtCaret = function(html) {
 const handleCommentRating = function(e) {
     const postId = +e.target.dataset.id;
     $.ajax({
-        url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax_ratecomment.php',
+        url: M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax_ratecomment.php',
         method: 'POST',
         dataType: 'json',
         data: {
@@ -183,7 +183,7 @@ const handleCommentRating = function(e) {
             } else {
                 // ICTODO: output success message
             }
-            document.dispatchEvent(new CustomEvent('learningcompanions_message_rated', {detail: {postid: postId, newvalue: data.israted}}));
+            document.dispatchEvent(new CustomEvent('thi_learning_companions_message_rated', {detail: {postid: postId, newvalue: data.israted}}));
             // document.dispatchEvent(new ModalEvents.hidden);
         }
     });
@@ -195,8 +195,8 @@ const handleCommentDelete = async function(e) {
         type: ModalFactory.types.SAVE_CANCEL,
         title: strings[0],
         body: '' +
-            '<div id="learningcompanions-deletecomment-modal">' +
-            '<div id="learningcompanions-deletecomment-modal-text">' + strings[1] + '</div>' +
+            '<div id="thi_learning_companions-deletecomment-modal">' +
+            '<div id="thi_learning_companions-deletecomment-modal-text">' + strings[1] + '</div>' +
             '</div>',
     });
 
@@ -204,7 +204,7 @@ const handleCommentDelete = async function(e) {
 
     modal.getRoot().on(ModalEvents.save, function() {
         $.ajax({
-            url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajaxdeletecomment.php',
+            url: M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajaxdeletecomment.php',
             method: 'POST',
             dataType: 'json',
             data: {
@@ -217,7 +217,7 @@ const handleCommentDelete = async function(e) {
                 } else {
                     // ICTODO: output success message
                 }
-                document.dispatchEvent(new CustomEvent('learningcompanions_message_deleted', {detail: {postid: postId}}));
+                document.dispatchEvent(new CustomEvent('thi_learning_companions_message_deleted', {detail: {postid: postId}}));
                 // document.dispatchEvent(new ModalEvents.hidden);
             }
         });
@@ -235,13 +235,13 @@ const handleCommentEdit = async function(e) {
         type: ModalFactory.types.SAVE_CANCEL,
         title: strings[3],
         body: '' +
-            '<div id="learningcompanions-edit-modal">' +
-            '<div id="learningcompanions-edit-modal-text">' + strings[4] + '</div>' +
+            '<div id="thi_learning_companions-edit-modal">' +
+            '<div id="thi_learning_companions-edit-modal-text">' + strings[4] + '</div>' +
             '</div>',
         // footer: '' +
-        //     '<div id="learningcompanions-deletecomment-modal-buttons">' +
-        //     '<button class="btn btn-primary" aria-hidden="true" id="learningcompanions-deletecomment-modal-delete" data-cid="' + commentid + '">' + strings[2] + '</button>' +
-        //     '<button class="btn btn-secondary" aria-hidden="true" id="learningcompanions-deletecomment-modal-close" data-action="hide">' + strings[3] + '</button>' +
+        //     '<div id="thi_learning_companions-deletecomment-modal-buttons">' +
+        //     '<button class="btn btn-primary" aria-hidden="true" id="thi_learning_companions-deletecomment-modal-delete" data-cid="' + commentid + '">' + strings[2] + '</button>' +
+        //     '<button class="btn btn-secondary" aria-hidden="true" id="thi_learning_companions-deletecomment-modal-close" data-action="hide">' + strings[3] + '</button>' +
         //     '</div>'
     }).then(function(modal) {
         // console.log('edit comment id from data:', commentid);
@@ -249,7 +249,7 @@ const handleCommentEdit = async function(e) {
         modal.setSaveButtonText(strings[5]);
         $.ajax(
             {
-                url: M.cfg.wwwroot + '/local/learningcompanions/editcomment.php',
+                url: M.cfg.wwwroot + '/local/thi_learning_companions/editcomment.php',
                 method: 'POST',
                 dataType: 'json',
                 data: {
@@ -273,8 +273,8 @@ const handleCommentReport = async function(e) {
         type: ModalFactory.types.SAVE_CANCEL,
         title: strings[5],
         body: '' +
-            '<div id="learningcompanions-reportcomment-modal">' +
-            '<div id="learningcompanions-reportcomment-modal-text">' + strings[6] + '</div>' +
+            '<div id="thi_learning_companions-reportcomment-modal">' +
+            '<div id="thi_learning_companions-reportcomment-modal-text">' + strings[6] + '</div>' +
             '</div>'
     }).then(function(modal) {
         // console.log('comment id from data:', postId);
@@ -282,7 +282,7 @@ const handleCommentReport = async function(e) {
         modal.getRoot().on(ModalEvents.save, function() {
             // console.log('about to call ajaxdeletecomment.php with comment id', postId);
             $.ajax({
-                url: `${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxreport.php`,
+                url: `${M.cfg.wwwroot}/local/thi_learning_companions/ajax/ajaxreport.php`,
                 method: 'POST',
                 dataType: 'json',
                 data: {
@@ -295,7 +295,7 @@ const handleCommentReport = async function(e) {
                     } else {
                         // ICTODO: output success message
                     }
-                    document.dispatchEvent(new CustomEvent('learningcompanions_message_reported', {detail: {postid: postId}}));
+                    document.dispatchEvent(new CustomEvent('thi_learning_companions_message_reported', {detail: {postid: postId}}));
                     // document.dispatchEvent(ModalEvents.hidden);
                 }
             });
@@ -314,7 +314,7 @@ const handleEditGroup = async function(e) {
         const groupname = e.target.dataset.title;
         // console.log('getting group modal for ', groupid, groupname, this, e);
         const groupDetails = $.ajax({
-            url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php',
+            url: M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax.php',
             method: 'POST',
             dataType: 'json',
             data: {
@@ -324,7 +324,7 @@ const handleEditGroup = async function(e) {
             },
             success: function(data) {
                 console.log('got group details modal with data: ', data);
-                const title = str.get_string('modal-groupdetails-groupname', 'local_learningcompanions', groupname);
+                const title = str.get_string('modal-groupdetails-groupname', 'local_thi_learning_companions', groupname);
                 title.then(function(string) {
                     // console.log('got group title string:', title);
                     // console.log('got group details data:', data);
@@ -354,14 +354,14 @@ const handleNewMessageSubmit = (e) => {
     // ICTODO: disable the form/grey it out, while data is getting sent
     e.preventDefault();
     const data = {};
-    $('#learningcompanions_chat form input, #learningcompanions_chat form textarea').each((index, el) => {
+    $('#thi_learning_companions_chat form input, #thi_learning_companions_chat form textarea').each((index, el) => {
         data[el.name] = el.value;
     });
-    $('#learningcompanions_chat #id_messageeditable').css('opacity', '0.5');
-    $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'false');
-    $('#learningcompanions_chat form input,  #learningcompanions_chat form textarea, #local_learningcompanions_chat-send').attr('disabled', true);
+    $('#thi_learning_companions_chat #id_messageeditable').css('opacity', '0.5');
+    $('#thi_learning_companions_chat #id_messageeditable').attr('contenteditable', 'false');
+    $('#thi_learning_companions_chat form input,  #thi_learning_companions_chat form textarea, #local_thi_learning_companions_chat-send').attr('disabled', true);
     $.post(
-        M.cfg.wwwroot + "/local/learningcompanions/ajax/ajaxsubmit.php",
+        M.cfg.wwwroot + "/local/thi_learning_companions/ajax/ajaxsubmit.php",
         data
     ).done(function(a, b, c) {
         // ICTODO: give a success message, like with a toast or so
@@ -378,8 +378,8 @@ const handleNewMessageSubmit = (e) => {
                 modal.show();
             });
         }
-        $('#learningcompanions_chat form #id_messageeditable').text("");
-        $('#learningcompanions_chat form input, #learningcompanions_chat form textarea').each((index, el) => {
+        $('#thi_learning_companions_chat form #id_messageeditable').text("");
+        $('#thi_learning_companions_chat form input, #thi_learning_companions_chat form textarea').each((index, el) => {
             if (el.name == "textarea" || el.type !== "hidden") {
                 el.value = '';
             }
@@ -395,15 +395,15 @@ const handleNewMessageSubmit = (e) => {
             window.M.core_filepicker.instances[clientId].options.itemid = a.itemid;
         }
 
-        document.dispatchEvent(new CustomEvent('learningcompanions_message_send'));
+        document.dispatchEvent(new CustomEvent('thi_learning_companions_message_send'));
     }).fail(function(a, b, c) {
         console.warn('Failed sending via AJAX', a, b, c);
         window.alert("couldn't save"); // ICTODO: give proper message, via get_string and ideally with a modal
     }).always(function(a, b, c) {
         // reactivate the form/ungrey it when data has been sent
-        $('#learningcompanions_chat #id_messageeditable').css('opacity', '1');
-        $('#learningcompanions_chat #id_messageeditable').attr('contenteditable', 'true');
-        $('#learningcompanions_chat form input,  #learningcompanions_chat form textarea, #local_learningcompanions_chat-send').attr('disabled', false);
+        $('#thi_learning_companions_chat #id_messageeditable').css('opacity', '1');
+        $('#thi_learning_companions_chat #id_messageeditable').attr('contenteditable', 'true');
+        $('#thi_learning_companions_chat form input,  #thi_learning_companions_chat form textarea, #local_thi_learning_companions_chat-send').attr('disabled', false);
     });
     return false;
 };

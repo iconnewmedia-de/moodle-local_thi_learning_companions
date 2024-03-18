@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_learningcompanions\event;
+namespace local_thi_learning_companions\event;
 
 /**
  * The group_left event class.
  *
  * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package     local_learningcompanions
+ * @package     local_thi_learning_companions
  * @category    event
  * @copyright   2023 ICON Vernetzte Kommunikation GmbH <spiros.tzanetatos@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -37,7 +37,7 @@ class group_left extends \core\event\base {
     }
 
     public static function get_name() {
-        return get_string('event_group_left', 'local_learningcompanions');
+        return get_string('event_group_left', 'local_thi_learning_companions');
     }
 
     public function get_description() {

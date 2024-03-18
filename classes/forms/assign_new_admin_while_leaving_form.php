@@ -1,12 +1,12 @@
 <?php
 
-namespace local_learningcompanions\forms;
+namespace local_thi_learning_companions\forms;
 global $CFG;
 
 use context;
 use core_form\dynamic_form;
-use local_learningcompanions\group;
-use local_learningcompanions\groups;
+use local_thi_learning_companions\group;
+use local_thi_learning_companions\groups;
 use moodle_url;
 
 require_once $CFG->libdir . "/formslib.php";
@@ -23,15 +23,15 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
     protected function definition() {
         $mform = $this->_form;
         $groupid = $this->_ajaxformdata['groupId'];
-        $group = \local_learningcompanions\groups::get_group_by_id($groupid);
+        $group = \local_thi_learning_companions\groups::get_group_by_id($groupid);
 
         $possibleAdmins = $this->getPossibleAdmins($group);
 
-        $mform->addElement('static', 'description', get_string('assign_new_admin_while_leaving_description', 'local_learningcompanions'));
+        $mform->addElement('static', 'description', get_string('assign_new_admin_while_leaving_description', 'local_thi_learning_companions'));
         $mform->addElement('hidden', 'groupId', $this->_ajaxformdata['groupId']);
-        $mform->addElement('select', 'newAdmin', get_string('choose_new_admin', 'local_learningcompanions'), $possibleAdmins);
+        $mform->addElement('select', 'newAdmin', get_string('choose_new_admin', 'local_thi_learning_companions'), $possibleAdmins);
         $mform->setDefault('newAdmin', $group->chat->get_last_active_userid(true));
-        $this->add_action_buttons(false, get_string('leave_group', 'local_learningcompanions'));
+        $this->add_action_buttons(false, get_string('leave_group', 'local_thi_learning_companions'));
     }
 
     private function getPossibleAdmins(group $group): array {
@@ -72,7 +72,7 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
     }
 
     protected function get_page_url_for_dynamic_submission(): moodle_url {
-        return new moodle_url('/local/learningcompanions/group/search.php');
+        return new moodle_url('/local/thi_learning_companions/group/search.php');
     }
 
     public function validation($data, $files) {
@@ -81,14 +81,14 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
 
         $userIsAdmin = $this->group->is_user_admin($USER->id);
         if (!$userIsAdmin) {
-            $errors['newAdmin'] = get_string('user_is_not_group_admin', 'local_learningcompanions');
+            $errors['newAdmin'] = get_string('user_is_not_group_admin', 'local_thi_learning_companions');
         }
 
         $adminIsSet = array_key_exists('newAdmin', $data);
         if (!$adminIsSet) {
             $newAdminIsUserOfGroup = $this->group->is_user_member($data['newAdmin']);
             if (!$newAdminIsUserOfGroup) {
-                $errors['newAdmin'] = get_string('new_admin_is_not_member', 'local_learningcompanions');
+                $errors['newAdmin'] = get_string('new_admin_is_not_member', 'local_thi_learning_companions');
             }
         }
 

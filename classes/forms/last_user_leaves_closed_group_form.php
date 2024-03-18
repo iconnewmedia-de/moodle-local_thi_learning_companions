@@ -1,9 +1,9 @@
 <?php
 
-namespace local_learningcompanions\forms;
+namespace local_thi_learning_companions\forms;
 
 use context;
-use local_learningcompanions\groups;
+use local_thi_learning_companions\groups;
 use moodle_url;
 
 class last_user_leaves_closed_group_form extends \core_form\dynamic_form {
@@ -15,8 +15,8 @@ class last_user_leaves_closed_group_form extends \core_form\dynamic_form {
         $mform = $this->_form;
 
         $mform->addElement('hidden', 'groupId', $this->_ajaxformdata['groupId']);
-        $mform->addElement('html', get_string('last_user_leaves_closed_group_description', 'local_learningcompanions'));
-        $this->add_action_buttons(true, get_string('leave_group', 'local_learningcompanions'));
+        $mform->addElement('html', get_string('last_user_leaves_closed_group_description', 'local_thi_learning_companions'));
+        $this->add_action_buttons(true, get_string('leave_group', 'local_thi_learning_companions'));
     }
 
     /**
@@ -52,6 +52,6 @@ class last_user_leaves_closed_group_form extends \core_form\dynamic_form {
      * @inheritDoc
      */
     protected function get_page_url_for_dynamic_submission(): moodle_url {
-        return new moodle_url('/local/learningcompanions/group/search.php');
+        return new moodle_url('/local/thi_learning_companions/group/search.php');
     }
 }

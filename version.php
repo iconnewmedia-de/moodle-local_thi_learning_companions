@@ -18,14 +18,14 @@
  * Plugin version and other meta-data are defined here.
  * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package     local_learningcompanions
+ * @package     local_thi_learning_companions
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_learningcompanions';
+$plugin->component = 'local_thi_learning_companions';
 $plugin->release = '1.0.0';
 $plugin->version = 2023111500;
 $plugin->requires = 2019111800;

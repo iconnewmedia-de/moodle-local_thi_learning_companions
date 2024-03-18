@@ -6,7 +6,7 @@ import {hideForm, useSetChatInput} from "../hooks/moodleHelpers.js";
 import Postlist from "./Postlist.js";
 import ReactDOM from "react-dom";
 
-const shouldIncludeId = (new URLSearchParams(window.location.search)).get('groupid') || window.learningcompanions_groupid;
+const shouldIncludeId = (new URLSearchParams(window.location.search)).get('groupid') || window.thi_learning_companions_groupid;
 
 export default function Grouplist({activeGroupid}) {
     if (typeof window.M === "undefined") {
@@ -25,7 +25,7 @@ export default function Grouplist({activeGroupid}) {
     useEffect(() => {
         const group = groups.find(group => +group.id === +activeGroupId);
         const chatid = group?.chatid;
-        const isPreviewGroup = (!window.learningcompanions_questionid && group) ? group.isPreviewGroup : false;
+        const isPreviewGroup = (!window.thi_learning_companions_questionid && group) ? group.isPreviewGroup : false;
 
         useSetChatInput(isPreviewGroup, chatid);
     }, [activeGroupId, groups]);
@@ -38,7 +38,7 @@ export default function Grouplist({activeGroupid}) {
 
         window.history.replaceState(null,
             "Chat",
-            `${window.M.cfg.wwwroot}/local/learningcompanions/chat.php?${searchParams}`
+            `${window.M.cfg.wwwroot}/local/thi_learning_companions/chat.php?${searchParams}`
         );
 
         setActiveGroupId(groupid);
@@ -60,7 +60,7 @@ export default function Grouplist({activeGroupid}) {
             urlParams.set('shouldIncludeId', shouldIncludeId);
         }
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxgrouplist.php?${urlParams}`, {
+        fetch(`${M.cfg.wwwroot}/local/thi_learning_companions/ajax/ajaxgrouplist.php?${urlParams}`, {
             signal: controller.signal
         })
             .then(response => response.json())
@@ -90,12 +90,12 @@ export default function Grouplist({activeGroupid}) {
         }
     }, []);
 
-    const chatPlaceholder = document.getElementById('learningcompanions_chat-content');
+    const chatPlaceholder = document.getElementById('thi_learning_companions_chat-content');
 
     const group = groups.find(group => +group?.id === +activeGroupId);
     return (
         <>
-            <div id="learningcompanions_chat-grouplist">
+            <div id="thi_learning_companions_chat-grouplist">
                 {isLoading && <LoadingIndicator/>}
                 {groups.map(group => (
                     <Group key={group.id} handleGroupSelect={handleGroupSelect} group={group} activeGroupid={activeGroupId}/>

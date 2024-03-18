@@ -1,13 +1,13 @@
 <?php
 
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 
-use local_learningcompanions\event\group_created;
-use local_learningcompanions\event\group_deleted;
-use local_learningcompanions\event\group_joined;
-use local_learningcompanions\event\group_left;
-use local_learningcompanions\event\group_updated;
-use local_learningcompanions\forms\create_edit_group_form;
+use local_thi_learning_companions\event\group_created;
+use local_thi_learning_companions\event\group_deleted;
+use local_thi_learning_companions\event\group_joined;
+use local_thi_learning_companions\event\group_left;
+use local_thi_learning_companions\event\group_updated;
+use local_thi_learning_companions\forms\create_edit_group_form;
 
 class groups {
     const CHATTYPE_MENTOR = 0;
@@ -130,7 +130,7 @@ class groups {
 
         }
 
-        $canSeeAllGroups = has_capability( 'tool/learningcompanions:group_manage', \context_system::instance());
+        $canSeeAllGroups = has_capability( 'tool/thi_learning_companions:group_manage', \context_system::instance());
         //Add preview group if it is set
         $alreadyInArray = in_array($shouldIncludeGroupId, array_column($return, 'id'), false);
         if(!is_null($shouldIncludeGroupId) && !$alreadyInArray) {
@@ -145,8 +145,8 @@ class groups {
                 $shouldIncludeGroup->dummyGroup = true;
                 $shouldIncludeGroup->userIsNotAMember = true;
                 $shouldIncludeGroup->id = $shouldIncludeGroupId;
-                $shouldIncludeGroup->imageurl = $CFG->wwwroot . '/local/learningcompanions/pix/group.svg';
-                $shouldIncludeGroup->name = get_string('group_closed', 'local_learningcompanions');
+                $shouldIncludeGroup->imageurl = $CFG->wwwroot . '/local/thi_learning_companions/pix/group.svg';
+                $shouldIncludeGroup->name = get_string('group_closed', 'local_thi_learning_companions');
             }
             $return = array_merge([$shouldIncludeGroup], $return);
         }
@@ -258,7 +258,7 @@ class groups {
             $groupid = $DB->insert_record('lc_groups', $record);
             $context = \context_system::instance();
             $options = [];
-            $data = file_postupdate_standard_editor($data, 'description', $options, $context, 'local_learningcompanions', 'description', $groupid);
+            $data = file_postupdate_standard_editor($data, 'description', $options, $context, 'local_thi_learning_companions', 'description', $groupid);
             $DB->set_field('lc_groups', 'description', $data->description, array('id' => $groupid));
             self::save_group_image($groupid, $data->groupimage);
             self::group_assign_keywords($groupid, $data->keywords);
@@ -328,7 +328,7 @@ class groups {
      */
     protected static function save_group_image($groupid, $image) {
         $context = \context_system::instance();
-        file_save_draft_area_files($image, $context->id, 'local_learningcompanions', 'groupimage', $groupid, create_edit_group_form::get_filepickeroptions());
+        file_save_draft_area_files($image, $context->id, 'local_thi_learning_companions', 'groupimage', $groupid, create_edit_group_form::get_filepickeroptions());
 
     }
 
@@ -672,8 +672,8 @@ class groups {
         $context = \context_system::instance();
         foreach($comments as $comment) {
             foreach($comment->attachments as $attachment) {
-                $fs->delete_area_files($context->id,'local_learningcompanions', 'message', $comment->id);
-                $fs->delete_area_files($context->id,'local_learningcompanions', 'attachments', $comment->id);
+                $fs->delete_area_files($context->id,'local_thi_learning_companions', 'message', $comment->id);
+                $fs->delete_area_files($context->id,'local_thi_learning_companions', 'attachments', $comment->id);
             }
         }
     }
@@ -722,7 +722,7 @@ class groups {
         global $USER;
         $isGroupMember = self::is_group_member($USER->id, $groupid);
         $context = \context_system::instance();
-        $mayManageGroups = has_capability('local/learningcompanions:group_manage', $context);
+        $mayManageGroups = has_capability('local/thi_learning_companions:group_manage', $context);
         return $isGroupMember || $mayManageGroups;
     }
 }

@@ -1,7 +1,7 @@
 <?php
-namespace local_learningcompanions;
-use local_learningcompanions\event\mentor_assigned;
-use local_learningcompanions\event\question_created;
+namespace local_thi_learning_companions;
+use local_thi_learning_companions\event\mentor_assigned;
+use local_thi_learning_companions\event\question_created;
 
 require_once __DIR__ . "/../locallib.php";
 require_once $CFG->libdir . "/badgeslib.php";
@@ -21,7 +21,7 @@ class mentors {
         // ICTODO: There is definitely a better way to query this.
         // ICTODO: Maybe split into basic and extended function.
 
-        require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
+        require_once($CFG->dirroot.'/local/thi_learning_companions/lib.php');
 
         $sql = 'SELECT DISTINCT m.userid, GROUP_CONCAT(m.topic) as topics,
                        u.*
@@ -58,7 +58,7 @@ class mentors {
                     'link' => false, 'visibletoscreenreaders' => false,
                     'class' => 'userpicture'
                 ]);
-                list($mentor->status, $mentor->statustext) = local_learningcompanions_get_user_status($mentor->userid);
+                list($mentor->status, $mentor->statustext) = local_thi_learning_companions_get_user_status($mentor->userid);
                 $mentor->badges = badges_get_user_badges($mentor->id, 0, 0, 0, '', true);
                 $mentor->badges = array_values($mentor->badges);
                 foreach($mentor->badges as $badge) {
@@ -100,7 +100,7 @@ class mentors {
         global $USER;
         $context = \context_system::instance();
         $userid = is_null($userid) ? $USER->id : $userid;
-        return has_capability('local/learningcompanions:mentor_ismentor', $context, $userid); // Maybe access restriction by database entry
+        return has_capability('local/thi_learning_companions:mentor_ismentor', $context, $userid); // Maybe access restriction by database entry
     }
 
     /**
@@ -139,7 +139,7 @@ class mentors {
     public static function is_supermentor($userid = null) {
         global $USER, $DB;
         $userid = is_null($userid) ? $USER->id : $userid;
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $minimumRatings = intval($config->supermentor_minimum_ratings);
         $countMentorRatings = self::count_mentor_ratings($userid);
         return $countMentorRatings >= $minimumRatings;
@@ -168,7 +168,7 @@ class mentors {
         global $USER;
         $context = \context_system::instance();
         $userid = is_null($userid) ? $USER->id : $userid;
-        return has_capability('local/learningcompanions:mentor_istutor', $context, $userid); // Maybe access restriction by database entry or teacher role
+        return has_capability('local/thi_learning_companions:mentor_istutor', $context, $userid); // Maybe access restriction by database entry or teacher role
     }
 
     /**
@@ -354,7 +354,7 @@ class mentors {
             if (empty($userBadge->courseid)) {
                 continue;
             }
-            $courseTopics = \local_learningcompanions\get_course_topics($userBadge->courseid);
+            $courseTopics = \local_thi_learning_companions\get_course_topics($userBadge->courseid);
             if (!empty($courseTopics)) {
                 $badgeTopics = array_merge($badgeTopics, $courseTopics);
             }
@@ -433,7 +433,7 @@ class mentors {
         if (!in_array($topic, $availableTopics)) {
             $assignedTopics = self::get_mentorship_topics($userid);
             if (in_array($topic, $assignedTopics)) {
-                $message = get_string('mentorship_already_assigned', 'local_learningcompanions', $topicClean);
+                $message = get_string('mentorship_already_assigned', 'local_thi_learning_companions', $topicClean);
                 \core\notification::info($message);
                 return;
             } else {
@@ -449,9 +449,9 @@ class mentors {
             self::assign_mentor_role($userid);
 
             mentor_assigned::make($userid, $mentorId)->trigger();
-            \core\notification::success(get_string('mentorship_assigned_to_topic', 'local_learningcompanions', $topicClean));
+            \core\notification::success(get_string('mentorship_assigned_to_topic', 'local_thi_learning_companions', $topicClean));
         } catch(\Exception $e) {
-            \core\notification::error(get_string('mentorship_error_unknown', 'local_learningcompanions', $e->getMessage()));
+            \core\notification::error(get_string('mentorship_error_unknown', 'local_thi_learning_companions', $e->getMessage()));
         }
     }
 
@@ -512,7 +512,7 @@ class mentors {
         } elseif(!isloggedin()) {
             return [];
         }
-        $courseTopics = \local_learningcompanions\get_topics_of_user_courses($userid);
+        $courseTopics = \local_thi_learning_companions\get_topics_of_user_courses($userid);
         if (empty($courseTopics)) {
             return [];
         }
@@ -550,7 +550,7 @@ class mentors {
         }
         $learningNuggetIDs = array_keys($learningNuggets);
         list($condition, $params) = $DB->get_in_or_equal($learningNuggetIDs);
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $limit = intval($config->latest_comments_max_amount);
         $latestComments = $DB->get_records_sql(
             "SELECT DISTINCT comment.*,
@@ -599,9 +599,9 @@ class mentors {
      * @throws \coding_exception
      */
     protected static function create_mentor_role() {
-        $name = get_string('mentor_role', 'local_learningcompanions');
+        $name = get_string('mentor_role', 'local_thi_learning_companions');
         $shortname = 'lc_mentor';
-        $description = get_string('mentor_role_description', 'local_learningcompanions');
+        $description = get_string('mentor_role_description', 'local_thi_learning_companions');
         $roleid = \create_role($name, $shortname, $description);
         // ICTODO: assign capabilities to the role
         return $roleid;

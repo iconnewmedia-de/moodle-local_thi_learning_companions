@@ -16,13 +16,13 @@ $chatid = optional_param('chatid', 1, PARAM_INT); // ICTODO: turn this into a re
 $firstPostId = optional_param('firstPostId', null, PARAM_INT);
 $includedPostId = optional_param('includedPostId', 0, PARAM_INT);
 if ($questionid > 0) {
-    $chat = \local_learningcompanions\chat::createQuestionChat($questionid);
+    $chat = \local_thi_learning_companions\chat::createQuestionChat($questionid);
 } else {
-    $chat = \local_learningcompanions\chat::createGroupChat($groupid);
+    $chat = \local_thi_learning_companions\chat::createGroupChat($groupid);
     //Check if the user is allowed to see the group
-    $group = new \local_learningcompanions\group($groupid);
+    $group = new \local_thi_learning_companions\group($groupid);
     $context = context_system::instance();
-    $canSeeAllGroups = has_capability( 'tool/learningcompanions:group_manage', $context);
+    $canSeeAllGroups = has_capability( 'tool/thi_learning_companions:group_manage', $context);
     if (!$group->is_user_member($USER->id) && !$canSeeAllGroups) {
         $group->userIsNotAMember = true;
         //If the user is not an member, but the group is public, then allow them to see the group

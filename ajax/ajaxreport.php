@@ -12,7 +12,7 @@ global $USER;
 $commentId = required_param('commentid', PARAM_INT);
 
 try {
-    local_learningcompanions\chats::flag_comment($commentId);
+    local_thi_learning_companions\chats::flag_comment($commentId);
     http_response_code(200);
     echo json_encode(['success' => true]);
 } catch(Exception $e) {

@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-param-type, valid-jsdoc */
 import $ from 'jquery';
-import 'local_learningcompanions/datatables';
+import 'local_thi_learning_companions/datatables';
 
 /**
  * Adds a default "value is included in the column" search to the datatables search.

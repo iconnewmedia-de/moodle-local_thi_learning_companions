@@ -1,6 +1,6 @@
 <?php
 
-namespace local_learningcompanions\event;
+namespace local_thi_learning_companions\event;
 
 class group_searched extends \core\event\base {
     protected function init() {
@@ -10,7 +10,7 @@ class group_searched extends \core\event\base {
     }
 
     public static function get_name() {
-        return get_string('event_group_searched', 'local_learningcompanions');
+        return get_string('event_group_searched', 'local_thi_learning_companions');
     }
 
     public function get_description() {

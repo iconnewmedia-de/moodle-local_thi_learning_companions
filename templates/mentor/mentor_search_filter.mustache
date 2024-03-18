@@ -1,7 +1,7 @@
-<form class="local_learningcompanions_mentor_search_filter">
+<form class="local_thi_learning_companions_mentor_search_filter">
     <div class="d-flex align-items-center mb-3" style="gap: 1em;">
         <label for="topic-search">
-            <select data-placeholder="{{#str}}filter_all_topics, local_learningcompanions{{/str}}"
+            <select data-placeholder="{{#str}}filter_all_topics, local_thi_learning_companions{{/str}}"
                     data-target="topics" multiple class="js-mentor-filter js-mentor-filter--includes select2"
                     name="topics" id="topic-search" style="min-width: 100px;">
                 {{#topics}}
@@ -10,13 +10,13 @@
             </select>
         </label>
 
-        <label class="flex-grow-1 local_learningcompanions_mentor_keywordsearch">
+        <label class="flex-grow-1 local_thi_learning_companions_mentor_keywordsearch">
             <input data-target="name" class="form-control js-mentor-filter js-mentor-filter--search w-100" name="keyword" type="text"
-                   placeholder="{{#str}}filter_mentor_keywords_placeholder, local_learningcompanions{{/str}}">
+                   placeholder="{{#str}}filter_mentor_keywords_placeholder, local_thi_learning_companions{{/str}}">
         </label>
 
         <label for="badge-search">
-            <select data-placeholder="{{#str}}filter_badges, local_learningcompanions{{/str}}"
+            <select data-placeholder="{{#str}}filter_badges, local_thi_learning_companions{{/str}}"
                     data-target="badges" multiple class="js-mentor-filter js-mentor-filter--includes select2"
                     name="badges" id="badge-search" style="min-width: 100px;">
                 {{#badges}}
@@ -29,7 +29,7 @@
             <input data-target="super-mentor" type="checkbox" name="super-mentor" id="super-mentor"
                    class="js-mentor-filter js-mentor-filter--search">
             <i class="fa fa-graduation-cap icon-issupermentor"></i>
-            {{#str}}filter_super_mentor, local_learningcompanions{{/str}}
+            {{#str}}filter_super_mentor, local_thi_learning_companions{{/str}}
         </label>
     </div>
 </form>

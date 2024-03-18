@@ -1,21 +1,21 @@
-<h2>{{#str}}allmentorquestions, local_learningcompanions{{/str}}</h2>
+<h2>{{#str}}allmentorquestions, local_thi_learning_companions{{/str}}</h2>
 {{#hasallmentorquestions}}
     <table class="stripe hover compact" id="allmentorquestionstable" data-paging="true" data-page-length="50">
         <thead>
         <tr>
-            <th>{{#str}}title, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}topic, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}status, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}title, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}topic, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}answers, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}status, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}lastactivity, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}questiondate, local_thi_learning_companions{{/str}}</th>
         </tr>
         </thead>
         <tbody>
         {{#allmentorquestions}}
             <tr>
                 <td>
-                    <a data-balloon="{{question}}" data-balloon-pos="right" href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">
+                    <a data-balloon="{{question}}" data-balloon-pos="right" href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">
                         {{title}}
                     </a>
                 </td>
@@ -24,7 +24,7 @@
                 </td>
                 <td>
                     {{#get_answer_count}}
-                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
+                        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
                     {{/get_answer_count}}
                     {{^get_answer_count}}
                         0
@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     {{#is_closed}}
-                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
+                        <span data-balloon="{{#str}}questionclosedon, local_thi_learning_companions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
                     {{/is_closed}}
@@ -52,5 +52,5 @@
     </table>
 {{/hasallmentorquestions}}
 {{^allmentorquestions}}
-    <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+    <p>{{#str}}noquestionsfound, local_thi_learning_companions{{/str}}</p>
 {{/allmentorquestions}}

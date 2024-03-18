@@ -1,4 +1,4 @@
-.iclearningcompanions-group-me-up {
+.icthi_learning_companions-group-me-up {
     position: absolute;
     right: 0;
     padding: 5px 20px;
@@ -16,14 +16,14 @@
 #allmentorquestionstable_wrapper {
     margin-bottom: 40px;
 }
-.local_learningcompanions_mentor_asknewquestion {
+.local_thi_learning_companions_mentor_asknewquestion {
     text-align: center;
     margin-bottom: 40px;
 }
-.learningcompanions_group_form .form-inline .custom-select,
-.learningcompanions_group_form .form-inline select,
-.learningcompanions_group_form .form-inline input[type="text"],
-.learningcompanions_group_form .form-inline textarea {
+.thi_learning_companions_group_form .form-inline .custom-select,
+.thi_learning_companions_group_form .form-inline select,
+.thi_learning_companions_group_form .form-inline input[type="text"],
+.thi_learning_companions_group_form .form-inline textarea {
     width: 480px;
 }
 .icon-check-green {
@@ -32,7 +32,7 @@
 #mentor-deletemyquestion-modal-delete {
     margin-right: 10px;
 }
-.local_learningcompanions_group_search_newgroupbutton {
+.local_thi_learning_companions_group_search_newgroupbutton {
     text-align: center;
     margin-top: 20px;
 }
@@ -57,10 +57,10 @@
     min-width: 20%;
     max-width: 10em;
 }
-.local_learningcompanions_mentor_search_askquestion_link {
+.local_thi_learning_companions_mentor_search_askquestion_link {
     color: #E38227;
 }
-.local_learningcompanions_chevron {
+.local_thi_learning_companions_chevron {
     color: #E38227;
 }
 .icon-issupermentor {
@@ -84,7 +84,7 @@
 .status-pleasedonotdisturb {
     color: orangered;
 }
-.learningcompanions_group_image_small {
+.thi_learning_companions_group_image_small {
     width: 30px;
     height: 30px;
     background-repeat: no-repeat;
@@ -92,39 +92,39 @@
     background-size: cover;
     flex-shrink: 0;
 }
-#learningcompanions_chat #fitem_id_message .col-form-label {
+#thi_learning_companions_chat #fitem_id_message .col-form-label {
     display: none !important;
 }
-#learningcompanions_chat #fitem_id_message [data-fieldtype="editor"] {
+#thi_learning_companions_chat #fitem_id_message [data-fieldtype="editor"] {
     width: 100%;
 }
 
-#learningcompanions_chat #fitem_id_message {
+#thi_learning_companions_chat #fitem_id_message {
     padding: 20px;
     background-color: var(--light);
 }
 
-#learningcompanions_chat #fitem_id_message [role="toolbar"] {
+#thi_learning_companions_chat #fitem_id_message [role="toolbar"] {
     border: none;
     background: transparent;
 }
 
-#learningcompanions_chat .editor_atto_content_wrap {
+#thi_learning_companions_chat .editor_atto_content_wrap {
     background: transparent;
 }
 
-#learningcompanions_chat #id_messageeditable {
+#thi_learning_companions_chat #id_messageeditable {
     min-height: 100px !important;
     height: 100px;
     opacity: 1;
     width: calc(100% - 50px);
     border: none;
 }
-#local_learningcompanions_chat-send {
+#local_thi_learning_companions_chat-send {
     float: right;
     width: 20px;
     margin-top: 75px;
-    background: url([[pix:local_learningcompanions|send]]) no-repeat top left;
+    background: url([[pix:local_thi_learning_companions|send]]) no-repeat top left;
     border: none;
     color: transparent;
     top: 30px;
@@ -132,15 +132,15 @@
     right: 15px;
     border-radius: 0;
 }
-#learningcompanions_chat form[action$="chat.php"] {
+#thi_learning_companions_chat form[action$="chat.php"] {
     position: relative;
 }
 
 
-.learningcompanions_edit_comment,
-.learningcompanions_rate_comment,
-.learningcompanions_delete_comment,
-.learningcompanions_report_comment {
+.thi_learning_companions_edit_comment,
+.thi_learning_companions_rate_comment,
+.thi_learning_companions_delete_comment,
+.thi_learning_companions_report_comment {
     width: 20px;
     height: 20px;
     color: transparent;
@@ -148,29 +148,29 @@
     background-position: center center;
     display: none;
 }
-.learningcompanions_edit_group,
-.learningcompanions_edit_comment {
-    background-image: url([[pix:local_learningcompanions|edit-pen]]);
+.thi_learning_companions_edit_group,
+.thi_learning_companions_edit_comment {
+    background-image: url([[pix:local_thi_learning_companions|edit-pen]]);
     z-index: 10;
 }
-.learningcompanions_rate_comment {
-    background-image: url([[pix:local_learningcompanions|thumbs-up]]);
+.thi_learning_companions_rate_comment {
+    background-image: url([[pix:local_thi_learning_companions|thumbs-up]]);
     opacity: 0.5;
 }
-.learningcompanions_rate_comment.learningcompanions_israted_by_current_user {
+.thi_learning_companions_rate_comment.thi_learning_companions_israted_by_current_user {
     display: inline-block;
 }
-learningcompanions_rate_comment:hover,
-.learningcompanions_rate_comment.learningcompanions_israted_by_current_user {
+thi_learning_companions_rate_comment:hover,
+.thi_learning_companions_rate_comment.thi_learning_companions_israted_by_current_user {
     opacity: 1;
 }
-.icon-learningcompanions-edit {
+.icon-thi_learning_companions-edit {
     width: 20px;
     height: 20px;
     color: transparent;
     background-repeat: no-repeat;
     background-position: center center;
-    background-image: url([[pix:local_learningcompanions|edit-pen]]);
+    background-image: url([[pix:local_thi_learning_companions|edit-pen]]);
     display: inline-block;
     background-size: contain;
     top: 4px;
@@ -179,64 +179,64 @@ learningcompanions_rate_comment:hover,
 }
 
 
-.learningcompanions_delete_comment {
-    background-image: url([[pix:local_learningcompanions|delete-bin]]);
+.thi_learning_companions_delete_comment {
+    background-image: url([[pix:local_thi_learning_companions|delete-bin]]);
 }
-.learningcompanions_report_comment {
-    background-image: url([[pix:local_learningcompanions|flag]]);
+.thi_learning_companions_report_comment {
+    background-image: url([[pix:local_thi_learning_companions|flag]]);
 }
 
-.learningcompanions_chat-post {
+.thi_learning_companions_chat-post {
     position: relative;
 }
 @media (min-width: 992px) {
-    #learningcompanions_chat-postlist {
+    #thi_learning_companions_chat-postlist {
         margin-left: -15px;
         margin-right: -15px;
     }
 }
 
-.learningcompanions_chat-post:hover .learningcompanions_report_comment,
-.learningcompanions_chat-post:hover .learningcompanions_delete_comment,
-.learningcompanions_chat-post:hover .learningcompanions_rate_comment,
-.learningcompanions_chat-post:hover .learningcompanions_edit_comment  {
+.thi_learning_companions_chat-post:hover .thi_learning_companions_report_comment,
+.thi_learning_companions_chat-post:hover .thi_learning_companions_delete_comment,
+.thi_learning_companions_chat-post:hover .thi_learning_companions_rate_comment,
+.thi_learning_companions_chat-post:hover .thi_learning_companions_edit_comment  {
     display: inline-block;
     color: transparent;
 }
 
-.learningcompanions_currentgroup {
+.thi_learning_companions_currentgroup {
     background: #eee;
 }
 
-.learningcompanions_group_icon {
+.thi_learning_companions_group_icon {
     width: 1em;
     height: 1em;
     background-repeat: no-repeat;
     background-size: contain;
 }
 
-.learningcompanions_group_icon--open {
-    background-image: url([[pix:local_learningcompanions|door-open]]);
+.thi_learning_companions_group_icon--open {
+    background-image: url([[pix:local_thi_learning_companions|door-open]]);
 }
-.learningcompanions_group_icon--closed {
-    background-image: url([[pix:local_learningcompanions|door-closed]]);
+.thi_learning_companions_group_icon--closed {
+    background-image: url([[pix:local_thi_learning_companions|door-closed]]);
 }
 
-.learningcompanions_groupheader {
+.thi_learning_companions_groupheader {
     background: var(--light);
     width: 100%;
     height: 90px;
     padding: 20px;
 }
 
-.learningcompanions_groupheader h1 {
+.thi_learning_companions_groupheader h1 {
     font-size: 32px;
     display: inline-block;
     font-weight: normal;
     font-style: italic;
 }
 
-.learningcompanions_groupheader .learningcompanions_groupimage {
+.thi_learning_companions_groupheader .thi_learning_companions_groupimage {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -246,7 +246,7 @@ learningcompanions_rate_comment:hover,
     vertical-align: bottom;
     margin-right: 20px;
 }
-.learningcompanions_chat-group {
+.thi_learning_companions_chat-group {
     padding: 5px 10px 7px;
     font-size: 16px;
     line-height: 24px;
@@ -254,49 +254,49 @@ learningcompanions_rate_comment:hover,
     cursor: pointer;
     gap: 0.5em;
 }
-.learningcompanions_group_infos {
+.thi_learning_companions_group_infos {
     flex-grow: 1;
 }
 
-.learningcompanions_chat-group em {
+.thi_learning_companions_chat-group em {
     font-weight: bold;
 }
-.learningcompanions_chat-post {
+.thi_learning_companions_chat-post {
     padding: 10px;
     position: relative;
     border-top:1px solid #ccc;
 }
-.learningcompanions_chat-my-post {
+.thi_learning_companions_chat-my-post {
     background: #e6ffe3;
 }
-.learningcompanions_chat-reported-post {
+.thi_learning_companions_chat-reported-post {
     background: #ffffcc;
 }
-.learningcompanions_loading {
+.thi_learning_companions_loading {
     border: 16px solid var(--light);
     border-top: 16px solid var(--dark);
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    animation: learningcompanions_loader_spin 2s linear infinite;
+    animation: thi_learning_companions_loader_spin 2s linear infinite;
     margin: 40px auto;
 }
 
-@keyframes learningcompanions_loader_spin {
+@keyframes thi_learning_companions_loader_spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-.learningcompanions_editgroup {
+.thi_learning_companions_editgroup {
     cursor: pointer;
     display: block;
     width: 30px;
     height: 30px;
-    background: url([[pix:local_learningcompanions|gear]]) no-repeat;
+    background: url([[pix:local_thi_learning_companions|gear]]) no-repeat;
     float: right;
     margin-top: 10px;
 }
-.learningcompanions_chat_time {
+.thi_learning_companions_chat_time {
 }
 
 /* Invite */
@@ -341,25 +341,25 @@ learningcompanions_rate_comment:hover,
     margin-left: -15px;
     margin-right: -15px;
 }
-.learningcompanions_bbb_button {
-    background: url([[pix:local_learningcompanions|bbbutton]]) no-repeat center center !important;
+.thi_learning_companions_bbb_button {
+    background: url([[pix:local_thi_learning_companions|bbbutton]]) no-repeat center center !important;
     width: 30px;
     background-size: cover;
     color: transparent;
 }
-.learningcompanions_upload_button {
+.thi_learning_companions_upload_button {
     width: 30px;
     background-size: cover;
     color: black;
 }
 
-#page-local-learningcompanions-chat #fitem_id_attachments {
+#page-local-thi_learning_companions-chat #fitem_id_attachments {
     display: none;
 }
-#page-local-learningcompanions-chat #fitem_id_attachments.upload-visible {
+#page-local-thi_learning_companions-chat #fitem_id_attachments.upload-visible {
     display: flex;
 }
-body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page.drawers .main-inner {
+body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable #page.drawers .main-inner {
     max-width: none;
 }
 .lc_comma-separated::after {
@@ -370,7 +370,7 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
     content: none;
 }
 
-#page-local-learningcompanions-mentor-question #learningcompanions_chat {
+#page-local-thi_learning_companions-mentor-question #thi_learning_companions_chat {
     margin-left: 16px;
 }
 
@@ -378,7 +378,7 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
     column-gap: 1em;
 }
 
-#page-local-learningcompanions-mentor-question .chat-post-form {
+#page-local-thi_learning_companions-mentor-question .chat-post-form {
     position: relative;
 }
 .lc_comment strong {
@@ -388,24 +388,24 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 .lc_comment_author-info {
     text-align: right;
 }
-#page-local-learningcompanions-mentor-mentor_questions_overview .dataTables_wrapper {
+#page-local-thi_learning_companions-mentor-mentor_questions_overview .dataTables_wrapper {
     overflow: hidden;
 }
-.local_learningcompanions_mentor_keywordsearch {
+.local_thi_learning_companions_mentor_keywordsearch {
     vertical-align: bottom;
 }
-.local_learningcompanions_mentor_keywordsearch input {
+.local_thi_learning_companions_mentor_keywordsearch input {
     border-radius: 4px !important;
 }
-.local_learningcompanions_mentor_search_filter label {
+.local_thi_learning_companions_mentor_search_filter label {
     vertical-align: bottom;
 }
 
-#page-local-learningcompanions-group-confirm_requested_join .col-form-label {
+#page-local-thi_learning_companions-group-confirm_requested_join .col-form-label {
     padding-top: 0;
 }
 
-.learningcompanions_group_infos em {
+.thi_learning_companions_group_infos em {
     font-style: italic;
     font-weight: 600;
     white-space: nowrap;
@@ -415,7 +415,7 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
     display: inline-block;
 }
 
-.learningcompanions_mygroups_group_newposts_count_circle {
+.thi_learning_companions_mygroups_group_newposts_count_circle {
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -429,14 +429,14 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
     line-height: 1.5em;
 }
 
-#page-local-learningcompanions-group-search label[for="topic-search"],
-#page-local-learningcompanions-group-search label[for="group-status"] {
+#page-local-thi_learning_companions-group-search label[for="topic-search"],
+#page-local-thi_learning_companions-group-search label[for="group-status"] {
     min-width: 150px;
     width: 15% !important;
 }
 
-#page-local-learningcompanions-group-search label[for="topic-search"] .select2-container,
-#page-local-learningcompanions-group-search label[for="group-status"] .select2-container {
+#page-local-thi_learning_companions-group-search label[for="topic-search"] .select2-container,
+#page-local-thi_learning_companions-group-search label[for="group-status"] .select2-container {
     width: 100% !important;
 }
 
@@ -445,7 +445,7 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 /* --------RESPONSIVENESS--------------------- */
 /* ------------------------------------------- */
 @media screen and (min-width: 768px) {
-    #page-local-learningcompanions-chat .learningcompanions_groupheader h1 {
+    #page-local-thi_learning_companions-chat .thi_learning_companions_groupheader h1 {
         max-width: calc(100vw - 330px);
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -455,30 +455,30 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
 @media screen and (max-width:992px) {
 
     /* -------------- CHAT -------------- */
-    #page-local-learningcompanions-chat .learningcompanions_group_infos em {
+    #page-local-thi_learning_companions-chat .thi_learning_companions_group_infos em {
         max-width:calc(100vw - 210px);
     }
 }
 @media screen and (max-width:767.98px) {
     /* ------------------- GROUP SEARCH --------------- */
-    #page-local-learningcompanions-group-search #allgroupstable th:nth-child(2),
-    #page-local-learningcompanions-group-search #allgroupstable th:nth-child(6),
-    #page-local-learningcompanions-group-search #allgroupstable td:nth-child(2),
-    #page-local-learningcompanions-group-search #allgroupstable td:nth-child(6) {
+    #page-local-thi_learning_companions-group-search #allgroupstable th:nth-child(2),
+    #page-local-thi_learning_companions-group-search #allgroupstable th:nth-child(6),
+    #page-local-thi_learning_companions-group-search #allgroupstable td:nth-child(2),
+    #page-local-thi_learning_companions-group-search #allgroupstable td:nth-child(6) {
         display: none;
     }
 
 
     /* -------------- CHAT -------------- */
-    #page-local-learningcompanions-chat .learningcompanions_editgroup {
+    #page-local-thi_learning_companions-chat .thi_learning_companions_editgroup {
         display: inline-block;
     }
 
-    #learningcompanions_chat #fitem_id_message {
+    #thi_learning_companions_chat #fitem_id_message {
         padding:5px;
     }
 
-    #page-local-learningcompanions-chat .learningcompanions_groupheader .learningcompanions_groupimage {
+    #page-local-thi_learning_companions-chat .thi_learning_companions_groupheader .thi_learning_companions_groupimage {
         width: 30px;
         height: 30px;
         vertical-align: top;
@@ -486,7 +486,7 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
         margin-top: 4px;
     }
 
-    #page-local-learningcompanions-chat .learningcompanions_groupheader h1 {
+    #page-local-thi_learning_companions-chat .thi_learning_companions_groupheader h1 {
         max-width: calc(100vw - 180px);
         overflow: hidden;
         height: 1.25em;
@@ -495,38 +495,38 @@ body[id^="page-local-learningcompanions"].pagelayout-standard.hasDatatable #page
         vertical-align: top;
     }
 
-    #page-local-learningcompanions-chat .learningcompanions_groupheader {
+    #page-local-thi_learning_companions-chat .thi_learning_companions_groupheader {
         height: 70px;
         padding: 10px;
     }
 }
 @media screen and (max-width:480px) {
     /* ------------------- GROUP SEARCH --------------- */
-    #page-local-learningcompanions-group-search #allgroupstable th {
+    #page-local-thi_learning_companions-group-search #allgroupstable th {
         display: none;
     }
-    #page-local-learningcompanions-group-search #allgroupstable td {
+    #page-local-thi_learning_companions-group-search #allgroupstable td {
         display: block;
         width: 100%;
     }
-    #page-local-learningcompanions-group-search #allgroupstable td::before {
+    #page-local-thi_learning_companions-group-search #allgroupstable td::before {
         content: attr(title);
         display: inline-block;
         width: 100px;
         font-weight: bold;
     }
-    #page-local-learningcompanions-group-search #allgroupstable .learningcompanions_group_icon {
+    #page-local-thi_learning_companions-group-search #allgroupstable .thi_learning_companions_group_icon {
         display: inline-block;
     }
-    #page-local-learningcompanions-group-search #local_learningcompanions_group_search label {
+    #page-local-thi_learning_companions-group-search #local_thi_learning_companions_group_search label {
         display: block;
         width: 100%;
     }
-    #page-local-learningcompanions-group-search #local_learningcompanions_group_search form > .d-flex {
+    #page-local-thi_learning_companions-group-search #local_thi_learning_companions_group_search form > .d-flex {
         display: block !important;
     }
-    #page-local-learningcompanions-group-search label[for="topic-search"],
-    #page-local-learningcompanions-group-search label[for="group-status"] {
+    #page-local-thi_learning_companions-group-search label[for="topic-search"],
+    #page-local-thi_learning_companions-group-search label[for="group-status"] {
         width: 100% !important;
     }
 }

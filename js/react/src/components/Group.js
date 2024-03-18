@@ -7,26 +7,26 @@ export default function Group({handleGroupSelect, group, activeGroupid}) {
         handleGroupSelect(id, chatid);
     };
 
-    let cssclasses = 'd-flex learningcompanions_chat-group';
+    let cssclasses = 'd-flex thi_learning_companions_chat-group';
 
     if (typeof activeGroupid !== "undefined" && parseInt(activeGroupid) === parseInt(id)) {
-        cssclasses += ' learningcompanions_currentgroup';
+        cssclasses += ' thi_learning_companions_currentgroup';
     }
 
     if (isPreview) {
-        cssclasses += ' learningcompanions_previewgroup';
+        cssclasses += ' thi_learning_companions_previewgroup';
     }
 
     return (
-        <div onClick={changeGroup} id={"learningcompanions_chat-group-" + id} className={cssclasses}>
-            <img className="learningcompanions_group_image_small" src={imageurl}/>
-            <div className="learningcompanions_group_infos">
+        <div onClick={changeGroup} id={"thi_learning_companions_chat-group-" + id} className={cssclasses}>
+            <img className="thi_learning_companions_group_image_small" src={imageurl}/>
+            <div className="thi_learning_companions_group_infos">
                 <em title={name}>{name}</em><br />
                 <span>{lastcomment}</span>
             </div>
             <Dateformatter timestamp={latestcomment ?? timecreated} />
-            <div className="learningcompanions_mygroups_group_newposts_count">
-                {has_new_comments &&  <span className="learningcompanions_mygroups_group_newposts_count_circle">
+            <div className="thi_learning_companions_mygroups_group_newposts_count">
+                {has_new_comments &&  <span className="thi_learning_companions_mygroups_group_newposts_count_circle">
                     {comments_since_last_visit}
                 </span>}
             </div>

@@ -1,23 +1,23 @@
 <div class="container">
     <h1>Mentoring</h1>
-    <div id="learningcompanions_chat">
+    <div id="thi_learning_companions_chat">
         <div class="row">
-            <div id="learningcompanions_chat" class="col-12">
-                <div id="learningcompanions_chat-content"></div>
+            <div id="thi_learning_companions_chat" class="col-12">
+                <div id="thi_learning_companions_chat-content"></div>
                 {{{form}}}
             </div>
                 {{^question.is_closed}}
                     <div class="col-12 d-flex justify-content-center">
-                        <a class="btn btn-primary btn-lg" href="/local/learningcompanions/mentor/close_question.php?id={{question.get_id}}"><i class="fa fa-check"></i> {{#str}}close_question, local_learningcompanions{{/str}}</a>
+                        <a class="btn btn-primary btn-lg" href="/local/thi_learning_companions/mentor/close_question.php?id={{question.get_id}}"><i class="fa fa-check"></i> {{#str}}close_question, local_thi_learning_companions{{/str}}</a>
                     </div>
                 {{/question.is_closed}}
         </div>
     </div>
 </div>
 <script type="text/javascript">
-    var learningcompanions_questionid = {{question.get_id}};
-    var learningcompanions_chat_userid = {{userid}};
-    var learningcompanions_groupid = null;
+    var thi_learning_companions_questionid = {{question.get_id}};
+    var thi_learning_companions_chat_userid = {{userid}};
+    var thi_learning_companions_groupid = null;
 </script>
 {{#js}}
     {{{languageStrings}}}

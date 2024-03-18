@@ -19,7 +19,7 @@
  *
  * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package     local_learningcompanions
+ * @package     local_thi_learning_companions
  * @category    upgrade
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,12 +28,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Execute local_learningcompanions upgrade from the given old version.
+ * Execute local_thi_learning_companions upgrade from the given old version.
  *
  * @param int $oldversion
  * @return bool
  */
-function xmldb_local_learningcompanions_upgrade($oldversion) {
+function xmldb_local_thi_learning_companions_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();

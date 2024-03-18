@@ -19,7 +19,7 @@ define('AJAX_SCRIPT', true);
 /**
  * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package     local_learningcompanions
+ * @package     local_thi_learning_companions
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -61,7 +61,7 @@ switch ($action) {
 function deleteQuetion() {
     $questionid = required_param('questionid', PARAM_INT);
 
-    if (\local_learningcompanions\mentors::delete_asked_question($questionid)) {
+    if (\local_thi_learning_companions\mentors::delete_asked_question($questionid)) {
         echo '1';
     } else {
         echo 'fail';
@@ -72,12 +72,12 @@ function getGroupDetails() {
     global $OUTPUT, $CFG;
     $groupid = required_param('groupid', PARAM_INT);
     $referrer = optional_param('referrer', 'groupsearch', PARAM_TEXT);
-    $group = \local_learningcompanions\groups::get_group_by_id($groupid);
-    $mayViewGroupmembers = $group->closedgroup == 0 || \local_learningcompanions\groups::may_view_group($groupid);
+    $group = \local_thi_learning_companions\groups::get_group_by_id($groupid);
+    $mayViewGroupmembers = $group->closedgroup == 0 || \local_thi_learning_companions\groups::may_view_group($groupid);
     if ($mayViewGroupmembers) {
         $group->groupmembers = array_values($group->groupmembers);
         foreach ($group->groupmembers as $groupmember) {
-            list($groupmember->status, $groupmember->statustext) = \local_learningcompanions_get_user_status($groupmember->id);
+            list($groupmember->status, $groupmember->statustext) = \local_thi_learning_companions_get_user_status($groupmember->id);
             $groupmember->userpic = $OUTPUT->user_picture($groupmember, [
                 'link' => false, 'visibletoscreenreaders' => false,
                 'class' => 'userpicture'
@@ -88,7 +88,7 @@ function getGroupDetails() {
     }
 
     $cm = $group->cm;
-    echo json_encode(['html' => $OUTPUT->render_from_template('local_learningcompanions/group/group_modal_groupdetails', [
+    echo json_encode(['html' => $OUTPUT->render_from_template('local_thi_learning_companions/group/group_modal_groupdetails', [
         'group' => $group,
         'referrer' => $referrer,
         'groupadmins' => $group->admins,
@@ -103,7 +103,7 @@ function getPossibleNewAdmins() {
     global $USER, $OUTPUT;
 
     $groupid = required_param('groupid', PARAM_INT);
-    $group = \local_learningcompanions\groups::get_group_by_id($groupid);
+    $group = \local_thi_learning_companions\groups::get_group_by_id($groupid);
     $groupmembers = $group->groupmembers;
     $groupmembers = array_filter($groupmembers, function($member) use ($USER) {
         return $member->id !== $USER->id;
@@ -114,14 +114,14 @@ function getPossibleNewAdmins() {
         return (object)['userid' => $member->id, 'name' => fullname($member)];
     }, $groupmembers);
 
-    echo json_encode($OUTPUT->render_from_template('local_learningcompanions/group/group_modal_select_new_admin', []), JSON_THROW_ON_ERROR);
+    echo json_encode($OUTPUT->render_from_template('local_thi_learning_companions/group/group_modal_select_new_admin', []), JSON_THROW_ON_ERROR);
 }
 
 function leaveGroup() {
     global $USER;
     $groupid = required_param('groupid', PARAM_INT);
 
-    $group = new \local_learningcompanions\group($groupid);
+    $group = new \local_thi_learning_companions\group($groupid);
     $isAdmin = $group->is_user_admin($USER->id);
 
     //If
@@ -134,7 +134,7 @@ function leaveGroup() {
     } else if ($group->closedgroup && count($group->groupmembers) === 1) {
         $response = ['leaved' => false, 'isLastMember' => true];
     } else {
-        $leaved = \local_learningcompanions\groups::leave_group($USER->id, $groupid);
+        $leaved = \local_thi_learning_companions\groups::leave_group($USER->id, $groupid);
         $response = ['leaved' => $leaved];
     }
 
@@ -147,9 +147,9 @@ function requestGroupJoin() {
     $groupid = required_param('groupid', PARAM_INT);
 
     try {
-        $errorCode = \local_learningcompanions\groups::request_group_join($USER->id, $groupid);
+        $errorCode = \local_thi_learning_companions\groups::request_group_join($USER->id, $groupid);
     } catch (dml_write_exception $e) {
-        echo \local_learningcompanions\groups::JOIN_REQUEST_OTHER_ERROR;
+        echo \local_thi_learning_companions\groups::JOIN_REQUEST_OTHER_ERROR;
         return;
     }
 
@@ -162,7 +162,7 @@ function joinGroup() {
     $groupid = required_param('groupid', PARAM_INT);
 
     try {
-        $joined = \local_learningcompanions\groups::join_group($USER->id, $groupid);
+        $joined = \local_thi_learning_companions\groups::join_group($USER->id, $groupid);
     } catch (dml_write_exception $e) {
         echo '1';
         return;

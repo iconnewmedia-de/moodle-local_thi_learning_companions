@@ -1,15 +1,15 @@
-<div id="local_learningcompanions_mentor_search">
-    <h1>{{#str}}findmentor, local_learningcompanions{{/str}}</h1>
+<div id="local_thi_learning_companions_mentor_search">
+    <h1>{{#str}}findmentor, local_thi_learning_companions{{/str}}</h1>
     {{#hasmentors}}
-        {{> local_learningcompanions/mentor/mentor_search_filter }}
+        {{> local_thi_learning_companions/mentor/mentor_search_filter }}
         <table class="stripe hover compact" id="allmentorstable" data-paging="true" data-page-length="50">
             <thead>
                 <tr>
                     <th class="super-mentor no-show" style="display: none;">Is he?</th>
-                    <th class="name">{{#str}}name, local_learningcompanions{{/str}}</th>
-                    <th class="badges">{{#str}}badges, local_learningcompanions{{/str}}</th>
-                    <th class="topics">{{#str}}topics, local_learningcompanions{{/str}}</th>
-                    <th class="actions">{{#str}}actions, local_learningcompanions{{/str}}</th>
+                    <th class="name">{{#str}}name, local_thi_learning_companions{{/str}}</th>
+                    <th class="badges">{{#str}}badges, local_thi_learning_companions{{/str}}</th>
+                    <th class="topics">{{#str}}topics, local_thi_learning_companions{{/str}}</th>
+                    <th class="actions">{{#str}}actions, local_thi_learning_companions{{/str}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +25,7 @@
                         <i class="fa fa-circle icon-status status-{{status}}"></i>
                         <a href="{{profileurl}}" target="_blank">{{fullname}}</a>
                         {{#issupermentor}}
-                            <span data-balloon="{{#str}}issupermentor, local_learningcompanions{{/str}}" data-balloon-pos="up">
+                            <span data-balloon="{{#str}}issupermentor, local_thi_learning_companions{{/str}}" data-balloon-pos="up">
                                 <i class="fa fa-graduation-cap icon-issupermentor"></i>
                             </span>
                         {{/issupermentor}}
@@ -39,10 +39,10 @@
                         <div>{{#topiclist}}<span class="lc_comma-separated">{{topic}}</span>{{/topiclist}}</div>
                     </td>
                     <td>
-                        <i class="fa fa-chevron-right local_learningcompanions_chevron"></i>
-                        <span class="local_learningcompanions_mentor_search_askquestion">
-                            <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/ask_question.php?mentor={{id}}" class="local_learningcompanions_mentor_search_askquestion_link">
-                                {{#str}}askquestiontomentor, local_learningcompanions{{/str}}
+                        <i class="fa fa-chevron-right local_thi_learning_companions_chevron"></i>
+                        <span class="local_thi_learning_companions_mentor_search_askquestion">
+                            <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/ask_question.php?mentor={{id}}" class="local_thi_learning_companions_mentor_search_askquestion_link">
+                                {{#str}}askquestiontomentor, local_thi_learning_companions{{/str}}
                             </a>
                         </span>
                     </td>
@@ -52,6 +52,6 @@
         </table>
     {{/hasmentors}}
     {{^mentors}}
-        <p>{{#str}}nomentorsfound, local_learningcompanions{{/str}}</p>
+        <p>{{#str}}nomentorsfound, local_thi_learning_companions{{/str}}</p>
     {{/mentors}}
 </div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 
 use core\session\exception;
-use local_learningcompanions\event\question_answered;
-use local_learningcompanions\event\question_created;
-use local_learningcompanions\traits\is_db_saveable;
+use local_thi_learning_companions\event\question_answered;
+use local_thi_learning_companions\event\question_created;
+use local_thi_learning_companions\traits\is_db_saveable;
 
 class question {
     use is_db_saveable;
@@ -68,8 +68,8 @@ class question {
     }
     private static function question_with_no_permission($record): self {
         $question = new self(0, 0,
-            get_string('no_permission_for_this_question', 'local_learningcompanions'),
-            get_string('invalid_question_id', 'local_learningcompanions'), '');
+            get_string('no_permission_for_this_question', 'local_thi_learning_companions'),
+            get_string('invalid_question_id', 'local_thi_learning_companions'), '');
         $question->id = 0;
         $question->timecreated = time();
         $question->timeclosed = time();
@@ -85,7 +85,7 @@ class question {
 
     /**
      * @param $questionid
-     * @return \local_learningcompanions\question
+     * @return \local_thi_learning_companions\question
      * @throws \dml_exception
      * @throws \exception
      */
@@ -93,14 +93,14 @@ class question {
         global $DB, $USER;
         $record = $DB->get_record('lc_mentor_questions', array('id' => $questionid));
         if (!$record) {
-            throw new \exception('invalid_question_id', 'local_learningcompanions');
+            throw new \exception('invalid_question_id', 'local_thi_learning_companions');
         }
-        $isMentor = \local_learningcompanions\mentors::is_mentor();
+        $isMentor = \local_thi_learning_companions\mentors::is_mentor();
         $context = \context_system::instance();
         if (($isMentor && $record->mentorid == 0)
             || $USER->id == $record->askedby
             || $USER->id == $record->mentorid
-            || has_capability('local/learningcompanions:view_all_mentor_questions', $context)
+            || has_capability('local/thi_learning_companions:view_all_mentor_questions', $context)
         ) {
             return self::from_record($record);
         } else {

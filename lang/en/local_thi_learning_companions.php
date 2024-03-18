@@ -19,7 +19,7 @@
  *
  * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package     local_learningcompanions
+ * @package     local_thi_learning_companions
  * @category    string
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,13 +28,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Learning Companions';
-$string['learningcompanions'] = 'Learning Companions';
-$string['learningcompanions:group_create'] = 'Create groups';
-$string['learningcompanions:group_manage'] = 'Manage groups';
-$string['learningcompanions:delete_comments_of_others'] = 'Delete comments of other users';
-$string['learningcompanions:mentor_view'] = 'View mentors';
+$string['thi_learning_companions'] = 'Learning Companions';
+$string['thi_learning_companions:group_create'] = 'Create groups';
+$string['thi_learning_companions:group_manage'] = 'Manage groups';
+$string['thi_learning_companions:delete_comments_of_others'] = 'Delete comments of other users';
+$string['thi_learning_companions:mentor_view'] = 'View mentors';
 $string['adminareaname'] = 'Learning Companions';
-$string['datatables_url'] = $CFG->wwwroot . '/local/learningcompanions/lang/en/datatables.json';
+$string['datatables_url'] = $CFG->wwwroot . '/local/thi_learning_companions/lang/en/datatables.json';
 
 $string['create_new_group'] = 'Create new group';
 $string['no_permission_create_group'] = 'You don\'t have the permission to create groups';
@@ -42,7 +42,7 @@ $string['no_permission_invite_group'] = 'You don\'t have the permission to invit
 $string['failed_create_group'] = 'Unexpected error. Creating a new group failed with the error message: ';
 $string['category_for_groups'] = 'Category for Groups';
 $string['configcategory'] = 'Please select the category which shall hold the courses for each group';
-$string['learningcompanions_settings'] = 'Local plugin learningcompanions';
+$string['thi_learning_companions_settings'] = 'Local plugin thi_learning_companions';
 $string['group-me-up'] = 'Group me up';
 $string['button_bg_color'] = 'Button background color';
 $string['configbuttonbg'] = 'Background color for the "group my up" button. Use CSS color syntax';
@@ -300,7 +300,7 @@ Could you please assist and help the user?
 Kind regards
 Your automatic \'{$a->sitename}\' system notifier';
 $string['message_unanswered_question_smallmessage'] = 'Unanswered question pending';
-$string['crontask'] = 'Regular tasks for Learningcompanions';
+$string['crontask'] = 'Regular tasks for thi_learning_companions';
 $string['groupjoin_request_group'] = 'Group: {$a}';
 $string['groupjoin_request_user'] = 'User: {$a}';
 $string['confirm_requested_join'] = 'Handle group join requests';

@@ -1,6 +1,6 @@
 <?php
 
-namespace local_learningcompanions\traits;
+namespace local_thi_learning_companions\traits;
 
 trait is_db_saveable {
     public function save() {

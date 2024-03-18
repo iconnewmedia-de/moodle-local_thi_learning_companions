@@ -13,10 +13,10 @@ $PAGE->set_context($context);
 $customdata = [
   // ICTODO: fill with data if necessary
 ];
-$form = new local_learningcompanions\chat_post_form(null, $customdata);
+$form = new local_thi_learning_companions\chat_post_form(null, $customdata);
 if ($data = $form->get_data()) {
     // ICTODO: save the form data
-    $status = local_learningcompanions\chat_handle_submission($data, $form);
+    $status = local_thi_learning_companions\chat_handle_submission($data, $form);
     if ($status["success"]) {
         http_response_code(200);
     } else {

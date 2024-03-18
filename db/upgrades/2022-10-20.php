@@ -11,5 +11,5 @@ if ($oldversion < 2022102000) {
     $field->set_attributes(XMLDB_TYPE_TEXT, NULL, NULL, true, false, NULL, NULL);
     $dbman->add_field($table, $field);
 
-    upgrade_plugin_savepoint(true, 2022102000, 'local', 'learningcompanions');
+    upgrade_plugin_savepoint(true, 2022102000, 'local', 'thi_learning_companions');
 }

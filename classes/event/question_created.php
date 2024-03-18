@@ -1,6 +1,6 @@
 <?php
 
-namespace local_learningcompanions\event;
+namespace local_thi_learning_companions\event;
 
 class question_created extends \core\event\base {
     protected function init() {
@@ -11,7 +11,7 @@ class question_created extends \core\event\base {
     }
 
     public static function get_name() {
-        return get_string('event_question_created', 'local_learningcompanions');
+        return get_string('event_question_created', 'local_thi_learning_companions');
     }
 
     public function get_description() {

@@ -19,6 +19,6 @@ if ($oldversion < 2023022200) {
         $table->addIndex($index);
         $dbman->create_table($table);
     }
-    // Learningcompanions savepoint reached.
-    upgrade_plugin_savepoint(true, 2023022200, 'local', 'learningcompanions');
+    // thi_learning_companions savepoint reached.
+    upgrade_plugin_savepoint(true, 2023022200, 'local', 'thi_learning_companions');
 }

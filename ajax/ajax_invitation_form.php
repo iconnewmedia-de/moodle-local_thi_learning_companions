@@ -30,11 +30,11 @@ global $CFG, $DB, $OUTPUT;
 $groupid = required_param('groupid', PARAM_INT);
 require_login();
 
-$PAGE->set_title(get_string('inviteusers', 'local_learningcompanions'));
+$PAGE->set_title(get_string('inviteusers', 'local_thi_learning_companions'));
 $PAGE->set_heading("...");
-$group = \local_learningcompanions\groups::get_group_by_id($groupid);
+$group = \local_thi_learning_companions\groups::get_group_by_id($groupid);
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('invite', 'local_learningcompanions', $group->name));
+echo $OUTPUT->heading(get_string('invite', 'local_thi_learning_companions', $group->name));
 
 // Get the user_selector we will need.
 $potentialuserselector = new group_candidate_selector('addselect', array('group'=>$groupid));
@@ -46,7 +46,7 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
     if (!empty($userstoassign)) {
 
-        \local_learningcompanions\groups::invite_users_to_group($userstoassign, $groupid);
+        \local_thi_learning_companions\groups::invite_users_to_group($userstoassign, $groupid);
 
         $potentialuserselector->invalidate_selected_users();
         $existinguserselector->invalidate_selected_users();

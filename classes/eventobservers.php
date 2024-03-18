@@ -1,5 +1,5 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 
 class eventobservers {
     /**
@@ -30,8 +30,8 @@ class eventobservers {
      */
     public static function course_restored(\core\event\course_restored $event) {
         global $CFG;
-        require_once $CFG->dirroot . '/local/learningcompanions/locallib.php';
-        \local_learningcompanions\add_comment_blocks();
+        require_once $CFG->dirroot . '/local/thi_learning_companions/locallib.php';
+        \local_thi_learning_companions\add_comment_blocks();
     }
 
     /**
@@ -43,7 +43,7 @@ class eventobservers {
      */
     public static function badge_awarded(\core\event\badge_awarded $event) {
         global $DB;
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $badgeTypesForMentors = $config->badgetypes_for_mentors;
         $badgeTypesForMentors = explode(',', $badgeTypesForMentors);
         $data = $event->get_data();
@@ -61,12 +61,12 @@ class eventobservers {
             }
         }
         if ($sendNotification) {
-            \local_learningcompanions\messages::send_mentor_qualification_message($data['courseid'], $data['relateduserid']);
+            \local_thi_learning_companions\messages::send_mentor_qualification_message($data['courseid'], $data['relateduserid']);
         }
     }
 
     /**
-     * checks if the settings for local_learningcompanions | commentactivities have changed
+     * checks if the settings for local_thi_learning_companions | commentactivities have changed
      * if yes, calls the function that ensures that all listed activity types have a comment block
      * @param \core\event\config_log_created $event
      * @return void
@@ -76,13 +76,13 @@ class eventobservers {
     public static function config_log_created(\core\event\config_log_created $event) {
         $data = $event->get_data();
         $info = $data['other'];
-        if ($info['plugin'] !== 'local_learningcompanions' || $info['name'] !== 'commentactivities') {
+        if ($info['plugin'] !== 'local_thi_learning_companions' || $info['name'] !== 'commentactivities') {
             return;
         }
         if ($info['oldvalue'] == $info['value']) {
             return;
         }
         require_once __DIR__ . "/../locallib.php";
-        \local_learningcompanions\add_comment_blocks();
+        \local_thi_learning_companions\add_comment_blocks();
     }
 }

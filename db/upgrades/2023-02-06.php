@@ -22,5 +22,5 @@ if ($oldversion < 2023020602) {
         $dbman->add_field($table, $field);
     }
 
-    upgrade_plugin_savepoint(true, 2023020602, 'local', 'learningcompanions');
+    upgrade_plugin_savepoint(true, 2023020602, 'local', 'thi_learning_companions');
 }

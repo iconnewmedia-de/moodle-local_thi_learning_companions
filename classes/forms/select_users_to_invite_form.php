@@ -1,5 +1,5 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -41,22 +41,22 @@ class select_users_to_invite_form extends \moodleform
         $context = $this->_customdata->context;
         $groupid = $context->id;
         if (!groups::may_view_group($groupid)) {
-            print_error('no_permission_invite_group', 'local_learningcompanions');
+            print_error('no_permission_invite_group', 'local_thi_learning_companions');
         }
         $mform = $this->_form;
         $mform->setDisableShortforms();
         $mform->disable_form_change_checker();
         $mform->addElement('hidden', 'action', 'invite');
         $mform->setType('action', PARAM_TEXT);
-        $mform->addElement('header', 'main', get_string('inviteusers', 'local_learningcompanions'));
+        $mform->addElement('header', 'main', get_string('inviteusers', 'local_thi_learning_companions'));
         $options = array(
-            'ajax' => 'local_learningcompanions/invitation_potential_user_selector',
+            'ajax' => 'local_thi_learning_companions/invitation_potential_user_selector',
             'multiple' => true,
             'groupid' => $groupid,
             'perpage' => 100
         );
 
-        $mform->addElement('autocomplete', 'userlist', get_string('selectusers', 'local_learningcompanions'), array(), $options);
+        $mform->addElement('autocomplete', 'userlist', get_string('selectusers', 'local_thi_learning_companions'), array(), $options);
         $this->add_action_buttons();
     }
 

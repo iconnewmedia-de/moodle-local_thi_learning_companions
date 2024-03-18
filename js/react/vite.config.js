@@ -10,7 +10,7 @@ export default defineConfig({
         rollupOptions: {
             external: ['react', 'react-dom'],
             output: {
-                entryFileNames: 'learningcompanions-chat.min.js',
+                entryFileNames: 'thi_learning_companions-chat.min.js',
                 format: 'iife',
                 globals: {
                     react: 'React',

@@ -1,13 +1,13 @@
-<h2>{{#str}}private_questions_to_me, local_learningcompanions{{/str}}</h2>
+<h2>{{#str}}private_questions_to_me, local_thi_learning_companions{{/str}}</h2>
 {{#hasquestionstome}}
     <table class="stripe hover compact lc_datatable" id="lc_private_mentor_questions" data-paging="true" data-page-length="50">
         <thead>
         <tr>
-            <th>{{#str}}title, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}status, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
-            <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+            <th>{{#str}}title, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}answers, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}status, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}lastactivity, local_thi_learning_companions{{/str}}</th>
+            <th>{{#str}}questiondate, local_thi_learning_companions{{/str}}</th>
             <th></th>
         </tr>
         </thead>
@@ -16,12 +16,12 @@
             <tr>
                 <td>
                     <span data-balloon="{{question}}" data-balloon-pos="right">
-                       <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
+                       <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{title}}</a>
                     </span>
                 </td>
                 <td>
                     {{#get_answer_count}}
-                        <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
+                        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
                     {{/get_answer_count}}
                     {{^get_answer_count}}
                         0
@@ -29,7 +29,7 @@
                 </td>
                 <td>
                     {{#is_closed}}
-                        <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
+                        <span data-balloon="{{#str}}questionclosedon, local_thi_learning_companions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
                     {{/is_closed}}
@@ -44,7 +44,7 @@
                     {{get_timecreated_dmy}}
                 </td>
                 <td>
-                    <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="left">
+                    <span data-balloon="{{#str}}deletemyquestion, local_thi_learning_companions{{/str}}" data-balloon-pos="left">
                         <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
                     </span>
                 </td>
@@ -54,19 +54,19 @@
     </table>
 {{/hasquestionstome}}
 {{^hasquestionstome}}
-    <p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+    <p>{{#str}}noquestionsfound, local_thi_learning_companions{{/str}}</p>
 {{/hasquestionstome}}
 
-<h2 class="mt-5">{{#str}}open_questions_to_my_topics, local_learningcompanions{{/str}}</h2>
+<h2 class="mt-5">{{#str}}open_questions_to_my_topics, local_thi_learning_companions{{/str}}</h2>
 {{#hasquestionstoallmentors}}
 <table class="stripe hover compact lc_datatable" id="mentorquestionstable" data-paging="true" data-page-length="50">
     <thead>
     <tr>
-        <th>{{#str}}title, local_learningcompanions{{/str}}</th>
-        <th>{{#str}}answers, local_learningcompanions{{/str}}</th>
-        <th>{{#str}}status, local_learningcompanions{{/str}}</th>
-        <th>{{#str}}lastactivity, local_learningcompanions{{/str}}</th>
-        <th>{{#str}}questiondate, local_learningcompanions{{/str}}</th>
+        <th>{{#str}}title, local_thi_learning_companions{{/str}}</th>
+        <th>{{#str}}answers, local_thi_learning_companions{{/str}}</th>
+        <th>{{#str}}status, local_thi_learning_companions{{/str}}</th>
+        <th>{{#str}}lastactivity, local_thi_learning_companions{{/str}}</th>
+        <th>{{#str}}questiondate, local_thi_learning_companions{{/str}}</th>
         <th></th>
     </tr>
     </thead>
@@ -75,12 +75,12 @@
     <tr>
         <td>
             <span data-balloon="{{question}}" data-balloon-pos="right">
-               <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{title}}</a>
+               <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{title}}</a>
             </span>
         </td>
         <td>
             {{#get_answer_count}}
-            <a href="{{cfg.wwwroot}}/local/learningcompanions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
+            <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
             {{/get_answer_count}}
             {{^get_answer_count}}
             0
@@ -88,7 +88,7 @@
         </td>
         <td>
             {{#is_closed}}
-                <span data-balloon="{{#str}}questionclosedon, local_learningcompanions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
+                <span data-balloon="{{#str}}questionclosedon, local_thi_learning_companions, {{get_closed_time}}{{/str}}" data-balloon-pos="up">
                             <i class="fa fa-check icon-check-green"></i>
                         </span>
             {{/is_closed}}
@@ -103,7 +103,7 @@
             {{get_timecreated_dmy}}
         </td>
         <td>
-            <span data-balloon="{{#str}}deletemyquestion, local_learningcompanions{{/str}}" data-balloon-pos="left">
+            <span data-balloon="{{#str}}deletemyquestion, local_thi_learning_companions{{/str}}" data-balloon-pos="left">
                 <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
             </span>
         </td>
@@ -113,16 +113,16 @@
 </table>
 {{/hasquestionstoallmentors}}
 {{^hasquestionstoallmentors}}
-<p>{{#str}}noquestionsfound, local_learningcompanions{{/str}}</p>
+<p>{{#str}}noquestionsfound, local_thi_learning_companions{{/str}}</p>
 {{/hasquestionstoallmentors}}
 
 {{#hascomments}}
-<h2 class="mt-5">{{#str}}latest_comments, local_learningcompanions{{/str}}</h2>
+<h2 class="mt-5">{{#str}}latest_comments, local_thi_learning_companions{{/str}}</h2>
     {{#latestcomments}}
         <div class="lc_comment">
             <p class="lc_comment_content"><strong>{{content}}</a></strong></p>
-            <p class="lc_comment_path">{{#str}}learning_nugget, local_learningcompanions{{/str}}: <a href="{{cfg.wwwroot}}/course/view.php?id={{courseid}}">{{coursefullname}}</a> &gt; <a href="{{cfg.wwwroot}}/mod/{{modulename}}/view.php?id={{cmid}}">{{nuggettitle}}</a></p>
-            <p class="lc_comment_author-info">{{#str}}comment_from, local_learningcompanions{{/str}} <a href="{{cfg.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_learningcompanions{{/str}} {{#userdate}}{{timecreated}}{{/userdate}}</p>
+            <p class="lc_comment_path">{{#str}}learning_nugget, local_thi_learning_companions{{/str}}: <a href="{{cfg.wwwroot}}/course/view.php?id={{courseid}}">{{coursefullname}}</a> &gt; <a href="{{cfg.wwwroot}}/mod/{{modulename}}/view.php?id={{cmid}}">{{nuggettitle}}</a></p>
+            <p class="lc_comment_author-info">{{#str}}comment_from, local_thi_learning_companions{{/str}} <a href="{{cfg.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_thi_learning_companions{{/str}} {{#userdate}}{{timecreated}}{{/userdate}}</p>
             <hr>
         </div>
     {{/latestcomments}}

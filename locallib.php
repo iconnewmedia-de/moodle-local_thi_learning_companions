@@ -1,5 +1,5 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 
 /**
  * @param $data
@@ -11,14 +11,14 @@ function chat_handle_submission($data, $form) {
     try {
         $transaction = $DB->start_delegated_transaction();
         $data->message = $data->message["text"];
-        $attachmentsaved = \local_learningcompanions\chats::post_comment($data, $form, chat_post_form::editor_options(0));
+        $attachmentsaved = \local_thi_learning_companions\chats::post_comment($data, $form, chat_post_form::editor_options(0));
         $transaction->allow_commit();
         $return = ["success" => true];
         if (!$attachmentsaved) {
-            $config = get_config('local_learningcompanions');
+            $config = get_config('local_thi_learning_companions');
             $limit = intval($config->upload_limit_per_chat) . 'M';
-            $return['warning_body'] = get_string('attachment_chat_filesize_excdeeded', 'local_learningcompanions', $limit);
-            $return['warning_title'] = get_string('warning', 'local_learningcompanions', $limit);
+            $return['warning_body'] = get_string('attachment_chat_filesize_excdeeded', 'local_thi_learning_companions', $limit);
+            $return['warning_title'] = get_string('warning', 'local_thi_learning_companions', $limit);
         }
         return $return;
     } catch(\Exception $e) {
@@ -41,7 +41,7 @@ function get_course_topics($courseid) {
         "SELECT DISTINCT cd.value
         FROM {customfield_data} cd
         JOIN {customfield_field} cf ON cd.fieldid = cf.id AND cf.shortname = 'topic'
-        JOIN {customfield_category} cg ON cg.id = cf.categoryid AND cg.name = 'Learningcompanions'
+        JOIN {customfield_category} cg ON cg.id = cf.categoryid AND cg.name = 'thi_learning_companions'
         JOIN {context} ctx ON ctx.id = cd.contextid AND ctx.contextlevel = '" . CONTEXT_COURSE . "' AND ctx.instanceid = ?",
     array($courseid)
     );
@@ -76,7 +76,7 @@ function get_topics_of_user_courses(int $userid = null) {
         "SELECT DISTINCT cd.value
         FROM {customfield_data} cd
         JOIN {customfield_field} cf ON cd.fieldid = cf.id AND cf.shortname = 'topic'
-        JOIN {customfield_category} cg ON cg.id = cf.categoryid AND cg.name = 'Learningcompanions'
+        JOIN {customfield_category} cg ON cg.id = cf.categoryid AND cg.name = 'thi_learning_companions'
         JOIN {context} ctx
             ON ctx.id = cd.contextid
             AND ctx.contextlevel = '" . CONTEXT_COURSE . "'
@@ -98,7 +98,7 @@ function invite_users() {
         return;
     }
     groups::invite_users_to_group($userlist, $groupid);
-    $notification = $OUTPUT->render(new \core\output\notification(get_string('users_invited', 'local_learningcompanions'), \core\output\notification::NOTIFY_SUCCESS));
+    $notification = $OUTPUT->render(new \core\output\notification(get_string('users_invited', 'local_thi_learning_companions'), \core\output\notification::NOTIFY_SUCCESS));
     echo $notification;
 }
 
@@ -107,7 +107,7 @@ function invite_users() {
  * @throws \dml_exception
  */
 function get_moduletypes_for_commentblock() {
-    $config = get_config('local_learningcompanions');
+    $config = get_config('local_thi_learning_companions');
     $whitelist = explode(',', $config->commentactivities);
     array_walk($whitelist, 'trim');
     return $whitelist;

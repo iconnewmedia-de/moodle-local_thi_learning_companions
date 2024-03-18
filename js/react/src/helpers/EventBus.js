@@ -15,10 +15,10 @@ const eventBus = {
         return this;
     },
     events: {
-        MESSAGE_DELETED: 'learningcompanions_message_deleted',
-        MESSAGE_REPORTED: 'learningcompanions_message_reported',
-        MESSAGE_SEND: 'learningcompanions_message_send',
-        MESSAGE_RATED: 'learningcompanions_message_rated',
+        MESSAGE_DELETED: 'thi_learning_companions_message_deleted',
+        MESSAGE_REPORTED: 'thi_learning_companions_message_reported',
+        MESSAGE_SEND: 'thi_learning_companions_message_send',
+        MESSAGE_RATED: 'thi_learning_companions_message_rated',
     }
 };
 

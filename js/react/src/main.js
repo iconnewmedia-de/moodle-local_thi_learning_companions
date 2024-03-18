@@ -4,17 +4,17 @@ import Grouplist from "./components/Grouplist";
 import Postlist from "./components/Postlist.js";
 
 function startChat() {
-    const root = ReactDOM.createRoot(document.getElementById('learningcompanions_groups-content'));
+    const root = ReactDOM.createRoot(document.getElementById('thi_learning_companions_groups-content'));
     root.render(
         <React.StrictMode>
-            <Grouplist activeGroupid={window.learningcompanions_groupid}/>
+            <Grouplist activeGroupid={window.thi_learning_companions_groupid}/>
         </React.StrictMode>
     );
 }
 
 function startQuestionChat() {
-    const root = ReactDOM.createRoot(document.getElementById('learningcompanions_chat-content'));
-    const questionid = window.learningcompanions_questionid;
+    const root = ReactDOM.createRoot(document.getElementById('thi_learning_companions_chat-content'));
+    const questionid = window.thi_learning_companions_questionid;
     root.render(
         <React.StrictMode>
             <Postlist questionid={questionid}/>

@@ -15,7 +15,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
                 courseid = null;
             }
             Ajax.call([{
-                methodname: 'local_learningcompanions_nugget_list',
+                methodname: 'local_thi_learning_companions_nugget_list',
                 args: {
                     courseid: courseid,
                     query: query

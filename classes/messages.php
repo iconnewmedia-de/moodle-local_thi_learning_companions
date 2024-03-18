@@ -1,13 +1,13 @@
 <?php
 
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 
 use core\message\message;
 
 class messages {
     private static function initNewMessage(string $messageName): message {
         $message = new \core\message\message();
-        $message->component = 'local_learningcompanions';
+        $message->component = 'local_thi_learning_companions';
         $message->notification = 1;
         $message->fullmessageformat = FORMAT_PLAIN;
         $message->name = $messageName;
@@ -25,19 +25,19 @@ class messages {
         $message = self::initNewMessage('group_join_requested');
         $message->userfrom = $requestedUser;
         $message->userto = $recipient;
-        $message->subject = get_string('message_group_join_requested_subject', 'local_learningcompanions');
-        $message->fullmessage = get_string('message_group_join_requested_body', 'local_learningcompanions', [
+        $message->subject = get_string('message_group_join_requested_subject', 'local_thi_learning_companions');
+        $message->fullmessage = get_string('message_group_join_requested_body', 'local_thi_learning_companions', [
             'receivername' => fullname($recipient),
             'groupname' => $group->name,
             'sendername' => fullname($requestedUser),
         ]);
-        $message->fullmessagehtml = get_string('message_group_join_requested_body_html', 'local_learningcompanions', [
+        $message->fullmessagehtml = get_string('message_group_join_requested_body_html', 'local_thi_learning_companions', [
             'receivername' => fullname($recipient),
             'groupname' => $group->name,
             'sendername' => fullname($requestedUser)
         ]);
-        $message->smallmessage = get_string('message_group_join_requested_small', 'local_learningcompanions', $group->name);
-        $message->contexturl = (new \moodle_url('/local/learningcompanions/group/confirm_requested_join.php'))->out(false);
+        $message->smallmessage = get_string('message_group_join_requested_small', 'local_thi_learning_companions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/thi_learning_companions/group/confirm_requested_join.php'))->out(false);
         $message->contexturlname = $group->name;
 
         message_send($message);
@@ -53,19 +53,19 @@ class messages {
         $message = self::initNewMessage('appointed_to_admin');
         $message->userfrom = $appointedBy;
         $message->userto = $newAdmin;
-        $message->subject = get_string('message_appointed_to_admin_subject', 'local_learningcompanions');
-        $message->fullmessage = get_string('message_appointed_to_admin_body', 'local_learningcompanions', [
+        $message->subject = get_string('message_appointed_to_admin_subject', 'local_thi_learning_companions');
+        $message->fullmessage = get_string('message_appointed_to_admin_body', 'local_thi_learning_companions', [
             'receivername' => fullname($newAdmin),
             'groupname' => $group->name,
             'sendername' => fullname($appointedBy),
         ]);
-        $message->fullmessagehtml = get_string('message_appointed_to_admin_body_html', 'local_learningcompanions', [
+        $message->fullmessagehtml = get_string('message_appointed_to_admin_body_html', 'local_thi_learning_companions', [
             'receivername' => fullname($newAdmin),
             'groupname' => $group->name,
             'sendername' => fullname($appointedBy)
         ]);
-        $message->smallmessage = get_string('message_appointed_to_admin_small', 'local_learningcompanions', $group->name);
-        $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
+        $message->smallmessage = get_string('message_appointed_to_admin_small', 'local_thi_learning_companions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/thi_learning_companions/chat.php', ['groupid' => $group->id]))->out(false);
         $message->contexturlname = $group->name;
 
         message_send($message);
@@ -80,19 +80,19 @@ class messages {
         $message = self::initNewMessage('group_join_accepted');
         $message->userfrom = $USER;
         $message->userto = $user;
-        $message->subject = get_string('message_group_join_accepted_subject', 'local_learningcompanions');
-        $message->fullmessage = get_string('message_group_join_accepted_body', 'local_learningcompanions', [
+        $message->subject = get_string('message_group_join_accepted_subject', 'local_thi_learning_companions');
+        $message->fullmessage = get_string('message_group_join_accepted_body', 'local_thi_learning_companions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
             'sendername' => fullname($USER),
         ]);
-        $message->fullmessagehtml = get_string('message_group_join_accepted_body_html', 'local_learningcompanions', [
+        $message->fullmessagehtml = get_string('message_group_join_accepted_body_html', 'local_thi_learning_companions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
             'sendername' => fullname($USER)
         ]);
-        $message->smallmessage = get_string('message_group_join_accepted_small', 'local_learningcompanions', $group->name);
-        $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
+        $message->smallmessage = get_string('message_group_join_accepted_small', 'local_thi_learning_companions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/thi_learning_companions/chat.php', ['groupid' => $group->id]))->out(false);
         $message->contexturlname = $group->name;
 
         message_send($message);
@@ -107,19 +107,19 @@ class messages {
         $message = self::initNewMessage('group_join_denied');
         $message->userfrom = $USER;
         $message->userto = $user;
-        $message->subject = get_string('message_group_join_denied_subject', 'local_learningcompanions');
-        $message->fullmessage = get_string('message_group_join_denied_body', 'local_learningcompanions', [
+        $message->subject = get_string('message_group_join_denied_subject', 'local_thi_learning_companions');
+        $message->fullmessage = get_string('message_group_join_denied_body', 'local_thi_learning_companions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
             'sendername' => fullname($USER),
         ]);
-        $message->fullmessagehtml = get_string('message_group_join_denied_body_html', 'local_learningcompanions', [
+        $message->fullmessagehtml = get_string('message_group_join_denied_body_html', 'local_thi_learning_companions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
             'sendername' => fullname($USER)
         ]);
-        $message->smallmessage = get_string('message_group_join_denied_small', 'local_learningcompanions', $group->name);
-        $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
+        $message->smallmessage = get_string('message_group_join_denied_small', 'local_thi_learning_companions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/thi_learning_companions/chat.php', ['groupid' => $group->id]))->out(false);
         $message->contexturlname = $group->name;
 
         message_send($message);
@@ -134,19 +134,19 @@ class messages {
         $message = self::initNewMessage('invited_to_group');
         $message->userfrom = $USER;
         $message->userto = $user;
-        $message->subject = get_string('message_invited_to_group_subject', 'local_learningcompanions');
-        $message->fullmessage = get_string('message_invited_to_group_body', 'local_learningcompanions', [
+        $message->subject = get_string('message_invited_to_group_subject', 'local_thi_learning_companions');
+        $message->fullmessage = get_string('message_invited_to_group_body', 'local_thi_learning_companions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
             'sendername' => fullname($USER),
         ]);
-        $message->fullmessagehtml = get_string('message_invited_to_group_body_html', 'local_learningcompanions', [
+        $message->fullmessagehtml = get_string('message_invited_to_group_body_html', 'local_thi_learning_companions', [
             'receivername' => fullname($user),
             'groupname' => $group->name,
             'sendername' => fullname($USER)
         ]);
-        $message->smallmessage = get_string('message_invited_to_group_small', 'local_learningcompanions', $group->name);
-        $message->contexturl = (new \moodle_url('/local/learningcompanions/chat.php', ['groupid' => $group->id]))->out(false);
+        $message->smallmessage = get_string('message_invited_to_group_small', 'local_thi_learning_companions', $group->name);
+        $message->contexturl = (new \moodle_url('/local/thi_learning_companions/chat.php', ['groupid' => $group->id]))->out(false);
         $message->contexturlname = $group->name;
 
         message_send($message);
@@ -163,14 +163,14 @@ class messages {
         global $DB, $CFG;
         $user = $DB->get_record('user', array('id' => $userid));
         $message = new \core\message\message();
-        $message->component = 'local_learningcompanions'; // Your plugin's name
+        $message->component = 'local_thi_learning_companions'; // Your plugin's name
         $message->name = 'notification_qualified_mentor'; // Your notification name from message.php
         $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
         $message->userto = $user;
         // ICTODO: get course topic instead and display that in the email. We will have to use a custom course profile field
         $course = $DB->get_record('course', array('id' => $courseid));
 
-        $link = $CFG->wwwroot . '/local/learningcompanions/mentor/manage.php';
+        $link = $CFG->wwwroot . '/local/thi_learning_companions/mentor/manage.php';
         $placeholders = array(
           'username' => $user->username,
           'firstname' => $user->firstname,
@@ -182,12 +182,12 @@ class messages {
           'courseshortname' => $course->shortname,
           'link' => $link
         );
-        $message->subject = get_string('message_qualified_mentor_subject', 'local_learningcompanions', $placeholders);
-        $message->fullmessagehtml = get_string('message_qualified_mentor_body', 'local_learningcompanions', $placeholders);
+        $message->subject = get_string('message_qualified_mentor_subject', 'local_thi_learning_companions', $placeholders);
+        $message->fullmessagehtml = get_string('message_qualified_mentor_body', 'local_thi_learning_companions', $placeholders);
         $message->fullmessage = strip_tags($message->fullmessagehtml);
         $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = nl2br($message->fullmessage);
-        $message->smallmessage = get_string('message_qualified_mentor_smallmessage', 'local_learningcompanions', $placeholders);
+        $message->smallmessage = get_string('message_qualified_mentor_smallmessage', 'local_thi_learning_companions', $placeholders);
         $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
         $message->contexturl = (new \moodle_url('/course/'))->out(false);
         $message->contexturlname = 'Course list';
@@ -210,7 +210,7 @@ class messages {
             return;
         }
         $readableDate = userdate($question->timecreated);
-        $message->component = 'local_learningcompanions'; // Your plugin's name
+        $message->component = 'local_thi_learning_companions'; // Your plugin's name
         $message->name = 'notification_unanswered_question'; // Your notification name from message.php
         $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
         $message->userto = $tutor;
@@ -228,14 +228,14 @@ class messages {
             'title' => $question->title,
             'sitename' => $SITE->fullname
         );
-        $message->subject = get_string('message_unanswered_question_subject', 'local_learningcompanions',
+        $message->subject = get_string('message_unanswered_question_subject', 'local_thi_learning_companions',
             $placeholders);
-        $message->fullmessagehtml = get_string('message_unanswered_question_body', 'local_learningcompanions',
+        $message->fullmessagehtml = get_string('message_unanswered_question_body', 'local_thi_learning_companions',
             $placeholders);
         $message->fullmessage = strip_tags($message->fullmessagehtml);
         $message->fullmessageformat = FORMAT_PLAIN;
         $message->fullmessagehtml = nl2br($message->fullmessage);
-        $message->smallmessage = get_string('message_unanswered_question_smallmessage', 'local_learningcompanions',
+        $message->smallmessage = get_string('message_unanswered_question_smallmessage', 'local_thi_learning_companions',
             $placeholders);
         $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
         $message->contexturl = (new \moodle_url('/course/'))->out(false);
@@ -251,17 +251,17 @@ class messages {
      * @throws \coding_exception
      */
     public static function notify_supermentor($userid) {
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $minComments = intval($config->supermentor_minimum_ratings);
         $message = new \core\message\message();
-        $message->component = 'local_learningcompanions'; // Your plugin's name
+        $message->component = 'local_thi_learning_companions'; // Your plugin's name
         $message->name = 'appointed_to_supermentor';
         $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
         $message->userto = $userid;
-        $message->subject = get_string('youve_become_supermentor_subject', 'local_learningcompanions');
-        $message->fullmessagehtml = $message->fullmessage = get_string('youve_become_supermentor_body', 'local_learningcompanions', $minComments);
+        $message->subject = get_string('youve_become_supermentor_subject', 'local_thi_learning_companions');
+        $message->fullmessagehtml = $message->fullmessage = get_string('youve_become_supermentor_body', 'local_thi_learning_companions', $minComments);
         $message->fullmessageformat = FORMAT_HTML;
-        $message->smallmessage = get_string('youve_become_supermentor_short', 'local_learningcompanions');
+        $message->smallmessage = get_string('youve_become_supermentor_short', 'local_thi_learning_companions');
         $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
         message_send($message);
     }

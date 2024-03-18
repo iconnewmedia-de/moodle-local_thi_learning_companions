@@ -4,7 +4,7 @@ require_once dirname(__DIR__, 3).'/config.php';
 require_login();
 global $PAGE, $CFG, $OUTPUT;
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_url($CFG->wwwroot . '/local/learningcompanions/creategroup.php');
+$PAGE->set_url($CFG->wwwroot . '/local/thi_learning_companions/creategroup.php');
 $defaultlayout = 'base';
 $layout = optional_param('layout', $defaultlayout, PARAM_TEXT);
 $layoutwhitelist = ['base', 'standard', 'course', 'incourse', 'popup', 'embedded'];
@@ -12,19 +12,19 @@ if (!in_array($layout, $layoutwhitelist)) {
     $layout = $defaultlayout;
 }
 $PAGE->set_pagelayout($layout);
-$PAGE->set_title(get_string('edit_group', 'local_learningcompanions'));
-$PAGE->navbar->add(get_string('navbar_groups', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/index.php'));
-$PAGE->navbar->add(get_string('navbar_edit_group', 'local_learningcompanions'), new moodle_url('/local/learningcompanions/group/search.php'));
+$PAGE->set_title(get_string('edit_group', 'local_thi_learning_companions'));
+$PAGE->navbar->add(get_string('navbar_groups', 'local_thi_learning_companions'), new moodle_url('/local/thi_learning_companions/group/index.php'));
+$PAGE->navbar->add(get_string('navbar_edit_group', 'local_thi_learning_companions'), new moodle_url('/local/thi_learning_companions/group/search.php'));
 
 $groupid = required_param('groupid', PARAM_INT);
-$group = new \local_learningcompanions\group($groupid);
+$group = new \local_thi_learning_companions\group($groupid);
 
 if (!$group->may_edit) {
-    print_error(get_string('group_edit_not_allowed', 'local_learningcompanions'));
+    print_error(get_string('group_edit_not_allowed', 'local_thi_learning_companions'));
 }
 // ICTODO: check that the user has the permission to edit this group
 
-$form = new \local_learningcompanions\forms\create_edit_group_form(
+$form = new \local_thi_learning_companions\forms\create_edit_group_form(
     null,
     [
         'groupid' => $groupid,
@@ -43,7 +43,7 @@ if ($form->is_cancelled()) {
     $redirect = true;
 } elseif ($data = $form->get_data()) {
     try {
-        \local_learningcompanions\groups::group_update(
+        \local_thi_learning_companions\groups::group_update(
             $data->groupid,
             $data->name,
             $data->description_editor['text'],
@@ -57,11 +57,11 @@ if ($form->is_cancelled()) {
             echo "<script>document.querySelector('.modal').dispatchEvent((new Event('modal:hidden')))</script>";
         } else {
             $redirect = true;
-            $redirectMessage = get_string('group_edited', 'local_learningcompanions');
+            $redirectMessage = get_string('group_edited', 'local_thi_learning_companions');
         }
     } catch(Exception $e) {
         $warning = new \core\output\notification(
-            get_string('error_group_edit_failed', 'local_learningcompanions', $e->getMessage()),
+            get_string('error_group_edit_failed', 'local_thi_learning_companions', $e->getMessage()),
             \core\output\notification::NOTIFY_ERROR
         );
     }
@@ -71,11 +71,11 @@ if ($form->is_cancelled()) {
 if ($redirect) {
     switch($referrer) {
         case 'chat':
-            redirect(new moodle_url('/local/learningcompanions/chat.php?groupid=' . $groupid), $redirectMessage, null, $redirectMessageType);
+            redirect(new moodle_url('/local/thi_learning_companions/chat.php?groupid=' . $groupid), $redirectMessage, null, $redirectMessageType);
             break;
         case 'groupsearch':
         default:
-            redirect(new moodle_url('/local/learningcompanions/group/search.php'), $redirectMessage, null, $redirectMessageType);
+            redirect(new moodle_url('/local/thi_learning_companions/group/search.php'), $redirectMessage, null, $redirectMessageType);
             break;
     }
 }

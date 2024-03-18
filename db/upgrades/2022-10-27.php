@@ -31,5 +31,5 @@ if ($oldversion < 2022102801) {
         $dbman->create_table($table);
     }
 
-    upgrade_plugin_savepoint(true, 2022102801, 'local', 'learningcompanions');
+    upgrade_plugin_savepoint(true, 2022102801, 'local', 'thi_learning_companions');
 }

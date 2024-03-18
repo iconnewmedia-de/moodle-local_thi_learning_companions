@@ -5,7 +5,7 @@
  * @param params {string|Object}
  * @returns {string}
  */
-export function useGetString(key, component = 'local_learningcompanions', params = []) {
+export function useGetString(key, component = 'local_thi_learning_companions', params = []) {
     const targetString = window.M.str[component]?.[key] ?? `[[${key}_not_found]]`;
 
     //if there are no params, just return the string

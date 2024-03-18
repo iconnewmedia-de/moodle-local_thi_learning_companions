@@ -17,18 +17,18 @@
 /**
  * Learning Companions Cleanup Task
  *
- * @package   local_learningcompanions
+ * @package   local_thi_learning_companions
  * @copyright 2022 ICON Vernetzte Kommunikation GmbH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_learningcompanions\task;
+namespace local_thi_learning_companions\task;
 
 
 /**
  * Learning Companions Cleanup Task
  *
- * @package   local_learningcompanions
+ * @package   local_thi_learning_companions
  * @copyright 2022 ICON Vernetzte Kommunikation GmbH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -37,7 +37,7 @@ class cleanup extends \core\task\scheduled_task
 
     public function get_name()
     {
-        return get_string('cleanup_task', 'local_learningcompanions');
+        return get_string('cleanup_task', 'local_thi_learning_companions');
     }
 
     public function execute()

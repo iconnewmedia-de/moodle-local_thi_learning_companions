@@ -1,5 +1,5 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 require_once dirname(__DIR__). '/lib.php';
 
 class group {
@@ -210,7 +210,7 @@ class group {
         $this->get_course();
 //        $this->get_keywords();
         $this->get_keywords_list();
-        $this->may_edit = $this->is_admin || has_capability('local/learningcompanions:group_manage', \context_system::instance());
+        $this->may_edit = $this->is_admin || has_capability('local/thi_learning_companions:group_manage', \context_system::instance());
         // ICTODO: fetch course and course category along with relevant metadata from course and course category, like topic and such
     }
 
@@ -401,7 +401,7 @@ class group {
         }
         $context = \context_system::instance();
         $fs = get_file_storage();
-        $files = $fs->get_area_files($context->id, 'local_learningcompanions', 'groupimage', $this->id);
+        $files = $fs->get_area_files($context->id, 'local_thi_learning_companions', 'groupimage', $this->id);
         foreach ($files as $f) {
             if ($f->is_valid_image()) {
                 $this->image = $f;
@@ -422,10 +422,10 @@ class group {
         }
         $file = $this->get_image();
         if (!($file instanceof \stored_file)) {
-            $this->imageurl = $CFG->wwwroot . '/local/learningcompanions/pix/group.svg';
+            $this->imageurl = $CFG->wwwroot . '/local/thi_learning_companions/pix/group.svg';
             return '';
         }
-        $imageurl = \moodle_url::make_file_url('/pluginfile.php', "/" . $file->get_contextid() . "/local_learningcompanions/groupimage/" .
+        $imageurl = \moodle_url::make_file_url('/pluginfile.php', "/" . $file->get_contextid() . "/local_thi_learning_companions/groupimage/" .
             $file->get_itemid() . "/" . $file->get_filename());
         $this->imageurl = (String)$imageurl;
         return $this->imageurl;
@@ -496,7 +496,7 @@ class group {
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;
             unset($admin->password);
-            list($admin->status, $admin->statustext) = \local_learningcompanions_get_user_status($admin->id);
+            list($admin->status, $admin->statustext) = \local_thi_learning_companions_get_user_status($admin->id);
             $admin->userpic = $OUTPUT->user_picture($admin, [
                 'link' => false, 'visibletoscreenreaders' => false,
                 'class' => 'userpicture'

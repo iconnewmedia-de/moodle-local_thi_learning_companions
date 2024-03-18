@@ -21,20 +21,20 @@ defined('MOODLE_INTERNAL') || die();
 $observers = [
     [
         'eventname' => '\core\event\course_module_created',
-        'callback' => '\local_learningcompanions\eventobservers::course_module_created',
+        'callback' => '\local_thi_learning_companions\eventobservers::course_module_created',
         'internal' => false,
     ],
     [
         'eventname' => '\core\event\course_restored',
-        'callback' => '\local_learningcompanions\eventobservers::course_restored',
+        'callback' => '\local_thi_learning_companions\eventobservers::course_restored',
         'internal' => false,
     ],
     [
         'eventname'   => '\core\event\badge_awarded',
-        'callback'    => '\local_learningcompanions\eventobservers::badge_awarded'
+        'callback'    => '\local_thi_learning_companions\eventobservers::badge_awarded'
     ],
     [
         'eventname'   => '\core\event\config_log_created',
-        'callback'    => '\local_learningcompanions\eventobservers::config_log_created'
+        'callback'    => '\local_thi_learning_companions\eventobservers::config_log_created'
     ]
 ];

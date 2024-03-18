@@ -19,7 +19,7 @@ if ($oldversion < 2022112900) {
     if (!$dbman->table_exists($table)) {
         $dbman->create_table($table);
     }
-    upgrade_plugin_savepoint(true, 2022112900, 'local', 'learningcompanions');
+    upgrade_plugin_savepoint(true, 2022112900, 'local', 'thi_learning_companions');
 
 }
 
@@ -32,6 +32,6 @@ if ($oldversion < 2022112902) {
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
-    upgrade_plugin_savepoint(true, 2022112902, 'local', 'learningcompanions');
+    upgrade_plugin_savepoint(true, 2022112902, 'local', 'thi_learning_companions');
 
 }

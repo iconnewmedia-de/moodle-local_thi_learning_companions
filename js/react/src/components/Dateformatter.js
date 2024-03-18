@@ -2,7 +2,7 @@ export default function Dateformatter({timestamp, format = { year: 'numeric', mo
     timestamp = timestamp ?? 0;
     timestamp = parseInt(timestamp);
     if (timestamp === 0) {
-        return <div className="learningcompanions_chat_time">-</div>;
+        return <div className="thi_learning_companions_chat_time">-</div>;
     }
 
     const date = new Date(timestamp * 1000);
@@ -10,6 +10,6 @@ export default function Dateformatter({timestamp, format = { year: 'numeric', mo
     const lastActive = new Intl.DateTimeFormat(undefined, format).format(date);
 
     return (
-        <div className="learningcompanions_chat_time">{lastActive}</div>
+        <div className="thi_learning_companions_chat_time">{lastActive}</div>
     )
 }

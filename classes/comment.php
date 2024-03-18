@@ -1,5 +1,5 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 defined('MOODLE_INTERNAL') || die();
 class comment {
     public $id;
@@ -20,7 +20,7 @@ class comment {
                 $this->$key = $value;
             }
         }
-        $this->attachments = local_learningcompanions_get_attachments_of_chat_comments([$comment], 'attachments');
+        $this->attachments = local_thi_learning_companions_get_attachments_of_chat_comments([$comment], 'attachments');
 //        foreach($this->attachments as $key => $attachment) {
 //            if (empty($attachment)) {
 //                continue;

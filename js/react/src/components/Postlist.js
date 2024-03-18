@@ -51,7 +51,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
     const getInitialPosts = useCallback(() => {
         const controller = new AbortController();
 
-        fetch(M.cfg.wwwroot + '/local/learningcompanions/ajax/ajaxchat.php?' + new URLSearchParams({
+        fetch(M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajaxchat.php?' + new URLSearchParams({
             groupid: activeGroupid,
             includedPostId: highlightedPostId,
             questionid: questionid,
@@ -96,7 +96,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
     useEffect(() => {
         if (!highlightedPostId) return;
 
-        const element = document.querySelector(`#learningcompanions_chat-post-${highlightedPostId}`);
+        const element = document.querySelector(`#thi_learning_companions_chat-post-${highlightedPostId}`);
 
         if (!element) {
             return;
@@ -114,7 +114,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
 
         const controller = new AbortController();
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajaxchat.php?`+ new URLSearchParams({
+        fetch(`${M.cfg.wwwroot}/local/thi_learning_companions/ajax/ajaxchat.php?`+ new URLSearchParams({
             groupid: activeGroupid,
             firstPostId: firstPostId,
             questionid: questionid
@@ -145,7 +145,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
 
         const controller = new AbortController();
 
-        fetch(`${M.cfg.wwwroot}/local/learningcompanions/ajax/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}&questionid=${questionid}`, {
+        fetch(`${M.cfg.wwwroot}/local/thi_learning_companions/ajax/ajax_newmessages.php?groupId=${activeGroupid}&lastPostId=${lastPostId}&questionid=${questionid}`, {
             signal: controller.signal
         })
         .then(response => response.json())
@@ -182,7 +182,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
     };
 
     return (
-        <div id="learningcompanions_chat-postlist">
+        <div id="thi_learning_companions_chat-postlist">
             <Header group={group} questionid={questionid} />
             {isLoading && <LoadingIndicator/>}
             {!isLoading && <Posts posts={posts} handleWrapperScroll={handleWrapperScroll} isInPreviewMode={isInPreviewMode} isDummyGroup={isDummyGroup} highlightedPostId={highlightedPostId} questionid={questionid} />}

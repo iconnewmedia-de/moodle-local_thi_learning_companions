@@ -5,16 +5,16 @@ define([
     'core/str',
     'core/modal_factory',
     'core/modal_events',
-    'local_learningcompanions/datatables-helpers',
-    // 'local_learningcompanions/jquery.dataTables',
-    'local_learningcompanions/datatables',
-    'local_learningcompanions/select2'
+    'local_thi_learning_companions/datatables-helpers',
+    // 'local_thi_learning_companions/jquery.dataTables',
+    'local_thi_learning_companions/datatables',
+    'local_thi_learning_companions/select2'
 ], function($, c, str, ModalFactory, ModalEvents, datatablesHelpers) {
     async function initDatatables() {
         datatablesHelpers.initMinSearch('.js-mentor-filter--min');
         datatablesHelpers.initIncludeSearch('.js-mentor-filter--includes');
 
-        const languageUrl = await str.get_string('datatables_url', 'local_learningcompanions');
+        const languageUrl = await str.get_string('datatables_url', 'local_thi_learning_companions');
 
         $('#askedquestionstable').DataTable({
             language: {
@@ -83,10 +83,10 @@ define([
                 const question = $(this).data('question');
 
                 var strings = [
-                    {key: 'modal-deletemyquestion-title', component: 'local_learningcompanions'},
-                    {key: 'modal-deletemyquestion-text', component: 'local_learningcompanions', param: question},
-                    {key: 'modal-deletemyquestion-okaybutton', component: 'local_learningcompanions'},
-                    {key: 'modal-deletemyquestion-cancelbutton', component: 'local_learningcompanions'},
+                    {key: 'modal-deletemyquestion-title', component: 'local_thi_learning_companions'},
+                    {key: 'modal-deletemyquestion-text', component: 'local_thi_learning_companions', param: question},
+                    {key: 'modal-deletemyquestion-okaybutton', component: 'local_thi_learning_companions'},
+                    {key: 'modal-deletemyquestion-cancelbutton', component: 'local_thi_learning_companions'},
                 ];
 
                 str.get_strings(strings).then(function(strings) {
@@ -115,7 +115,7 @@ define([
                 const questionid = $(this).data('qid');
 
                 $.ajax({
-                    url: M.cfg.wwwroot + '/local/learningcompanions/ajax/ajax.php',
+                    url: M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax.php',
                     method: 'POST',
                     dataType: 'json',
                     data: {
@@ -124,9 +124,9 @@ define([
                     },
                     success: function (data) {
                         if (data === 'fail') {
-                            window.location.href = (M.cfg.wwwroot + '/local/learningcompanions/mentor/index.php?n=n_d');
+                            window.location.href = (M.cfg.wwwroot + '/local/thi_learning_companions/mentor/index.php?n=n_d');
                         } else {
-                            window.location.href = (M.cfg.wwwroot + '/local/learningcompanions/mentor/index.php?n=d');
+                            window.location.href = (M.cfg.wwwroot + '/local/thi_learning_companions/mentor/index.php?n=d');
                         }
                     }
                 });

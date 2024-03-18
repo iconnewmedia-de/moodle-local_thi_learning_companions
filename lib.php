@@ -6,7 +6,7 @@
  * @throws coding_exception
  * @throws dml_exception
  */
-function local_learningcompanions_get_attachments_of_chat_comments(array $comments, string $area) {
+function local_thi_learning_companions_get_attachments_of_chat_comments(array $comments, string $area) {
     // ICTODO: also get inline attachments
     if (empty($comments)) {
         return [];
@@ -17,7 +17,7 @@ function local_learningcompanions_get_attachments_of_chat_comments(array $commen
 
     $files = $filestorage->get_area_files(
         $context->id,
-        'local_learningcompanions',
+        'local_thi_learning_companions',
         $area,
         $itemids,
         'filename',
@@ -43,28 +43,28 @@ function local_learningcompanions_get_attachments_of_chat_comments(array $commen
     }, $filesbyid);
 }
 
-function local_learningcompanions_extend_navigation(global_navigation $nav) {
+function local_thi_learning_companions_extend_navigation(global_navigation $nav) {
     return; // ICUNDO
-    if (has_capability('tool/learningcompanions:manage', context_system::instance())) {
+    if (has_capability('tool/thi_learning_companions:manage', context_system::instance())) {
         global $CFG, $PAGE;
         $rootNode = $nav->find('home', $nav::TYPE_ROOTNODE)->parent;
-        $url = new moodle_url('/admin/tool/learningcompanions/index.php');
-        $node = $rootNode->add(get_string('lcadministration', 'local_learningcompanions'), $url, $nav::TYPE_ROOTNODE, null, 'learningcompanions', new pix_icon('i/nav-icon', '', 'tool_learningcompanions'));
+        $url = new moodle_url('/admin/tool/thi_learning_companions/index.php');
+        $node = $rootNode->add(get_string('lcadministration', 'local_thi_learning_companions'), $url, $nav::TYPE_ROOTNODE, null, 'thi_learning_companions', new pix_icon('i/nav-icon', '', 'tool_thi_learning_companions'));
         $subNavigationItems = array(
             'comments',
             'groups'
         );
         foreach($subNavigationItems as $subNavigationItem) {
-            $node->add(get_string('lcadministration_' .$subNavigationItem, 'local_learningcompanions'), new moodle_url($CFG->wwwroot . '/admin/tool/learningcompanions/'.$subNavigationItem.'/index.php'), null, null, $subNavigationItem);
+            $node->add(get_string('lcadministration_' .$subNavigationItem, 'local_thi_learning_companions'), new moodle_url($CFG->wwwroot . '/admin/tool/thi_learning_companions/'.$subNavigationItem.'/index.php'), null, null, $subNavigationItem);
         }
-        if (strpos($PAGE->url, 'admin/tool/learningcompanions') > -1) {
+        if (strpos($PAGE->url, 'admin/tool/thi_learning_companions') > -1) {
             $node->force_open();
         }
         $node->showinflatnavigation = true;
     }
 }
 
-function local_learningcompanions_pluginfile($course, $record, $context, $filearea, $args, $forcedownload, array $options=array()) {
+function local_thi_learning_companions_pluginfile($course, $record, $context, $filearea, $args, $forcedownload, array $options=array()) {
 
     if ($context->contextlevel != CONTEXT_SYSTEM) {
         send_file_not_found();
@@ -82,7 +82,7 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
     $filepath = $args ? '/'.implode('/', $args).'/' : '/';
     $context = context_system::instance();
 
-    if (!$file = $fs->get_file($context->id, 'local_learningcompanions', $filearea, $groupid, $filepath, $filename) or $file->is_directory()) {
+    if (!$file = $fs->get_file($context->id, 'local_thi_learning_companions', $filearea, $groupid, $filepath, $filename) or $file->is_directory()) {
         send_file_not_found();
     }
 
@@ -99,7 +99,7 @@ function local_learningcompanions_pluginfile($course, $record, $context, $filear
  * @return array    first value is for css classes, second value is the actual readable value, in the user's language
  * @throws dml_exception
  */
-function local_learningcompanions_get_user_status(int $userid = null): array {
+function local_thi_learning_companions_get_user_status(int $userid = null): array {
     global $CFG, $DB, $USER;
 
     require_once($CFG->dirroot.'/user/profile/lib.php');
@@ -138,19 +138,19 @@ function set_user_status($status, $userid = null) {
 
 /**
  * gets called as a service from JS in group.js, handleGroupInviteButton:
- * const templatePromise = Fragment.loadFragment('local_learningcompanions', 'invitation_form', groupId, {});
+ * const templatePromise = Fragment.loadFragment('local_thi_learning_companions', 'invitation_form', groupId, {});
  * Moodle dynamically constructs the function to call - so don't believe your IDE when it tells you that this is unused!
  * Serve the manual enrol users form as a fragment.
  *
  * @param array $args List of named arguments for the fragment loader.
  * @return string
  */
-function local_learningcompanions_output_fragment_invitation_form($args) {
+function local_thi_learning_companions_output_fragment_invitation_form($args) {
     global $CFG;
     $args = (object) $args;
     $context = $args->context;
     $o = '';
     require_once __DIR__ . '/classes/forms/select_users_to_invite_form.php';
-    $mform = new local_learningcompanions\select_users_to_invite_form($CFG->wwwroot . "/local/learningcompanions/chat.php?groupid=" . intval($context->id), $args);
+    $mform = new local_thi_learning_companions\select_users_to_invite_form($CFG->wwwroot . "/local/thi_learning_companions/chat.php?groupid=" . intval($context->id), $args);
     return $mform->render();
 }

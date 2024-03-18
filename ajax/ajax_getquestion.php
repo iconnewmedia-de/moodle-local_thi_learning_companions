@@ -19,7 +19,7 @@ define('AJAX_SCRIPT', true);
 /**
  * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package     local_learningcompanions
+ * @package     local_thi_learning_companions
  * @copyright   2023 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,5 +30,5 @@ global $CFG, $DB, $OUTPUT;
 
 $questionid = required_param('questionid', PARAM_TEXT);
 
-$question = \local_learningcompanions\question::get_question_by_id($questionid);
+$question = \local_thi_learning_companions\question::get_question_by_id($questionid);
 echo json_encode($question->to_array());

@@ -1,10 +1,10 @@
 <?php
-namespace local_learningcompanions;
+namespace local_thi_learning_companions;
 
-use local_learningcompanions\event\comment_created;
-use local_learningcompanions\event\comment_reported;
-use local_learningcompanions\event\question_responded;
-use local_learningcompanions\event\super_mentor_assigned;
+use local_thi_learning_companions\event\comment_created;
+use local_thi_learning_companions\event\comment_reported;
+use local_thi_learning_companions\event\question_responded;
+use local_thi_learning_companions\event\super_mentor_assigned;
 
 class chats {
     const CHAT_TYPE_MENTOR = 0;
@@ -42,7 +42,7 @@ class chats {
         $chatId = $comment->chatid;
         $mayViewChat = self::may_view_chat($chatId);
         if (!$mayViewChat) {
-            throw new \Exception(get_string('no_permission_for_this_chat', 'local_learningcompanions'));
+            throw new \Exception(get_string('no_permission_for_this_chat', 'local_thi_learning_companions'));
         }
 
         $chat = chat::get_chat_by_id($chatId);
@@ -89,7 +89,7 @@ class chats {
             '<td>',
         ];
         $comment->message = strip_tags($comment->message, implode('', $allowedTags));
-        $comment->comment = file_save_draft_area_files($draftitemid, $context->id, 'local_learningcompanions', 'message', $comment->id,
+        $comment->comment = file_save_draft_area_files($draftitemid, $context->id, 'local_thi_learning_companions', 'message', $comment->id,
             $editoroptions, $comment->message);
         $DB->set_field('lc_chat_comment', 'comment', $comment->comment, ['id'=>$comment->id]);
         $success = self::add_attachment($comment, $formdata);
@@ -113,8 +113,8 @@ class chats {
     public static function may_view_chat($chatId) {
         global $DB;
         $chat = $DB->get_record('lc_chat', ['id' => $chatId], '*', MUST_EXIST);
-        if ($chat->chattype == \local_learningcompanions\groups::CHATTYPE_GROUP) {
-            return \local_learningcompanions\groups::may_view_group($chat->relatedid);
+        if ($chat->chattype == \local_thi_learning_companions\groups::CHATTYPE_GROUP) {
+            return \local_thi_learning_companions\groups::may_view_group($chat->relatedid);
         }
         return self::may_view_mentorchat($chat->relatedid);
     }
@@ -133,7 +133,7 @@ class chats {
         if (!empty($question->mentorid)) {
             return false;
         }
-        return \local_learningcompanions\mentors::is_mentor_for_topic($USER->id, $question->topic);
+        return \local_thi_learning_companions\mentors::is_mentor_for_topic($USER->id, $question->topic);
     }
 
     /**
@@ -167,8 +167,8 @@ class chats {
             return false; // ICTODO return an error message instead
         }
 
-        file_save_draft_area_files($comment->attachments, $context->id, 'local_learningcompanions', 'attachments', $comment->id,
-            \local_learningcompanions\chat_post_form::attachment_options());
+        file_save_draft_area_files($comment->attachments, $context->id, 'local_thi_learning_companions', 'attachments', $comment->id,
+            \local_thi_learning_companions\chat_post_form::attachment_options());
         return true;
     }
 
@@ -182,7 +182,7 @@ class chats {
     protected static function check_uploadsize_total_exceeded($comment) {
         global $CFG;
         require_once $CFG->dirroot . '/lib/setuplib.php';
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $maxbytes = intval($config->upload_limit_per_chat) . "M";
         $maxbytes = get_real_size($maxbytes);
         $draftinfo = file_get_draft_area_info($comment->attachments);
@@ -194,7 +194,7 @@ class chats {
         if ($areasize === 0) {
             return false;
         }
-        $chat = \local_learningcompanions\chat::get_chat_by_id($comment->chatid);
+        $chat = \local_thi_learning_companions\chat::get_chat_by_id($comment->chatid);
         $totalsize = $areasize;
         $comments = $chat->get_comments();
         $attachments = $chat->get_attachments_of_comments($comments, 'attachments');
@@ -256,7 +256,7 @@ class chats {
         }
 
         $context = \context_system::instance();
-        if ($comment->userid !== $USER->id && !has_capability('local/learningcompanions:delete_comments_of_others', $context)) {
+        if ($comment->userid !== $USER->id && !has_capability('local/thi_learning_companions:delete_comments_of_others', $context)) {
             return false;
         }
 
@@ -294,11 +294,11 @@ class chats {
      */
     protected static function check_supermentor_qualification($userid) {
         global $DB;
-        $config = get_config('local_learningcompanions');
+        $config = get_config('local_thi_learning_companions');
         $minComments = intval($config->supermentor_minimum_ratings);
-        $ratingCount = \local_learningcompanions\mentors::count_mentor_ratings($userid);
+        $ratingCount = \local_thi_learning_companions\mentors::count_mentor_ratings($userid);
         if ($ratingCount === $minComments) {
-            \local_learningcompanions\messages::notify_supermentor($userid);
+            \local_thi_learning_companions\messages::notify_supermentor($userid);
             super_mentor_assigned::make($userid)->trigger();
         }
     }
@@ -307,10 +307,10 @@ class chats {
 
     public static function get_all_flagged_comments(bool $extended = false, bool $cut = false): array {
         global $CFG, $DB;
-        require_once($CFG->dirroot.'/local/learningcompanions/lib.php');
+        require_once($CFG->dirroot.'/local/thi_learning_companions/lib.php');
 
         if ($comments = $DB->get_records('lc_chat_comment', ['flagged' => 1], 'timecreated')) {
-            $attachments = local_learningcompanions_get_attachments_of_chat_comments($comments, 'attachments');
+            $attachments = local_thi_learning_companions_get_attachments_of_chat_comments($comments, 'attachments');
 
             foreach ($comments as $comment) {
                 if (array_key_exists($comment->id, $attachments)) {

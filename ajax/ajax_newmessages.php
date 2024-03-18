@@ -13,9 +13,9 @@ $groupId = optional_param('groupId', 0, PARAM_INT);
 $lastPostId = required_param('lastPostId', PARAM_INT);
 $questionId = optional_param('questionid', 0, PARAM_INT);
 if ($questionId > 0) {
-    $chat = \local_learningcompanions\chat::createQuestionChat($questionId);
+    $chat = \local_thi_learning_companions\chat::createQuestionChat($questionId);
 } else {
-    $chat = \local_learningcompanions\chat::createGroupChat($groupId);
+    $chat = \local_thi_learning_companions\chat::createGroupChat($groupId);
 }
 $posts = $chat->get_newest_posts($lastPostId);
 
