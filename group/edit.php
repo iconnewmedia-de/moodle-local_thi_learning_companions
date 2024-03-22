@@ -1,5 +1,19 @@
 <?php
-require_once dirname(__DIR__, 3).'/config.php';
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+require_once(dirname(__DIR__, 3).'/config.php');;
 
 require_login();
 global $PAGE, $CFG, $OUTPUT;
@@ -19,7 +33,7 @@ $PAGE->navbar->add(get_string('navbar_edit_group', 'local_thi_learning_companion
 $groupid = required_param('groupid', PARAM_INT);
 $group = new \local_thi_learning_companions\group($groupid);
 
-if (!$group->may_edit) {
+if (!$group->mayedit) {
     print_error(get_string('group_edit_not_allowed', 'local_thi_learning_companions'));
 }
 // ICTODO: check that the user has the permission to edit this group
@@ -33,12 +47,12 @@ $form = new \local_thi_learning_companions\forms\create_edit_group_form(
     ]
 );
 
-$form->setGroupData($group);
+$form->set_group_data($group);
 $referrer = optional_param('referrer', 'groupsearch', PARAM_TEXT);
 $groupid = required_param('groupid', PARAM_INT);
 $redirect = false;
-$redirectMessage = '';
-$redirectMessageType = \core\output\notification::NOTIFY_SUCCESS;
+$redirectmessage = '';
+$redirectmessagetype = \core\output\notification::NOTIFY_SUCCESS;
 if ($form->is_cancelled()) {
     $redirect = true;
 } elseif ($data = $form->get_data()) {
@@ -57,9 +71,9 @@ if ($form->is_cancelled()) {
             echo "<script>document.querySelector('.modal').dispatchEvent((new Event('modal:hidden')))</script>";
         } else {
             $redirect = true;
-            $redirectMessage = get_string('group_edited', 'local_thi_learning_companions');
+            $redirectmessage = get_string('group_edited', 'local_thi_learning_companions');
         }
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $warning = new \core\output\notification(
             get_string('error_group_edit_failed', 'local_thi_learning_companions', $e->getMessage()),
             \core\output\notification::NOTIFY_ERROR
@@ -71,11 +85,11 @@ if ($form->is_cancelled()) {
 if ($redirect) {
     switch($referrer) {
         case 'chat':
-            redirect(new moodle_url('/local/thi_learning_companions/chat.php?groupid=' . $groupid), $redirectMessage, null, $redirectMessageType);
+            redirect(new moodle_url('/local/thi_learning_companions/chat.php?groupid=' . $groupid), $redirectmessage, null, $redirectmessagetype);
             break;
         case 'groupsearch':
         default:
-            redirect(new moodle_url('/local/thi_learning_companions/group/search.php'), $redirectMessage, null, $redirectMessageType);
+            redirect(new moodle_url('/local/thi_learning_companions/group/search.php'), $redirectmessage, null, $redirectmessagetype);
             break;
     }
 }

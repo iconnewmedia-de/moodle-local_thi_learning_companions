@@ -4,7 +4,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG, $DB;
 
 if ($oldversion < 2023022800) {
-    require_once __DIR__ . '/../lib.php';
+    require_once(__DIR__ . '/../lib.php');;
     $dbman = $DB->get_manager();
     // Define field id to be added to thi_lc_chat_comment_ratings.
     $table = new xmldb_table('thi_lc_tutor_notifications');

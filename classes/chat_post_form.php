@@ -1,12 +1,48 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
+defined('MOODLE_INTERNAL') || die();
 global $CFG;
-require_once $CFG->libdir . DIRECTORY_SEPARATOR . 'formslib.php';
-require_once $CFG->dirroot . DIRECTORY_SEPARATOR . 'repository' . DIRECTORY_SEPARATOR . 'lib.php';
-require_once __DIR__ . '/lccustomeditor.php';
+require_once($CFG->libdir . DIRECTORY_SEPARATOR . 'formslib.php');;
+require_once($CFG->dirroot . DIRECTORY_SEPARATOR . 'repository' . DIRECTORY_SEPARATOR . 'lib.php');;
+require_once(__DIR__ . '/lccustomeditor.php');;
+
+/**
+ *
+ */
 class chat_post_form extends \moodleform {
 
-    public function __construct($action = null, $customdata = null, $method = 'post', $target = '', $attributes = null, $editable = true, $ajaxformdata = null) {
+    /**
+     * @param $action
+     * @param $customdata
+     * @param $method
+     * @param $target
+     * @param $attributes
+     * @param $editable
+     * @param $ajaxformdata
+     */
+    public function __construct(
+        $action = null,
+        $customdata = null,
+        $method = 'post',
+        $target = '',
+        $attributes = null,
+        $editable = true,
+        $ajaxformdata = null
+    ) {
         $attributes['class'] = 'chat-post-form';
         parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
     }
@@ -17,17 +53,15 @@ class chat_post_form extends \moodleform {
      * @return array
      */
     public static function attachment_options() {
-        global $PAGE, $CFG;
         $maxbytes = self::get_upload_size_limit();
-//        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes);
-        return array(
+        return [
             'subdirs' => 0,
             'maxbytes' => $maxbytes,
             'areamaxbytes' => $maxbytes,
             'maxfiles' => 3,
             'accepted_types' => '*',
-            'return_types' => FILE_INTERNAL | FILE_CONTROLLED_LINK
-        );
+            'return_types' => FILE_INTERNAL | FILE_CONTROLLED_LINK,
+        ];
     }
 
     /**
@@ -36,7 +70,7 @@ class chat_post_form extends \moodleform {
      */
     public static function get_upload_size_limit() {
         global $CFG;
-        require_once $CFG->dirroot . '/lib/setuplib.php';
+        require_once($CFG->dirroot . '/lib/setuplib.php');;
         $config = get_config('local_thi_learning_companions');
         $maxbytes = intval($config->upload_limit_per_message) . "M";
         $maxbytes = get_real_size($maxbytes);
@@ -50,46 +84,60 @@ class chat_post_form extends \moodleform {
      * @return array
      */
     public static function editor_options($postid) {
-        global $PAGE, $CFG;
         $context = \context_system::instance();
         $maxbytes = self::get_upload_size_limit();
-//        $maxbytes = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $CFG->maxbytes);
         return [
             'rows' => '5',
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'maxbytes' => $maxbytes,
-            'trusttext'=> true,
+            'trusttext' => true,
             'autosave' => false,
             'enable_filemanagement' => true,
-            'return_types'=> FILE_INTERNAL | FILE_EXTERNAL,
+            'return_types' => FILE_INTERNAL | FILE_EXTERNAL,
             'subdirs' => file_area_contains_subdirs($context, 'local_thi_learning_companions', 'message', $postid),
             'atto:toolbar' => 'collapse = collapse
 style1 = title, bold, italic, image
-style2 = underline, strike'
+style2 = underline, strike',
         ];
     }
 
-    function definition() {
+    /**
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function definition() {
         global $OUTPUT, $DB;
 
         $mform =& $this->_form;
         $mform->disable_form_change_checker();
-        $groupId = optional_param('groupid', null, PARAM_INT);
-        //if the group is closed, use the "request to join" string, otherwise use the "join group" string
-        $joinGroupString = get_string('join_group_link_text', 'local_thi_learning_companions');
-        if ($DB->get_record('thi_lc_groups', ['id' => $groupId])->closedgroup) {
-            $joinGroupString = get_string('request_join_group', 'local_thi_learning_companions');
+        $groupid = optional_param('groupid', null, PARAM_INT);
+        // If the group is closed, use the "request to join" string, otherwise use the "join group" string.
+        $joingroupstring = get_string('join_group_link_text', 'local_thi_learning_companions');
+        if ($DB->get_record('thi_lc_groups', ['id' => $groupid])->closedgroup) {
+            $joingroupstring = get_string('request_join_group', 'local_thi_learning_companions');
         }
 
         $chatid = $this->_customdata['chatid'];
 
-        $mform->addElement('lccustomeditor', 'message', get_string('message', 'local_thi_learning_companions'), ['rows' => 5], self::editor_options((empty($chatid) ? null : $chatid)));
+        $mform->addElement(
+            'lccustomeditor',
+            'message',
+            get_string('message', 'local_thi_learning_companions'),
+            ['rows' => 5],
+            self::editor_options((empty($chatid) ? null : $chatid))
+        );
         $mform->setType('message', PARAM_RAW);
         $mform->addRule('message', get_string('required'), 'required', null, 'client');
 
-        $mform->addElement('html', '<div class="js-chat-preview preview-wrapper flex-column p-6 align-items-center d-none">
-        <span class="preview-text">' . get_string('previewing_group', 'local_thi_learning_companions') . '</span>' .
-            '<a href="/local/thi_learning_companions/join.php?groupid=' . $groupId . '" class="btn btn-primary preview-link">' . $joinGroupString . '</a></div>');
+        $mform->addElement(
+            'html',
+            '<div class="js-chat-preview preview-wrapper flex-column p-6 align-items-center d-none">
+        <span class="preview-text">' . get_string('previewing_group', 'local_thi_learning_companions') .
+            '</span>' .
+            '<a href="/local/thi_learning_companions/join.php?groupid=' . $groupid . '" class="btn btn-primary preview-link">' .
+            $joingroupstring . '</a></div>'
+        );
 
         $mform->addElement('filemanager', 'attachments', get_string('attachment', 'local_thi_learning_companions'), null,
             self::attachment_options());
@@ -101,7 +149,11 @@ style2 = underline, strike'
         }
         $mform->setType('chatid', PARAM_INT);
 
-        $mform->addElement('html', '<span id="local_thi_learning_companions_chat-send" class="btn btn-primary">' . get_string('send', 'local_thi_learning_companions') . '</span>');
+        $mform->addElement(
+            'html',
+            '<span id="local_thi_learning_companions_chat-send" class="btn btn-primary">' .
+            get_string('send', 'local_thi_learning_companions') . '</span>'
+        );
     }
 
     /**
@@ -111,7 +163,7 @@ style2 = underline, strike'
      * @param array $files files uploaded.
      * @return array of errors.
      */
-    function validation($data, $files) {
+    public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         if (empty($data['message']['text'])) {
             $errors['message'] = get_string('erroremptymessage', 'local_thi_learning_companions');

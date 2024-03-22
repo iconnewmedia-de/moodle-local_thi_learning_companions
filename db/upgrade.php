@@ -39,7 +39,7 @@ function xmldb_local_thi_learning_companions_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     $upgradefiles = glob(__DIR__ . "/upgrades/*.php");
-    foreach($upgradefiles as $upgradefile) {
+    foreach ($upgradefiles as $upgradefile) {
         include $upgradefile;
     }
 

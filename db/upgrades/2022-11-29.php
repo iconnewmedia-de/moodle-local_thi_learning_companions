@@ -1,17 +1,17 @@
 <?php
 if ($oldversion < 2022112900) {
     $dbman = $DB->get_manager();
-// ##################### CREATE NEW TABLE thi_lc_chat_lastvisited
+// CREATE NEW TABLE thi_lc_chat_lastvisited.
     $table = new xmldb_table('thi_lc_chat_lastvisited');
-//----------------- add field id
+// Add field id.
     $table->add_field('id', XMLDB_TYPE_INTEGER, '10', NULL, true, true, NULL);
-//----------------- add field userid
+// Add field userid.
     $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', NULL, true, false, NULL);
-//----------------- add field chatid
+// Add field chatid.
     $table->add_field('chatid', XMLDB_TYPE_INTEGER, '10', NULL, true, false, NULL);
-//----------------- add field timevisited
+// Add field timevisited.
     $table->add_field('timevisited', XMLDB_TYPE_INTEGER, '10', NULL, true, false, NULL);
-//-------------add key primary
+// Add key primary.
     $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
     $table->add_index('chatid', XMLDB_INDEX_NOTUNIQUE, array('chatid'));
     $table->add_index('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
@@ -24,7 +24,7 @@ if ($oldversion < 2022112900) {
 }
 
 if ($oldversion < 2022112902) {
-    // ##################### MODIFY TABLE thi_thi_lc_groups
+    // MODIFY TABLE thi_thi_lc_groups.
     $table = new xmldb_table('thi_thi_lc_groups');
 // ------------ add field latestcomment
     $field = new xmldb_field('latestcomment');

@@ -1,5 +1,18 @@
 <?php
-
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
 
 use local_thi_learning_companions\event\group_created;
@@ -30,11 +43,11 @@ class groups {
         global $DB;
 
         $groups = $DB->get_records('thi_lc_groups');
-        $returnGroups = array();
-        foreach($groups as $group) {
-            $returnGroups[] = new group($group->id);
+        $returngroups = array();
+        foreach ($groups as $group) {
+            $returngroups[] = new group($group->id);
         }
-        return $returnGroups;
+        return $returngroups;
     }
 
     /**
@@ -75,7 +88,7 @@ class groups {
      * @return group[]
      * @throws \dml_exception
      */
-    public static function get_groups_of_user($userid, int $shouldIncludeGroupId = null, $sortby = 'latestcomment') {
+    public static function get_groups_of_user($userid, int $shouldincludegroupid = null, $sortby = 'latestcomment') {
         global $DB, $CFG;
 
         $params = [$userid];
@@ -86,9 +99,9 @@ class groups {
         $groups = $DB->get_records_sql($query, $params);
         $return = [];
 
-        foreach($groups as $group) {
-            $returnGroup = new group($group->id, $userid); // ICTODO: check why this changes the PAGE context to context_system
-            $return[] = $returnGroup;
+        foreach ($groups as $group) {
+            $returngroup = new group($group->id, $userid); // ICTODO: check why this changes the PAGE context to context_system
+            $return[] = $returngroup;
         }
 
         switch($sortby) {
@@ -130,48 +143,48 @@ class groups {
 
         }
 
-        $canSeeAllGroups = has_capability( 'tool/thi_learning_companions:group_manage', \context_system::instance());
+        $canseeallgroups = has_capability( 'tool/thi_learning_companions:group_manage', \context_system::instance());
         //Add preview group if it is set
-        $alreadyInArray = in_array($shouldIncludeGroupId, array_column($return, 'id'), false);
-        if(!is_null($shouldIncludeGroupId) && !$alreadyInArray) {
-            $shouldIncludeGroup = new group($shouldIncludeGroupId, $userid);
+        $alreadyinarray = in_array($shouldincludegroupid, array_column($return, 'id'), false);
+        if(!is_null($shouldincludegroupid) && !$alreadyinarray) {
+            $shouldincludegroup = new group($shouldincludegroupid, $userid);
 
-            if (!$shouldIncludeGroup->closedgroup || $canSeeAllGroups) {
-                $shouldIncludeGroup->isPreviewGroup = true;
+            if (!$shouldincludegroup->closedgroup || $canseeallgroups) {
+                $shouldincludegroup->isPreviewGroup = true;
             } else {
                 //Create a fake group, that does not hold any information
-                $shouldIncludeGroup = new \stdClass();
-                $shouldIncludeGroup->isPreviewGroup = true;
-                $shouldIncludeGroup->dummyGroup = true;
-                $shouldIncludeGroup->userIsNotAMember = true;
-                $shouldIncludeGroup->id = $shouldIncludeGroupId;
-                $shouldIncludeGroup->imageurl = $CFG->wwwroot . '/local/thi_learning_companions/pix/group.svg';
-                $shouldIncludeGroup->name = get_string('group_closed', 'local_thi_learning_companions');
+                $shouldincludegroup = new \stdClass();
+                $shouldincludegroup->isPreviewGroup = true;
+                $shouldincludegroup->dummyGroup = true;
+                $shouldincludegroup->userIsNotAMember = true;
+                $shouldincludegroup->id = $shouldincludegroupid;
+                $shouldincludegroup->imageurl = $CFG->wwwroot . '/local/thi_learning_companions/pix/group.svg';
+                $shouldincludegroup->name = get_string('group_closed', 'local_thi_learning_companions');
             }
-            $return = array_merge([$shouldIncludeGroup], $return);
+            $return = array_merge([$shouldincludegroup], $return);
         }
 
         return $return;
     }
 
-    public static function get_groups_where_user_is_admin(int $userId = null) {
+    public static function get_groups_where_user_is_admin(int $userid = null) {
         global $USER, $DB;
 
-        if ($userId === null) {
-            $userId = $USER->id;
+        if ($userid === null) {
+            $userid = $USER->id;
         }
 
         $query = "SELECT g.id
                     FROM {thi_lc_groups} g
                     JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
                     WHERE gm.userid = ? AND gm.isadmin = 1";
-        $params = [$userId];
+        $params = [$userid];
         $groups = $DB->get_records_sql($query, $params);
 
         $return = [];
-        foreach($groups as $group) {
-            $returnGroup = new group($group->id, $USER->id);
-            $return[] = $returnGroup;
+        foreach ($groups as $group) {
+            $returngroup = new group($group->id, $USER->id);
+            $return[] = $returngroup;
         }
 
         return $return;
@@ -184,7 +197,7 @@ class groups {
      */
     public static function invite_users_to_group(array $userids, int $groupid) {
         $success = false;
-        foreach($userids as $userid) {
+        foreach ($userids as $userid) {
             $success = $success || self::invite_user_to_group($userid, $groupid);
         }
         return $success;
@@ -193,15 +206,15 @@ class groups {
     public static function invite_user_to_group($userid, $groupid) {
         global $DB, $USER;
 
-        $userIsAlreadyInGroup = $DB->record_exists('thi_lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
-        if ($userIsAlreadyInGroup) {
+        $userisalreadyingroup = $DB->record_exists('thi_lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
+        if ($userisalreadyingroup) {
             // Return for now. Maybe throw exception or something later
             return false;
         }
 
         //Check if the current user is in the group
-        $userIsInGroup = $DB->record_exists('thi_lc_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
-        if (!$userIsInGroup) {
+        $userisingroup = $DB->record_exists('thi_lc_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
+        if (!$userisingroup) {
             // Return for now. Maybe throw exception or something later
             return false;
         }
@@ -347,15 +360,15 @@ class groups {
         $record->userid = $userid;
         $record->isadmin = $isadmin;
         $record->joined = time();
-        $isEmptyGroup = self::is_group_empty($groupid);
-        $recordID = $DB->insert_record('thi_lc_group_members', $record);
-        if ($isEmptyGroup) {
+        $isemptygroup = self::is_group_empty($groupid);
+        $recordid = $DB->insert_record('thi_lc_group_members', $record);
+        if ($isemptygroup) {
             self::make_admin($userid, $groupid);
         }
 
         group_joined::make($userid, $groupid)->trigger();
 
-        return $recordID;
+        return $recordid;
     }
 
     /**
@@ -395,17 +408,16 @@ class groups {
      */
     protected static function group_assign_keyword($groupid, $keyword) {
         global $DB;
-        $keywordID = self::keyword_get_id($keyword);
-        if (!$keywordID) {
-            $keywordID = self::keyword_create($keyword);
+        $keywordid = self::keyword_get_id($keyword);
+        if (!$keywordid) {
+            $keywordid = self::keyword_create($keyword);
             // ICTODO: handle errors, like when the keyword is too long
         }
         $obj = new \stdClass();
         $obj->groupid = $groupid;
-        $obj->keywordid = $keywordID;
+        $obj->keywordid = $keywordid;
         $DB->insert_record('thi_lc_groups_keywords', $obj);
     }
-
 
     /**
      * @param $keyword
@@ -421,7 +433,6 @@ class groups {
         $obj->keyword = $keyword;
         return $DB->insert_record('thi_lc_keywords', $obj);
     }
-
 
     /**
      * @param $groupid
@@ -450,80 +461,80 @@ class groups {
     }
 
     /**
-     * @param int $userId The id of the user who will leave the group
+     * @param int $userid The id of the user who will leave the group
      * @param int $groupid The id of the group the user will leave
      *
      * @return bool
      * @throws \dml_exception
      */
-    public static function leave_group(int $userId, int $groupId) {
+    public static function leave_group(int $userid, int $groupid) {
         global $DB;
-        $deleted = $DB->delete_records('thi_lc_group_members', ['groupid' => $groupId, 'userid' => $userId]);
-        group_left::make($userId, $groupId)->trigger();
+        $deleted = $DB->delete_records('thi_lc_group_members', ['groupid' => $groupid, 'userid' => $userid]);
+        group_left::make($userid, $groupid)->trigger();
 
-        $group = new group($groupId);
+        $group = new group($groupid);
 
         // If the group is a closed group, and the user was the last member, delete the group
         if ($group->closedgroup && $group->membercount === 0) {
-            self::delete_group($groupId);
+            self::delete_group($groupid);
             return true;
         }
 
         return $deleted;
     }
 
-    public static function make_admin(int $userId, int $groupId) {
+    public static function make_admin(int $userid, int $groupid) {
         global $DB, $USER;
-        $DB->set_field('thi_lc_group_members', 'isadmin', 1, ['groupid' => $groupId, 'userid' => $userId]);
+        $DB->set_field('thi_lc_group_members', 'isadmin', 1, ['groupid' => $groupid, 'userid' => $userid]);
 
-        messages::send_appointed_to_admin_notification($userId, $groupId, $USER->id);
+        messages::send_appointed_to_admin_notification($userid, $groupid, $USER->id);
     }
 
-    public static function unmake_admin(int $userId, int $groupId) {
+    public static function unmake_admin(int $userid, int $groupid) {
         global $DB;
-        $DB->set_field('thi_lc_group_members', 'isadmin', 0, ['groupid' => $groupId, 'userid' => $userId]);
+        $DB->set_field('thi_lc_group_members', 'isadmin', 0, ['groupid' => $groupid, 'userid' => $userid]);
     }
 
     /**
-     * @param $userId
-     * @param $groupId
+     * @param $userid
+     * @param $groupid
      *
      * @return int
      * @throws \dml_exception
      */
-    public static function request_group_join($userId, $groupId): int {
+    public static function request_group_join($userid, $groupid): int {
         // Check if the group is closed
-        $group = new group($groupId);
+        $group = new group($groupid);
 
         // If the user is already a member, don't do anything
-        if ($group->is_user_member($userId)) {
+        if ($group->is_user_member($userid)) {
             return self::JOIN_REQUEST_ALREADY_MEMBER;
         }
 
         // If the group is not closed, there is no need to request to join. Just join
         if (!$group->closedgroup) {
-            return self::group_add_member($groupId, $userId);
+            return self::group_add_member($groupid, $userid);
         }
 
         // If the user has already requested to join, don't do anything
-        if (self::join_is_requested($userId, $groupId)) {
+        if (self::join_is_requested($userid, $groupid)) {
             return self::JOIN_REQUEST_ALREADY_REQUESTED;
         }
 
-        $inserted = self::add_group_join_request($groupId, $userId);
+        $inserted = self::add_group_join_request($groupid, $userid);
 
         if ($inserted) {
             foreach ($group->admins as $admin) {
-                messages::send_group_join_requested_notification($userId, $admin->id, $groupId);
+                messages::send_group_join_requested_notification($userid, $admin->id, $groupid);
             }
         }
 
         return $inserted ? self::JOIN_REQUEST_CREATED : self::JOIN_REQUEST_FAILED;
     }
 
-    public static function join_is_requested(int $userId, int $groupId) {
+    public static function join_is_requested(int $userid, int $groupid) {
         global $DB;
-        return $DB->record_exists('thi_lc_group_requests', ['groupid' => $groupId, 'userid' => $userId]);
+        return $DB->record_exists('thi_lc_group_requests', ['groupid' => $groupid, 'userid' => $userid]);
     }
 
     /**
@@ -534,127 +545,127 @@ class groups {
         global $DB;
 
         $groups = self::get_groups_where_user_is_admin();
-        $groupIds = array_map(static function($group) {
+        $groupids = array_map(static function($group) {
             return $group->id;
         }, $groups);
 
-        if (empty($groupIds)) {
+        if (empty($groupids)) {
             return [];
         }
 
-        $requests = $DB->get_records_sql('SELECT * FROM {thi_lc_group_requests} WHERE groupid IN (' . implode(',', $groupIds) . ') and denied = 0') ?? [];
-        $requestedUsersIds = array_map(static function($request) {
+        $requests = $DB->get_records_sql('SELECT * FROM {thi_lc_group_requests} WHERE groupid IN (' . implode(',', $groupids) . ') and denied = 0') ?? [];
+        $requestedusersids = array_map(static function($request) {
             return $request->userid;
         }, $requests);
-        $requestedUsers = $DB->get_records_list('user', 'id', $requestedUsersIds) ?? [];
+        $requestedusers = $DB->get_records_list('user', 'id', $requestedusersids) ?? [];
 
         foreach ($requests as $request) {
-            $request->user = $requestedUsers[$request->userid];
+            $request->user = $requestedusers[$request->userid];
         }
 
         return $requests;
     }
 
     /**
-     * @param $groupId
-     * @param $userId
+     * @param $groupid
+     * @param $userid
      * @return bool|int
      * @throws \dml_exception
      */
-    protected static function add_group_join_request($groupId, $userId) {
+    protected static function add_group_join_request($groupid, $userid) {
         global $DB;
         $record = new \stdClass();
-        $record->groupid = $groupId;
-        $record->userid = $userId;
+        $record->groupid = $groupid;
+        $record->userid = $userid;
         $record->timecreated = time();
         return $DB->insert_record('thi_lc_group_requests', $record);
     }
 
     /**
-     * @param $requestId
+     * @param $requestid
      * @return void
      * @throws \dml_exception
      */
-    public static function accept_group_join_request($requestId) {
+    public static function accept_group_join_request($requestid) {
         global $DB;
 
         //Get the request
-        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestId]);
+        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestid]);
         //Add the user to the group
         self::group_add_member($request->groupid, $request->userid);
         //Delete the request
-        $DB->delete_records('thi_lc_group_requests', ['id' => $requestId]);
+        $DB->delete_records('thi_lc_group_requests', ['id' => $requestid]);
         messages::send_group_join_accepted_notification($request->userid, $request->groupid);
     }
 
     /**
-     * @param $requestId
+     * @param $requestid
      * @return void
      * @throws \dml_exception
      */
-    public static function deny_group_join_request($requestId) {
+    public static function deny_group_join_request($requestid) {
         global $DB;
-        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestId]);
+        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestid]);
 
-        $DB->set_field('thi_lc_group_requests', 'denied', 1, ['id' => $requestId]);
+        $DB->set_field('thi_lc_group_requests', 'denied', 1, ['id' => $requestid]);
         messages::send_group_join_denied_notification($request->userid, $request->groupid);
     }
 
     /**
-     * @param int $userId
-     * @param int $groupId
+     * @param int $userid
+     * @param int $groupid
      *
      * @return int
      * @throws \dml_exception
      */
-    public static function join_group(int $userId, int $groupId): int {
+    public static function join_group(int $userid, int $groupid): int {
         // Check if the group is open
-        $group = new group($groupId);
+        $group = new group($groupid);
 
         // If the group is not open, there is no need to join. Just request to join
         if ($group->closedgroup) {
-            return self::request_group_join($userId, $groupId);
+            return self::request_group_join($userid, $groupid);
         }
 
-        $inserted = self::group_add_member($groupId, $userId);
+        $inserted = self::group_add_member($groupid, $userid);
         return $inserted ? self::JOIN_CREATED : self::JOIN_FAILED;
     }
 
     /**
-     * @param int $groupId
+     * @param int $groupid
      * @return void
      * @throws \dml_exception
      * @throws \dml_transaction_exception
      */
-    public static function delete_group(int $groupId) {
+    public static function delete_group(int $groupid) {
         global $DB, $USER;
 
-        $event = group_deleted::make($USER->id, $groupId);
-        $event->add_record_snapshot('thi_lc_groups', $DB->get_record('thi_lc_groups', ['id' => $groupId]));
-        $event->add_record_snapshot('thi_lc_chat', $DB->get_record('thi_lc_chat', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]));
-        $groupMembers = $DB->get_records('thi_lc_group_members', ['groupid' => $groupId]);
-        foreach ($groupMembers as $groupMember) {
-            $event->add_record_snapshot('thi_lc_group_members', $groupMember);
+        $event = group_deleted::make($USER->id, $groupid);
+        $event->add_record_snapshot('thi_lc_groups', $DB->get_record('thi_lc_groups', ['id' => $groupid]));
+        $event->add_record_snapshot('thi_lc_chat', $DB->get_record('thi_lc_chat', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]));
+        $groupmembers = $DB->get_records('thi_lc_group_members', ['groupid' => $groupid]);
+        foreach ($groupmembers as $groupmember) {
+            $event->add_record_snapshot('thi_lc_group_members', $groupmember);
         }
         $event->trigger();
 
         $transaction = $DB->start_delegated_transaction();
         //Get Chat ID
-        $chatId = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupId]);
+        $chatid = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
         // Delete file attachments
-        self::delete_attachments_of_chat($chatId);
+        self::delete_attachments_of_chat($chatid);
         // Delete the group members
-        $DB->delete_records('thi_lc_group_members', ['groupid' => $groupId]);
+        $DB->delete_records('thi_lc_group_members', ['groupid' => $groupid]);
         // Delete the group requests
-        $DB->delete_records('thi_lc_group_requests', ['groupid' => $groupId]);
+        $DB->delete_records('thi_lc_group_requests', ['groupid' => $groupid]);
         // Delete the group keywords
-        $DB->delete_records('thi_lc_groups_keywords', ['groupid' => $groupId]);
+        $DB->delete_records('thi_lc_groups_keywords', ['groupid' => $groupid]);
         // Delete the group
-        $DB->delete_records('thi_lc_groups', ['id' => $groupId]);
+        $DB->delete_records('thi_lc_groups', ['id' => $groupid]);
         //Delete Chat
-        $DB->delete_records('thi_lc_chat', ['id' => $chatId]);
+        $DB->delete_records('thi_lc_chat', ['id' => $chatid]);
         //Delete Chat Messages
-        $DB->delete_records('thi_lc_chat_comment', ['chatid' => $chatId]);
+        $DB->delete_records('thi_lc_chat_comment', ['chatid' => $chatid]);
         $transaction->allow_commit();
     }
 
@@ -670,8 +681,8 @@ class groups {
         $comments = $DB->get_records('thi_lc_chat_comment', ['chatid' => $chatid]);
         $fs = new \file_storage();
         $context = \context_system::instance();
-        foreach($comments as $comment) {
-            foreach($comment->attachments as $attachment) {
+        foreach ($comments as $comment) {
+            foreach ($comment->attachments as $attachment) {
                 $fs->delete_area_files($context->id,'local_thi_learning_companions', 'message', $comment->id);
                 $fs->delete_area_files($context->id,'local_thi_learning_companions', 'attachments', $comment->id);
             }
@@ -685,20 +696,20 @@ class groups {
      */
     public static function count_comments_since_last_visit($groupid) {
         global $DB, $USER;
-        $chatId = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
-        $lastVisited = $DB->get_field('thi_lc_chat_lastvisited', 'timevisited', array('chatid' => $chatId, 'userid' => $USER->id));
-        if (false === $lastVisited) {
-            $lastVisited = 0;
+        $chatid = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
+        $lastvisited = $DB->get_field('thi_lc_chat_lastvisited', 'timevisited', array('chatid' => $chatid, 'userid' => $USER->id));
+        if (false === $lastvisited) {
+            $lastvisited = 0;
         }
-        $commentsSinceLastVisit = $DB->get_records_sql(
+        $commentssincelastvisit = $DB->get_records_sql(
             'SELECT * FROM {thi_lc_chat_comment}
                     WHERE chatid = ? AND timecreated > ?',
-            array($chatId, $lastVisited)
+            array($chatid, $lastvisited)
         );
-        if (false === $commentsSinceLastVisit) {
+        if (false === $commentssincelastvisit) {
             return 0;
         }
-        return count($commentsSinceLastVisit);
+        return count($commentssincelastvisit);
     }
 
     /**
@@ -720,9 +731,9 @@ class groups {
      */
     public static function may_view_group(int $groupid) {
         global $USER;
-        $isGroupMember = self::is_group_member($USER->id, $groupid);
+        $isgroupmember = self::is_group_member($USER->id, $groupid);
         $context = \context_system::instance();
-        $mayManageGroups = has_capability('local/thi_learning_companions:group_manage', $context);
-        return $isGroupMember || $mayManageGroups;
+        $maymanagegroups = has_capability('local/thi_learning_companions:group_manage', $context);
+        return $isgroupmember || $maymanagegroups;
     }
 }

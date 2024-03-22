@@ -68,7 +68,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
                 setLastPostId(initialPosts[0]?.id ?? 0);
                 // Also set the "first" post id, so we can get older posts.
                 setFirstPostId(initialPosts[initialPosts.length - 1]?.id ?? Infinity);
-            }).catch(error => {
+            }).catch (error => {
             if (error.name !== 'AbortError') {
                 // console.log(error);
             }
@@ -129,7 +129,7 @@ export default function Postlist({activeGroupid, group, questionid}) {
                 setPosts((posts) => [...posts, ...newPosts]);
                 setFirstPostId(newPosts[newPosts.length - 1].id);
             }
-        }).catch(error => {
+        }).catch (error => {
             if (error.name !== 'AbortError') {
                 // console.log(error);
             }

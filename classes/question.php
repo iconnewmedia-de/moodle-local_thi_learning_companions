@@ -1,5 +1,18 @@
 <?php
-
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
 
 use core\session\exception;
@@ -95,9 +108,9 @@ class question {
         if (!$record) {
             throw new \exception('invalid_question_id', 'local_thi_learning_companions');
         }
-        $isMentor = \local_thi_learning_companions\mentors::is_mentor();
+        $ismentor = \local_thi_learning_companions\mentors::is_mentor();
         $context = \context_system::instance();
-        if (($isMentor && $record->mentorid == 0)
+        if (($ismentor && $record->mentorid == 0)
             || $USER->id == $record->askedby
             || $USER->id == $record->mentorid
             || has_capability('local/thi_learning_companions:view_all_mentor_questions', $context)
@@ -125,16 +138,16 @@ class question {
         return $questions;
     }
 
-    public function can_user_view(int $userId): bool {
+    public function can_user_view(int $userid): bool {
         global $DB;
 
         //If it´s the user who asked the question, they can view it.
-        if ($this->askedby === $userId) {
+        if ($this->askedby === $userid) {
             return true;
         }
 
         //If its the user who is the mentor, they can view it.
-        if ($this->mentorid === $userId) {
+        if ($this->mentorid === $userid) {
             return true;
         }
 
@@ -144,7 +157,7 @@ class question {
         }
 
         //There is no mentor assigned, so we need to check the topics
-        $mentorTopics = $DB->get_records_menu('thi_lc_mentors', ['userid' => $userId], '', 'topic');
+        $mentorTopics = $DB->get_records_menu('thi_lc_mentors', ['userid' => $userid], '', 'topic');
         return in_array($this->topic, $mentorTopics, true);
     }
 

@@ -1,6 +1,20 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
-require_once dirname(__DIR__). '/lib.php';
+require_once(dirname(__DIR__). '/lib.php');;
 
 class group {
     /**
@@ -14,11 +28,11 @@ class group {
     /**
      * @var string
      */
-    public $createdby_fullname;
+    public $createdbyfullname;
     /**
      * @var string
      */
-    public $createdby_profileurl;
+    public $createdbyprofileurl;
     /**
      * @var array
      */
@@ -26,7 +40,7 @@ class group {
     /**
      * @var string
      */
-    public $keywords_list;
+    public $keywordslist;
     /**
      * @var int
      */
@@ -34,11 +48,11 @@ class group {
     /**
      * @var string
      */
-    public $timecreated_dmY;
+    public $timecreateddmy;
     /**
      * @var string
      */
-    public $timecreated_userdate;
+    public $timecreateduserdate;
     /**
      * @var int
      */
@@ -46,11 +60,11 @@ class group {
     /**
      * @var string
      */
-    public $timemodified_dmY;
+    public $timemodifieddmy;
     /**
      * @var string
      */
-    public $timemodified_userdate;
+    public $timemodifieduserdate;
     /**
      * @var bool
      */
@@ -107,7 +121,6 @@ class group {
      * @var int
      */
     public $membercount = null;
-//    public $thumbnail;
     /**
      * @var int
      */
@@ -115,7 +128,11 @@ class group {
     /**
      * @var string
      */
-    public $latestcomment_userdate;
+    public $latestcommentdmy = null;
+    /**
+     * @var string
+     */
+    public $latestcommentuserdate;
     /**
      * @var int
      */
@@ -131,35 +148,34 @@ class group {
     /**
      * @var bool
      */
-    public $currentUserIsMember;
+    public $currentuserismember;
 
     /**
      * @var chat
      */
     private $chat;
 
-    public $last_active_time;
+    public $lastactivetime;
     /**
      * @var string
      */
-    public $last_active_time_dmy;
+    public $lastactivetimedmy;
     /**
      * @var false|int
      */
-    public $last_active_userid;
+    public $lastactiveuserid;
     /**
      * @var bool
      */
-    public $may_edit;
+    public $mayedit;
 
     /**
      * @var bool
      */
-    public $is_admin;
+    public $isadmin;
 
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER, $PAGE;
-//        $PAGE->set_context(\context_system::instance()); // ICTODO: figure out why this was added in the first place - it can cause warnings if the context has already been set
 
         if (is_null($userid)) {
             $userid = $USER->id;
@@ -169,26 +185,26 @@ class group {
         $group = $DB->get_record('thi_lc_groups', ['id' => $groupid]);
         $user = $DB->get_record('user', ['id' => $group->createdby]);
         $chat = $DB->get_record('thi_lc_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
-        foreach($group as $key => $value) {
+        foreach ($group as $key => $value) {
             $this->$key = $value;
         }
 
-        $this->createdby_fullname = fullname($user);
-        $this->createdby_profileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
+        $this->createdbyfullname = fullname($user);
+        $this->createdbyprofileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
 
         $this->latestcomment = $DB->get_field('thi_lc_chat_comment', 'MAX(timecreated)', ['chatid' => $chat->id, 'timedeleted' => null]);
 
-        $this->timecreated_userdate = $this->timecreated > 0 ? userdate($this->timecreated) : '-';
-        $this->timecreated_dmY =  $this->timecreated > 0 ? date('d.m.Y', $this->timecreated) : '-';
-        $this->timemodified_userdate = $this->timemodified > 0 ? userdate($this->timemodified) : '-';
-        $this->timemodified_dmY =  $this->timemodified > 0 ? date('d.m.Y', $this->timemodified) : '-';
-        $this->latestcomment_userdate = $this->latestcomment > 0 ? userdate($this->latestcomment) : '-';
+        $this->timecreateduserdate = $this->timecreated > 0 ? userdate($this->timecreated) : '-';
+        $this->timecreateddmy =  $this->timecreated > 0 ? date('d.m.Y', $this->timecreated) : '-';
+        $this->timemodifieduserdate = $this->timemodified > 0 ? userdate($this->timemodified) : '-';
+        $this->timemodifieddmy =  $this->timemodified > 0 ? date('d.m.Y', $this->timemodified) : '-';
+        $this->latestcommentuserdate = $this->latestcomment > 0 ? userdate($this->latestcomment) : '-';
         if (date('d.m.Y', $this->latestcomment) === date('d.m.Y', time())){
-            $this->latestcomment_dmY = date('H:i', $this->latestcomment);
+            $this->latestcommentdmy = date('H:i', $this->latestcomment);
         } elseif ($this->latestcomment > 0) {
-            $this->latestcomment_dmY = date('d.m.Y', $this->latestcomment);
+            $this->latestcommentdmy = date('d.m.Y', $this->latestcomment);
         } else {
-            $this->latestcomment_dmY = '-';
+            $this->latestcommentdmy = '-';
         }
         $this->closedgroupicon = $this->closedgroup == 1 ? '<i class="icon fa fa-check"></i>' : '';
         $shortdescription = strip_tags($this->description);
@@ -197,10 +213,10 @@ class group {
             $this->shortdescription .= " ...";
         }
         $this->chatid = $chat->id;
-        $this->chat = chat::createGroupChat($this->id);
-        $this->last_active_time = $this->chat->get_last_active_time() ?? 0;
-        $this->last_active_time_dmy = !$this->last_active_time ? '-' : date('d.m.Y',$this->last_active_time);
-        $this->last_active_userid = $this->chat->get_last_active_userid();
+        $this->chat = chat::create_group_chat($this->id);
+        $this->lastactivetime = $this->chat->get_last_active_time() ?? 0;
+        $this->lastactivetimedmy = !$this->lastactivetime ? '-' : date('d.m.Y',$this->lastactivetime);
+        $this->lastactiveuserid = $this->chat->get_last_active_userid();
 
         $this->get_image();
         $this->get_imageurl();
@@ -208,9 +224,8 @@ class group {
         $this->get_membercount();
         $this->get_admins();
         $this->get_course();
-//        $this->get_keywords();
-        $this->get_keywords_list();
-        $this->may_edit = $this->is_admin || has_capability('local/thi_learning_companions:group_manage', \context_system::instance());
+        $this->get_keywordslist();
+        $this->mayedit = $this->isadmin || has_capability('local/thi_learning_companions:group_manage', \context_system::instance());
         // ICTODO: fetch course and course category along with relevant metadata from course and course category, like topic and such
     }
 
@@ -230,25 +245,25 @@ class group {
     }
 
     public function is_user_admin(int $userId) {
-        $isAdmin = false;
+        $isadmin = false;
         foreach ($this->admins as $admin) {
             if ((int)$admin->id === $userId) {
-                $isAdmin = true;
+                $isadmin = true;
                 break;
             }
         }
-        return $isAdmin;
+        return $isadmin;
     }
 
     public function is_user_member(int $userId) {
-        $isMember = false;
+        $ismember = false;
         foreach ($this->groupmembers as $member) {
             if ((int)$member->id === $userId) {
-                $isMember = true;
+                $ismember = true;
                 break;
             }
         }
-        return $isMember;
+        return $ismember;
     }
 
     /**
@@ -337,12 +352,12 @@ class group {
                    WHERE gm.groupid = ?',
             array($this->id)
         );
-        foreach($groupmembers as $key => $member) {
+        foreach ($groupmembers as $key => $member) {
             $groupmembers[$key]->password = '';
         }
         $this->groupmembers = $groupmembers;
         if (array_key_exists($USER->id, $this->groupmembers)) {
-            $this->currentUserIsMember = true;
+            $this->currentuserismember = true;
         }
         return $this->groupmembers;
     }
@@ -383,10 +398,10 @@ class group {
         return $this->keywords;
     }
 
-    public function get_keywords_list() {
+    public function get_keywordslist() {
         $keywords_list = $this->get_keywords();
         $keywords_list = implode(', ', $keywords_list);
-        $this->keywords_list = $keywords_list;
+        $this->keywordslist = $keywords_list;
         return $keywords_list;
     }
 
@@ -477,7 +492,7 @@ class group {
             return $this->admins;
         }
         global $DB, $CFG, $OUTPUT, $USER;
-        $this->is_admin = false;
+        $this->isadmin = false;
 //        $context = \context_system::instance(); // WHY? Commented out for now, need to find out why this has been added
 //        $PAGE->set_context($context); // WHY?! This would change the context on all pages to context_system. Even in courses and course modules
 
@@ -491,7 +506,7 @@ class group {
         $admins = $DB->get_records_sql($sql, [$this->id]);
         foreach ($admins as $admin) {
             if ($admin->id === $USER->id) {
-                $this->is_admin = true;
+                $this->isadmin = true;
             }
             $admin->fullname = fullname($admin);
             $admin->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$admin->id;

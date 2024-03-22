@@ -19,7 +19,8 @@ namespace local_thi_learning_companions\event;
 /**
  * The group_joined event class.
  *
- * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
  * @package     local_thi_learning_companions
  * @category    event
@@ -54,10 +55,10 @@ class group_joined extends \core\event\base {
         }
     }
 
-    public static function make(int $userId, int $groupId) {
+    public static function make(int $userid, int $groupid) {
         return self::create([
-            'objectid' => $groupId,
-            'userid' => $userId,
+            'objectid' => $groupid,
+            'userid' => $userid,
         ]);
     }
 }

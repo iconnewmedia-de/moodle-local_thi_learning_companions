@@ -53,19 +53,19 @@ class cron_task extends \core\task\scheduled_task {
 
     protected function send_unanswered_questions_to_tutor() {
         global $DB;
-        $unansweredQuestions = $this->get_unanswered_questions();
-        if (empty($unansweredQuestions)) {
+        $unansweredquestions = $this->get_unanswered_questions();
+        if (empty($unansweredquestions)) {
             return;
         }
         $config = get_config('local_thi_learning_companions');
-        $tutorRoleName = trim($config->tutorrole_shortname);
-        $tutorRoleID = $DB->get_field('role', 'id', array('shortname' => $tutorRoleName));
-        if (!$tutorRoleID) {
+        $tutorrolename = trim($config->tutorrole_shortname);
+        $tutorroleid = $DB->get_field('role', 'id', array('shortname' => $tutorrolename));
+        if (!$tutorroleid) {
             return;
         }
 
 
-        foreach($unansweredQuestions as $question) {
+        foreach ($unansweredquestions as $question) {
             if (empty($question->topic)) { // shouldn't happen, but you never know
                 continue;
             }
@@ -81,9 +81,9 @@ class cron_task extends \core\task\scheduled_task {
                   WHERE r.roleid = ?
                     AND u.deleted = 0
                     AND cd.value = ?",
-                array($tutorRoleID, $question->topic)
+                array($tutorroleid, $question->topic)
             );
-            foreach($tutors as $tutor) {
+            foreach ($tutors as $tutor) {
                $success =  \local_thi_learning_companions\messages::send_tutor_unanswered_question_message($tutor, $question);
                if ($success) {
                    $DB->insert_record('thi_lc_tutor_notifications',
@@ -97,7 +97,7 @@ class cron_task extends \core\task\scheduled_task {
         global $DB;
         $config = get_config('local_thi_learning_companions');
         $timelimit = $config->inform_tutors_about_unanswered_questions_after_x_days;
-        $xDaysAgo = time() - $timelimit * DAYSECS;
+        $xdaysago = time() - $timelimit * DAYSECS;
         $unanswered = $DB->get_records_sql("SELECT q.*
             FROM {thi_lc_mentor_questions} q
             LEFT JOIN {thi_lc_chat} c ON c.relatedid = q.id AND c.chattype = '" . groups::CHATTYPE_MENTOR . "'
@@ -106,7 +106,7 @@ class cron_task extends \core\task\scheduled_task {
             WHERE q.timecreated < ?
             AND cmnt.id IS NULL
             AND n.id IS NULL",
-        array($xDaysAgo));
+        array($xdaysago));
         return $unanswered;
     }
 }

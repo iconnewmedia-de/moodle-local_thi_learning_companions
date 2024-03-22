@@ -1,35 +1,49 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions\db;
 /**
  * creates course custom field "topic" which can be used to figure out which courses a mentor is responsible for
  * @return void
  */
 function create_course_customfields() {
-    $fieldCategoryExists = \core_customfield\category::get_record(array('name' => 'thi_learning_companions'));
-    if (!$fieldCategoryExists) {
+    $fieldcategoryexists = \core_customfield\category::get_record(array('name' => 'thi_learning_companions'));
+    if (!$fieldcategoryexists) {
         $context = \context_system::instance();
-        $contextID = $context->instanceid;
-        $category = (object)array('name' => 'thi_learning_companions', 'component' => 'core_course', 'area' => 'course', 'contextid' => $contextID);
-        $fieldCategory = new \core_customfield\category(0, $category);
-        $fieldCategory->save();
-        $fieldCategoryID = $fieldCategory->get('id');
+        $contextid = $context->instanceid;
+        $category = (object)array('name' => 'thi_learning_companions', 'component' => 'core_course', 'area' => 'course', 'contextid' => $contextid);
+        $fieldcategory = new \core_customfield\category(0, $category);
+        $fieldcategory->save();
+        $fieldcategoryid = $fieldcategory->get('id');
     } else {
-        $fieldCategoryID = $fieldCategoryExists->get('id');
+        $fieldcategoryid = $fieldcategoryexists->get('id');
     }
 
-    $fieldExists = \core_customfield\field::get_record(array('shortname' => 'topic'));
-    if (!$fieldExists) {
-        $customField = array(
+    $fieldexists = \core_customfield\field::get_record(array('shortname' => 'topic'));
+    if (!$fieldexists) {
+        $customfield = array(
             'shortname' => 'topic',
             'name' => get_string('topic', 'local_thi_learning_companions'),
             'type' => 'text',
-            'categoryid' => $fieldCategoryID,
+            'categoryid' => $fieldcategoryid,
             'description' => get_string('customfield_topic_description', 'local_thi_learning_companions'),
             'timecreated' => time(),
             'timemodified' => 0
         );
-        $customField = (object)$customField;
-        $field = new \core_customfield\field(0, $customField);
+        $customfield = (object)$customfield;
+        $field = new \core_customfield\field(0, $customfield);
         $field->save();
     }
 }
@@ -43,11 +57,11 @@ function create_course_customfields() {
 function create_status_profile_field() {
     global $DB, $CFG;
     /*** Adding new profile category 'Status' ***/
-    $categoryId = $DB->get_field('user_info_category', 'id', [
+    $categoryid = $DB->get_field('user_info_category', 'id', [
         'name' => get_string('profile_field_category_status_default', 'local_thi_learning_companions')
     ]);
-    if (!$categoryId) {
-        $categoryId = $DB->insert_record('user_info_category', [
+    if (!$categoryid) {
+        $categoryid = $DB->insert_record('user_info_category', [
             'name' => get_string('profile_field_category_status_default', 'local_thi_learning_companions'),
             'sortorder' => 1
         ]);
@@ -73,7 +87,7 @@ function create_status_profile_field() {
         $newfield->forceunique = 0;
         $newfield->signup = 0;
         $newfield->visible = 2;
-        $newfield->categoryid = $categoryId;
+        $newfield->categoryid = $categoryid;
         // Multi language, take a look at the strings.
         $newfield->defaultdata = get_string('profile_field_status_default_default', 'local_thi_learning_companions');
         $newfield->param1 = get_string('profile_field_status_default_options', 'local_thi_learning_companions');

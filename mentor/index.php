@@ -1,9 +1,22 @@
 <?php
-
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 use local_thi_learning_companions\mentors;
 
-require_once dirname(__DIR__, 3).'/config.php';
-require_once dirname(__DIR__).'/lib.php';
+require_once(dirname(__DIR__, 3).'/config.php');;
+require_once(dirname(__DIR__).'/lib.php');;
 
 require_login();
 
@@ -23,7 +36,7 @@ $mentortopics = mentors::get_all_mentor_keywords($USER->id, true);
 $askedquestions = mentors::get_my_asked_questions($USER->id);
 $mymentorquestions = mentors::get_mentor_questions_by_user_id($USER->id);
 $allmentorquestions = mentors::get_mentor_questions_by_topics($mentortopics);
-$learningNuggetComments = mentors::get_learning_nugget_comments();
+$learningnuggetcomments = mentors::get_learning_nugget_comments();
 
 echo $OUTPUT->header();
 
@@ -36,7 +49,7 @@ if (!is_null($notification)) {
 $hasaskedquestions = count($askedquestions) > 0;
 $hasmentorquestions = count($mymentorquestions) > 0;
 $hasallmentorquestions = count($allmentorquestions) > 0;
-$haslearningnuggetcomments = count($learningNuggetComments) > 0;
+$haslearningnuggetcomments = count($learningnuggetcomments) > 0;
 
 echo $OUTPUT->render_from_template('local_thi_learning_companions/mentor/mentor_index', [
     'hasaskedquestions' => $hasaskedquestions,
@@ -46,7 +59,7 @@ echo $OUTPUT->render_from_template('local_thi_learning_companions/mentor/mentor_
     'askedquestions' => array_values($askedquestions),
     'mymentorquestions' => array_values($mymentorquestions),
     'allmentorquestions' => array_values($allmentorquestions),
-    'latestcomments' => array_values($learningNuggetComments),
+    'latestcomments' => array_values($learningnuggetcomments),
     'ismentor' => mentors::is_mentor(),
     'istutor' => mentors::is_tutor(),
     'cfg' => $CFG

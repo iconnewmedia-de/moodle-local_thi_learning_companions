@@ -1,6 +1,20 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
-
+defined('MOODLE_INTERNAL') || die();
 /**
  * @param $data
  * @param $form
@@ -21,10 +35,10 @@ function chat_handle_submission($data, $form) {
             $return['warning_title'] = get_string('warning', 'local_thi_learning_companions', $limit);
         }
         return $return;
-    } catch(\Exception $e) {
+    } catch (\Exception $e) {
         try {
             $transaction->rollback($e);
-        } catch(\file_exception $e) {
+        } catch (\file_exception $e) {
             return ["success" => false, "error" => $e->getMessage()];
         }
     }
@@ -66,12 +80,12 @@ function get_topics_of_user_courses(int $userid = null) {
     } elseif(!isloggedin()) {
         return [];
     }
-    $userEnrolments = enrol_get_all_users_courses($userid);
-    $userEnrolments = array_keys($userEnrolments);
-    if (empty($userEnrolments)) {
+    $userenrolments = enrol_get_all_users_courses($userid);
+    $userenrolments = array_keys($userenrolments);
+    if (empty($userenrolments)) {
         return [];
     }
-    list($courseCondition, $courseParams) = $DB->get_in_or_equal($userEnrolments);
+    list($coursecondition, $courseparams) = $DB->get_in_or_equal($userenrolments);
     $records = $DB->get_records_sql(
         "SELECT DISTINCT cd.value
         FROM {customfield_data} cd
@@ -80,8 +94,8 @@ function get_topics_of_user_courses(int $userid = null) {
         JOIN {context} ctx
             ON ctx.id = cd.contextid
             AND ctx.contextlevel = '" . CONTEXT_COURSE . "'
-            AND ctx.instanceid " . $courseCondition,
-        $courseParams
+            AND ctx.instanceid " . $coursecondition,
+        $courseparams
     );
     return array_keys($records);
 }
@@ -156,7 +170,7 @@ function add_comment_blocks() {
                 AND m.name " . $sqlWhereIn,
         $params
     );
-    foreach($activitiesWithoutCommentBlock as $activity) {
+    foreach ($activitiesWithoutCommentBlock as $activity) {
         create_comment_block($activity->contextid, $activity->modulename);
     }
 }

@@ -2110,7 +2110,7 @@ g = (function() {
 try {
 	// This works if eval is allowed (see CSP)
 	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
+} catch (e) {
 	// This works if the window reference is available
 	if(typeof window === "object")
 		g = window;
@@ -2251,11 +2251,11 @@ function runTimeout(fun) {
     try {
         // when when somebody has screwed with setTimeout but no I.E. maddness
         return cachedSetTimeout(fun, 0);
-    } catch(e){
+    } catch (e){
         try {
             // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
             return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
+        } catch (e){
             // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
             return cachedSetTimeout.call(this, fun, 0);
         }
@@ -2719,7 +2719,7 @@ Duplex.prototype._destroy = function (err, cb) {
   processNextTick(cb, err);
 };
 
-function forEach(xs, f) {
+function foreach (xs, f) {
   for (var i = 0, l = xs.length; i < l; i++) {
     f(xs[i], i);
   }
@@ -4018,7 +4018,7 @@ TextTools.prototype.buildInlines = function (textArray, styleContextStack) {
 		maxWidth = 0,
 		currentLineWidth;
 
-	measured.forEach(function (inline) {
+	measured.foreach (function (inline) {
 		minWidth = Math.max(minWidth, inline.width - inline.leadingCut - inline.trailingCut);
 
 		if (!currentLineWidth) {
@@ -4221,7 +4221,7 @@ function measure(fontProvider, textArray, styleContextStack) {
 		}
 	}
 
-	normalized.forEach(function (item) {
+	normalized.foreach (function (item) {
 		var fontName = getStyleProperty(item, styleContextStack, 'font', 'Roboto');
 		var fontSize = getStyleProperty(item, styleContextStack, 'fontSize', 12);
 		var fontFeatures = getStyleProperty(item, styleContextStack, 'fontFeatures', null);
@@ -4401,7 +4401,7 @@ function buildColumnWidths(columns, availableWidth) {
 		fixedColumns = [],
 		initial_availableWidth = availableWidth;
 
-	columns.forEach(function (column) {
+	columns.foreach (function (column) {
 		if (isAutoColumn(column)) {
 			autoColumns.push(column);
 			autoMin += column._minWidth;
@@ -4415,7 +4415,7 @@ function buildColumnWidths(columns, availableWidth) {
 		}
 	});
 
-	fixedColumns.forEach(function (col) {
+	fixedColumns.foreach (function (col) {
 		// width specified as %
 		if (isString(col.width) && /\d+%/.test(col.width)) {
 			col.width = parseFloat(col.width) * initial_availableWidth / 100;
@@ -4439,17 +4439,17 @@ function buildColumnWidths(columns, availableWidth) {
 		// that's actually pretty bad situation with PDF as we have no horizontal scroll
 		// no easy workaround (unless we decide, in the future, to split single words)
 		// currently we simply use minWidths for all columns
-		autoColumns.forEach(function (col) {
+		autoColumns.foreach (function (col) {
 			col._calcWidth = col._minWidth;
 		});
 
-		starColumns.forEach(function (col) {
+		starColumns.foreach (function (col) {
 			col._calcWidth = starMaxMin; // starMaxMin already contains padding
 		});
 	} else {
 		if (maxW < availableWidth) {
 			// case 2 - we can fit rest of the table within available space
-			autoColumns.forEach(function (col) {
+			autoColumns.foreach (function (col) {
 				col._calcWidth = col._maxWidth;
 				availableWidth -= col._calcWidth;
 			});
@@ -4458,7 +4458,7 @@ function buildColumnWidths(columns, availableWidth) {
 			var W = availableWidth - minW;
 			var D = maxW - minW;
 
-			autoColumns.forEach(function (col) {
+			autoColumns.foreach (function (col) {
 				var d = col._maxWidth - col._minWidth;
 				col._calcWidth = col._minWidth + d * W / D;
 				availableWidth -= col._calcWidth;
@@ -4468,7 +4468,7 @@ function buildColumnWidths(columns, availableWidth) {
 		if (starColumns.length > 0) {
 			var starSize = availableWidth / starColumns.length;
 
-			starColumns.forEach(function (col) {
+			starColumns.foreach (function (col) {
 				col._calcWidth = starSize;
 			});
 		}
@@ -6323,7 +6323,7 @@ function stylizeNoColor(str, styleType) {
 function arrayToHash(array) {
   var hash = {};
 
-  array.forEach(function(val, idx) {
+  array.foreach (function(val, idx) {
     hash[val] = true;
   });
 
@@ -6478,7 +6478,7 @@ function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
       output.push('');
     }
   }
-  keys.forEach(function(key) {
+  keys.foreach (function(key) {
     if (!key.match(/^\d+$/)) {
       output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
           key, true));
@@ -7461,7 +7461,7 @@ TraversalTracker.prototype.emit = function (event) {
 		return;
 	}
 
-	callbacks.forEach(function (callback) {
+	callbacks.foreach (function (callback) {
 		callback.apply(this, args);
 	});
 };
@@ -8056,7 +8056,7 @@ function StyleContextStack(styleDictionary, defaultStyle) {
 StyleContextStack.prototype.clone = function () {
 	var stack = new StyleContextStack(this.styleDictionary, this.defaultStyle);
 
-	this.styleOverrides.forEach(function (item) {
+	this.styleOverrides.foreach (function (item) {
 		stack.styleOverrides.push(item);
 	});
 
@@ -8143,7 +8143,7 @@ StyleContextStack.prototype.autopush = function (item) {
 	var styleOverrideObject = {};
 	var pushStyleOverrideObject = false;
 
-	styleProperties.forEach(function (key) {
+	styleProperties.foreach (function (key) {
 		if (!isUndefined(item[key]) && !isNull(item[key])) {
 			styleOverrideObject[key] = item[key];
 			pushStyleOverrideObject = true;
@@ -8542,7 +8542,7 @@ function Line(maxWidth) {
 Line.prototype.getAscenderHeight = function () {
 	var y = 0;
 
-	this.inlines.forEach(function (inline) {
+	this.inlines.foreach (function (inline) {
 		y = Math.max(y, inline.font.ascender / 1000 * inline.fontSize);
 	});
 	return y;
@@ -8586,7 +8586,7 @@ Line.prototype.getWidth = function () {
 Line.prototype.getHeight = function () {
 	var max = 0;
 
-	this.inlines.forEach(function (item) {
+	this.inlines.foreach (function (item) {
 		max = Math.max(max, item.height || 0);
 	});
 
@@ -9604,7 +9604,7 @@ function endReadableNT(state, stream) {
   }
 }
 
-function forEach(xs, f) {
+function foreach (xs, f) {
   for (var i = 0, l = xs.length; i < l; i++) {
     f(xs[i], i);
   }
@@ -11170,9 +11170,9 @@ module.exports = {
           that[SIZE]--;
         } return !!entry;
       },
-      // 23.2.3.6 Set.prototype.forEach(callbackfn, thisArg = undefined)
-      // 23.1.3.5 Map.prototype.forEach(callbackfn, thisArg = undefined)
-      forEach: function forEach(callbackfn /* , that = undefined */) {
+      // 23.2.3.6 Set.prototype.foreach (callbackfn, thisArg = undefined)
+      // 23.1.3.5 Map.prototype.foreach (callbackfn, thisArg = undefined)
+      forEach: function foreach (callbackfn /* , that = undefined */) {
         validate(this, NAME);
         var f = ctx(callbackfn, arguments.length > 1 ? arguments[1] : undefined, 3);
         var entry;
@@ -13254,8 +13254,8 @@ function calculatePageHeight(pages, margins) {
 
 	var fixedMargins = fixPageMargins(margins || 40);
 	var height = fixedMargins.top + fixedMargins.bottom;
-	pages.forEach(function (page) {
-		page.items.forEach(function (item) {
+	pages.foreach (function (page) {
+		page.items.foreach (function (item) {
 			height += getItemHeight(item);
 		});
 	});
@@ -13389,7 +13389,7 @@ function renderPages(pages, fontProvider, pdfKitDoc, progressCallback) {
 
 	var totalItems = 0;
 	if (progressCallback) {
-		pages.forEach(function (page) {
+		pages.foreach (function (page) {
 			totalItems += page.items.length;
 		});
 	}
@@ -13700,7 +13700,7 @@ var TextTools = __webpack_require__(42);
 var StyleContextStack = __webpack_require__(80);
 
 function addAll(target, otherArray) {
-	otherArray.forEach(function (item) {
+	otherArray.foreach (function (item) {
 		target.push(item);
 	});
 }
@@ -13746,13 +13746,13 @@ LayoutBuilder.prototype.layoutDocument = function (docStructure, fontProvider, s
 			return node.positions.length > 0;
 		});
 
-		linearNodeList.forEach(function (node) {
+		linearNodeList.foreach (function (node) {
 			var nodeInfo = {};
 			[
 				'id', 'text', 'ul', 'ol', 'table', 'image', 'qr', 'canvas', 'columns',
 				'headlineLevel', 'style', 'pageBreak', 'pageOrientation',
 				'width', 'height'
-			].forEach(function (key) {
+			].foreach (function (key) {
 				if (node[key] !== undefined) {
 					nodeInfo[key] = node[key];
 				}
@@ -13810,7 +13810,7 @@ LayoutBuilder.prototype.layoutDocument = function (docStructure, fontProvider, s
 
 
 	function resetXYs(result) {
-		result.linearNodeList.forEach(function (node) {
+		result.linearNodeList.foreach (function (node) {
 			node.resetXY();
 		});
 	}
@@ -13992,7 +13992,7 @@ function decorateNode(node) {
 	node.positions = [];
 
 	if (isArray(node.canvas)) {
-		node.canvas.forEach(function (vector) {
+		node.canvas.foreach (function (vector) {
 			var x = vector.x, y = vector.y, x1 = vector.x1, y1 = vector.y1, x2 = vector.x2, y2 = vector.y2;
 			vector.resetXY = function () {
 				vector.x = x;
@@ -14009,7 +14009,7 @@ function decorateNode(node) {
 		node.x = x;
 		node.y = y;
 		if (isArray(node.canvas)) {
-			node.canvas.forEach(function (vector) {
+			node.canvas.foreach (function (vector) {
 				vector.resetXY();
 			});
 		}
@@ -14101,7 +14101,7 @@ LayoutBuilder.prototype.processNode = function (node) {
 // vertical container
 LayoutBuilder.prototype.processVerticalContainer = function (node) {
 	var self = this;
-	node.stack.forEach(function (item) {
+	node.stack.foreach (function (item) {
 		self.processNode(item);
 		addAll(node.positions, item.positions);
 
@@ -14224,7 +14224,7 @@ LayoutBuilder.prototype.processList = function (orderedList, node) {
 
 	var nextMarker;
 	this.tracker.auto('lineAdded', addMarkerToFirstLeaf, function () {
-		items.forEach(function (item) {
+		items.foreach (function (item) {
 			nextMarker = item.listMarker;
 			self.processNode(item);
 			addAll(node.positions, item.positions);
@@ -14384,7 +14384,7 @@ LayoutBuilder.prototype.processCanvas = function (node) {
 
 	this.writer.alignCanvas(node);
 
-	node.canvas.forEach(function (vector) {
+	node.canvas.foreach (function (vector) {
 		var position = this.writer.addVector(vector);
 		node.positions.push(position);
 	}, this);
@@ -16504,11 +16504,11 @@ PageElementWriter.prototype.moveToNextPage = function (pageOrientation) {
 	var nextPage = this.writer.context.moveToNextPage(pageOrientation);
 
 	if (nextPage.newPageCreated) {
-		this.repeatables.forEach(function (rep) {
+		this.repeatables.foreach (function (rep) {
 			this.writer.addFragment(rep, true);
 		}, this);
 	} else {
-		this.repeatables.forEach(function (rep) {
+		this.repeatables.foreach (function (rep) {
 			this.writer.context.moveDown(rep.height);
 		}, this);
 	}
@@ -16567,7 +16567,7 @@ PageElementWriter.prototype.currentBlockToRepeatable = function () {
 	var unbreakableContext = this.writer.context;
 	var rep = {items: []};
 
-	unbreakableContext.pages[0].items.forEach(function (item) {
+	unbreakableContext.pages[0].items.foreach (function (item) {
 		rep.items.push(item);
 	});
 
@@ -16777,7 +16777,7 @@ ElementWriter.prototype.alignCanvas = function (node) {
 			break;
 	}
 	if (offset) {
-		node.canvas.forEach(function (vector) {
+		node.canvas.foreach (function (vector) {
 			offsetVector(vector, offset, 0);
 		});
 	}
@@ -16837,7 +16837,7 @@ ElementWriter.prototype.addFragment = function (block, useBlockXOffset, useBlock
 		return false;
 	}
 
-	block.items.forEach(function (item) {
+	block.items.foreach (function (item) {
 		switch (item.type) {
 			case 'line':
 				var l = cloneLine(item.item);
@@ -16961,7 +16961,7 @@ TableProcessor.prototype.beginTable = function (writer) {
 	function getTableInnerContentWidth() {
 		var width = 0;
 
-		tableNode.table.widths.forEach(function (w) {
+		tableNode.table.widths.foreach (function (w) {
 			width += w._calcWidth;
 		});
 
@@ -29379,7 +29379,7 @@ function range(index, end) {
 var _class$1;
 function _applyDecoratedDescriptor$1(target, property, decorators, descriptor, context) {
   var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+  Object['ke' + 'ys'](descriptor).foreach (function (key) {
     desc[key] = descriptor[key];
   });
   desc.enumerable = !!desc.enumerable;
@@ -31241,7 +31241,7 @@ function mapAATToOT(features) {
 var _class$3;
 function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, context) {
   var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+  Object['ke' + 'ys'](descriptor).foreach (function (key) {
     desc[key] = descriptor[key];
   });
   desc.enumerable = !!desc.enumerable;
@@ -31551,7 +31551,7 @@ var AATStateMachine = function () {
 var _class$2;
 function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
   var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+  Object['ke' + 'ys'](descriptor).foreach (function (key) {
     desc[key] = descriptor[key];
   });
   desc.enumerable = !!desc.enumerable;
@@ -36553,7 +36553,7 @@ var StandardNames = ['.notdef', '.null', 'nonmarkingreturn', 'space', 'exclam', 
 var _class$8;
 function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, context) {
   var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+  Object['ke' + 'ys'](descriptor).foreach (function (key) {
     desc[key] = descriptor[key];
   });
   desc.enumerable = !!desc.enumerable;
@@ -39152,7 +39152,7 @@ var CFFSubset = function (_Subset) {
 var _class;
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
   var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+  Object['ke' + 'ys'](descriptor).foreach (function (key) {
     desc[key] = descriptor[key];
   });
   desc.enumerable = !!desc.enumerable;
@@ -45258,7 +45258,7 @@ module.exports = !$assign || __webpack_require__(19)(function () {
   var S = Symbol();
   var K = 'abcdefghijklmnopqrst';
   A[S] = 7;
-  K.split('').forEach(function (k) { B[k] = k; });
+  K.split('').foreach (function (k) { B[k] = k; });
   return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
 }) ? function assign(target, source) { // eslint-disable-line no-unused-vars
   var T = toObject(target);
@@ -46001,7 +46001,7 @@ if (hadRuntime) {
   // Remove the global property added by runtime.js.
   try {
     delete g.regeneratorRuntime;
-  } catch(e) {
+  } catch (e) {
     g.regeneratorRuntime = undefined;
   }
 }
@@ -46070,7 +46070,7 @@ if (hadRuntime) {
   // in every case, so we don't have to touch the arguments object. The
   // only additional allocation required is the completion record, which
   // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
+  function trycatch (fn, obj, arg) {
     try {
       return { type: "normal", arg: fn.call(obj, arg) };
     } catch (err) {
@@ -46122,7 +46122,7 @@ if (hadRuntime) {
   // Helper for defining the .next, .throw, and .return methods of the
   // Iterator interface in terms of a single ._invoke method.
   function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
+    ["next", "throw", "return"].foreach (function(method) {
       prototype[method] = function(arg) {
         return this._invoke(method, arg);
       };
@@ -46162,7 +46162,7 @@ if (hadRuntime) {
 
   function AsyncIterator(generator) {
     function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
+      var record = trycatch (generator[method], generator, arg);
       if (record.type === "throw") {
         reject(record.arg);
       } else {
@@ -46306,7 +46306,7 @@ if (hadRuntime) {
 
         state = GenStateExecuting;
 
-        var record = tryCatch(innerFn, self, context);
+        var record = trycatch (innerFn, self, context);
         if (record.type === "normal") {
           // If an exception is thrown from innerFn, we leave state ===
           // GenStateExecuting and loop back for another invocation.
@@ -46368,7 +46368,7 @@ if (hadRuntime) {
       return ContinueSentinel;
     }
 
-    var record = tryCatch(method, delegate.iterator, context.arg);
+    var record = trycatch (method, delegate.iterator, context.arg);
 
     if (record.type === "throw") {
       context.method = "throw";
@@ -46462,7 +46462,7 @@ if (hadRuntime) {
     // or a finally block) gives us a place to store values thrown from
     // locations where there is no enclosing try statement.
     this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
+    tryLocsList.foreach (pushTryEntry, this);
     this.reset(true);
   }
 
@@ -46548,7 +46548,7 @@ if (hadRuntime) {
       this.method = "next";
       this.arg = undefined;
 
-      this.tryEntries.forEach(resetTryEntry);
+      this.tryEntries.foreach (resetTryEntry);
 
       if (!skipTempReset) {
         for (var name in this) {

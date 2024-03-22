@@ -24,7 +24,7 @@
 
 define('AJAX_SCRIPT', true);
 
-require_once dirname(__DIR__, 3) . '/config.php';
+require_once(dirname(__DIR__, 3) . '/config.php');
 
 global $CFG, $DB, $OUTPUT;
 $groupid = required_param('groupid', PARAM_INT);
@@ -37,10 +37,10 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('invite', 'local_thi_learning_companions', $group->name));
 
 // Get the user_selector we will need.
-$potentialuserselector = new group_candidate_selector('addselect', array('group'=>$groupid));
-$existinguserselector = new group_existing_selector('removeselect', array('group'=>$groupid));
+$potentialuserselector = new group_candidate_selector('addselect', ['group' => $groupid]);
+$existinguserselector = new group_existing_selector('removeselect', ['group' => $groupid]);
 
-// Process incoming user assignments to the cohort
+// Process incoming user assignments to the cohort.
 
 if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
@@ -53,7 +53,7 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     }
 }
 
-// Process removing user assignments to the cohort
+// Process removing user assignments to the cohort.
 if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoremove = $existinguserselector->get_selected_users();
     if (!empty($userstoremove)) {

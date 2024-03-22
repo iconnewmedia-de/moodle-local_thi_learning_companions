@@ -21,10 +21,11 @@ class external extends \external_api {
     public static function list_nuggets($courseid, $query) {
         global $DB;
         $params = self::validate_parameters(self::list_nuggets_parameters(),
-            array(
+            [
                 'courseid' => $courseid,
                 'query' => $query,
-            ));
+            ]
+        );
         $courseid = $params['courseid'];
         $query = $params['query'];
 
@@ -34,7 +35,7 @@ class external extends \external_api {
         $cminfo = \course_modinfo::instance($courseid);
         $return = [];
         $cms = $cminfo->get_cms();
-        foreach($cms as $cm) {
+        foreach ($cms as $cm) {
             if (empty($query) || stripos($cm->name, $query) > -1) {
                 $return[] = ["id" => $cm->id, "name" => $cm->name];
             }
@@ -43,10 +44,10 @@ class external extends \external_api {
     }
     public static function list_nuggets_parameters() {
         return new \external_function_parameters(
-            array(
+            [
                 'courseid' => new \external_value(PARAM_INT, 'The course id', VALUE_OPTIONAL, null),
-                'query' => new \external_value(PARAM_TEXT, 'The text to search for', VALUE_OPTIONAL, null)
-            ),
+                'query' => new \external_value(PARAM_TEXT, 'The text to search for', VALUE_OPTIONAL, null),
+            ],
             '',
             VALUE_OPTIONAL
         );
@@ -55,7 +56,7 @@ class external extends \external_api {
         return new \external_multiple_structure(
             new \external_single_structure([
                 'id'    => new \external_value(PARAM_INT, 'ID of the context'),
-                'name'  => new \external_value(PARAM_NOTAGS, 'The context name')
+                'name'  => new \external_value(PARAM_NOTAGS, 'The context name'),
             ])
         );
     }
@@ -71,7 +72,7 @@ class external extends \external_api {
             ]);
 
         $query = $params['query'];
-        $groupId = $params['groupid'];
+        $groupid = $params['groupid'];
 
         $sl = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
@@ -86,8 +87,8 @@ class external extends \external_api {
         $params = [
             'search' => '%'. $DB->sql_like_escape($query) . '%',
             'userid' => $USER->id,
-            'groupid' => $groupId,
-            'groupidjoin' => $groupId
+            'groupid' => $groupid,
+            'groupidjoin' => $groupid,
         ];
 
         $users = $DB->get_records_sql($sl, $params, 0, $limit);
@@ -104,7 +105,6 @@ class external extends \external_api {
             [
                 'query' => new \external_value(PARAM_TEXT, 'The text to search for', VALUE_REQUIRED, null),
                 'groupid' => new \external_value(PARAM_INT, 'The group id', VALUE_REQUIRED, null),
-//                'limit' => new \external_value(PARAM_INT, 'The number of results to return', VALUE_OPTIONAL, 10)
             ],
             '',
             VALUE_REQUIRED
@@ -116,22 +116,22 @@ class external extends \external_api {
             new \external_single_structure([
                 'id'    => new \external_value(PARAM_INT, 'ID of the context'),
                 'fullname'  => new \external_value(PARAM_NOTAGS, 'The context name'),
-                'profilepicture' => new \external_value(PARAM_RAW, 'The user picture')
+                'profilepicture' => new \external_value(PARAM_RAW, 'The user picture'),
             ])
         );
     }
 
-    public static function invite_user(int $userId, int $groupId) {
+    public static function invite_user(int $userid, int $groupid) {
         $params = self::validate_parameters(self::invite_user_parameters(),
             [
-                'userid' => $userId,
-                'groupid' => $groupId,
+                'userid' => $userid,
+                'groupid' => $groupid,
             ]);
 
-        $userId = $params['userId'];
-        $groupId = $params['groupId'];
+        $userid = $params['userId'];
+        $groupid = $params['groupId'];
 
-        $id = groups::invite_user_to_group($userId, $groupId);
+        $id = groups::invite_user_to_group($userid, $groupid);
         if ($id) {
             return ['errorcode' => 0];
         }

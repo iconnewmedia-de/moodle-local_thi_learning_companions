@@ -2019,7 +2019,7 @@ function arrayLikeToString(array) {
                String.fromCharCode.apply(null, nodeBuffer(0));
                break;
          }
-      } catch(e) {
+      } catch (e) {
          canUseApply = false;
       }
 
@@ -3647,8 +3647,8 @@ var utils = _dereq_('./common');
 var STR_APPLY_OK = true;
 var STR_APPLY_UIA_OK = true;
 
-try { String.fromCharCode.apply(null, [0]); } catch(__) { STR_APPLY_OK = false; }
-try { String.fromCharCode.apply(null, new Uint8Array(1)); } catch(__) { STR_APPLY_UIA_OK = false; }
+try { String.fromCharCode.apply(null, [0]); } catch (__) { STR_APPLY_OK = false; }
+try { String.fromCharCode.apply(null, new Uint8Array(1)); } catch (__) { STR_APPLY_UIA_OK = false; }
 
 
 // Table with utf8 lengths (calculated by first byte of sequence)

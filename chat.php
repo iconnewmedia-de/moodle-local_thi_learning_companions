@@ -1,7 +1,20 @@
 <?php
-
-require_once dirname(__DIR__, 2) . '/config.php';
-require_once __DIR__ . "/locallib.php";
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+require_once(dirname(__DIR__, 2) . '/config.php');;
+require_once(__DIR__ . "/locallib.php");;
 
 require_login();
 global $PAGE, $CFG, $OUTPUT, $USER;
@@ -16,9 +29,9 @@ if (!in_array($layout, $layoutwhitelist)) {
 
 $groupid = optional_param('groupid', null, PARAM_INT);
 $group = new \local_thi_learning_companions\group($groupid);
-$mayViewGroup = \local_thi_learning_companions\groups::may_view_group($groupid);
-if ($group->closedgroup && !$mayViewGroup) {
-    \local_thi_learning_companions\chat::redirectToOtherGroupChat();
+$mayviewgroup = \local_thi_learning_companions\groups::may_view_group($groupid);
+if ($group->closedgroup && !$mayviewgroup) {
+    \local_thi_learning_companions\chat::redirect_to_other_group_chat();
 }
 
 $PAGE->set_pagelayout($layout);
@@ -26,23 +39,21 @@ $PAGE->set_title(get_string('learninggroups', 'local_thi_learning_companions'));
 $groupid = optional_param('groupid', null, PARAM_INT);
 $PAGE->requires->js_call_amd('local_thi_learning_companions/thi_learning_companions_chat', 'init');
 
-//$PAGE->requires->js(new moodle_url('https://unpkg.com/react@18/umd/react.development.js'), true);
 $PAGE->requires->js(new moodle_url('https://unpkg.com/react@18.2.0/umd/react.production.min.js'), true);
-//$PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18/umd/react-dom.development.js'), true);
 $PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js'), true);
 $PAGE->requires->js(new moodle_url('/local/thi_learning_companions/js/react/build/thi_learning_companions-chat.min.js'));
 
-$chat = \local_thi_learning_companions\chat::createGroupChat($groupid);
+$chat = \local_thi_learning_companions\chat::create_group_chat($groupid);
 
 echo $OUTPUT->header();
 if (isset($_POST['action'])) {
-    // using switch/case just in case we might add further actions later.
+    // Using switch/case just in case we might add further actions later.
     switch ($_POST['action']) {
         case "invite":
             \local_thi_learning_companions\invite_users();
             break;
         default:
-            // nothing to do
+            // Nothing to do.
     }
 }
 echo $chat->get_chat_module();

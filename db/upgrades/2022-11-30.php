@@ -14,7 +14,7 @@ if ($oldversion < 2022113000) {
     $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', NULL, true, false);
     $table->add_field('denied', XMLDB_TYPE_INTEGER, '1', NULL, true, false, 0);
 
-    //-------------add key primary
+    // Add key primary.
     $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
     $table->add_index('groupid', XMLDB_INDEX_NOTUNIQUE, ['groupid']);
     $table->add_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);

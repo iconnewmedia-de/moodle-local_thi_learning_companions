@@ -19,7 +19,8 @@ namespace local_thi_learning_companions\event;
 /**
  * The group_deleted event class.
  *
- * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
  * @package     local_thi_learning_companions
  * @category    event
@@ -56,10 +57,10 @@ class group_deleted extends \core\event\base {
         return "The user with id '$this->userid' deleted a group with id '$this->objectid'.";
     }
 
-    public static function make(int $deleterId, int $groupId) {
+    public static function make(int $deleterid, int $groupid) {
         return self::create([
-            'objectid' => $groupId,
-            'userid' => $deleterId,
+            'objectid' => $groupid,
+            'userid' => $deleterid,
         ]);
     }
 }

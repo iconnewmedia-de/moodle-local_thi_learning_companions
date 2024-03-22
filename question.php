@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . "/../../config.php";
-require_once __DIR__ . "/locallib.php";
+require_once(__DIR__ . "/../../config.php");;
+require_once(__DIR__ . "/locallib.php");;
 
 require_login();
 global $PAGE, $CFG, $OUTPUT, $USER;
@@ -23,7 +23,7 @@ $PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18/umd/react-dom
 //$PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js'), true);
 $PAGE->requires->js(new moodle_url('/local/thi_learning_companions/js/react/build/thi_learning_companions-chat.min.js'));
 
-$chat = \local_thi_learning_companions\chat::createQuestionChat($questionid);
+$chat = \local_thi_learning_companions\chat::create_question_chat($questionid);
 
 echo $OUTPUT->header();
 echo $chat->get_question_chat_module();

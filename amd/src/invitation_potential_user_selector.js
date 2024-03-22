@@ -78,7 +78,7 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
                             const result = profileRegex.exec(k);
                             if (result) {
                                 if (user.customfields) {
-                                    user.customfields.forEach(function(customfield) {
+                                    user.customfields.foreach (function(customfield) {
                                         if (customfield.shortname === result[1]) {
                                             ctx.hasidentity = true;
                                             identity.push(customfield.value);

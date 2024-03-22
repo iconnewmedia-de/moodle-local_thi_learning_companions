@@ -24,7 +24,6 @@
 
 namespace local_thi_learning_companions\task;
 
-
 /**
  * Learning Companions Cleanup Task
  *
@@ -42,7 +41,7 @@ class cleanup extends \core\task\scheduled_task
 
     public function execute()
     {
-        // ICTODO: remove users from chats and groups who've been inactive for too long
-        // ICTODO: remove or archive or purge chats and groups that have been unused for too long
+        // ICTODO: remove users from chats and groups who've been inactive for too long.
+        // ICTODO: remove or archive or purge chats and groups that have been unused for too long.
     }
 }

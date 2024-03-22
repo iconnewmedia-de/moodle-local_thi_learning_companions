@@ -72,7 +72,7 @@ export default function Grouplist({activeGroupid}) {
                     hideForm();
                 }
             })
-            .catch(error => {
+            .catch (error => {
                 if (error.name !== "AbortError") {
                     console.log("Error: " + error.message);
                 }

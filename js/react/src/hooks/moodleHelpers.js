@@ -37,10 +37,10 @@ export function useSetChatInput(isPreviewGroup, chatid) {
     if (isPreviewGroup) {
         newChatValue = '';
         document.querySelector(previewSelector)?.classList.replace('d-none','d-flex');
-        document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.add('d-none'));
+        document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).foreach (el => el.classList.add('d-none'));
     } else {
         document.querySelector(previewSelector)?.classList.replace('d-flex', 'd-none');
-        document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).forEach(el => el.classList.remove('d-none'));
+        document.querySelectorAll(`${messageInputSelector}, ${attachmentsSelector}, ${requiredHintSelector}`).foreach (el => el.classList.remove('d-none'));
     }
 
     document.querySelector('input[name="chatid"]').value = newChatValue;

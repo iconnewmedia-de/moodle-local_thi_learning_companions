@@ -4,7 +4,7 @@ global $DB;
 if ($oldversion < 2022102000) {
     $dbman = $DB->get_manager();
 
-// ##################### MODIFY TABLE thi_lc_chat_comment
+// MODIFY TABLE thi_lc_chat_comment.
     $table = new xmldb_table('thi_lc_chat_comment');
 // ------------ add field comment
     $field = new xmldb_field('comment');

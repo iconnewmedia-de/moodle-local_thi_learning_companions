@@ -136,7 +136,7 @@ export const handleGroupInviteButton = async function(e) {
 
             return modal;
         })
-        .catch(Notification.exception);
+        .catch (Notification.exception);
 };
 
 export const handleGroupLeaveButton = async function(e) {

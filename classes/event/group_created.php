@@ -19,7 +19,8 @@ namespace local_thi_learning_companions\event;
 /**
  * The group_created event class.
  *
- * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
  * @package     local_thi_learning_companions
  * @category    event
@@ -63,18 +64,18 @@ class group_created extends \core\event\base {
         return "The user with id '$this->userid' created a group with id '$this->objectid'.";
     }
 
-    public static function make(int $creatorId, int $groupId, array $topics = [], int $courseId = 0, int $cmId = 0) {
+    public static function make(int $creatorid, int $groupid, array $topics = [], int $courseid = 0, int $cmid = 0) {
         $params = [
-            'objectid' => $groupId,
-            'userid' => $creatorId,
+            'objectid' => $groupid,
+            'userid' => $creatorid,
             'other' => [
                 'topics' => $topics,
-                'courseid' => $courseId,
-            ]
+                'courseid' => $courseid,
+            ],
         ];
 
-        if ($cmId) {
-            $params['contextid'] = \context_module::instance($cmId)->id;
+        if ($cmid) {
+            $params['contextid'] = \context_module::instance($cmid)->id;
         } else {
             $params['context'] = \context_system::instance();
         }

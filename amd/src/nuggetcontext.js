@@ -24,7 +24,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
                     // ICTODO: do something
                 },
                 fail: Notification.exception
-            }])[0].then(callback).catch(failure);
+            }])[0].then(callback).catch (failure);
         },
 
         /**

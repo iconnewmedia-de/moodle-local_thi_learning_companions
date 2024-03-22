@@ -17,15 +17,16 @@
 define('AJAX_SCRIPT', true);
 
 /**
- * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
  * @package     local_thi_learning_companions
  * @copyright   2023 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once dirname(__DIR__, 3) . '/config.php';
-
+require_once(dirname(__DIR__, 3) . '/config.php');
+require_login();
 global $CFG, $DB, $OUTPUT;
 
 $questionid = required_param('questionid', PARAM_TEXT);

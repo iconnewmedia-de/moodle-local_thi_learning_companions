@@ -1,4 +1,18 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
 
 class eventobservers {
@@ -12,13 +26,13 @@ class eventobservers {
         global $DB;
         $data = $event->get_data();
         $modulename = $data['other']['modulename'];
-        require_once __DIR__ . "/../locallib.php";
+        require_once(__DIR__ . "/../locallib.php");;
         $whitelist = get_moduletypes_for_commentblock();
         if (!in_array($modulename, $whitelist)) {
             return;
         }
         $parentcontextid = $data['contextid'];
-        require_once __DIR__ . '/../locallib.php';
+        require_once(__DIR__ . '/../locallib.php');;
         create_comment_block($parentcontextid, $modulename);
     }
 
@@ -30,7 +44,7 @@ class eventobservers {
      */
     public static function course_restored(\core\event\course_restored $event) {
         global $CFG;
-        require_once $CFG->dirroot . '/local/thi_learning_companions/locallib.php';
+        require_once($CFG->dirroot . '/local/thi_learning_companions/locallib.php');;
         \local_thi_learning_companions\add_comment_blocks();
     }
 
@@ -44,23 +58,23 @@ class eventobservers {
     public static function badge_awarded(\core\event\badge_awarded $event) {
         global $DB;
         $config = get_config('local_thi_learning_companions');
-        $badgeTypesForMentors = $config->badgetypes_for_mentors;
-        $badgeTypesForMentors = explode(',', $badgeTypesForMentors);
+        $badgetypesformentors = $config->badgetypes_for_mentors;
+        $badgetypesformentors = explode(',', $badgetypesformentors);
         $data = $event->get_data();
         if (empty($data['courseid'])) {
             return;
         }
-        $badge = $DB->get_record('badge', array('id' => $data['objectid']));
-        $sendNotification = false;
+        $badge = $DB->get_record('badge', ['id' => $data['objectid']]);
+        $sendnotification = false;
         $badgename = strtolower($badge->name);
-        foreach($badgeTypesForMentors as $badgeType) {
-            $badgeType = strtolower(trim($badgeType));
-            if (strpos($badgename, $badgeType) > -1) {
-                $sendNotification = true;
+        foreach ($badgetypesformentors as $badgetype) {
+            $badgetype = strtolower(trim($badgetype));
+            if (strpos($badgename, $badgetype) > -1) {
+                $sendnotification = true;
                 break;
             }
         }
-        if ($sendNotification) {
+        if ($sendnotification) {
             \local_thi_learning_companions\messages::send_mentor_qualification_message($data['courseid'], $data['relateduserid']);
         }
     }
@@ -82,7 +96,7 @@ class eventobservers {
         if ($info['oldvalue'] == $info['value']) {
             return;
         }
-        require_once __DIR__ . "/../locallib.php";
+        require_once(__DIR__ . "/../locallib.php");;
         \local_thi_learning_companions\add_comment_blocks();
     }
 }

@@ -1,5 +1,4 @@
 <?php
-namespace local_thi_learning_companions;
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,6 +13,7 @@ namespace local_thi_learning_companions;
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+namespace local_thi_learning_companions;
 
 /**
  * Enrol users form.
@@ -49,12 +49,12 @@ class select_users_to_invite_form extends \moodleform
         $mform->addElement('hidden', 'action', 'invite');
         $mform->setType('action', PARAM_TEXT);
         $mform->addElement('header', 'main', get_string('inviteusers', 'local_thi_learning_companions'));
-        $options = array(
+        $options = [
             'ajax' => 'local_thi_learning_companions/invitation_potential_user_selector',
             'multiple' => true,
             'groupid' => $groupid,
-            'perpage' => 100
-        );
+            'perpage' => 100,
+        ];
 
         $mform->addElement('autocomplete', 'userlist', get_string('selectusers', 'local_thi_learning_companions'), array(), $options);
         $this->add_action_buttons();

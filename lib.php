@@ -1,4 +1,19 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+defined('MOODLE_INTERNAL') || die();
 /**
  * @param array $comments
  * @param string $area
@@ -7,7 +22,6 @@
  * @throws dml_exception
  */
 function local_thi_learning_companions_get_attachments_of_chat_comments(array $comments, string $area) {
-    // ICTODO: also get inline attachments
     if (empty($comments)) {
         return [];
     }
@@ -47,15 +61,21 @@ function local_thi_learning_companions_extend_navigation(global_navigation $nav)
     return; // ICUNDO
     if (has_capability('tool/thi_learning_companions:manage', context_system::instance())) {
         global $CFG, $PAGE;
-        $rootNode = $nav->find('home', $nav::TYPE_ROOTNODE)->parent;
+        $rootnode = $nav->find('home', $nav::TYPE_ROOTNODE)->parent;
         $url = new moodle_url('/admin/tool/thi_learning_companions/index.php');
-        $node = $rootNode->add(get_string('lcadministration', 'local_thi_learning_companions'), $url, $nav::TYPE_ROOTNODE, null, 'thi_learning_companions', new pix_icon('i/nav-icon', '', 'tool_thi_learning_companions'));
-        $subNavigationItems = array(
+        $node = $rootnode->add(get_string('lcadministration', 'local_thi_learning_companions'), $url, $nav::TYPE_ROOTNODE, null, 'thi_learning_companions', new pix_icon('i/nav-icon', '', 'tool_thi_learning_companions'));
+        $subnavigationitems = array(
             'comments',
             'groups'
         );
-        foreach($subNavigationItems as $subNavigationItem) {
-            $node->add(get_string('lcadministration_' .$subNavigationItem, 'local_thi_learning_companions'), new moodle_url($CFG->wwwroot . '/admin/tool/thi_learning_companions/'.$subNavigationItem.'/index.php'), null, null, $subNavigationItem);
+        foreach ($subnavigationitems as $subnavigationitem) {
+            $node->add(
+                get_string('lcadministration_' .$subnavigationitem, 'local_thi_learning_companions'),
+                new moodle_url($CFG->wwwroot . '/admin/tool/thi_learning_companions/'.$subnavigationitem.'/index.php'),
+                null,
+                null,
+                $subnavigationitem
+            );
         }
         if (strpos($PAGE->url, 'admin/tool/thi_learning_companions') > -1) {
             $node->force_open();
@@ -135,7 +155,6 @@ function set_user_status($status, $userid = null) {
     // ICTODO
 }
 
-
 /**
  * gets called as a service from JS in group.js, handleGroupInviteButton:
  * const templatePromise = Fragment.loadFragment('local_thi_learning_companions', 'invitation_form', groupId, {});
@@ -150,7 +169,7 @@ function local_thi_learning_companions_output_fragment_invitation_form($args) {
     $args = (object) $args;
     $context = $args->context;
     $o = '';
-    require_once __DIR__ . '/classes/forms/select_users_to_invite_form.php';
+    require_once(__DIR__ . '/classes/forms/select_users_to_invite_form.php');;
     $mform = new local_thi_learning_companions\select_users_to_invite_form($CFG->wwwroot . "/local/thi_learning_companions/chat.php?groupid=" . intval($context->id), $args);
     return $mform->render();
 }

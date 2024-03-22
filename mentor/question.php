@@ -1,6 +1,19 @@
 <?php
-
-require_once dirname(__DIR__, 3) . '/config.php';
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+require_once(dirname(__DIR__, 3) . '/config.php');;
 
 $questionId = required_param('id', PARAM_INT);
 
@@ -18,7 +31,7 @@ $PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18/umd/react-dom
 //$PAGE->requires->js(new moodle_url('https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js'), true);
 $PAGE->requires->js(new moodle_url('/local/thi_learning_companions/js/react/build/thi_learning_companions-chat.min.js'));
 
-$chat = \local_thi_learning_companions\chat::createQuestionChat($questionId);
+$chat = \local_thi_learning_companions\chat::create_question_chat($questionId);
 
 echo $OUTPUT->header();
 echo $chat->get_question_chat_module();

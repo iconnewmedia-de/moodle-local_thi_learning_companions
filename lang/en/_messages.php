@@ -1,5 +1,18 @@
 <?php
-
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 $string['messageprovider:group_join_requested'] = 'Group Join request';
 $string['messageprovider:appointed_to_admin'] = 'Appointed to admin';
 $string['messageprovider:group_join_accepted'] = 'Group Join accepted';
@@ -18,7 +31,6 @@ $string['message_group_join_requested_body_html'] = '<h4>Hello {$a->receivername
 {$a->sendername} has requested to join your group "{$a->groupname}".<br>
 Please visit the group page to accept or decline the request.
 </p>';
-
 
 ### Appointed to Admin
 $string['message_appointed_to_admin_small'] = 'You are now the admin of group {$a}';
