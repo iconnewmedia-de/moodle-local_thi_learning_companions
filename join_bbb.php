@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 require_once(__DIR__ . '/../../config.php');
+require_login();
 
 require_once($CFG->dirroot . "/local/thi_learning_companions/classes/meeting.php");
 require_once($CFG->dirroot . "/local/thi_learning_companions/classes/instance.php");
@@ -22,7 +23,7 @@ use local_thi_learning_companions\instance;
 use mod_bigbluebuttonbn\logger;
 use local_thi_learning_companions\meeting;
 $meetingid = required_param('id', PARAM_INT);
-$meetingobj = $DB->get_record('thi_lc_bbb', array('id' => $meetingid));
+$meetingobj = $DB->get_record('thi_lc_bbb', ['id' => $meetingid]);
 $groupid = $meetingobj->groupid;
 
 $bbbinstance = new instance($groupid, $meetingobj);

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
-defined('MOODLE_INTERNAL') || die();
 /**
  * @param $data
  * @param $form
@@ -57,7 +56,7 @@ function get_course_topics($courseid) {
         JOIN {customfield_field} cf ON cd.fieldid = cf.id AND cf.shortname = 'topic'
         JOIN {customfield_category} cg ON cg.id = cf.categoryid AND cg.name = 'thi_learning_companions'
         JOIN {context} ctx ON ctx.id = cd.contextid AND ctx.contextlevel = '" . CONTEXT_COURSE . "' AND ctx.instanceid = ?",
-    array($courseid)
+    [$courseid]
     );
     $topics = array_keys($records);
     if (count($topics) === 1 && empty(trim($topics[0]))) {
@@ -77,7 +76,7 @@ function get_topics_of_user_courses(int $userid = null) {
     global $DB, $USER;
     if (is_null($userid) && isloggedin()) {
         $userid = $USER->id;
-    } elseif(!isloggedin()) {
+    } else if (!isloggedin()) {
         return [];
     }
     $userenrolments = enrol_get_all_users_courses($userid);
@@ -112,7 +111,11 @@ function invite_users() {
         return;
     }
     groups::invite_users_to_group($userlist, $groupid);
-    $notification = $OUTPUT->render(new \core\output\notification(get_string('users_invited', 'local_thi_learning_companions'), \core\output\notification::NOTIFY_SUCCESS));
+    $notification = $OUTPUT->render(
+        new \core\output\notification(
+            get_string('users_invited', 'local_thi_learning_companions'),
+            \core\output\notification::NOTIFY_SUCCESS)
+    );
     echo $notification;
 }
 
@@ -158,19 +161,19 @@ function create_comment_block($parentcontextid, $modulename) {
 function add_comment_blocks() {
     global $DB;
     $whitelist = get_moduletypes_for_commentblock();
-    list($sqlWhereIn, $params) = $DB->get_in_or_equal($whitelist);
-    $activitiesWithoutCommentBlock = $DB->get_records_sql(
+    list($sqlwherein, $params) = $DB->get_in_or_equal($whitelist);
+    $activitieswithoutcommentblock = $DB->get_records_sql(
         "SELECT ctx.id as contextid, m.name as modulename
-                FROM {context} ctx  
+                FROM {context} ctx
                 JOIN {course_modules} cm ON cm.id = ctx.instanceid
                 JOIN {modules} m ON m.id = cm.module
                 LEFT JOIN {block_instances} bi ON ctx.id = bi.parentcontextid AND bi.blockname = 'comments'
                 WHERE bi.id IS NULL
                 AND ctx.contextlevel = 70
-                AND m.name " . $sqlWhereIn,
+                AND m.name " . $sqlwherein,
         $params
     );
-    foreach ($activitiesWithoutCommentBlock as $activity) {
+    foreach ($activitieswithoutcommentblock as $activity) {
         create_comment_block($activity->contextid, $activity->modulename);
     }
 }

@@ -19,11 +19,15 @@ namespace local_thi_learning_companions\db;
  * @return void
  */
 function create_course_customfields() {
-    $fieldcategoryexists = \core_customfield\category::get_record(array('name' => 'thi_learning_companions'));
+    $fieldcategoryexists = \core_customfield\category::get_record(['name' => 'thi_learning_companions']);
     if (!$fieldcategoryexists) {
         $context = \context_system::instance();
         $contextid = $context->instanceid;
-        $category = (object)array('name' => 'thi_learning_companions', 'component' => 'core_course', 'area' => 'course', 'contextid' => $contextid);
+        $category = (object)['name' => 'thi_learning_companions',
+            'component' => 'core_course',
+            'area' => 'course',
+            'contextid' => $contextid,
+        ];
         $fieldcategory = new \core_customfield\category(0, $category);
         $fieldcategory->save();
         $fieldcategoryid = $fieldcategory->get('id');
@@ -31,17 +35,17 @@ function create_course_customfields() {
         $fieldcategoryid = $fieldcategoryexists->get('id');
     }
 
-    $fieldexists = \core_customfield\field::get_record(array('shortname' => 'topic'));
+    $fieldexists = \core_customfield\field::get_record(['shortname' => 'topic']);
     if (!$fieldexists) {
-        $customfield = array(
+        $customfield = [
             'shortname' => 'topic',
             'name' => get_string('topic', 'local_thi_learning_companions'),
             'type' => 'text',
             'categoryid' => $fieldcategoryid,
             'description' => get_string('customfield_topic_description', 'local_thi_learning_companions'),
             'timecreated' => time(),
-            'timemodified' => 0
-        );
+            'timemodified' => 0,
+        ];
         $customfield = (object)$customfield;
         $field = new \core_customfield\field(0, $customfield);
         $field->save();
@@ -58,22 +62,22 @@ function create_status_profile_field() {
     global $DB, $CFG;
     /*** Adding new profile category 'Status' ***/
     $categoryid = $DB->get_field('user_info_category', 'id', [
-        'name' => get_string('profile_field_category_status_default', 'local_thi_learning_companions')
+        'name' => get_string('profile_field_category_status_default', 'local_thi_learning_companions'),
     ]);
     if (!$categoryid) {
         $categoryid = $DB->insert_record('user_info_category', [
             'name' => get_string('profile_field_category_status_default', 'local_thi_learning_companions'),
-            'sortorder' => 1
+            'sortorder' => 1,
         ]);
     }
 
     /*** Adding new profile field 'lc_user_status' ***/
     require_once($CFG->dirroot.'/user/profile/definelib.php');
     require_once($CFG->dirroot.'/user/profile/field/menu/define.class.php');
-    $newfield = $DB->get_record('user_info_field', array('shortname' => 'lc_user_status'));
+    $newfield = $DB->get_record('user_info_field', ['shortname' => 'lc_user_status']);
     $fieldtype = new \profile_define_menu();
     if ($newfield) {
-        // update default data and param1 if the field already exists, we've got new default values
+        // Update default data and param1 if the field already exists, we've got new default values.
         $newfield->defaultdata = get_string('profile_field_status_default_default', 'local_thi_learning_companions');
         $newfield->param1 = get_string('profile_field_status_default_options', 'local_thi_learning_companions');
     } else {

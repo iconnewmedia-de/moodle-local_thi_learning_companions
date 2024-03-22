@@ -17,7 +17,8 @@
 /**
  * Plugin administration pages are defined here.
  *
- * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
  * @package     local_thi_learning_companions
  * @category    admin
@@ -29,9 +30,18 @@ defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
     global $DB;
-    $settings = new admin_settingpage( 'local_thi_learning_companions', get_string('thi_learning_companions_settings', 'local_thi_learning_companions') );
-    $settings->add(new admin_setting_configtext('local_thi_learning_companions/groupimage_maxbytes', get_string('groupimage_maxbytes', 'local_thi_learning_companions'),
-        get_string('configgroupimagemaxbytes', 'local_thi_learning_companions'), 1000000, PARAM_INT));
+    $settings = new admin_settingpage(
+        'local_thi_learning_companions',
+        get_string('thi_learning_companions_settings', 'local_thi_learning_companions')
+    );
+    $settings->add(
+        new admin_setting_configtext('local_thi_learning_companions/groupimage_maxbytes',
+            get_string('groupimage_maxbytes', 'local_thi_learning_companions'),
+            get_string('configgroupimagemaxbytes', 'local_thi_learning_companions'),
+            1000000,
+            PARAM_INT
+        )
+    );
 
     $settings->add(new admin_setting_configtext('local_thi_learning_companions/commentactivities',
         get_string('setting_commentactivities', 'local_thi_learning_companions'),
@@ -69,14 +79,17 @@ if ($hassiteconfig) {
         100
     ));
 
-    // inform_tutors_about_unanswered_questions_after_x_days
-    $settings->add(new admin_setting_configtext('local_thi_learning_companions/inform_tutors_about_unanswered_questions_after_x_days',
-        get_string('setting_inform_tutors_about_unanswered_questions_after_x_days', 'local_thi_learning_companions'),
-        get_string('configinform_tutors_about_unanswered_questions_after_x_days', 'local_thi_learning_companions'),
+    // Inform_tutors_about_unanswered_questions_after_x_days.
+    $settings->add(
+        new admin_setting_configtext(
+            'local_thi_learning_companions/inform_tutors_about_unanswered_questions_after_x_days',
+            get_string('setting_inform_tutors_about_unanswered_questions_after_x_days', 'local_thi_learning_companions'),
+            get_string('configinform_tutors_about_unanswered_questions_after_x_days', 'local_thi_learning_companions'),
         14
-    ));
+        )
+    );
 
-    // inform_tutors_about_unanswered_questions_after_x_days
+    // Inform_tutors_about_unanswered_questions_after_x_days.
     $settings->add(new admin_setting_configtext('local_thi_learning_companions/tutorrole_shortname',
         get_string('setting_tutorrole_shortname', 'local_thi_learning_companions'),
         get_string('configtutorrole_shortname', 'local_thi_learning_companions'),
@@ -84,7 +97,7 @@ if ($hassiteconfig) {
     ));
 
     $category = new admin_category('lcconfig', get_string('adminareaname', 'local_thi_learning_companions'));
-    if (!$ADMIN->locate('lcconfig')) { // avoids "duplicate admin page name" warnings
+    if (!$ADMIN->locate('lcconfig')) { // Avoids "duplicate admin page name" warnings.
         $ADMIN->add('root', $category);
     }
     $ADMIN->add('lcconfig', $settings);

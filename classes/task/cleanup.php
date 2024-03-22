@@ -31,16 +31,12 @@ namespace local_thi_learning_companions\task;
  * @copyright 2022 ICON Vernetzte Kommunikation GmbH
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class cleanup extends \core\task\scheduled_task
-{
-
-    public function get_name()
-    {
+class cleanup extends \core\task\scheduled_task {
+    public function get_name() {
         return get_string('cleanup_task', 'local_thi_learning_companions');
     }
 
-    public function execute()
-    {
+    public function execute() {
         // ICTODO: remove users from chats and groups who've been inactive for too long.
         // ICTODO: remove or archive or purge chats and groups that have been unused for too long.
     }

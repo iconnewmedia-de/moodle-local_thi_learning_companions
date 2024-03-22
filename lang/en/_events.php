@@ -13,11 +13,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-// Chat
+
+// Chat.
 $string['event_comment_created'] = 'Comment created';
 $string['event_comment_reported'] = 'Comment reported';
 
-// Groups
+// Groups.
 $string['event_group_created'] = 'Group created';
 $string['event_group_deleted'] = 'Group deleted';
 $string['event_group_joined'] = 'Group joined';
@@ -25,7 +26,7 @@ $string['event_group_updated'] = 'Group updated';
 $string['event_group_searched'] = 'Group searched';
 $string['event_group_updated'] = 'Group updated';
 
-//Mentors/Questions
+// Mentors/Questions.
 $string['event_mentor_assigned'] = 'Mentor assigned';
 $string['event_super_mentor_assigned'] = 'Super mentor assigned';
 $string['event_question_answered'] = 'Question answered';

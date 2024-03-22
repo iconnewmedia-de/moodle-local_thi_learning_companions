@@ -24,9 +24,6 @@ namespace local_thi_learning_companions\task;
 
 use local_thi_learning_companions\groups;
 
-defined('MOODLE_INTERNAL') || die();
-
-
 /**
  * @package    local_thi_learning_companions
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -35,7 +32,6 @@ class cron_task extends \core\task\scheduled_task {
 
     // Use the logging trait to get some nice, juicy, logging.
     use \core\task\logging_trait;
-
 
     /**
      * @return string
@@ -59,14 +55,13 @@ class cron_task extends \core\task\scheduled_task {
         }
         $config = get_config('local_thi_learning_companions');
         $tutorrolename = trim($config->tutorrole_shortname);
-        $tutorroleid = $DB->get_field('role', 'id', array('shortname' => $tutorrolename));
+        $tutorroleid = $DB->get_field('role', 'id', ['shortname' => $tutorrolename]);
         if (!$tutorroleid) {
             return;
         }
 
-
         foreach ($unansweredquestions as $question) {
-            if (empty($question->topic)) { // shouldn't happen, but you never know
+            if (empty($question->topic)) { // Shouldn't happen, but you never know.
                 continue;
             }
             $tutors = $DB->get_records_sql(
@@ -81,14 +76,14 @@ class cron_task extends \core\task\scheduled_task {
                   WHERE r.roleid = ?
                     AND u.deleted = 0
                     AND cd.value = ?",
-                array($tutorroleid, $question->topic)
+                [$tutorroleid, $question->topic]
             );
             foreach ($tutors as $tutor) {
-               $success =  \local_thi_learning_companions\messages::send_tutor_unanswered_question_message($tutor, $question);
-               if ($success) {
-                   $DB->insert_record('thi_lc_tutor_notifications',
-                       array('questionid' => $question->id, 'tutorid' => $tutor->id, 'timecreated' => time()));
-               }
+                $success = \local_thi_learning_companions\messages::send_tutor_unanswered_question_message($tutor, $question);
+                if ($success) {
+                    $DB->insert_record('thi_lc_tutor_notifications',
+                       ['questionid' => $question->id, 'tutorid' => $tutor->id, 'timecreated' => time()]);
+                }
             }
         }
     }
@@ -106,7 +101,7 @@ class cron_task extends \core\task\scheduled_task {
             WHERE q.timecreated < ?
             AND cmnt.id IS NULL
             AND n.id IS NULL",
-        array($xdaysago));
+        [$xdaysago]);
         return $unanswered;
     }
 }

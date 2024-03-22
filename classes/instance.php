@@ -36,7 +36,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
      WHERE groupid = :groupid";
 
         $instancedata = $DB->get_record_sql($sql, [
-            'groupid' => $groupid
+            'groupid' => $groupid,
         ]);
 
         if (empty($result)) {
@@ -69,7 +69,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
         $data["timecreated"] = time();
         $data["presentation"] = "";
         $data["userlimit"] = 0;
-        $data["recordings_html"] =0;
+        $data["recordings_html"] = 0;
         $data["recordings_deleted"] = 1;
         $data["recordings_imported"] = 0;
         $data["recordings_preview"] = 1;
@@ -87,7 +87,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
         $data["id"] = $DB->insert_record('thi_lc_bbb', $data);
         $data = (object)$data;
         return $data;
-        // ICTODO: replace hardcoded values with values from config
+        // ICTODO: replace hardcoded values with values from config.
     }
 
     /**
@@ -124,21 +124,6 @@ class instance extends \mod_bigbluebuttonbn\instance {
             $encodedseed = sha1(uniqid());
             $meetingid = (string) $DB->get_field('thi_lc_bbb', 'meetingid', ['meetingid' => $encodedseed]);
         } while ($meetingid == $encodedseed);
-        /*
-         * müsste eigentlich eher so sein:
-         *  $baseid = sprintf(
-            '%s-%s-%s',
-            $this->get_instance_var('meetingid'),
-            $this->get_course_id(),
-            $this->get_instance_var('id')
-        );
-
-        if ($groupid === null) {
-            $groupid = $this->get_group_id();
-        }
-
-        return sprintf('%s[%s]', $baseid, $groupid);
-         */
         return $encodedseed;
     }
 
@@ -199,7 +184,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
      */
     public function get_group_name(): ?string {
         global $DB;
-        return $DB->get_field('thi_lc_groups', 'name', array('id' => $this->groupid));
+        return $DB->get_field('thi_lc_groups', 'name', ['id' => $this->groupid]);
     }
 
     /**
@@ -217,7 +202,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
      */
     public function get_meeting_description(bool $rewritepluginfileurls = false): string {
         global $DB;
-        $description = $DB->get_field('thi_lc_groups', 'description', array('id' => $this->groupid));
+        $description = $DB->get_field('thi_lc_groups', 'description', ['id' => $this->groupid]);
         return $description;
     }
 }

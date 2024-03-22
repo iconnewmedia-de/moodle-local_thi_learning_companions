@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions\forms;
-global $CFG;
 defined('MOODLE_INTERNAL') || die();
+global $CFG;
 use local_thi_learning_companions\groups;
 
 require_once($CFG->libdir . "/formslib.php");;

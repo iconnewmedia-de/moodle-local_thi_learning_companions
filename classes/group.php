@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
-require_once(dirname(__DIR__). '/lib.php');;
+defined('MOODLE_INTERNAL') || die();
+require_once(dirname(__DIR__). '/lib.php');
 
 class group {
     /**
@@ -136,7 +137,7 @@ class group {
     /**
      * @var int
      */
-    protected $earliestcomment = null; // we seldom need these, so we only get them on demand with magic getter
+    protected $earliestcomment = null; // We seldom need these, so we only get them on demand with magic getter.
     /**
      * @var int
      */
@@ -192,16 +193,20 @@ class group {
         $this->createdbyfullname = fullname($user);
         $this->createdbyprofileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
 
-        $this->latestcomment = $DB->get_field('thi_lc_chat_comment', 'MAX(timecreated)', ['chatid' => $chat->id, 'timedeleted' => null]);
+        $this->latestcomment = $DB->get_field(
+            'thi_lc_chat_comment',
+            'MAX(timecreated)',
+            ['chatid' => $chat->id, 'timedeleted' => null]
+        );
 
         $this->timecreateduserdate = $this->timecreated > 0 ? userdate($this->timecreated) : '-';
-        $this->timecreateddmy =  $this->timecreated > 0 ? date('d.m.Y', $this->timecreated) : '-';
+        $this->timecreateddmy = $this->timecreated > 0 ? date('d.m.Y', $this->timecreated) : '-';
         $this->timemodifieduserdate = $this->timemodified > 0 ? userdate($this->timemodified) : '-';
-        $this->timemodifieddmy =  $this->timemodified > 0 ? date('d.m.Y', $this->timemodified) : '-';
+        $this->timemodifieddmy = $this->timemodified > 0 ? date('d.m.Y', $this->timemodified) : '-';
         $this->latestcommentuserdate = $this->latestcomment > 0 ? userdate($this->latestcomment) : '-';
-        if (date('d.m.Y', $this->latestcomment) === date('d.m.Y', time())){
+        if (date('d.m.Y', $this->latestcomment) === date('d.m.Y', time())) {
             $this->latestcommentdmy = date('H:i', $this->latestcomment);
-        } elseif ($this->latestcomment > 0) {
+        } else if ($this->latestcomment > 0) {
             $this->latestcommentdmy = date('d.m.Y', $this->latestcomment);
         } else {
             $this->latestcommentdmy = '-';
@@ -215,7 +220,7 @@ class group {
         $this->chatid = $chat->id;
         $this->chat = chat::create_group_chat($this->id);
         $this->lastactivetime = $this->chat->get_last_active_time() ?? 0;
-        $this->lastactivetimedmy = !$this->lastactivetime ? '-' : date('d.m.Y',$this->lastactivetime);
+        $this->lastactivetimedmy = !$this->lastactivetime ? '-' : date('d.m.Y', $this->lastactivetime);
         $this->lastactiveuserid = $this->chat->get_last_active_userid();
 
         $this->get_image();
@@ -225,8 +230,11 @@ class group {
         $this->get_admins();
         $this->get_course();
         $this->get_keywordslist();
-        $this->mayedit = $this->isadmin || has_capability('local/thi_learning_companions:group_manage', \context_system::instance());
-        // ICTODO: fetch course and course category along with relevant metadata from course and course category, like topic and such
+        $this->mayedit = $this->isadmin || has_capability(
+            'local/thi_learning_companions:group_manage',
+            \context_system::instance()
+            );
+        // ICTODO: fetch course and course category along with metadata, like topic and such.
     }
 
     /**
@@ -244,10 +252,10 @@ class group {
         return null;
     }
 
-    public function is_user_admin(int $userId) {
+    public function is_user_admin(int $userid) {
         $isadmin = false;
         foreach ($this->admins as $admin) {
-            if ((int)$admin->id === $userId) {
+            if ((int)$admin->id === $userid) {
                 $isadmin = true;
                 break;
             }
@@ -255,10 +263,10 @@ class group {
         return $isadmin;
     }
 
-    public function is_user_member(int $userId) {
+    public function is_user_member(int $userid) {
         $ismember = false;
         foreach ($this->groupmembers as $member) {
-            if ((int)$member->id === $userId) {
+            if ((int)$member->id === $userid) {
                 $ismember = true;
                 break;
             }
@@ -282,7 +290,7 @@ class group {
                     FROM {thi_lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {thi_lc_chat_comment} posts ON posts.chatid = chat.id
                                                  GROUP BY chat.id";
-        $result = $DB->get_record_sql($query, array($this->id));
+        $result = $DB->get_record_sql($query, [$this->id]);
         if (!$result) {
             $this->earliestcomment = 0;
         } else {
@@ -304,7 +312,7 @@ class group {
                     FROM {thi_lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {thi_lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
-        $result = $DB->get_record_sql($query, array($this->id, $this->userid));
+        $result = $DB->get_record_sql($query, [$this->id, $this->userid]);
         if (!$result) {
             $this->mylatestcomment = 0;
         } else {
@@ -326,7 +334,7 @@ class group {
                     FROM {thi_lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
                LEFT JOIN {thi_lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
-        $result = $DB->get_record_sql($query, array($this->id, $this->userid));
+        $result = $DB->get_record_sql($query, [$this->id, $this->userid]);
         if (!$result) {
             $this->myearliestcomment = 0;
         } else {
@@ -350,7 +358,7 @@ class group {
                     FROM {user} u
                     JOIN {thi_lc_group_members} gm ON gm.userid = u.id AND u.deleted = 0
                    WHERE gm.groupid = ?',
-            array($this->id)
+            [$this->id]
         );
         foreach ($groupmembers as $key => $member) {
             $groupmembers[$key]->password = '';
@@ -399,10 +407,10 @@ class group {
     }
 
     public function get_keywordslist() {
-        $keywords_list = $this->get_keywords();
-        $keywords_list = implode(', ', $keywords_list);
-        $this->keywordslist = $keywords_list;
-        return $keywords_list;
+        $keywordslist = $this->get_keywords();
+        $keywordslist = implode(', ', $keywordslist);
+        $this->keywordslist = $keywordslist;
+        return $keywordslist;
     }
 
     /**
@@ -440,8 +448,11 @@ class group {
             $this->imageurl = $CFG->wwwroot . '/local/thi_learning_companions/pix/group.svg';
             return '';
         }
-        $imageurl = \moodle_url::make_file_url('/pluginfile.php', "/" . $file->get_contextid() . "/local_thi_learning_companions/groupimage/" .
-            $file->get_itemid() . "/" . $file->get_filename());
+        $imageurl = \moodle_url::make_file_url(
+            '/pluginfile.php',
+            "/" . $file->get_contextid() . "/local_thi_learning_companions/groupimage/" .
+            $file->get_itemid() . "/" . $file->get_filename()
+        );
         $this->imageurl = (String)$imageurl;
         return $this->imageurl;
     }
@@ -456,7 +467,7 @@ class group {
             return $this->course;
         }
         if (!empty($this->courseid)) {
-            $this->course = $DB->get_record('course', array('id' => $this->courseid));
+            $this->course = $DB->get_record('course', ['id' => $this->courseid]);
         } else {
             $this->course = false;
         }
@@ -474,9 +485,9 @@ class group {
         }
         $this->cm = false;
         if (!empty($this->cmid)) {
-            $cm = $DB->get_record('course_modules', array('id' => $this->cmid));
+            $cm = $DB->get_record('course_modules', ['id' => $this->cmid]);
             if ($cm) {
-                $module = $DB->get_record('modules', array('id' => $cm->module));
+                $module = $DB->get_record('modules', ['id' => $cm->module]);
                 $this->cm = get_coursemodule_from_id($module->name, $this->cmid);
             }
         }
@@ -493,8 +504,6 @@ class group {
         }
         global $DB, $CFG, $OUTPUT, $USER;
         $this->isadmin = false;
-//        $context = \context_system::instance(); // WHY? Commented out for now, need to find out why this has been added
-//        $PAGE->set_context($context); // WHY?! This would change the context on all pages to context_system. Even in courses and course modules
 
         $sql = 'SELECT u.*,
                        gm.joined
@@ -514,7 +523,7 @@ class group {
             list($admin->status, $admin->statustext) = \local_thi_learning_companions_get_user_status($admin->id);
             $admin->userpic = $OUTPUT->user_picture($admin, [
                 'link' => false, 'visibletoscreenreaders' => false,
-                'class' => 'userpicture'
+                'class' => 'userpicture',
             ]);
         }
 
@@ -534,7 +543,7 @@ class group {
                     WHERE chatid = ?
                     ORDER BY timecreated DESC, id DESC
                     LIMIT 1',
-            array($chatid)
+            [$chatid]
         );
         if (false === $lastcomment) {
             return '';

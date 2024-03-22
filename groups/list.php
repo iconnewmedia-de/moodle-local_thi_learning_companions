@@ -34,8 +34,8 @@ $courseid = optional_param('courseid', 0, PARAM_INT);
 $groups = local_thi_learning_companions\groups::get_groups_of_user($USER->id);
 $groups = array_values($groups);
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_thi_learning_companions/group_list', array(
+echo $OUTPUT->render_from_template('local_thi_learning_companions/group_list', [
     'groups' => $groups,
-    'cfg' => $CFG
-));
+    'cfg' => $CFG,
+]);
 echo $OUTPUT->footer();

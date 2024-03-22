@@ -21,7 +21,6 @@ require_once(dirname(__DIR__).'/lib.php');;
 require_login();
 
 $context = context_system::instance();
-//require_capability( 'local/thi_learning_companions:mentor_view', $context);
 
 $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/thi_learning_companions/mentor/index.php');
@@ -29,8 +28,13 @@ $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_thi_learning_companions/mentor', 'init');
 $PAGE->requires->css('/local/thi_learning_companions/js_lib/DataTables/datatables.min.css');
 $PAGE->requires->css('/local/thi_learning_companions/js_lib/balloon.css');
-$PAGE->navbar->add(get_string('navbar_mentors', 'local_thi_learning_companions'));
-$PAGE->navbar->add(get_string('navbar_mentorquestions', 'local_thi_learning_companions'), new moodle_url('/local/thi_learning_companions/mentor/index.php'));
+$PAGE->navbar->add(
+    get_string('navbar_mentors', 'local_thi_learning_companions')
+);
+$PAGE->navbar->add(
+    get_string('navbar_mentorquestions', 'local_thi_learning_companions'),
+    new moodle_url('/local/thi_learning_companions/mentor/index.php')
+);
 
 $mentortopics = mentors::get_all_mentor_keywords($USER->id, true);
 $askedquestions = mentors::get_my_asked_questions($USER->id);
@@ -62,7 +66,7 @@ echo $OUTPUT->render_from_template('local_thi_learning_companions/mentor/mentor_
     'latestcomments' => array_values($learningnuggetcomments),
     'ismentor' => mentors::is_mentor(),
     'istutor' => mentors::is_tutor(),
-    'cfg' => $CFG
+    'cfg' => $CFG,
 ]);
 
 echo $OUTPUT->footer();

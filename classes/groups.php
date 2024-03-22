@@ -43,7 +43,7 @@ class groups {
         global $DB;
 
         $groups = $DB->get_records('thi_lc_groups');
-        $returngroups = array();
+        $returngroups = [];
         foreach ($groups as $group) {
             $returngroups[] = new group($group->id);
         }
@@ -78,7 +78,7 @@ class groups {
      */
     public static function get_groupid_of_chatid(int $chatid): int {
         global $DB;
-        $groupid = $DB->get_field('thi_lc_chat', 'relatedid', array('id' => $chatid, 'chattype' => self::CHATTYPE_GROUP));
+        $groupid = $DB->get_field('thi_lc_chat', 'relatedid', ['id' => $chatid, 'chattype' => self::CHATTYPE_GROUP]);
         return $groupid;
     }
 
@@ -100,7 +100,7 @@ class groups {
         $return = [];
 
         foreach ($groups as $group) {
-            $returngroup = new group($group->id, $userid); // ICTODO: check why this changes the PAGE context to context_system
+            $returngroup = new group($group->id, $userid); // ICTODO: check why this changes the PAGE context to context_system.
             $return[] = $returngroup;
         }
 
@@ -144,15 +144,15 @@ class groups {
         }
 
         $canseeallgroups = has_capability( 'tool/thi_learning_companions:group_manage', \context_system::instance());
-        //Add preview group if it is set
+        // Add preview group if it is set.
         $alreadyinarray = in_array($shouldincludegroupid, array_column($return, 'id'), false);
-        if(!is_null($shouldincludegroupid) && !$alreadyinarray) {
+        if (!is_null($shouldincludegroupid) && !$alreadyinarray) {
             $shouldincludegroup = new group($shouldincludegroupid, $userid);
 
             if (!$shouldincludegroup->closedgroup || $canseeallgroups) {
                 $shouldincludegroup->isPreviewGroup = true;
             } else {
-                //Create a fake group, that does not hold any information
+                // Create a fake group, that does not hold any information.
                 $shouldincludegroup = new \stdClass();
                 $shouldincludegroup->isPreviewGroup = true;
                 $shouldincludegroup->dummyGroup = true;
@@ -208,18 +208,18 @@ class groups {
 
         $userisalreadyingroup = $DB->record_exists('thi_lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
         if ($userisalreadyingroup) {
-            // Return for now. Maybe throw exception or something later
+            // Return for now. Maybe throw exception or something later.
             return false;
         }
 
-        //Check if the current user is in the group
+        // Check if the current user is in the group.
         $userisingroup = $DB->record_exists('thi_lc_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
         if (!$userisingroup) {
-            // Return for now. Maybe throw exception or something later
+            // Return for now. Maybe throw exception or something later.
             return false;
         }
 
-        //If there is a request for joining this group, delete it
+        // If there is a request for joining this group, delete it.
         $DB->delete_records('thi_lc_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
 
         $id = self::group_add_member($groupid, $userid);
@@ -249,8 +249,9 @@ class groups {
      */
     public static function group_create($data) {
         global $DB, $USER;
-        // ICTODO: check if the user has the permission to create a group for this course
-        // ICTODO: check if there's already a group with that name by that user for that course - don't create groups that are indistinguishable from eachother
+        // ICTODO: check if the user has the permission to create a group for this course.
+        // ICTODO: check if there's already a group with that name by that user for that course
+        // - don't create groups that are indistinguishable from eachother.
         $record = new \stdClass();
         $record->name = $data->name;
         if (is_array($data->description_editor)) {
@@ -271,8 +272,16 @@ class groups {
             $groupid = $DB->insert_record('thi_lc_groups', $record);
             $context = \context_system::instance();
             $options = [];
-            $data = file_postupdate_standard_editor($data, 'description', $options, $context, 'local_thi_learning_companions', 'description', $groupid);
-            $DB->set_field('thi_lc_groups', 'description', $data->description, array('id' => $groupid));
+            $data = file_postupdate_standard_editor(
+                $data,
+                'description',
+                $options,
+                $context,
+                'local_thi_learning_companions',
+                'description',
+                $groupid
+            );
+            $DB->set_field('thi_lc_groups', 'description', $data->description, ['id' => $groupid]);
             self::save_group_image($groupid, $data->groupimage);
             self::group_assign_keywords($groupid, $data->keywords);
             self::group_add_member($groupid, $USER->id, 1);
@@ -283,7 +292,7 @@ class groups {
             return $groupid;
         } catch (\Exception $e) {
             $transaction->rollback($e);
-            throw new \Exception($e->getMessage(), $e->getCode()); // pass the exception on to the top
+            throw new \Exception($e->getMessage(), $e->getCode()); // Pass the exception on to the top.
         }
     }
 
@@ -308,7 +317,7 @@ class groups {
      */
     public static function group_update($groupid, $name, $description, $closedgroup, $keywords, $courseid, $cmid, $image) {
         global $DB, $USER;
-        // ICTODO: make sure that user may update this group
+        // ICTODO: make sure that user may update this group.
         $group = $DB->get_record('thi_lc_groups', ['id' => $groupid], '*', MUST_EXIST);
         $group->name = $name;
         $group->description = $description;
@@ -328,9 +337,10 @@ class groups {
      * @return string[]
      */
     public static function get_available_topics() {
-        // ICTODO: this is just a generic placeholder. Find out where we can get topics from
-        // ICTODO: get topics relevant to the student - maybe from their profile fields or course categories for their enrolled courses
-        return array('IT', 'Mathematik', 'Maschinenbau');
+        // ICTODO: this is just a generic placeholder. Find out where we can get topics from.
+        // ICTODO: get topics relevant to the student
+        // - maybe from their profile fields or course categories for their enrolled courses.
+        return ['IT', 'Mathematik', 'Maschinenbau'];
     }
 
     /**
@@ -341,7 +351,14 @@ class groups {
      */
     protected static function save_group_image($groupid, $image) {
         $context = \context_system::instance();
-        file_save_draft_area_files($image, $context->id, 'local_thi_learning_companions', 'groupimage', $groupid, create_edit_group_form::get_filepickeroptions());
+        file_save_draft_area_files(
+            $image,
+            $context->id,
+            'local_thi_learning_companions',
+            'groupimage',
+            $groupid,
+            create_edit_group_form::get_filepickeroptions()
+        );
 
     }
 
@@ -378,12 +395,12 @@ class groups {
      */
     public static function is_group_empty(int $groupid) {
         global $DB;
-        return !$DB->record_exists_sql("SELECT gm.* 
+        return !$DB->record_exists_sql("SELECT gm.*
                 FROM {thi_lc_group_members} gm
                 JOIN {user} u ON gm.userid = u.id
                     AND u.deleted = 0
                 WHERE gm.groupid = ?",
-            array($groupid)
+            [$groupid]
         );
     }
 
@@ -394,7 +411,7 @@ class groups {
      * @throws \dml_exception
      */
     protected static function group_assign_keywords($groupid, $keywords) {
-        self::group_remove_all_keywords($groupid); // start with a blank slate
+        self::group_remove_all_keywords($groupid); // Start with a blank slate.
         foreach ($keywords as $keyword) {
             self::group_assign_keyword($groupid, $keyword);
         }
@@ -411,7 +428,7 @@ class groups {
         $keywordid = self::keyword_get_id($keyword);
         if (!$keywordid) {
             $keywordid = self::keyword_create($keyword);
-            // ICTODO: handle errors, like when the keyword is too long
+            // ICTODO: handle errors, like when the keyword is too long.
         }
         $obj = new \stdClass();
         $obj->groupid = $groupid;
@@ -426,8 +443,8 @@ class groups {
      */
     protected static function keyword_create($keyword) {
         global $DB;
-        if ($DB->record_exists('thi_lc_keywords', array('keyword' => $keyword))) {
-            return $DB->get_field('thi_lc_keywords', 'id', array('keyword' => $keyword));
+        if ($DB->record_exists('thi_lc_keywords', ['keyword' => $keyword])) {
+            return $DB->get_field('thi_lc_keywords', 'id', ['keyword' => $keyword]);
         }
         $obj = new \stdClass();
         $obj->keyword = $keyword;
@@ -441,7 +458,7 @@ class groups {
      */
     protected static function group_remove_all_keywords($groupid) {
         global $DB;
-        $DB->delete_records('thi_lc_groups_keywords', array('groupid' => $groupid));
+        $DB->delete_records('thi_lc_groups_keywords', ['groupid' => $groupid]);
     }
 
     /**
@@ -456,7 +473,7 @@ class groups {
         $record->chattype = self::CHATTYPE_GROUP;
         $record->relatedid = $groupid;
         $record->timecreated = time();
-        $record->course = $DB->get_field('thi_lc_groups', 'courseid', array('id' => $groupid));
+        $record->course = $DB->get_field('thi_lc_groups', 'courseid', ['id' => $groupid]);
         $DB->insert_record('thi_lc_chat', $record);
     }
 
@@ -474,7 +491,7 @@ class groups {
 
         $group = new group($groupid);
 
-        // If the group is a closed group, and the user was the last member, delete the group
+        // If the group is a closed group, and the user was the last member, delete the group.
         if ($group->closedgroup && $group->membercount === 0) {
             self::delete_group($groupid);
             return true;
@@ -503,20 +520,20 @@ class groups {
      * @throws \dml_exception
      */
     public static function request_group_join($userid, $groupid): int {
-        // Check if the group is closed
+        // Check if the group is closed.
         $group = new group($groupid);
 
-        // If the user is already a member, don't do anything
+        // If the user is already a member, don't do anything.
         if ($group->is_user_member($userid)) {
             return self::JOIN_REQUEST_ALREADY_MEMBER;
         }
 
-        // If the group is not closed, there is no need to request to join. Just join
+        // If the group is not closed, there is no need to request to join. Just join.
         if (!$group->closedgroup) {
             return self::group_add_member($groupid, $userid);
         }
 
-        // If the user has already requested to join, don't do anything
+        // If the user has already requested to join, don't do anything.
         if (self::join_is_requested($userid, $groupid)) {
             return self::JOIN_REQUEST_ALREADY_REQUESTED;
         }
@@ -553,7 +570,8 @@ class groups {
             return [];
         }
 
-        $requests = $DB->get_records_sql('SELECT * FROM {thi_lc_group_requests} WHERE groupid IN (' . implode(',', $groupids) . ') and denied = 0') ?? [];
+        $requests = $DB->get_records_sql('SELECT * FROM {thi_lc_group_requests} WHERE groupid IN (' .
+                implode(',', $groupids) . ') and denied = 0') ?? [];
         $requestedusersids = array_map(static function($request) {
             return $request->userid;
         }, $requests);
@@ -589,11 +607,11 @@ class groups {
     public static function accept_group_join_request($requestid) {
         global $DB;
 
-        //Get the request
+        // Get the request.
         $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestid]);
-        //Add the user to the group
+        // Add the user to the group.
         self::group_add_member($request->groupid, $request->userid);
-        //Delete the request
+        // Delete the request.
         $DB->delete_records('thi_lc_group_requests', ['id' => $requestid]);
         messages::send_group_join_accepted_notification($request->userid, $request->groupid);
     }
@@ -619,10 +637,10 @@ class groups {
      * @throws \dml_exception
      */
     public static function join_group(int $userid, int $groupid): int {
-        // Check if the group is open
+        // Check if the group is open.
         $group = new group($groupid);
 
-        // If the group is not open, there is no need to join. Just request to join
+        // If the group is not open, there is no need to join. Just request to join.
         if ($group->closedgroup) {
             return self::request_group_join($userid, $groupid);
         }
@@ -642,7 +660,11 @@ class groups {
 
         $event = group_deleted::make($USER->id, $groupid);
         $event->add_record_snapshot('thi_lc_groups', $DB->get_record('thi_lc_groups', ['id' => $groupid]));
-        $event->add_record_snapshot('thi_lc_chat', $DB->get_record('thi_lc_chat', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]));
+        $event->add_record_snapshot('thi_lc_chat',
+            $DB->get_record('thi_lc_chat',
+                ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]
+            )
+        );
         $groupmembers = $DB->get_records('thi_lc_group_members', ['groupid' => $groupid]);
         foreach ($groupmembers as $groupmember) {
             $event->add_record_snapshot('thi_lc_group_members', $groupmember);
@@ -650,21 +672,21 @@ class groups {
         $event->trigger();
 
         $transaction = $DB->start_delegated_transaction();
-        //Get Chat ID
+        // Get Chat ID.
         $chatid = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
-        // Delete file attachments
+        // Delete file attachments.
         self::delete_attachments_of_chat($chatid);
-        // Delete the group members
+        // Delete the group members.
         $DB->delete_records('thi_lc_group_members', ['groupid' => $groupid]);
-        // Delete the group requests
+        // Delete the group requests.
         $DB->delete_records('thi_lc_group_requests', ['groupid' => $groupid]);
-        // Delete the group keywords
+        // Delete the group keywords.
         $DB->delete_records('thi_lc_groups_keywords', ['groupid' => $groupid]);
-        // Delete the group
+        // Delete the group.
         $DB->delete_records('thi_lc_groups', ['id' => $groupid]);
-        //Delete Chat
+        // Delete Chat.
         $DB->delete_records('thi_lc_chat', ['id' => $chatid]);
-        //Delete Chat Messages
+        // Delete Chat Messages.
         $DB->delete_records('thi_lc_chat_comment', ['chatid' => $chatid]);
         $transaction->allow_commit();
     }
@@ -677,14 +699,14 @@ class groups {
      */
     protected static function delete_attachments_of_chat($chatid) {
         global $DB;
-        //Delete Chat Messages
+        // Delete Chat Messages.
         $comments = $DB->get_records('thi_lc_chat_comment', ['chatid' => $chatid]);
         $fs = new \file_storage();
         $context = \context_system::instance();
         foreach ($comments as $comment) {
             foreach ($comment->attachments as $attachment) {
-                $fs->delete_area_files($context->id,'local_thi_learning_companions', 'message', $comment->id);
-                $fs->delete_area_files($context->id,'local_thi_learning_companions', 'attachments', $comment->id);
+                $fs->delete_area_files($context->id, 'local_thi_learning_companions', 'message', $comment->id);
+                $fs->delete_area_files($context->id,  'local_thi_learning_companions', 'attachments', $comment->id);
             }
         }
     }
@@ -697,14 +719,14 @@ class groups {
     public static function count_comments_since_last_visit($groupid) {
         global $DB, $USER;
         $chatid = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
-        $lastvisited = $DB->get_field('thi_lc_chat_lastvisited', 'timevisited', array('chatid' => $chatid, 'userid' => $USER->id));
+        $lastvisited = $DB->get_field('thi_lc_chat_lastvisited', 'timevisited', ['chatid' => $chatid, 'userid' => $USER->id]);
         if (false === $lastvisited) {
             $lastvisited = 0;
         }
         $commentssincelastvisit = $DB->get_records_sql(
             'SELECT * FROM {thi_lc_chat_comment}
                     WHERE chatid = ? AND timecreated > ?',
-            array($chatid, $lastvisited)
+            [$chatid, $lastvisited]
         );
         if (false === $commentssincelastvisit) {
             return 0;
@@ -720,7 +742,7 @@ class groups {
      */
     public static function is_group_member(int $userid, int $groupid) {
         global $DB;
-        return $DB->record_exists('thi_lc_group_members', array('userid' => $userid, 'groupid' => $groupid));
+        return $DB->record_exists('thi_lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
     }
 
     /**

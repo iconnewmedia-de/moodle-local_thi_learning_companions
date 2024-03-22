@@ -13,9 +13,9 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-require_once('../../../config.php');;
-require_once('../lib.php');;
-
+require_once('../../../config.php');
+require_once('../lib.php');
+require_login();
 $context = context_system::instance();
 require_capability( 'local/thi_learning_companions:group_view', $context);
 
@@ -27,7 +27,7 @@ $PAGE->requires->css('/local/thi_learning_companions/js_lib/DataTables/datatable
 $PAGE->requires->css('/local/thi_learning_companions/js_lib/balloon.css');
 
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_thi_learning_companions/group/group_index', array(
-    'cfg' => $CFG
-));
+echo $OUTPUT->render_from_template('local_thi_learning_companions/group/group_index', [
+    'cfg' => $CFG,
+]);
 echo $OUTPUT->footer();

@@ -16,10 +16,10 @@
 namespace local_thi_learning_companions;
 use local_thi_learning_companions\event\mentor_assigned;
 use local_thi_learning_companions\event\question_created;
-
-require_once(__DIR__ . "/../locallib.php");;
-require_once($CFG->libdir . "/badgeslib.php");;
-require_once($CFG->dirroot . "/badges/classes/badge.php");;
+defined('MOODLE_INTERNAL') || die();
+require_once(__DIR__ . "/../locallib.php");
+require_once($CFG->libdir . "/badgeslib.php");
+require_once($CFG->dirroot . "/badges/classes/badge.php");
 class mentors {
 
     /**
@@ -42,7 +42,7 @@ class mentors {
                   FROM {thi_lc_mentors} m
              LEFT JOIN {user} u ON u.id = m.userid
              ';
-        $params = array();
+        $params = [];
         $conditions = [];
         if (!is_null($topic)) {
             $conditions[] = ' m.topic = ?';
@@ -65,12 +65,11 @@ class mentors {
             if ($supermentorsonly && !$mentor->issupermentor) {
                 unset($mentors[$mentor->userid]);
             } else {
-//                $mentor->topics = $DB->get_records_sql($sql, [$mentor->userid]);
                 $mentor->fullname = fullname($mentor);
                 $mentor->profileurl = $CFG->wwwroot.'/user/profile.php?id='.$mentor->userid;
                 $mentor->userpic = $OUTPUT->user_picture($mentor, [
                     'link' => false, 'visibletoscreenreaders' => false,
-                    'class' => 'userpicture'
+                    'class' => 'userpicture',
                 ]);
                 list($mentor->status, $mentor->statustext) = local_thi_learning_companions_get_user_status($mentor->userid);
                 $mentor->badges = badges_get_user_badges($mentor->id, 0, 0, 0, '', true);
@@ -87,7 +86,7 @@ class mentors {
                 $topiclist = [];
                 $topics = explode(',', $mentor->topics);
                 foreach ($topics as $mentortopic) {
-                    $topiclist[] = array('topic' => trim($mentortopic));
+                    $topiclist[] = ['topic' => trim($mentortopic)];
                 }
                 $mentor->topiclist = $topiclist;
             }
@@ -114,7 +113,11 @@ class mentors {
         global $USER;
         $context = \context_system::instance();
         $userid = is_null($userid) ? $USER->id : $userid;
-        return has_capability('local/thi_learning_companions:mentor_ismentor', $context, $userid); // Maybe access restriction by database entry
+        return has_capability(
+            'local/thi_learning_companions:mentor_ismentor',
+            $context,
+            $userid
+        ); // Maybe access restriction by database entry.
     }
 
     /**
@@ -141,7 +144,7 @@ class mentors {
      */
     public static function is_mentor_for_topic($userid, $topic) {
         global $DB;
-        return $DB->record_exists('lc_mentor', array('userid' => $userid, 'topic' => $topic));
+        return $DB->record_exists('lc_mentor', ['userid' => $userid, 'topic' => $topic]);
     }
 
     /**
@@ -167,7 +170,7 @@ class mentors {
                     FROM {thi_lc_chat_comment} c
                      JOIN {thi_lc_chat_comment_ratings} cr ON cr.commentid = c.id
                      WHERE c.userid = ?",
-            array($userid)
+            [$userid]
         );
         return $countmentorratings;
     }
@@ -182,7 +185,11 @@ class mentors {
         global $USER;
         $context = \context_system::instance();
         $userid = is_null($userid) ? $USER->id : $userid;
-        return has_capability('local/thi_learning_companions:mentor_istutor', $context, $userid); // Maybe access restriction by database entry or teacher role
+        return has_capability(
+            'local/thi_learning_companions:mentor_istutor',
+            $context,
+            $userid
+        ); // Maybe access restriction by database entry or teacher role.
     }
 
     /**
@@ -221,7 +228,12 @@ class mentors {
      * @return array
      * @throws \dml_exception
      */
-    public static function get_all_mentor_questions(int $userid = null, array $topics = null, bool $onlyopen = false, bool $extended = false): array {
+    public static function get_all_mentor_questions(
+        int $userid = null,
+        array $topics = null,
+        bool $onlyopen = false,
+        bool $extended = false
+    ): array {
         global $DB;
 
         if ($extended) {
@@ -229,9 +241,12 @@ class mentors {
                            FROM_UNIXTIME(q.timecreated, "%d.%m.%Y") AS dateasked,
                            IF(q.timeclosed=0, "-", FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i")) AS dateclosed,
                            (SELECT COUNT(a.id) FROM {thi_lc_mentor_answers} a WHERE a.questionid = q.id) answercount,
-                           (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y") FROM {thi_lc_mentor_answers} a WHERE a.questionid = q.id) lastactivity
+                           (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y")
+                                FROM {thi_lc_mentor_answers} a
+                                WHERE a.questionid = q.id
+                            ) lastactivity
                       FROM {thi_lc_mentor_questions} q';
-            $params = array();
+            $params = [];
             $conditions = 0;
 
             if (!is_null($userid)) {
@@ -258,8 +273,10 @@ class mentors {
             return $DB->get_records_sql($sql, $params);
         }
 
-        $params = array();
-        if (!is_null($userid)) $params['mentorid'] = $userid;
+        $params = [];
+        if (!is_null($userid)) {
+            $params['mentorid'] = $userid;
+        }
         $questions = $DB->get_records('thi_lc_mentor_questions', $params);
         if ($onlyopen) {
             $questions = array_filter($questions, function($question) {
@@ -282,9 +299,9 @@ class mentors {
      */
     public static function delete_asked_question($questionid): bool {
         global $DB;
-        // ICTODO: delete records from thi_lc_chat_comment instead, we don't use thi_lc_mentor_answers anymore
-        return $DB->delete_records('thi_lc_mentor_answers', array('questionid' => $questionid))
-            && $DB->delete_records('thi_lc_mentor_questions', array('id' => $questionid));
+        // ICTODO: delete records from thi_lc_chat_comment instead, we don't use thi_lc_mentor_answers anymore.
+        return $DB->delete_records('thi_lc_mentor_answers', ['questionid' => $questionid])
+            && $DB->delete_records('thi_lc_mentor_questions', ['id' => $questionid]);
     }
 
     /**
@@ -297,7 +314,7 @@ class mentors {
         global $DB;
 
         // ICTODO: Maybe we could check if given user is a mentor,
-        //         but in worst case we get an empty array.
+        // but in worst case we get an empty array.
 
         $sql = 'SELECT m.topic,
                        k.keyword
@@ -305,10 +322,10 @@ class mentors {
              LEFT JOIN {thi_lc_keywords} k ON k.id = m.topic
                  WHERE m.userid = ?';
 
-        $keywords = $DB->get_records_sql($sql, array($userid));
+        $keywords = $DB->get_records_sql($sql, [$userid]);
 
         if ($idsonly) {
-            $keywordlist = array();
+            $keywordlist = [];
             foreach ($keywords as $keyword) {
                 $keywordlist[] = $keyword->topic;
             }
@@ -388,7 +405,7 @@ class mentors {
         if (is_null($userid)) {
             $userid = $USER->id;
         }
-        $mentortopics = $DB->get_records('thi_lc_mentors', array('userid' => $userid), '', 'topic');
+        $mentortopics = $DB->get_records('thi_lc_mentors', ['userid' => $userid], '', 'topic');
         $topics = array_keys($mentortopics);
         return $topics;
     }
@@ -443,7 +460,7 @@ class mentors {
     public static function assign_mentorship($userid, $topic) {
         global $DB;
         $availabletopics = self::get_new_mentorship_qualifications($userid);
-        $topicclean = addslashes(strip_tags($topic)); // for XSS-safe output on the page
+        $topicclean = addslashes(strip_tags($topic)); // For XSS-safe output on the page.
         if (!in_array($topic, $availabletopics)) {
             $assignedtopics = self::get_mentorship_topics($userid);
             if (in_array($topic, $assignedtopics)) {
@@ -451,7 +468,12 @@ class mentors {
                 \core\notification::info($message);
                 return;
             } else {
-                print_error('mentorship_error_invalid_topic_assignment', 'local_learningcompaions', $topicclean);
+                throw new \moodle_exception(
+                    'mentorship_error_invalid_topic_assignment',
+                    'local_thi_learning_companions',
+                    '',
+                    $topicclean
+                );
                 return;
             }
         }
@@ -463,7 +485,10 @@ class mentors {
             self::assign_mentor_role($userid);
 
             mentor_assigned::make($userid, $mentorid)->trigger();
-            \core\notification::success(get_string('mentorship_assigned_to_topic', 'local_thi_learning_companions', $topicclean));
+            \core\notification::success(
+                get_string('mentorship_assigned_to_topic', 'local_thi_learning_companions',
+                    $topicclean)
+            );
         } catch (\Exception $e) {
             \core\notification::error(get_string('mentorship_error_unknown', 'local_thi_learning_companions', $e->getMessage()));
         }
@@ -478,7 +503,7 @@ class mentors {
      */
     public static function assign_mentor_role($userid) {
         global $DB;
-        $roleid = $DB->get_field('role', 'id', array('shortname' => 'lc_mentor'));
+        $roleid = $DB->get_field('role', 'id', ['shortname' => 'lc_mentor']);
         if (!$roleid) {
             $roleid = self::create_mentor_role();
         }
@@ -523,7 +548,7 @@ class mentors {
         global $USER, $DB;
         if (is_null($userid) && isloggedin()) {
             $userid = $USER->id;
-        } elseif(!isloggedin()) {
+        } else if (!isloggedin()) {
             return [];
         }
         $coursetopics = \local_thi_learning_companions\get_topics_of_user_courses($userid);
@@ -552,17 +577,17 @@ class mentors {
      */
     public static function get_learning_nugget_comments($userid = null) {
         global $USER, $DB;
-        $userid = is_null($userid)?$USER->id:$userid;
+        $userid = is_null($userid) ? $USER->id : $userid;
         $courses = self::get_courses_of_mentor($userid);
         $courseids = array_keys($courses);
         if (empty($courseids)) {
             return [];
         }
-        $learningNuggets = self::get_learning_nuggets_of_courses($courseids);
-        if (empty($learningNuggets)) {
+        $learningnuggets = self::get_learning_nuggets_of_courses($courseids);
+        if (empty($learningnuggets)) {
             return [];
         }
-        $learningnuggetids = array_keys($learningNuggets);
+        $learningnuggetids = array_keys($learningnuggets);
         list($condition, $params) = $DB->get_in_or_equal($learningnuggetids);
         $config = get_config('local_thi_learning_companions');
         $limit = intval($config->latest_comments_max_amount);
@@ -584,7 +609,7 @@ class mentors {
             $params
         );
         foreach ($latestcomments as $latestcomment) {
-            $latestcomment->nuggettitle = $DB->get_field($latestcomment->modulename, 'name', array('id' => $latestcomment->cminstance));
+            $latestcomment->nuggettitle = $DB->get_field($latestcomment->modulename, 'name', ['id' => $latestcomment->cminstance]);
         }
 
         return $latestcomments;
@@ -617,7 +642,7 @@ class mentors {
         $shortname = 'lc_mentor';
         $description = get_string('mentor_role_description', 'local_thi_learning_companions');
         $roleid = \create_role($name, $shortname, $description);
-        // ICTODO: assign capabilities to the role
+        // ICTODO: assign capabilities to the role.
         return $roleid;
     }
 

@@ -17,7 +17,8 @@
 /**
  * Plugin capabilities are defined here.
  *
- * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“ durch die Stiftung Innovation in der Hochschulehre gefördert.
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
  * @package     local_thi_learning_companions
  * @category    access
@@ -34,7 +35,7 @@ $capabilities = [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
         ],
     ],
     'local/thi_learning_companions:group_manage' => [
@@ -42,7 +43,7 @@ $capabilities = [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'manager' => CAP_ALLOW
+            'manager' => CAP_ALLOW,
         ],
     ],
     'local/thi_learning_companions:mentor_view' => [
@@ -50,7 +51,7 @@ $capabilities = [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'student' => CAP_ALLOW
+            'student' => CAP_ALLOW,
         ],
     ],
     'local/thi_learning_companions:mentor_search' => [
@@ -58,30 +59,30 @@ $capabilities = [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'manager' => CAP_ALLOW
+            'manager' => CAP_ALLOW,
         ],
     ],
     'local/thi_learning_companions:mentor_ismentor' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM
+        'contextlevel' => CONTEXT_SYSTEM,
     ],
     'local/thi_learning_companions:mentor_issupermentor' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM
+        'contextlevel' => CONTEXT_SYSTEM,
     ],
     'local/thi_learning_companions:mentor_istutor' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM
+        'contextlevel' => CONTEXT_SYSTEM,
     ],
     'local/thi_learning_companions:group_view' => [
         'riskbitmask' => RISK_MANAGETRUST,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'manager' => CAP_ALLOW
+            'manager' => CAP_ALLOW,
         ],
     ],
     'local/thi_learning_companions:group_search' => [
@@ -90,7 +91,7 @@ $capabilities = [
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
             'manager' => CAP_ALLOW,
-            'user' => CAP_ALLOW
+            'user' => CAP_ALLOW,
         ],
     ],
     'local/thi_learning_companions:delete_comments_of_others' => [
@@ -98,7 +99,7 @@ $capabilities = [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'manager' => CAP_ALLOW
+            'manager' => CAP_ALLOW,
         ],
     ],
     'local/thi_learning_companions:view_all_mentor_questions' => [
@@ -106,7 +107,7 @@ $capabilities = [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
-            'manager' => CAP_ALLOW
+            'manager' => CAP_ALLOW,
         ],
     ],
 ];

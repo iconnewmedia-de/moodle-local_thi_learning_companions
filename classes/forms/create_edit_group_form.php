@@ -146,7 +146,7 @@ class create_edit_group_form extends \moodleform {
           'mod_glossary',
             'groupimage',
             $entry->id,
-self::get_filepickeroptions());
+        self::get_filepickeroptions());
 
         $mform->addElement('editor', 'description_editor', get_string('group_description', 'local_thi_learning_companions'));
 

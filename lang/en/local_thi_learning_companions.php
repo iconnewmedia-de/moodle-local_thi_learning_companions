@@ -78,7 +78,7 @@ You can begin typing and autocomplete will suggest matching nuggets that belong 
 $string['keywords_help'] = 'Type into the search field and hit comma, enter or tab to add a keyword that describes the topic. You can add multiple keywords.';
 $string['invite_member'] = 'Invite member';
 
-// Mentor
+// Mentor.
 $string['myquestions'] = 'My questions';
 $string['mentorquestions'] = 'Mentor questions';
 $string['mymentorquestions'] = 'My mentor questions';
@@ -102,7 +102,7 @@ $string['ask_new_question'] = 'Ask new question';
 $string['ask_new_open_question'] = 'Ask new open question';
 $string['ask_open_question'] = 'Submit question to all mentors';
 $string['search_mentor'] = 'Search mentor';
-$string['ask_open_question_description'] = '<p>All mentors who`re qualified for the selected topic will be able to reply to the question</p>';
+$string['ask_open_question_description'] = '<p>All mentors who\'re qualified for the selected topic will be able to reply to the question</p>';
 $string['ask_question'] = 'Submit question';
 $string['groupimage_maxbytes'] = 'Group image max filesize ';
 $string['configgroupimagemaxbytes'] = 'Limits the file size of image files that users upload for the group image';
@@ -137,7 +137,7 @@ $string['close_question'] = 'Mark question as solved';
 $string['questionnotfound'] = 'Question not found';
 $string['manage_mentorships'] = 'Manage mentorships';
 
-// Group
+// Group.
 $string['findgroup'] = 'Find group';
 $string['topic'] = 'Topic';
 $string['name'] = 'Name';
@@ -177,7 +177,7 @@ $string['modal-groupdetails-leavetitle'] = 'Leave group';
 $string['groupnotfound'] = 'Group not found.';
 $string['group_closed'] = 'Closed group';
 
-// Navigation
+// Navigation.
 $string['lcadministration_comments'] = 'Tagged comments';
 $string['lcadministration_groups'] = 'Groups';
 $string['lcadministration'] = 'Learning companions administration';
@@ -189,7 +189,7 @@ $string['profile_field_status_default_options'] = '<span lang="en" class="multil
 $string['profile_field_status_default_default'] = '<span lang="en" class="multilang">Online</span><span lang="de" class="multilang">Online</span>';
 $string['profile_field_category_status_default'] = '<span lang="en" class="multilang">Status</span><span lang="de" class="multilang">Status</span>';
 
-//Filtering
+// Filtering.
 $string['filter_all_status'] = 'All groups';
 $string['filter_open_status'] = 'Open groups';
 $string['filter_closed_status'] = 'Closed groups';
@@ -312,7 +312,7 @@ $string['group_invite_noselection'] = 'No users selected yet';
 $string['users_invited'] = 'The selected user(s) got invited';
 $string['modal-groupdetails-needsnewadmin'] = 'Please choose a new administrator for the group';
 
-require '_messages.php';
-require '_navbar.php';
-require '_chat.php';
-require '_events.php';
+require('_messages.php');
+require('_navbar.php');
+require('_chat.php');
+require('_events.php');

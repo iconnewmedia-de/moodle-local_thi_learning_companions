@@ -13,12 +13,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-# Mentors
+// Mentors.
 $string['navbar_findmentors'] = 'Find mentors';
 $string['navbar_mentors'] = 'Mentors';
 $string['navbar_mentorquestions'] = 'Mentor questions';
 
-# Groups
+// Groups.
 $string['navbar_groups'] = 'Groups';
 $string['navbar_findgroups'] = 'Find groups';
 $string['navbar_confirm_join'] = 'Confirm join';

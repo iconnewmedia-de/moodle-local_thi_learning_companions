@@ -29,10 +29,10 @@ $observers = [
     ],
     [
         'eventname'   => '\core\event\badge_awarded',
-        'callback'    => '\local_thi_learning_companions\eventobservers::badge_awarded'
+        'callback'    => '\local_thi_learning_companions\eventobservers::badge_awarded',
     ],
     [
         'eventname'   => '\core\event\config_log_created',
-        'callback'    => '\local_thi_learning_companions\eventobservers::config_log_created'
-    ]
+        'callback'    => '\local_thi_learning_companions\eventobservers::config_log_created',
+    ],
 ];

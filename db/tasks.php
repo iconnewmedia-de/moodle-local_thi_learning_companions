@@ -24,14 +24,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = array(
-    array(
+$tasks = [
+    [
         'classname' => 'local_thi_learning_companions\task\cron_task',
         'blocking' => 0,
         'minute' => '0',
         'hour' => '*',
         'day' => '*',
         'month' => '*',
-        'dayofweek' => '*'
-    )
-);
+        'dayofweek' => '*',
+    ],
+];

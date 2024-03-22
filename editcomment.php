@@ -30,7 +30,7 @@ $PAGE->set_title(get_string('learninggroups', 'local_thi_learning_companions'));
 ob_start();
 echo $OUTPUT->header();
 $commentid = required_param('commentid', PARAM_INT);
-// make sure that this comment actually belongs to the user
+// Make sure that this comment actually belongs to the user.
 $comment = new local_thi_learning_companions\comment($commentid);
 global $USER;
 if ($comment->userid !== $USER->id) {
@@ -39,11 +39,7 @@ if ($comment->userid !== $USER->id) {
 }
 $form = new local_thi_learning_companions\chat_post_form();
 $form->set_data($comment);
-if ($data = $form->get_data()){
-    // handle form submission
-} else {
-    // might not need this else section
-}
+
 $form->display();
 echo $OUTPUT->footer();
 $output = ob_get_clean();

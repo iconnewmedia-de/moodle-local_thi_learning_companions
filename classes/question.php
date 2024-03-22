@@ -23,7 +23,7 @@ use local_thi_learning_companions\traits\is_db_saveable;
 class question {
     use is_db_saveable;
 
-    private static $topic_list = [];
+    private static $topiclist = [];
 
     public $id;
     public $askedby;
@@ -34,8 +34,8 @@ class question {
     public $timecreated;
     public $timeclosed;
 
-    public $last_active;
-    public $last_active_dmy;
+    public $lastactive;
+    public $lastactivedmy;
 
     private static function get_table_name(): string {
         return 'thi_lc_mentor_questions';
@@ -53,19 +53,19 @@ class question {
     public static function ask_new_open_question(string $question, string $title, int $topic) {
         global $USER;
 
-        $new_question = new self($USER->id, 0, $question, $title, $topic);
-        $new_question->save();
-        question_created::make($USER->id, $new_question->id, $topic)->trigger();
-        return $new_question;
+        $newquestion = new self($USER->id, 0, $question, $title, $topic);
+        $newquestion->save();
+        question_created::make($USER->id, $newquestion->id, $topic)->trigger();
+        return $newquestion;
     }
 
     public static function ask_new_question(string $question, string $title, int $topic, int $mentorid) {
         global $USER;
 
-        $new_question = new self($USER->id, $mentorid, $question, $title, $topic);
-        $new_question->save();
-        question_created::make($USER->id, $new_question->id, $topic, $mentorid)->trigger();
-        return $new_question;
+        $newquestion = new self($USER->id, $mentorid, $question, $title, $topic);
+        $newquestion->save();
+        question_created::make($USER->id, $newquestion->id, $topic, $mentorid)->trigger();
+        return $newquestion;
     }
 
     private static function from_record($record): self {
@@ -104,7 +104,7 @@ class question {
      */
     public static function get_question_by_id($questionid) {
         global $DB, $USER;
-        $record = $DB->get_record('thi_lc_mentor_questions', array('id' => $questionid));
+        $record = $DB->get_record('thi_lc_mentor_questions', ['id' => $questionid]);
         if (!$record) {
             throw new \exception('invalid_question_id', 'local_thi_learning_companions');
         }
@@ -141,24 +141,24 @@ class question {
     public function can_user_view(int $userid): bool {
         global $DB;
 
-        //If it´s the user who asked the question, they can view it.
+        // If it´s the user who asked the question, they can view it.
         if ($this->askedby === $userid) {
             return true;
         }
 
-        //If its the user who is the mentor, they can view it.
+        // If its the user who is the mentor, they can view it.
         if ($this->mentorid === $userid) {
             return true;
         }
 
-        //If a mentor is assigned, and the user does not match from the previous checks, they cannot view it.
+        // If a mentor is assigned, and the user does not match from the previous checks, they cannot view it.
         if ($this->mentorid) {
             return false;
         }
 
-        //There is no mentor assigned, so we need to check the topics
-        $mentorTopics = $DB->get_records_menu('thi_lc_mentors', ['userid' => $userid], '', 'topic');
-        return in_array($this->topic, $mentorTopics, true);
+        // There is no mentor assigned, so we need to check the topics.
+        $mentortopics = $DB->get_records_menu('thi_lc_mentors', ['userid' => $userid], '', 'topic');
+        return in_array($this->topic, $mentortopics, true);
     }
 
     /**
@@ -204,7 +204,11 @@ class question {
 
         $chat = $this->get_chat();
 
-        return $this->last_active = $DB->get_field('thi_lc_chat_comment', 'MAX(timecreated)', ['chatid' => $chat->id, 'timedeleted' => null]);
+        return $this->last_active = $DB->get_field(
+            'thi_lc_chat_comment',
+            'MAX(timecreated)',
+            ['chatid' => $chat->id, 'timedeleted' => null]
+        );
     }
 
     private function get_chat() {
@@ -218,7 +222,7 @@ class question {
     }
 
     public function to_array() {
-        return array(
+        return [
             'id' => $this->id,
             'askedby' => $this->askedby,
             'mentorid' => $this->mentorid,
@@ -227,7 +231,7 @@ class question {
             'topic' => $this->topic,
             'timecreated' => $this->timecreated,
             'timeclosed' => $this->timeclosed,
-        );
+        ];
     }
 
     /**
@@ -267,7 +271,10 @@ class question {
         if (isset($this->answer_count)) {
             return $this->answer_count;
         }
-        return $this->answer_count = $DB->count_records('thi_lc_chat_comment', ['chatid' => $this->get_chat()->id, 'timedeleted' => null]);
+        return $this->answer_count = $DB->count_records(
+            'thi_lc_chat_comment',
+            ['chatid' => $this->get_chat()->id, 'timedeleted' => null]
+        );
     }
 
     public function get_topic() {
@@ -275,14 +282,14 @@ class question {
             return '-';
         }
 
-        if (array_key_exists($this->topic, self::$topic_list)) {
-            return self::$topic_list[$this->topic];
+        if (array_key_exists($this->topic, self::$topiclist)) {
+            return self::$topiclist[$this->topic];
         }
 
         global $DB;
 
-        $topic =  $DB->get_field('thi_lc_keywords', 'keyword', ['id' => $this->topic]) ?? '-';
-        self::$topic_list[$this->topic] = $topic;
+        $topic = $DB->get_field('thi_lc_keywords', 'keyword', ['id' => $this->topic]) ?? '-';
+        self::$topiclist[$this->topic] = $topic;
         return $topic;
     }
 }

@@ -27,23 +27,29 @@ if (!in_array($layout, $layoutwhitelist)) {
 }
 $PAGE->set_pagelayout($layout);
 $PAGE->set_title(get_string('edit_group', 'local_thi_learning_companions'));
-$PAGE->navbar->add(get_string('navbar_groups', 'local_thi_learning_companions'), new moodle_url('/local/thi_learning_companions/group/index.php'));
-$PAGE->navbar->add(get_string('navbar_edit_group', 'local_thi_learning_companions'), new moodle_url('/local/thi_learning_companions/group/search.php'));
+$PAGE->navbar->add(
+    get_string('navbar_groups', 'local_thi_learning_companions'),
+    new moodle_url('/local/thi_learning_companions/group/index.php')
+);
+$PAGE->navbar->add(
+    get_string('navbar_edit_group', 'local_thi_learning_companions'),
+    new moodle_url('/local/thi_learning_companions/group/search.php')
+);
 
 $groupid = required_param('groupid', PARAM_INT);
 $group = new \local_thi_learning_companions\group($groupid);
 
 if (!$group->mayedit) {
-    print_error(get_string('group_edit_not_allowed', 'local_thi_learning_companions'));
+    throw new moodle_exception('group_edit_not_allowed', 'local_thi_learning_companions');
 }
-// ICTODO: check that the user has the permission to edit this group
+// ICTODO: check that the user has the permission to edit this group.
 
 $form = new \local_thi_learning_companions\forms\create_edit_group_form(
     null,
     [
         'groupid' => $groupid,
         'cmid' => $group->cmid,
-        'courseid' => $group->courseid
+        'courseid' => $group->courseid,
     ]
 );
 
@@ -55,7 +61,7 @@ $redirectmessage = '';
 $redirectmessagetype = \core\output\notification::NOTIFY_SUCCESS;
 if ($form->is_cancelled()) {
     $redirect = true;
-} elseif ($data = $form->get_data()) {
+} else if ($data = $form->get_data()) {
     try {
         \local_thi_learning_companions\groups::group_update(
             $data->groupid,
@@ -79,17 +85,27 @@ if ($form->is_cancelled()) {
             \core\output\notification::NOTIFY_ERROR
         );
     }
-    // ICTODO: handle exceptions and output a warning if exception thrown or groupid === false
-    // ICTODO: redirect user if everything went well and output a success message
+    // ICTODO: handle exceptions and output a warning if exception thrown or groupid === false.
+    // ICTODO: redirect user if everything went well and output a success message.
 }
 if ($redirect) {
     switch($referrer) {
         case 'chat':
-            redirect(new moodle_url('/local/thi_learning_companions/chat.php?groupid=' . $groupid), $redirectmessage, null, $redirectmessagetype);
+            redirect(
+                new moodle_url('/local/thi_learning_companions/chat.php?groupid=' . $groupid),
+                $redirectmessage,
+                null,
+                $redirectmessagetype
+            );
             break;
         case 'groupsearch':
         default:
-            redirect(new moodle_url('/local/thi_learning_companions/group/search.php'), $redirectmessage, null, $redirectmessagetype);
+            redirect(
+                new moodle_url('/local/thi_learning_companions/group/search.php'),
+                $redirectmessage,
+                null,
+                $redirectmessagetype
+            );
             break;
     }
 }

@@ -170,15 +170,6 @@ class meeting {
         $presentationname = $presentation['name'] ?? null;
         $presentationurl = $presentation['url'] ?? null;
         $response = bigbluebutton_proxy::create_meeting($data, $metadata, $presentationname, $presentationurl);
-        // New recording management: Insert a recordingID that corresponds to the meeting created.
-//        if ($this->instance->is_recorded()) {
-//            $recording = new recording(0, (object) [
-//                'bigbluebuttonbnid' => $this->instance->get_instance_id(),
-//                'recordingid' => $response['internalMeetingID'],
-//                'groupid' => $this->instance->get_group_id()]
-//            );
-//            $recording->create();
-//        }
         return $response;
     }
 
@@ -328,7 +319,7 @@ class meeting {
             // Use the value in the cache.
             return (array) json_decode($result['meeting_info']);
         }
-        // We set the cache to an empty value so then if get_meeting_info raises an exception we still have the
+        // We set the cache to an empty value so then if get_meeting_info raises an exception we still have the.
         // info about the last creation_time, so we don't ask the server again for a bit.
         $defaultcacheinfo = ['creation_time' => time(), 'meeting_info' => '[]'];
         // Pings again and refreshes the cache.
@@ -336,7 +327,7 @@ class meeting {
             $meetinginfo = bigbluebutton_proxy::get_meeting_info($meetingid);
             $cache->set($meetingid, ['creation_time' => time(), 'meeting_info' => json_encode($meetinginfo)]);
         } catch (bigbluebutton_exception $e) {
-            // The meeting is not created on BBB side, so we set the value in the cache so we don't poll again
+            // The meeting is not created on BBB side, so we set the value in the cache so we don't poll again.
             // and return an empty array.
             $cache->set($meetingid, $defaultcacheinfo);
             return [];
@@ -354,11 +345,11 @@ class meeting {
         'disablepublicchat' => 'lockSettingsDisablePublicChat',
         'disablenote' => 'lockSettingsDisableNote',
         'lockonjoin' => 'lockSettingsLockOnJoin',
-        'hideuserlist' => 'lockSettingsHideUserList'
+        'hideuserlist' => 'lockSettingsHideUserList',
     ];
     /**
      * Helper to prepare data used for create meeting.
-     * @todo moderatorPW and attendeePW will be removed from create after release of BBB v2.6.
+     * Todo moderatorPW and attendeePW will be removed from create after release of BBB v2.6.
      *
      * @return array
      */
@@ -415,19 +406,15 @@ class meeting {
             'bbb-origin-server-name' => $origindata->originServerName,
             'bbb-origin-server-common-name' => $origindata->originServerCommonName,
             'bbb-origin-tag' => $origindata->originTag,
-            'bbb-context' => "todo: get group name", // $this->instance->get_course()->fullname,
+            'bbb-context' => "todo: get group name",
             'bbb-context-id' => $this->instance->get_group_id(),
-            'bbb-context-name' => "todo: get group name", //trim(html_to_text($this->instance->get_course()->fullname, 0)),
-            'bbb-context-label' => "todo: get group description", // trim(html_to_text($this->instance->get_course()->shortname, 0)),
+            'bbb-context-name' => "todo: get group name",
+            'bbb-context-label' => "todo: get group description",
             'bbb-recording-name' => plugin::html2text($this->instance->get_meeting_name(), 64),
             'bbb-recording-description' => plugin::html2text($this->instance->get_meeting_description(),
                 64),
             'bbb-recording-tags' => "todo: get group tags",
-                /*implode(',', core_tag_tag::get_item_tags_array('core',
-                    'course_modules', $this->instance->get_cm_id())), // Same as $id.*/
             'bbb-meeting-size-hint' => "todo: check what to set here",
-               /* count_enrolled_users(context_course::instance($this->instance->get_course_id()),
-                    '', $this->instance->get_group_id()),*/
         ];
         // Special metadata for recording processing.
         if ((boolean) config::get('recordingstatus_enabled')) {
@@ -529,9 +516,6 @@ class meeting {
             // If user is not administrator nor moderator (user is student) and waiting is required.
             throw new meeting_join_exception('waitformoderator');
         }
-
-        // Moodle event logger: Create an event for meeting joined.
-//        logger::log_meeting_joined_event($this->instance, $origin);
 
         // Before executing the redirect, increment the number of participants.
         roles::participant_joined($this->instance->get_meeting_id(), $this->instance->is_moderator());

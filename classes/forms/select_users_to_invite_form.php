@@ -15,6 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace local_thi_learning_companions;
 
+defined('MOODLE_INTERNAL') || die();
+global $CFG;
+require_once($CFG->libdir . '/formslib.php');
 /**
  * Enrol users form.
  *
@@ -24,24 +27,17 @@ namespace local_thi_learning_companions;
  * @copyright 2016 Damyon Wiese
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
-global $CFG;
-require_once($CFG->libdir . '/formslib.php');
-
-class select_users_to_invite_form extends \moodleform
-{
+class select_users_to_invite_form extends \moodleform {
 
     /**
      * Form definition.
      * @return void
      */
-    public function definition()
-    {
+    public function definition() {
         $context = $this->_customdata->context;
         $groupid = $context->id;
         if (!groups::may_view_group($groupid)) {
-            print_error('no_permission_invite_group', 'local_thi_learning_companions');
+            throw new \moodle_exception('no_permission_invite_group', 'local_thi_learning_companions');
         }
         $mform = $this->_form;
         $mform->setDisableShortforms();
@@ -56,7 +52,7 @@ class select_users_to_invite_form extends \moodleform
             'perpage' => 100,
         ];
 
-        $mform->addElement('autocomplete', 'userlist', get_string('selectusers', 'local_thi_learning_companions'), array(), $options);
+        $mform->addElement('autocomplete', 'userlist', get_string('selectusers', 'local_thi_learning_companions'), [], $options);
         $this->add_action_buttons();
     }
 
@@ -68,8 +64,7 @@ class select_users_to_invite_form extends \moodleform
      * @return array of "element_name"=>"error_description" if there are errors,
      *         or an empty array if everything is OK (true allowed for backwards compatibility too).
      */
-    public function validation($data, $files)
-    {
+    public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         if (!empty($data['startdate']) && !empty($data['timeend'])) {
             if ($data['startdate'] >= $data['timeend']) {

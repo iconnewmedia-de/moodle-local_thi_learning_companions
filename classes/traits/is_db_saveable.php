@@ -36,6 +36,6 @@ trait is_db_saveable {
         return static::from_record($record);
     }
 
-    abstract static function get_table_name(): string;
-    abstract static function from_record($record);
+    abstract public static function get_table_name(): string;
+    abstract public static function from_record($record);
 }
