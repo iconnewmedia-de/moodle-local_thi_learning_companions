@@ -180,7 +180,8 @@ class groups {
     /**
      * @param array $userids
      * @param int $groupid
-     * @return void
+     *
+     * @return bool
      */
     public static function invite_users_to_group(array $userids, int $groupid) {
         $success = false;
@@ -259,11 +260,11 @@ class groups {
             $context = \context_system::instance();
             $options = [];
             $data = file_postupdate_standard_editor($data, 'description', $options, $context, 'local_learningcompanions', 'description', $groupid);
-            $DB->set_field('lc_groups', 'description', $data->description, array('id' => $groupid));
+            $DB->set_field('lc_groups', 'description', $data->description, ['id' => $groupid]);
             self::save_group_image($groupid, $data->groupimage);
             self::group_assign_keywords($groupid, $data->keywords);
-            self::group_add_member($groupid, $USER->id, 1);
             self::create_group_chat($groupid);
+            self::group_add_member($groupid, $USER->id, 1);
             $transaction->allow_commit();
 
             group_created::make($USER->id, $groupid, $data->keywords, $record->courseid, $record->cmid)->trigger();

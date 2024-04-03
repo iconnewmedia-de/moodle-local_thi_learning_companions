@@ -1,7 +1,7 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 require_once $CFG->dirroot . '/lib/form/editor.php';
-MoodleQuickForm::registerElementType('lccustomeditor', __DIR__ . '/' . __FILE__, 'MoodleQuickForm_lccustomeditor');
+MoodleQuickForm::registerElementType('lccustomeditor', __FILE__, 'MoodleQuickForm_lccustomeditor');
 
 /**
  * like MoodleQuickForm_editor but allows to specify which buttons to use by passsing a value for 'atto:toolbar' in the options array

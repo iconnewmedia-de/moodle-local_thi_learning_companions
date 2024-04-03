@@ -63,7 +63,7 @@ class group_created extends \core\event\base {
         return "The user with id '$this->userid' created a group with id '$this->objectid'.";
     }
 
-    public static function make(int $creatorId, int $groupId, array $topics = [], int $courseId = 0, int $cmId = 0) {
+    public static function make(int $creatorId, int $groupId, array $topics = [], int $courseId = 0, $cmId = 0) {
         $params = [
             'objectid' => $groupId,
             'userid' => $creatorId,
