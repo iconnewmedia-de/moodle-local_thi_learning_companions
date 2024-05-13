@@ -447,6 +447,9 @@ class groups {
         $record->relatedid = $groupid;
         $record->timecreated = time();
         $record->course = $DB->get_field('lc_groups', 'courseid', array('id' => $groupid));
+        if ($DB->record_exists('lc_chat', ['chattype' => $record->chattype, 'relatedid' => $record->relatedid])){
+            return; // already exists (for some reason) - nothing to do
+        }
         $DB->insert_record('lc_chat', $record);
     }
 
