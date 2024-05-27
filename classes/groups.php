@@ -284,8 +284,8 @@ class groups {
             $DB->set_field('thi_lc_groups', 'description', $data->description, ['id' => $groupid]);
             self::save_group_image($groupid, $data->groupimage);
             self::group_assign_keywords($groupid, $data->keywords);
-            self::group_add_member($groupid, $USER->id, 1);
             self::create_group_chat($groupid);
+            self::group_add_member($groupid, $USER->id, 1);
             $transaction->allow_commit();
 
             group_created::make($USER->id, $groupid, $data->keywords, $record->courseid, $record->cmid)->trigger();
@@ -474,6 +474,9 @@ class groups {
         $record->relatedid = $groupid;
         $record->timecreated = time();
         $record->course = $DB->get_field('thi_lc_groups', 'courseid', ['id' => $groupid]);
+        if ($DB->record_exists('thi_lc_chat', ['chattype' => $record->chattype, 'relatedid' => $record->relatedid])){
+            return; // already exists (for some reason) - nothing to do
+        }
         $DB->insert_record('thi_lc_chat', $record);
     }
 
