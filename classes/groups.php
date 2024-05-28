@@ -350,16 +350,6 @@ class groups {
     }
 
     /**
-     * @return string[]
-     */
-    public static function get_available_topics() {
-        // ICTODO: this is just a generic placeholder. Find out where we can get topics from.
-        // ICTODO: get topics relevant to the student
-        // - maybe from their profile fields or course categories for their enrolled courses.
-        return ['IT', 'Mathematik', 'Maschinenbau'];
-    }
-
-    /**
      * @param $groupid
      * @param $image
      * @return void

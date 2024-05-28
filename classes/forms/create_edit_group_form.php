@@ -53,7 +53,6 @@ class create_edit_group_form extends \moodleform {
     protected function definition() {
         global $CFG;
         $mform = $this->_form;
-        $topicchoices = groups::get_available_topics();
 
         $referrer = optional_param('referrer', '', PARAM_TEXT);
 
