@@ -20,11 +20,17 @@ require_login();
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 
-global $USER, $PAGE;
+global $USER, $PAGE, $DB;
 $PAGE->set_context(context_system::instance());
+
 $groupid = required_param('groupid', PARAM_INT);
-$questionid = required_param('questionid', PARAM_INT);
-$chatid = required_param('chatid', PARAM_INT);
+$questionid = optional_param('questionid', 0, PARAM_INT);
+$chatid = optional_param('chatid', 0, PARAM_INT);
+if ($chatid === 0) {
+    $chatid = $DB->get_field('thi_lc_chat', 'id',
+        ['relatedid' => $groupid, 'chattype' => local_thi_learning_companions\groups::CHATTYPE_GROUP]
+    );
+}
 $firstpostid = optional_param('firstPostId', null, PARAM_INT);
 $includedpostid = optional_param('includedPostId', 0, PARAM_INT);
 if ($questionid > 0) {

@@ -148,12 +148,32 @@ style2 = underline, strike',
             $mform->setDefault('chatid', $chatid);
         }
         $mform->setType('chatid', PARAM_INT);
-
+        // Needed for CSS - depending on the active editor we might need to position the send button a little lower.
+        $activetexteditor = $this->get_active_texteditor();
         $mform->addElement(
             'html',
-            '<span id="local_thi_learning_companions_chat-send" class="btn btn-primary">' .
+            '<span id="local_thi_learning_companions_chat-send" class="thi_learning_companions_chat_editor_' .
+            $activetexteditor . ' btn btn-primary">' .
             get_string('send', 'local_thi_learning_companions') . '</span>'
         );
+    }
+
+    /**
+     * returns the name of the text editor that is currently being used (ATTO, TinyMCE, ...)
+     * @return string|void
+     */
+    protected function get_active_texteditor() {
+        global $CFG;
+        if (empty($CFG->texteditors)) {
+            $CFG->texteditors = 'atto,tiny,textarea';
+        }
+        $active = explode(',', $CFG->texteditors);
+
+        foreach ($active as $editorname) {
+            if (get_texteditor($editorname)) {
+                return $editorname;
+            }
+        }
     }
 
     /**

@@ -249,9 +249,25 @@ class groups {
      */
     public static function group_create($data) {
         global $DB, $USER;
-        // ICTODO: check if the user has the permission to create a group for this course.
-        // ICTODO: check if there's already a group with that name by that user for that course
-        // - don't create groups that are indistinguishable from eachother.
+        // Check if the user has the permission to create a group for this course.
+        $contextsystem = \context_system::instance();
+        if (!empty($data->courseid)
+            && !has_capability('local/thi_learning_companions:group_manage', $contextsystem)
+        ) {
+            $context = \context_course::instance($data->courseid);
+            $isenrolled = is_enrolled($context);
+            if (!$isenrolled) {
+                throw new \moodle_exception(get_string('no_permission_to_create_course', 'local_thi_learning_companions'));
+            }
+        }
+        // Check if there's already a group with that name by that user for that course.
+        // Don't create groups that are indistinguishable from eachother.
+        $similargroupexists = $DB->record_exists('thi_lc_groups',
+            ['courseid' => $data->courseid, 'createdby' => $USER->id, 'name' => $data->name]);
+        if ($similargroupexists) {
+            throw new \moodle_exception(get_string('no_group_duplicates_allowed', 'local_thi_learning_companions'));
+        }
+
         $record = new \stdClass();
         $record->name = $data->name;
         if (is_array($data->description_editor)) {
@@ -288,7 +304,7 @@ class groups {
             self::group_add_member($groupid, $USER->id, 1);
             $transaction->allow_commit();
 
-            group_created::make($USER->id, $groupid, $data->keywords, $record->courseid, $record->cmid)->trigger();
+            group_created::make($USER->id, $groupid, $data->keywords, (int)$record->courseid, (int)$record->cmid)->trigger();
             return $groupid;
         } catch (\Exception $e) {
             $transaction->rollback($e);
@@ -474,8 +490,8 @@ class groups {
         $record->relatedid = $groupid;
         $record->timecreated = time();
         $record->course = $DB->get_field('thi_lc_groups', 'courseid', ['id' => $groupid]);
-        if ($DB->record_exists('thi_lc_chat', ['chattype' => $record->chattype, 'relatedid' => $record->relatedid])){
-            return; // already exists (for some reason) - nothing to do
+        if ($DB->record_exists('thi_lc_chat', ['chattype' => $record->chattype, 'relatedid' => $record->relatedid])) {
+            return; // Already exists (for some reason) - nothing to do.
         }
         $DB->insert_record('thi_lc_chat', $record);
     }

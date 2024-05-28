@@ -312,6 +312,9 @@ $string['group_invite_noselection'] = 'No users selected yet';
 $string['users_invited'] = 'The selected user(s) got invited';
 $string['modal-groupdetails-needsnewadmin'] = 'Please choose a new administrator for the group';
 
+$string['no_permission_to_create_course'] = 'You have no permission to create a group for that course - you need to be enrolled in the course first';
+$string['no_group_duplicates_allowed'] = 'You have already created a group with that name for the same course. Please avoid creating duplicate groups.';
+
 require('_messages.php');
 require('_navbar.php');
 require('_chat.php');

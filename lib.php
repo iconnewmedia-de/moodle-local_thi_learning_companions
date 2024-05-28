@@ -122,8 +122,11 @@ function local_thi_learning_companions_pluginfile($course, $record, $context, $f
         $filearea,
         $groupid,
         $filepath,
-        $filename) || $file->is_directory()
+        $filename)
     ) {
+        send_file_not_found();
+    }
+    if ($file->is_directory()) {
         send_file_not_found();
     }
 

@@ -132,6 +132,9 @@
     right: 15px;
     border-radius: 0;
 }
+#local_thi_learning_companions_chat-send.thi_learning_companions_chat_editor_tiny {
+    top: 50px;
+}
 #thi_learning_companions_chat form[action$="chat.php"] {
     position: relative;
 }
@@ -530,3 +533,4 @@ body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable 
         width: 100% !important;
     }
 }
+

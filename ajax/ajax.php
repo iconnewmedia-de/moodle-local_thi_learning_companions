@@ -26,7 +26,7 @@ define('AJAX_SCRIPT', true);
  */
 
 require_once(dirname(__DIR__, 3).'/config.php');
-require_once(dirname(__DIR__, 1).'/classes/local_thi_learning_companions\AjaxActions.php');
+require_once(dirname(__DIR__, 1).'/classes/ajaxactions.php');
 require_login();
 
 global $CFG, $DB, $OUTPUT, $PAGE;
