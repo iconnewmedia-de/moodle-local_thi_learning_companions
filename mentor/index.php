@@ -36,10 +36,10 @@ $PAGE->navbar->add(
     new moodle_url('/local/thi_learning_companions/mentor/index.php')
 );
 
-$mentortopics = mentors::get_all_mentor_keywords($USER->id, true);
+$mentortopics = mentors::get_all_mentor_topics($USER->id);
 $askedquestions = mentors::get_my_asked_questions($USER->id);
 $mymentorquestions = mentors::get_mentor_questions_by_user_id($USER->id);
-$allmentorquestions = mentors::get_mentor_questions_by_topics($mentortopics);
+$allmentorquestions = mentors::get_open_mentor_questions_by_topics($mentortopics);
 $learningnuggetcomments = mentors::get_learning_nugget_comments();
 
 echo $OUTPUT->header();

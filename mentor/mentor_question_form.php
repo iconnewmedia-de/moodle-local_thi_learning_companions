@@ -39,11 +39,12 @@ class mentor_question_form extends \moodleform {
             $mform->addElement('static', 'mentorname', get_string('mentor', 'local_thi_learning_companions'), $mentorname);
         }
         $usertopics = \local_thi_learning_companions\get_topics_of_user_courses();
+        $topicoptions = array_combine($usertopics, $usertopics);
         $mform->addElement(
             'select',
             'questiontopic',
             get_string('mentor_question_topic', 'local_thi_learning_companions'),
-            $usertopics
+            $topicoptions
         );
         $mform->setType('questiontopic', PARAM_TEXT);
         $mform->addElement('text', 'subject', get_string('mentor_question_subject', 'local_thi_learning_companions'));

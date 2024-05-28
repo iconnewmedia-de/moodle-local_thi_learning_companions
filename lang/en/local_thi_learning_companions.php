@@ -314,6 +314,9 @@ $string['modal-groupdetails-needsnewadmin'] = 'Please choose a new administrator
 
 $string['no_permission_to_create_course'] = 'You have no permission to create a group for that course - you need to be enrolled in the course first';
 $string['no_group_duplicates_allowed'] = 'You have already created a group with that name for the same course. Please avoid creating duplicate groups.';
+$string['topic_help'] = 'The courses that you are enrolled in can have topics assigned to them. Here you can select from the topics of your courses.';
+$string['subject_help'] = 'Please summarize the question here in a few words.';
+$string['question_asked'] = 'Your question has been added and mentors will now be able to answer.';
 
 require('_messages.php');
 require('_navbar.php');

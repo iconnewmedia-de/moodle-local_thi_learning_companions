@@ -40,4 +40,3 @@ echo $OUTPUT->render_from_template('local_thi_learning_companions/mentor/mentor_
 ]);
 
 echo $OUTPUT->footer();
-

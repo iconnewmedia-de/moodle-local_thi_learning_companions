@@ -45,7 +45,7 @@ function chat_handle_submission($data, $form) {
 
 /**
  * @param $courseid
- * @return int[]|string[]
+ * @return string[]
  * @throws \dml_exception
  */
 function get_course_topics($courseid) {
@@ -96,7 +96,14 @@ function get_topics_of_user_courses(int $userid = null) {
             AND ctx.instanceid " . $coursecondition,
         $courseparams
     );
-    return array_keys($records);
+    $topics = [];
+    foreach($records as $key => $value) {
+        $key = trim($key);
+        if (!empty($key)) {
+            $topics[] = $key;
+        }
+    }
+    return $topics;
 }
 
 /**

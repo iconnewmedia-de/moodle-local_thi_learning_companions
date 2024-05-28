@@ -212,12 +212,12 @@ class mentors {
     }
 
     /**
-     * @param int[] $topicids
+     * @param int[] $topics
      *
      * @return array
      */
-    public static function get_mentor_questions_by_topics(array $topicids): array {
-        return question::get_all_questions_by_topics($topicids);
+    public static function get_open_mentor_questions_by_topics(array $topics): array {
+        return question::get_all_questions_by_topics($topics, true);
     }
 
     /**
@@ -333,6 +333,20 @@ class mentors {
         }
 
         return $keywords;
+    }
+
+    /**
+     * @param $userid
+     * @return false|mixed
+     * @throws \dml_exception
+     */
+    public static function get_all_mentor_topics($userid = null) {
+        global $USER, $DB;
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+        $topics = $DB->get_records('thi_lc_mentors', ['userid' => $userid], 'topic', 'topic');
+        return array_keys($topics);
     }
 
     /**

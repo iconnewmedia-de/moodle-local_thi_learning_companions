@@ -51,10 +51,17 @@ class ask_open_question extends \moodleform {
         global $USER;
         $mform = $this->_form;
         $usertopics = \local_thi_learning_companions\get_topics_of_user_courses($USER->id);
-        $usertopics = array_combine($usertopics, $usertopics);
+        $choices = [];
+        foreach($usertopics as $usertopic) {
+            $usertopic = trim($usertopic);
+            if (!empty($usertopic)) {
+                $choices[$usertopic] = $usertopic;
+            }
+        }
+
         // ICTODO: to be discussed - should the topics be related to groups?
         // Mentors get their role based on their courses, not their groups.
-        $topics = array_merge([0 => get_string('please_choose', 'local_thi_learning_companions')], $usertopics);
+        $topics = array_merge([0 => get_string('please_choose', 'local_thi_learning_companions')], $choices);
 
         $mform->addElement('select', 'topic', get_string('topic', 'local_thi_learning_companions'), $topics);
         $mform->setType('topic', PARAM_TEXT);
@@ -64,7 +71,7 @@ class ask_open_question extends \moodleform {
 
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
-        if ($data->topics == 0) {
+        if ($data['topic'] == 0) {
             $errors['topic'] = get_string('please_choose_a_topic', 'local_thi_learning_companions');
         }
         return $errors;

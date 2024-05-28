@@ -50,7 +50,7 @@ class question {
         $this->timecreated = time();
     }
 
-    public static function ask_new_open_question(string $question, string $title, int $topic) {
+    public static function ask_new_open_question(string $question, string $title, string $topic) {
         global $USER;
 
         $newquestion = new self($USER->id, 0, $question, $title, $topic);
@@ -59,7 +59,7 @@ class question {
         return $newquestion;
     }
 
-    public static function ask_new_question(string $question, string $title, int $topic, int $mentorid) {
+    public static function ask_new_question(string $question, string $title, string $topic, int $mentorid) {
         global $USER;
 
         $newquestion = new self($USER->id, $mentorid, $question, $title, $topic);
@@ -79,7 +79,7 @@ class question {
 
         return $question;
     }
-    private static function question_with_no_permission($record): self {
+    private static function question_with_no_permission(): self {
         $question = new self(0, 0,
             get_string('no_permission_for_this_question', 'local_thi_learning_companions'),
             get_string('invalid_question_id', 'local_thi_learning_companions'), '');
@@ -178,11 +178,21 @@ class question {
         return $questions;
     }
 
-    public static function get_all_questions_by_topics(array $topics) {
+    /**
+     * @param array $topics
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function get_all_questions_by_topics(array $topics, bool $onlyopenquestions = false) {
         global $DB;
-
+        if (empty($topics)) {
+            return [];
+        }
         [$sql, $params] = $DB->get_in_or_equal($topics);
-
+        if ($onlyopenquestions) {
+            $sql .= ' AND mentorid = 0';
+        }
         $records = $DB->get_records_sql('SELECT * FROM {thi_lc_mentor_questions} WHERE topic '.$sql, $params);
         $questions = [];
         foreach ($records as $record) {
@@ -255,7 +265,7 @@ class question {
 
     public function get_last_activity_dmy() {
         $date = $this->get_last_activity();
-        if ($date === null) {
+        if ($date === null || $date == 0) {
             return '-';
         }
         return userdate($this->get_last_activity(), get_string('strftimedatefullshort', 'langconfig'));

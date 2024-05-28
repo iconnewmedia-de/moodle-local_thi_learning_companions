@@ -33,7 +33,7 @@ $PAGE->navbar->add(
 $questionstome = \local_thi_learning_companions\mentors::get_mentor_questions_by_user_id($USER->id);
 $questionstome = array_values($questionstome);
 $mytopics = \local_thi_learning_companions\mentors::get_mentorship_topics($USER->id);
-$questionstoallmentors = \local_thi_learning_companions\mentors::get_mentor_questions_by_topics($mytopics);
+$questionstoallmentors = \local_thi_learning_companions\mentors::get_open_mentor_questions_by_topics($mytopics);
 $questionstoallmentors = array_values($questionstoallmentors);
 $hasquestionstome = count($questionstome) > 0;
 $hasquestionstoallmentors = count($questionstoallmentors) > 0;
