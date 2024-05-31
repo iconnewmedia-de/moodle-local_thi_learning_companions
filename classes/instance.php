@@ -19,7 +19,7 @@ use stdClass;
 use context_system;
 use moodle_url;
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->dirroot . "/mod/bigbluebuttonbn/classes/instance.php");;
+require_once($CFG->dirroot . "/mod/bigbluebuttonbn/classes/instance.php");
 class instance extends \mod_bigbluebuttonbn\instance {
 
     public function __construct(int $groupid, stdClass $instancedata) {

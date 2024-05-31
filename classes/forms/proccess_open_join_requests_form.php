@@ -18,7 +18,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 use local_thi_learning_companions\groups;
 
-require_once($CFG->libdir . "/formslib.php");;
+require_once($CFG->libdir . "/formslib.php");
 
 class proccess_open_join_requests_form extends \moodleform {
 

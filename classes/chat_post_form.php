@@ -16,9 +16,9 @@
 namespace local_thi_learning_companions;
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
-require_once($CFG->libdir . DIRECTORY_SEPARATOR . 'formslib.php');;
-require_once($CFG->dirroot . DIRECTORY_SEPARATOR . 'repository' . DIRECTORY_SEPARATOR . 'lib.php');;
-require_once(__DIR__ . '/lccustomeditor.php');;
+require_once($CFG->libdir . DIRECTORY_SEPARATOR . 'formslib.php');
+require_once($CFG->dirroot . DIRECTORY_SEPARATOR . 'repository' . DIRECTORY_SEPARATOR . 'lib.php');
+require_once(__DIR__ . '/lccustomeditor.php');
 
 /**
  *
@@ -70,7 +70,7 @@ class chat_post_form extends \moodleform {
      */
     public static function get_upload_size_limit() {
         global $CFG;
-        require_once($CFG->dirroot . '/lib/setuplib.php');;
+        require_once($CFG->dirroot . '/lib/setuplib.php');
         $config = get_config('local_thi_learning_companions');
         $maxbytes = intval($config->upload_limit_per_message) . "M";
         $maxbytes = get_real_size($maxbytes);
@@ -114,7 +114,7 @@ style2 = underline, strike',
         $groupid = optional_param('groupid', null, PARAM_INT);
         // If the group is closed, use the "request to join" string, otherwise use the "join group" string.
         $joingroupstring = get_string('join_group_link_text', 'local_thi_learning_companions');
-        if ($DB->get_record('thi_lc_groups', ['id' => $groupid])->closedgroup) {
+        if ($groupid && $DB->get_record('thi_lc_groups', ['id' => $groupid])->closedgroup) {
             $joingroupstring = get_string('request_join_group', 'local_thi_learning_companions');
         }
 

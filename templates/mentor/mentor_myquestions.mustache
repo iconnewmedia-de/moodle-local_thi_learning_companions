@@ -15,12 +15,12 @@
             <tr>
                 <td>
                     <span data-balloon="{{question}}" data-balloon-pos="right">
-                       <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{title}}</a>
+                       <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{title}}</a>
                     </span>
                 </td>
                 <td>
                     {{#get_answer_count}}
-                        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
+                        <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
                     {{/get_answer_count}}
                     {{^get_answer_count}}
                         0
@@ -57,10 +57,10 @@
 {{/askedquestions}}
 <div class="d-flex justify-content-center ask-new-question-wrapper">
     <div class="local_thi_learning_companions_mentor_asknewquestion">
-        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/ask_open_question.php" class="btn btn-primary">{{#str}}ask_new_open_question, local_thi_learning_companions{{/str}}</a>
+        <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/ask_open_question.php" class="btn btn-primary">{{#str}}ask_new_open_question, local_thi_learning_companions{{/str}}</a>
     </div>
     <div class="local_thi_learning_companions_mentor_asknewquestion">
-        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/search.php" class="btn btn-primary">{{#str}}ask_mentor, local_thi_learning_companions{{/str}}</a>
+        <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/search.php" class="btn btn-primary">{{#str}}ask_mentor, local_thi_learning_companions{{/str}}</a>
     </div>
 </div>
 

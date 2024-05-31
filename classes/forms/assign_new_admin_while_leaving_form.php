@@ -23,7 +23,7 @@ use local_thi_learning_companions\group;
 use local_thi_learning_companions\groups;
 use moodle_url;
 
-require_once($CFG->libdir . "/formslib.php");;
+require_once($CFG->libdir . "/formslib.php");
 
 class assign_new_admin_while_leaving_form extends dynamic_form {
     /**

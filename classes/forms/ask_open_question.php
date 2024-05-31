@@ -18,8 +18,8 @@ namespace local_thi_learning_companions\forms;
 use local_thi_learning_companions\groups;
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
-require_once($CFG->libdir . "/formslib.php");;
-require_once(__DIR__ . "/../../locallib.php");;
+require_once($CFG->libdir . "/formslib.php");
+require_once(__DIR__ . "/../../locallib.php");
 
 class ask_open_question extends \moodleform {
     protected function definition() {

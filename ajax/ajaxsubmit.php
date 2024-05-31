@@ -19,7 +19,7 @@ require_once(dirname(__DIR__, 3). '/config.php');
 require_login();
 require_once(dirname(__DIR__) . "/locallib.php");
 global $DB, $PAGE, $CFG;
-require_once($CFG->libdir . '/filelib.php');;
+require_once($CFG->libdir . '/filelib.php');
 
 $context = context_system::instance();
 $PAGE->set_context($context);

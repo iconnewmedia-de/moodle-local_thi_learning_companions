@@ -213,12 +213,16 @@ class question {
         }
 
         $chat = $this->get_chat();
-
-        return $this->last_active = $DB->get_field(
-            'thi_lc_chat_comment',
-            'MAX(timecreated)',
-            ['chatid' => $chat->id, 'timedeleted' => null]
-        );
+        if (!$chat) {
+            $this->last_active = 0;
+        } else {
+            $this->last_active = $DB->get_field(
+                'thi_lc_chat_comment',
+                'MAX(timecreated)',
+                ['chatid' => $chat->id, 'timedeleted' => null]
+            );
+        }
+        return $this->last_active;
     }
 
     private function get_chat() {
@@ -281,10 +285,16 @@ class question {
         if (isset($this->answer_count)) {
             return $this->answer_count;
         }
-        return $this->answer_count = $DB->count_records(
-            'thi_lc_chat_comment',
-            ['chatid' => $this->get_chat()->id, 'timedeleted' => null]
-        );
+        $chat = $this->get_chat();
+        if (!$chat) {
+            $this->answer_count = 0;
+        } else {
+            $this->answer_count = $DB->count_records(
+                'thi_lc_chat_comment',
+                ['chatid' => $chat->id, 'timedeleted' => null]
+            );
+        }
+        return $this->answer_count;
     }
 
     public function get_topic() {

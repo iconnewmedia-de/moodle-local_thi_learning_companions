@@ -8,7 +8,7 @@
             </div>
                 {{^question.is_closed}}
                     <div class="col-12 d-flex justify-content-center">
-                        <a class="btn btn-primary btn-lg" href="/local/thi_learning_companions/mentor/close_question.php?id={{question.get_id}}"><i class="fa fa-check"></i> {{#str}}close_question, local_thi_learning_companions{{/str}}</a>
+                        <a class="btn btn-primary btn-lg" href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/close_question.php?id={{question.get_id}}"><i class="fa fa-check"></i> {{#str}}close_question, local_thi_learning_companions{{/str}}</a>
                     </div>
                 {{/question.is_closed}}
         </div>

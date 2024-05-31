@@ -34,7 +34,7 @@ $string['thi_learning_companions:group_manage'] = 'Manage groups';
 $string['thi_learning_companions:delete_comments_of_others'] = 'Delete comments of other users';
 $string['thi_learning_companions:mentor_view'] = 'View mentors';
 $string['adminareaname'] = 'Learning Companions';
-$string['datatables_url'] = $CFG->wwwroot . '/local/thi_learning_companions/lang/en/datatables.json';
+$string['datatables_url'] = $CFG->wwwroot . '/local/thi_learning_companions/js/lang_datatables/en/datatables.json';
 
 $string['create_new_group'] = 'Create new group';
 $string['no_permission_create_group'] = 'You don\'t have the permission to create groups';
@@ -317,8 +317,158 @@ $string['no_group_duplicates_allowed'] = 'You have already created a group with 
 $string['topic_help'] = 'The courses that you are enrolled in can have topics assigned to them. Here you can select from the topics of your courses.';
 $string['subject_help'] = 'Please summarize the question here in a few words.';
 $string['question_asked'] = 'Your question has been added and mentors will now be able to answer.';
+$string['messageprovider:group_join_requested'] = 'Group Join request';
+$string['messageprovider:appointed_to_admin'] = 'Appointed to admin';
+$string['messageprovider:group_join_accepted'] = 'Group Join accepted';
+$string['messageprovider:group_join_denied'] = 'Group Join denied';
+$string['messageprovider:invited_to_group'] = 'Invited to group';
 
-require('_messages.php');
-require('_navbar.php');
-require('_chat.php');
-require('_events.php');
+// Group Join Requested.
+$string['message_group_join_requested_small'] = 'New request to join group {$a}';
+$string['message_group_join_requested_subject'] = 'Group Join request';
+$string['message_group_join_requested_body'] = 'Hello {$a->receivername},
+
+{$a->sendername} has requested to join your group "{$a->groupname}".
+Please visit the group page to accept or decline the request.';
+$string['message_group_join_requested_body_html'] = '<h4>Hello {$a->receivername},</h4>
+<p>
+{$a->sendername} has requested to join your group "{$a->groupname}".<br>
+Please visit the group page to accept or decline the request.
+</p>';
+
+// Appointed to Admin.
+$string['message_appointed_to_admin_small'] = 'You are now the admin of group {$a}';
+$string['message_appointed_to_admin_subject'] = 'Appointed to admin';
+$string['message_appointed_to_admin_body'] = 'Hello {$a->receivername},
+
+{$a->sendername} has appointed you to admin of group "{$a->groupname}".';
+$string['message_appointed_to_admin_body_html'] = '<h4>Hello {$a->receivername},</h4>
+<p>
+{$a->sendername} has appointed you to admin of group "{$a->groupname}".</p>';
+
+// Group Join Accepted.
+$string['message_group_join_accepted_small'] = 'Your request to join group {$a} has been accepted';
+$string['message_group_join_accepted_subject'] = 'Group Join request accepted';
+$string['message_group_join_accepted_body'] = 'Hello {$a->receivername},
+
+{$a->sendername} has accepted your request to join group "{$a->groupname}".';
+$string['message_group_join_accepted_body_html'] = '<h4>Hello {$a->receivername},</h4>
+<p>
+{$a->sendername} has accepted your request to join group "{$a->groupname}".</p>';
+
+// Group Join Denied.
+$string['message_group_join_denied_small'] = 'Your request to join group {$a} has been denied';
+$string['message_group_join_denied_subject'] = 'Group Join request denied';
+$string['message_group_join_denied_body'] = 'Hello {$a->receivername},
+
+{$a->sendername} has denied your request to join group "{$a->groupname}".';
+$string['message_group_join_denied_body_html'] = '<h4>Hello {$a->receivername},</h4>
+<p>
+{$a->sendername} has denied your request to join group "{$a->groupname}".</p>';
+
+// Group Inivted.
+$string['message_invited_to_group_small'] = 'You were invited into group {$a}';
+$string['message_invited_to_group_subject'] = 'Group Invite';
+$string['message_invited_to_group_body'] = 'Hello {$a->receivername},
+
+{$a->sendername} has invited you into the group "{$a->groupname}".';
+$string['message_invited_to_group_body_html'] = '<h4>Hello {$a->receivername},</h4>
+<p>
+{$a->sendername} has invited you into the group "{$a->groupname}".</p>';
+
+$string['message_qualified_mentor_subject'] = 'You have qualified as a mentor for the course {$a->coursefullname}';
+$string['message_qualified_mentor_body'] = 'Dear {$a->firstname},
+You have completed the course "{$a->coursefullname}" with a great score and have thereby qualified to become a mentor for that course.
+Becoming a mentor means that fellow students can use this platform to contact you and ask questions regarding the topics that you\'ve qualified for.
+Whether you become a mentor or not is up to you, it is optional and completely voluntary.
+To become a mentor, please follow this link: <a href="{$a->link}">{$a->link}</a>';
+$string['message_qualified_mentor_smallmessage'] = 'Want to become a mentor?';
+$string['navbar_findmentors'] = 'Find mentors';
+$string['navbar_mentors'] = 'Mentors';
+$string['navbar_mentorquestions'] = 'Mentor questions';
+
+// Groups.
+$string['navbar_groups'] = 'Groups';
+$string['navbar_findgroups'] = 'Find groups';
+$string['navbar_confirm_join'] = 'Confirm join';
+$string['navbar_edit_group'] = 'Edit group';
+$string['navbar_create_group'] = 'Create new group';
+
+$string['delete_post'] = 'Delete post';
+$string['report_post'] = 'Report post';
+$string['no_posts_available'] = 'No posts available';
+$string['not_allowed_to_see_posts'] = 'You are not allowed to see posts in this group';
+
+// Chat.
+$string['event_comment_created'] = 'Comment created';
+$string['event_comment_reported'] = 'Comment reported';
+
+// Groups.
+$string['event_group_created'] = 'Group created';
+$string['event_group_deleted'] = 'Group deleted';
+$string['event_group_joined'] = 'Group joined';
+$string['event_group_updated'] = 'Group updated';
+$string['event_group_searched'] = 'Group searched';
+$string['event_group_updated'] = 'Group updated';
+
+// Mentors/Questions.
+$string['event_mentor_assigned'] = 'Mentor assigned';
+$string['event_super_mentor_assigned'] = 'Super mentor assigned';
+$string['event_question_answered'] = 'Question answered';
+$string['event_question_created'] = 'Question created';
+$string['event_question_responded'] = 'Question responded';
+
+$string['mentor_role'] = 'THI Learning Companions Mentor';
+$string['mentor_role_description'] = 'Users who have qualified as mentor for certain topics by achieving badges
+within the courses for that topic.';
+
+$string['groupchatsubcontext'] = 'THI Learning Companions group chat';
+
+$string['privacy:metadata:thi_lc_groups:createdby'] = 'Created by';
+$string['privacy:metadata:thi_lc_groups:name'] = 'Name';
+$string['privacy:metadata:thi_lc_groups:description'] = 'Description';
+$string['privacy:metadata:thi_lc_groups:closedgroup'] = 'Closed group';
+$string['privacy:metadata:thi_lc_groups:timecreated'] = 'time created';
+$string['privacy:metadata:thi_lc_groups:timemodified'] = 'time modified';
+$string['privacy:metadata:thi_lc_groups:courseid'] = 'Course id';
+$string['privacy:metadata:thi_lc_groups:cmid'] = 'Course module id';
+$string['privacy:metadata:thi_lc_group_members:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_group_members:groupid'] = 'Group id';
+$string['privacy:metadata:thi_lc_group_members:isadmin'] = 'is admin';
+$string['privacy:metadata:thi_lc_group_members:joined'] = 'Joined';
+$string['privacy:metadata:thi_lc_group_requests:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_group_requests:groupid'] = 'Group id';
+$string['privacy:metadata:thi_lc_group_requests:timecreated'] = 'time created';
+$string['privacy:metadata:thi_lc_group_requests:denied'] = 'Denied';
+$string['privacy:metadata:thi_lc_mentors:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_mentors:topic'] = 'Topic';
+$string['privacy:metadata:thi_lc_users_mentors:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_users_mentors:mentorid'] = 'Mentor id';
+$string['privacy:metadata:thi_lc_chat_comment:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_chat_comment:chatid'] = 'Chat id';
+$string['privacy:metadata:thi_lc_chat_comment:comment'] = 'Comment';
+$string['privacy:metadata:thi_lc_chat_comment:flagged'] = 'Flagged';
+$string['privacy:metadata:thi_lc_chat_comment:flaggedby'] = 'Flagged by';
+$string['privacy:metadata:thi_lc_chat_comment:timecreated'] = 'Time created';
+$string['privacy:metadata:thi_lc_chat_comment:timedeleted'] = 'Time deleted';
+$string['privacy:metadata:thi_lc_chat_comment:timemodified'] = 'Time modified';
+$string['privacy:metadata:thi_lc_chat_comment_ratings:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_chat_comment_ratings:commentid'] = 'Comment id';
+$string['privacy:metadata:thi_lc_mentor_questions:askedby'] = 'Asked By';
+$string['privacy:metadata:thi_lc_mentor_questions:mentorid'] = 'Mentor id';
+$string['privacy:metadata:thi_lc_mentor_questions:topic'] = 'Topic';
+$string['privacy:metadata:thi_lc_mentor_questions:title'] = 'Title';
+$string['privacy:metadata:thi_lc_mentor_questions:question'] = 'Question';
+$string['privacy:metadata:thi_lc_mentor_questions:timeclosed'] = 'Time closed';
+$string['privacy:metadata:thi_lc_mentor_questions:timecreated'] = 'Time created';
+$string['privacy:metadata:thi_lc_mentor_answers:questionid'] = 'Question id';
+$string['privacy:metadata:thi_lc_mentor_answers:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_mentor_answers:answer'] = 'Answer';
+$string['privacy:metadata:thi_lc_mentor_answers:issolution'] = 'Marked as solution';
+$string['privacy:metadata:thi_lc_mentor_answers:timecreated'] = 'Time created';
+$string['privacy:metadata:thi_lc_chat_lastvisited:userid'] = 'User id';
+$string['privacy:metadata:thi_lc_chat_lastvisited:chatid'] = 'Chat id';
+$string['privacy:metadata:thi_lc_chat_lastvisited:timevisited'] = 'Time visited';
+$string['privacy:metadata:thi_lc_tutor_notifications:questionid'] = 'Question id';
+$string['privacy:metadata:thi_lc_tutor_notifications:tutorid'] = 'Tutor id';
+$string['privacy:metadata:thi_lc_tutor_notifications:timecreated'] = 'Time created';

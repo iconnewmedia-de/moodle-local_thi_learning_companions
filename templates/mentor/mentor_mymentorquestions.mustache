@@ -15,7 +15,7 @@
         {{#mymentorquestions}}
             <tr>
                 <td>
-                    <a data-balloon="{{question}}" data-balloon-pos="right" href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">
+                    <a data-balloon="{{question}}" data-balloon-pos="right" href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">
                         {{title}}
                     </a>
                 </td>
@@ -24,7 +24,7 @@
                 </td>
                 <td>
                     {{#get_answer_count}}
-                        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
+                        <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{get_id}}">{{get_answer_count}}</a>
                     {{/get_answer_count}}
                     {{^get_answer_count}}
                         0

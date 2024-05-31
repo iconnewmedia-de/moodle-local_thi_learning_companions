@@ -13,8 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-require_once(dirname(__DIR__, 2) . '/config.php');;
-require_once(__DIR__ . "/locallib.php");;
+require_once(dirname(__DIR__, 2) . '/config.php');
+require_once(__DIR__ . "/locallib.php");
 
 require_login();
 global $PAGE, $CFG, $OUTPUT, $USER;
@@ -29,6 +29,7 @@ if (!in_array($layout, $layoutwhitelist)) {
 
 $groupid = optional_param('groupid', null, PARAM_INT);
 $group = new \local_thi_learning_companions\group($groupid);
+$action = optional_param('action', null, PARAM_TEXT);
 $mayviewgroup = \local_thi_learning_companions\groups::may_view_group($groupid);
 if ($group->closedgroup && !$mayviewgroup) {
     \local_thi_learning_companions\chat::redirect_to_other_group_chat();
@@ -46,14 +47,14 @@ $PAGE->requires->js(new moodle_url('/local/thi_learning_companions/js/react/buil
 $chat = \local_thi_learning_companions\chat::create_group_chat($groupid);
 
 echo $OUTPUT->header();
-if (isset($_POST['action'])) {
+if (!empty($action)) {
     // Using switch/case just in case we might add further actions later.
-    switch ($_POST['action']) {
+    switch ($action) {
         case "invite":
             \local_thi_learning_companions\invite_users();
             break;
         default:
-            // Nothing to do.
+            // Nothing to do. Only using switch/case in case we'll have more actions in the future
     }
 }
 echo $chat->get_chat_module();

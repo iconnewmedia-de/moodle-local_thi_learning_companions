@@ -13,8 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-require_once(dirname(__DIR__, 3).'/config.php');;
-require_once(dirname(__DIR__).'/lib.php');;
+require_once(dirname(__DIR__, 3).'/config.php');
+require_once(dirname(__DIR__).'/lib.php');
 require_login();
 global $PAGE, $CFG, $OUTPUT;
 

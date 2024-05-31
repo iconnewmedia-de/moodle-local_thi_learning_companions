@@ -192,7 +192,7 @@ function local_thi_learning_companions_output_fragment_invitation_form($args) {
     $args = (object) $args;
     $context = $args->context;
     $o = '';
-    require_once(__DIR__ . '/classes/forms/select_users_to_invite_form.php');;
+    require_once(__DIR__ . '/classes/forms/select_users_to_invite_form.php');
     $mform = new local_thi_learning_companions\select_users_to_invite_form(
         $CFG->wwwroot . "/local/thi_learning_companions/chat.php?groupid=" .
         intval($context->id),

@@ -389,7 +389,7 @@ class mentors {
         if (is_null($userid)) {
             $userid = $USER->id;
         }
-        require_once($CFG->dirroot . '/lib/badgeslib.php');;
+        require_once($CFG->dirroot . '/lib/badgeslib.php');
         $userbadges = \badges_get_user_badges($userid);
         if (empty($userbadges)) {
             return [];
@@ -656,7 +656,8 @@ class mentors {
         $shortname = 'lc_mentor';
         $description = get_string('mentor_role_description', 'local_thi_learning_companions');
         $roleid = \create_role($name, $shortname, $description);
-        // ICTODO: assign capabilities to the role.
+        // assign capabilities to the role.
+        assign_capability('local/thi_learning_companions:mentor_ismentor', CAP_ALLOW, $roleid);
         return $roleid;
     }
 

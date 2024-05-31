@@ -14,8 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->dirroot . '/lib/form/editor.php');;
-MoodleQuickForm::registerElementType('lccustomeditor', __DIR__ . '/' . __FILE__, 'MoodleQuickForm_lccustomeditor');
+require_once($CFG->dirroot . '/lib/form/editor.php');
+MoodleQuickForm::registerElementType(
+    'lccustomeditor',
+    $CFG->dirroot . '/local/thi_learning_companions/classes/' . __FILE__,
+    'MoodleQuickForm_lccustomeditor'
+);
 
 /**
  * like MoodleQuickForm_editor but allows to specify which buttons to use

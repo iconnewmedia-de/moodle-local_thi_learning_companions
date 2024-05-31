@@ -24,9 +24,9 @@ $PAGE->set_url($CFG->wwwroot.'/local/thi_learning_companions/group/search.php');
 $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_thi_learning_companions/group', 'init');
 $PAGE->requires->js_call_amd('local_thi_learning_companions/group', 'select2');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/DataTables/datatables.min.css');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/select2.min.css');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/balloon.css');
+$PAGE->requires->css('/local/thi_learning_companions/js/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/thi_learning_companions/css/select2.min.css');
+$PAGE->requires->css('/local/thi_learning_companions/css/balloon.css');
 $PAGE->navbar->add(
     get_string('navbar_groups', 'local_thi_learning_companions'),
     new moodle_url('/local/thi_learning_companions/group/index.php')

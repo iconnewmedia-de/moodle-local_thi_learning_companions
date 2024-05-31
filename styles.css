@@ -163,7 +163,7 @@
 .thi_learning_companions_rate_comment.thi_learning_companions_israted_by_current_user {
     display: inline-block;
 }
-thi_learning_companions_rate_comment:hover,
+.thi_learning_companions_rate_comment:hover,
 .thi_learning_companions_rate_comment.thi_learning_companions_israted_by_current_user {
     opacity: 1;
 }

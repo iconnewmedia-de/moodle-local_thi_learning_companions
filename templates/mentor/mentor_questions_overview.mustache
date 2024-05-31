@@ -16,12 +16,12 @@
             <tr>
                 <td>
                     <span data-balloon="{{question}}" data-balloon-pos="right">
-                       <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{title}}</a>
+                       <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{title}}</a>
                     </span>
                 </td>
                 <td>
                     {{#get_answer_count}}
-                        <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
+                        <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
                     {{/get_answer_count}}
                     {{^get_answer_count}}
                         0
@@ -75,12 +75,12 @@
     <tr>
         <td>
             <span data-balloon="{{question}}" data-balloon-pos="right">
-               <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{title}}</a>
+               <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{title}}</a>
             </span>
         </td>
         <td>
             {{#get_answer_count}}
-            <a href="{{cfg.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
+            <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/question.php?id={{id}}">{{get_answer_count}}</a>
             {{/get_answer_count}}
             {{^get_answer_count}}
             0
@@ -121,8 +121,8 @@
     {{#latestcomments}}
         <div class="lc_comment">
             <p class="lc_comment_content"><strong>{{content}}</a></strong></p>
-            <p class="lc_comment_path">{{#str}}learning_nugget, local_thi_learning_companions{{/str}}: <a href="{{cfg.wwwroot}}/course/view.php?id={{courseid}}">{{coursefullname}}</a> &gt; <a href="{{cfg.wwwroot}}/mod/{{modulename}}/view.php?id={{cmid}}">{{nuggettitle}}</a></p>
-            <p class="lc_comment_author-info">{{#str}}comment_from, local_thi_learning_companions{{/str}} <a href="{{cfg.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_thi_learning_companions{{/str}} {{#userdate}}{{timecreated}}{{/userdate}}</p>
+            <p class="lc_comment_path">{{#str}}learning_nugget, local_thi_learning_companions{{/str}}: <a href="{{globals.config.wwwroot}}/course/view.php?id={{courseid}}">{{coursefullname}}</a> &gt; <a href="{{globals.config.wwwroot}}/mod/{{modulename}}/view.php?id={{cmid}}">{{nuggettitle}}</a></p>
+            <p class="lc_comment_author-info">{{#str}}comment_from, local_thi_learning_companions{{/str}} <a href="{{globals.config.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_thi_learning_companions{{/str}} {{#userdate}}{{timecreated}}{{/userdate}}</p>
             <hr>
         </div>
     {{/latestcomments}}

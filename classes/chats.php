@@ -211,7 +211,7 @@ class chats {
      */
     protected static function check_uploadsize_total_exceeded($comment) {
         global $CFG;
-        require_once($CFG->dirroot . '/lib/setuplib.php');;
+        require_once($CFG->dirroot . '/lib/setuplib.php');
         $config = get_config('local_thi_learning_companions');
         $maxbytes = intval($config->upload_limit_per_chat) . "M";
         $maxbytes = get_real_size($maxbytes);

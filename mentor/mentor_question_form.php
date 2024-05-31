@@ -16,8 +16,8 @@
 namespace local_thi_learning_companions\mentor;
 use local_thi_learning_companions\mentors;
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->dirroot . '/lib/formslib.php');;
-require_once(__DIR__ . "/../locallib.php");;
+require_once($CFG->dirroot . '/lib/formslib.php');
+require_once(__DIR__ . "/../locallib.php");
 class mentor_question_form extends \moodleform {
     public function definition() {
         global $DB;

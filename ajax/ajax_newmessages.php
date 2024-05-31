@@ -19,7 +19,8 @@ require_once(dirname(__DIR__, 3). '/config.php');
 require_login();
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
-
+$context = context_system::instance();
+$PAGE->set_context($context);
 $groupid = optional_param('groupId', 0, PARAM_INT);
 $lastpostid = required_param('lastPostId', PARAM_INT);
 $questionid = optional_param('questionid', 0, PARAM_INT);

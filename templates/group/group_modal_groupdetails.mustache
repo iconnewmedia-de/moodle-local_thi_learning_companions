@@ -61,8 +61,8 @@
                 {{#str}}modal-groupdetails-reference, local_thi_learning_companions{{/str}}
             </span>
             <span class="group-details-modal-info-content">
-                {{#group.course}}<a href="{{cfg.wwwroot}}/course/view.php?id={{group.courseid}}"><i class="fa fa-chevron-right local_thi_learning_companions_chevron"></i> {{group.course.fullname}}</a>{{/group.course}}
-                {{#cm}}<br><a href="{{cfg.wwwroot}}/mod/{{cm.modname}}/view.php?id={{cm.id}}"><i class="fa fa-chevron-right local_thi_learning_companions_chevron"></i> {{cm.name}}</a>{{/cm}}
+                {{#group.course}}<a href="{{globals.config.wwwroot}}/course/view.php?id={{group.courseid}}"><i class="fa fa-chevron-right local_thi_learning_companions_chevron"></i> {{group.course.fullname}}</a>{{/group.course}}
+                {{#cm}}<br><a href="{{globals.config.wwwroot}}/mod/{{cm.modname}}/view.php?id={{cm.id}}"><i class="fa fa-chevron-right local_thi_learning_companions_chevron"></i> {{cm.name}}</a>{{/cm}}
             </span>
             </div>
             <div class="group-details-modal-info">
@@ -105,7 +105,7 @@
             {{#group.currentuserismember}}
             {{! If the User is in the Group, show the Leave Group and Invite Button }}
             <a href="#" class="btn btn-primary js-leave-group d-block d-sm-inline-block mt-1" data-groupid="{{group.id}}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{#str}}leavegroup, local_thi_learning_companions{{/str}}</a>
-            <a href="/local/thi_learning_companions/chat.php?groupid={{group.id}}" class="btn btn-primary d-block d-sm-inline-block mt-1"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_thi_learning_companions{{/str}}</a>
+            <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/chat.php?groupid={{group.id}}" class="btn btn-primary d-block d-sm-inline-block mt-1"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_thi_learning_companions{{/str}}</a>
             <a href="#" class="btn btn-secondary js-invite-member d-block d-sm-inline-block mt-1" data-groupid="{{group.id}}"><i class="fa fa-plus" aria-hidden="true"></i> {{#str}}invite_to_group, local_thi_learning_companions{{/str}}</a>
             {{/group.currentuserismember}}
             {{^group.currentuserismember}}
@@ -114,11 +114,11 @@
                     <a href="#" class="btn btn-primary js-request-join-group d-block d-sm-inline-block mt-1" data-groupid="{{group.id}}"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}request_join_group, local_thi_learning_companions{{/str}}</a>
                 {{/group.closedgroup}}
                 {{^group.closedgroup}}
-                    <a href="/local/thi_learning_companions/chat.php?groupid={{group.id}}" class="btn btn-primary d-block d-sm-inline-block mt-1"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_thi_learning_companions{{/str}}</a>
+                    <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/chat.php?groupid={{group.id}}" class="btn btn-primary d-block d-sm-inline-block mt-1"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_thi_learning_companions{{/str}}</a>
                 {{/group.closedgroup}}
             {{/group.currentuserismember}}
             {{#group.may_edit}}
-                <a href="{{cfg.wwwroot}}/local/thi_learning_companions/group/edit.php?groupid={{group.id}}&referrer={{referrer}}" class="btn btn-secondary d-block d-sm-inline-block mt-1"><i class="icon-thi_learning_companions-edit" aria-hidden="true"></i>{{#str}}edit_group, local_thi_learning_companions{{/str}}</a>
+                <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/group/edit.php?groupid={{group.id}}&referrer={{referrer}}" class="btn btn-secondary d-block d-sm-inline-block mt-1"><i class="icon-thi_learning_companions-edit" aria-hidden="true"></i>{{#str}}edit_group, local_thi_learning_companions{{/str}}</a>
             {{/group.may_edit}}
         </div>
 

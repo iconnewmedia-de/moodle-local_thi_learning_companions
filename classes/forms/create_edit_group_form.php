@@ -19,7 +19,7 @@ use local_thi_learning_companions\group;
 use local_thi_learning_companions\groups;
 use tool_brickfield\local\areas\mod_choice\option;
 
-require_once($CFG->libdir . "/formslib.php");;
+require_once($CFG->libdir . "/formslib.php");
 
 class create_edit_group_form extends \moodleform {
     public function __construct($action = null,
@@ -57,6 +57,7 @@ class create_edit_group_form extends \moodleform {
         $referrer = optional_param('referrer', '', PARAM_TEXT);
 
         $mform->addElement('hidden', 'referrer', $referrer);
+        $mform->setType('referrer', PARAM_TEXT);
 
         // GROUP NAME.
         $mform->addElement('text', 'name', get_string('groupname', 'local_thi_learning_companions'), 'size="60" maxlength="100"');
@@ -101,7 +102,7 @@ class create_edit_group_form extends \moodleform {
             'ajax' => 'local_thi_learning_companions/nuggetcontext',
             'valuehtmlcallback' => function($value) {
                 global $CFG;
-                require_once($CFG->dirroot . "/question/editlib.php");;
+                require_once($CFG->dirroot . "/question/editlib.php");
                 $cm = get_module_from_cmid($value);
                 return $cm[0]->name;
             },

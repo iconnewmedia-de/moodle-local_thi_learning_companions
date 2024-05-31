@@ -26,13 +26,13 @@ class eventobservers {
         global $DB;
         $data = $event->get_data();
         $modulename = $data['other']['modulename'];
-        require_once(__DIR__ . "/../locallib.php");;
+        require_once(__DIR__ . "/../locallib.php");
         $whitelist = get_moduletypes_for_commentblock();
         if (!in_array($modulename, $whitelist)) {
             return;
         }
         $parentcontextid = $data['contextid'];
-        require_once(__DIR__ . '/../locallib.php');;
+        require_once(__DIR__ . '/../locallib.php');
         create_comment_block($parentcontextid, $modulename);
     }
 
@@ -44,7 +44,7 @@ class eventobservers {
      */
     public static function course_restored(\core\event\course_restored $event) {
         global $CFG;
-        require_once($CFG->dirroot . '/local/thi_learning_companions/locallib.php');;
+        require_once($CFG->dirroot . '/local/thi_learning_companions/locallib.php');
         \local_thi_learning_companions\add_comment_blocks();
     }
 
@@ -96,7 +96,7 @@ class eventobservers {
         if ($info['oldvalue'] == $info['value']) {
             return;
         }
-        require_once(__DIR__ . "/../locallib.php");;
+        require_once(__DIR__ . "/../locallib.php");
         \local_thi_learning_companions\add_comment_blocks();
     }
 }

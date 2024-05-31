@@ -15,8 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 use local_thi_learning_companions\mentors;
 
-require_once(dirname(__DIR__, 3).'/config.php');;
-require_once(dirname(__DIR__).'/lib.php');;
+require_once(dirname(__DIR__, 3).'/config.php');
+require_once(dirname(__DIR__).'/lib.php');
 
 require_login();
 
@@ -26,8 +26,8 @@ $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/thi_learning_companions/mentor/index.php');
 $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_thi_learning_companions/mentor', 'init');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/DataTables/datatables.min.css');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/balloon.css');
+$PAGE->requires->css('/local/thi_learning_companions/js/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/thi_learning_companions/css/balloon.css');
 $PAGE->navbar->add(
     get_string('navbar_mentors', 'local_thi_learning_companions')
 );

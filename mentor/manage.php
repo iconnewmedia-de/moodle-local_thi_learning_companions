@@ -17,8 +17,8 @@
 // Which courses have I qualified for?
 // Which courses have I agreed to become a mentor for?
 
-require_once(dirname(__DIR__, 3).'/config.php');;
-require_once(dirname(__DIR__).'/lib.php');;
+require_once(dirname(__DIR__, 3).'/config.php');
+require_once(dirname(__DIR__).'/lib.php');
 
 $context = context_system::instance();
 require_login();
@@ -28,8 +28,8 @@ $PAGE->set_url($CFG->wwwroot . '/local/thi_learning_companions/mentor/manage.php
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('manage_mentorships', 'local_thi_learning_companions'));
 $PAGE->requires->js_call_amd('local_thi_learning_companions/mentor', 'init');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/DataTables/datatables.min.css');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/balloon.css');
+$PAGE->requires->css('/local/thi_learning_companions/js/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/thi_learning_companions/css/balloon.css');
 $PAGE->navbar->add(
     get_string('navbar_mentors', 'local_thi_learning_companions')
 );

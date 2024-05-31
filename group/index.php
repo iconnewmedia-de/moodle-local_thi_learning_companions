@@ -23,8 +23,8 @@ $PAGE->set_context($context);
 $PAGE->set_url($CFG->wwwroot.'/local/thi_learning_companions/group/index.php');
 $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_thi_learning_companions/group', 'init');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/DataTables/datatables.min.css');
-$PAGE->requires->css('/local/thi_learning_companions/js_lib/balloon.css');
+$PAGE->requires->css('/local/thi_learning_companions/js/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/thi_learning_companions/css/balloon.css');
 
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_thi_learning_companions/group/group_index', [

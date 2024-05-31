@@ -14,9 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 function xmldb_local_thi_learning_companions_install() {
-    require_once(__DIR__ . '/lib.php');;
-    require_once(__DIR__ . '/../locallib.php');;
-    local_thi_learning_companions\db\create_course_customfields();
-    local_thi_learning_companions\db\create_status_profile_field();
+    require_once(__DIR__ . '/../locallib.php');
+    local_thi_learning_companions\create_course_customfields();
+    local_thi_learning_companions\create_status_profile_field();
     local_thi_learning_companions\add_comment_blocks();
 }
