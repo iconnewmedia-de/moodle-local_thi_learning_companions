@@ -44,15 +44,15 @@ At the end of the update process, a form is displayed with the newly recognised 
 
 In order for the block plugin block/learningcompanions to be displayed on all pages, it must be added to the start page (/?redirect=0).
 
-![](D:\xampp80\htdocs\thi_moodle-4.0.6\moodle-41\local\thi_learning_companions\pix\documentation\icon-thi-dokumentation_v0.9_en2.png)
+![](pix\documentation\icon-thi-dokumentation_v0.9_en2.png)
 
 Then configure the block. In the section „Where this block appears“ select for „Page contexts“ the option „Display throughout the entire site“. This block is displayed for all users on all pages.
 
-![](D:\xampp80\htdocs\thi_moodle-4.0.6\moodle-41\local\thi_learning_companions\pix\documentation\icon-thi-dokumentation_v0.9_en3.png)
+![](pix\documentation\icon-thi-dokumentation_v0.9_en3.png)
 
 This block adds all the links to the Learning Companions features on the right-hand column:
 
-![](D:\xampp80\htdocs\thi_moodle-4.0.6\moodle-41\local\thi_learning_companions\pix\documentation\icon-thi-dokumentation_v0.9_en4.png)
+![](pix\documentation\icon-thi-dokumentation_v0.9_en4.png)
 
 The groups to which you belong are listed at the top. For each group, the group picture, the group title, as well as the last comment and the date of the last comment in the group are displayed. The group title is linked to the corresponding group chat.
 If you belong to more than three groups, only three will be displayed at first. Additional groups can be displayed by clicking on „Show (x) more groups“.
@@ -70,7 +70,7 @@ The section „My mentorship“ is only visible to users with the role „Mentor
 The plugin local/learningcompanions adds a new course custom field: „Topic“.
 Edit your courses and enter the associated topic there. These topics help with the group search by topic and determine for which topic a mentor is qualified if he/she has earned a corresponding badge in the course.
 
-![Screen Reader Description](D:\xampp80\htdocs\thi_moodle-4.0.6\moodle-41\local\thi_learning_companions\pix\documentation\icon-thi-dokumentation_v0.9_en5.png "Screen Reader Title")
+![](pix\documentation\icon-thi-dokumentation_v0.9_en5.png)
 
 ###### Configure Badges
 
@@ -78,7 +78,7 @@ To become a mentor for a topic, one must have earned a specific badge in a cours
 These settings can be found under Site administration > General > Learning Companions > Local plugin learningcompanions or the URL admin/settings.php?section=local_learningcompanions.
 There you will find the setting „Mentor badges“:
 
-![](D:\xampp80\htdocs\thi_moodle-4.0.6\moodle-41\local\thi_learning_companions\pix\documentation\icon-thi-dokumentation_v0.9_en6.png)
+![](pix\documentation\icon-thi-dokumentation_v0.9_en6.png)
 
 Here you can enter several terms, separated by commas, which must be part of the badge name. If a user receives a badge with one of these terms in its name, he or she has thus qualified as a mentor for the subject of the course, is informed of this via a Moodle message and can decide for himself or herself whether to accept this role (via the page „My mentorship > Manage mentorship(s)“).
 
@@ -87,7 +87,7 @@ Here you can enter several terms, separated by commas, which must be part of the
 If the block block/learningcompanions_mygroups has been added as described above, then users can jump from any page to the page „Groups > Find Group“ via the link „Group me up“ in this block. When I jump to this page from a course or course module, the list of groups is already pre-filtered by the current course.
 By removing this filter (here „Basic Training“) one can then get the whole list of available groups again.  The icon in the „Joining“ column indicates whether the group is open or closed. Anyone can join an open group or view the chats without being a member of the group. For closed groups, you have to request to join.
 
-![](D:\xampp80\htdocs\thi_moodle-4.0.6\moodle-41\local\thi_learning_companions\pix\documentation\icon-thi-dokumentation_v0.9_en7.png)
+![](pix\documentation\icon-thi-dokumentation_v0.9_en7.png)
 
 ###### Create a group
 
@@ -105,7 +105,7 @@ In the group chat, users can write texts and apply simple formatting such as bol
 Own comments are highlighted in green, reported comments in yellow. Deleted comments appear in the chat with the text „Message deleted“ replaced.
 Hovering over the comments gives you the option to report posts or delete your own.
 
-![](D:\xampp80\htdocs\thi_moodle-4.0.6\moodle-41\local\thi_learning_companions\pix\documentation\icon-thi-dokumentation_v0.9_en8.png)
+![](pix\documentation\icon-thi-dokumentation_v0.9_en8.png)
 
 ###### Plugin-Settings
 
