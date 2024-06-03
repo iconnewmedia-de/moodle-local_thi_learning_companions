@@ -24,9 +24,9 @@ Students seeking expert advice can specifically contact mentors with their quest
 In addition, they can interact with each Learning Nugget (Moodle activity) via a comment block.
 
 The three plugins that make up Learning Companions are:
-local/learningcompanions - this plugin does most of the work. It provides the group chats and group searches, mentor chats and searches, and adding the comment blocks to the Learning Nuggets.
-block/learningcompanions_mygroups - this is a block plugin that is used for navigation and to jump from any Moodle page to the group and mentor searches and chats.
-tool/learningcompanions - this plugin provides administration functionality that allows users with higher rights (admins/managers) to delete reported posts and manage all groups.
+local_thi_learning_companions - this plugin does most of the work. It provides the group chats and group searches, mentor chats and searches, and adding the comment blocks to the Learning Nuggets.
+block_thi_learning_companions_mygroups - this is a block plugin that is used for navigation and to jump from any Moodle page to the group and mentor searches and chats.
+tool_thi_learning_companions - this plugin provides administration functionality that allows users with higher rights (admins/managers) to delete reported posts and manage all groups.
 
 
 ##### Quick start
@@ -34,7 +34,7 @@ tool/learningcompanions - this plugin provides administration functionality that
 ###### Installing the plugins
 
 Like all Moodle plugins, these just need to be copied to the appropriate place in the directory tree.
-local/learningcompanions must be in local/learningcompanions, block/learningcompanions_mygroups in local/learningcompanions and tool/learningcompanions in admin/tool/learningcompanions.
+local_thi_learning_companions must be in local/thi_learning_companions, block_thi_learning_companions_mygroups in blocks/thi_learning_companions_mygroups and tool_thi_learning_companions in admin/tool/thi_learning_companions.
 
 After the plugins have been moved to the appropriate places, you log in as an administrator and are automatically prompted to update, as Moodle recognises the new plugins on its own.
 
@@ -42,7 +42,7 @@ At the end of the update process, a form is displayed with the newly recognised 
 
 ###### Adding the Block Plugin
 
-In order for the block plugin block/learningcompanions to be displayed on all pages, it must be added to the start page (/?redirect=0).
+In order for the block plugin block_thi_learning_companions to be displayed on all pages, it must be added to the start page (/?redirect=0).
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en2.png)
 
@@ -59,7 +59,7 @@ If you belong to more than three groups, only three will be displayed at first. 
 
 The „Group me up“ link refers to a page on which users can search for groups and join them, or apply to join closed groups.
 
-The link „Go to admin area“ is only displayed to users with extended rights. The authorisation required for this is „local/learningcompanions:group_manage“. By default, all administrators and users with the role „manager“ receive this authorisation when the plug-in is installed. In the admin area, reported contributions can be managed and orphaned groups can be deleted.
+The link „Go to admin area“ is only displayed to users with extended rights. The authorisation required for this is „local_thi_learning_companions:group_manage“. By default, all administrators and users with the role „manager“ receive this authorisation when the plug-in is installed. In the admin area, reported contributions can be managed and orphaned groups can be deleted.
 
 Under „My Mentors“, you can jump to the list of questions you have asked mentors or submit new questions.
 
@@ -67,15 +67,15 @@ The section „My mentorship“ is only visible to users with the role „Mentor
 
 ###### Course topics
 
-The plugin local/learningcompanions adds a new course custom field: „Topic“.
+The plugin local/thi_learning_companions adds a new course custom field: „Topic“.
 Edit your courses and enter the associated topic there. These topics help with the group search by topic and determine for which topic a mentor is qualified if he/she has earned a corresponding badge in the course.
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en5.png)
 
 ###### Configure Badges
 
-To become a mentor for a topic, one must have earned a specific badge in a course of that topic. Which badges qualify for this role is defined in the plugin settings of the plugin local/learningcompanions.
-These settings can be found under Site administration > General > Learning Companions > Local plugin learningcompanions or the URL admin/settings.php?section=local_learningcompanions.
+To become a mentor for a topic, one must have earned a specific badge in a course of that topic. Which badges qualify for this role is defined in the plugin settings of the plugin local_thi_learning_companions.
+These settings can be found under Site administration > General > Learning Companions > Local plugin local_thi_learning_companions or the URL admin/settings.php?section=local_thi_learning_companions.
 There you will find the setting „Mentor badges“:
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en6.png)
@@ -84,7 +84,7 @@ Here you can enter several terms, separated by commas, which must be part of the
 
 ###### Group me up
 
-If the block block/learningcompanions_mygroups has been added as described above, then users can jump from any page to the page „Groups > Find Group“ via the link „Group me up“ in this block. When I jump to this page from a course or course module, the list of groups is already pre-filtered by the current course.
+If the block block_thi_learning_companions_mygroups has been added as described above, then users can jump from any page to the page „Groups > Find Group“ via the link „Group me up“ in this block. When I jump to this page from a course or course module, the list of groups is already pre-filtered by the current course.
 By removing this filter (here „Basic Training“) one can then get the whole list of available groups again.  The icon in the „Joining“ column indicates whether the group is open or closed. Anyone can join an open group or view the chats without being a member of the group. For closed groups, you have to request to join.
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en7.png)
@@ -109,53 +109,53 @@ Hovering over the comments gives you the option to report posts or delete your o
 
 ###### Plugin-Settings
 
-Local/learningcompanions
+local_thi_learning_companions
 
-Group image max filesize (local_learningcompanions | groupimage_maxbytes)<br>
+Group image max filesize (local_thi_learning_companions | groupimage_maxbytes)<br>
 Default value: 1000000
 
 This value determines the maximum file size that a group picture may have. Users who create groups have the option of uploading a picture for their group. Since there can theoretically be very many groups, it makes sense to limit the maximum upload size. The value given here is in bytes. The default value of 1000000 is therefore 1MB.
 
-Add comment block to activities (local_learningcompanions | commentactivities)<br>
+Add comment block to activities (local_thi_learning_companions | commentactivities)<br>
 Default: assign,assignment,book,choice,data,feedback,folder,glossary,h5pactivity,lesson,lit,quiz,resource,page,scorm,survey,workshop
 
 In order for learners to be able to exchange information about the Learning Nuggets, the plugin adds a comment block to each Learning Nugget. Under certain circumstances, such a comment block is not desired for all Learning Nugget activity types. For example, because the comment block is distracting or does not fit well into the layout for the activity. Therefore, this setting can be used to specify which activities should automatically receive a comment block.
 
-Mentor badges (local_learningcompanions | badgetypes_for_mentors)<br>
+Mentor badges (local_thi_learning_companions | badgetypes_for_mentors)<br>
 Default: expert
 
 Users can be qualified to become a mentor for a topic by receiving certain badges. In order for the platform to know which badge qualifies for this role, at least one badge name must be entered here. It does not have to be the full badge name, but a component of the name is sufficient. I.e. if, for example, the default value „expert“ is kept, then a user can qualify to become a mentor by receiving a badge called „Expert in IT“ or „Maths Expert“. Upper and lower case letters are ignored. Multiple badge names can be entered, separated by commas.
 
-Minimum ratings to become supermentor (local_learningcompanions | supermentor_minimum_ratings)<br>
+Minimum ratings to become supermentor (local_thi_learning_companions | supermentor_minimum_ratings)<br>
 Default: 10
 
 Through positive ratings in mentor chats, mentors can advance to supermentor. The value given here determines how many positive ratings are needed to obtain the status of supermentor.
 
-Latest comments: Max. amount (local_learningcompanions | latest_comments_max_amount)<br>
+Latest comments: Max. amount (local_thi_learning_companions | latest_comments_max_amount)<br>
 Default: 20
 
 Mentors can display the list of the most recent comments on their topic. The value given here indicates how many comments are displayed.
 
-Upload limit per message (local_learningcompanions | upload_limit_per_message)<br>
+Upload limit per message (local_thi_learning_companions | upload_limit_per_message)<br>
 Default: 5
 
 In group chats, users can upload files. The sum of the files uploaded in a message must not exceed the specified number of MB.
 
-Upload limit per chat (local_learningcompanions | upload_limit_per_chat)<br>
+Upload limit per chat (local_thi_learning_companions | upload_limit_per_chat)<br>
 Default: 100
 
 The total amount of uploaded files in a group chat must not exceed the number of MB specified here. If the value is reached, no more files can be uploaded in this chat.
 
-Inform tutors about unanswered questions after x days (local_learningcompanions | inform_tutors_about_unanswered_questions_after_x_days)<br>
+Inform tutors about unanswered questions after x days (local_thi_learning_companions | inform_tutors_about_unanswered_questions_after_x_days)<br>
 Default: 14
 
 Learners can ask questions to individual mentors or open questions to all mentors. If such a question remains unanswered for a longer period of time, a tutor is automatically informed about it. The value specified here determines after how many days this happens.<br>
 
-Shortname of tutor role (local_learningcompanions | tutorrole_shortname)<br>
+Shortname of tutor role (local_thi_learning_companions | tutorrole_shortname)<br>
 Default: teacher
 
 As mentioned above, tutors are automatically notified about questions that have remained unanswered for a longer period of time. The value here defines which role a user must have in order to be considered a tutor and to receive the notification. The role short name must be specified.
-The settings for the plugin local_learningcompanions can be edited at any time via the URL admin/settings.php?section=local_learningcompanions.
+The settings for the plugin local_thi_learning_companions can be edited at any time via the URL admin/settings.php?section=local_thi_learning_companions.
 
 The Admin Tool and the Block Plugin have no settings.
 
