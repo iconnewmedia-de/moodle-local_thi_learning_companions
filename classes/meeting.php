@@ -186,15 +186,11 @@ class meeting {
      * @return string
      */
     public function get_join_url() {
+        $meetinginfo = $this->get_meeting_info();
+        $createtime = $meetinginfo->createtime;
         return bigbluebutton_proxy::get_join_url(
-            $this->instance->get_meeting_id(),
-            $this->instance->get_user_fullname(),
-            $this->instance->get_current_user_password(),
-            $this->instance->get_logout_url()->out(false),
-            $this->instance->get_current_user_role(),
-            null,
-            $this->instance->get_user_id(),
-            $this->get_meeting_info()->createtime
+            $this->instance,
+            $createtime
         );
     }
 

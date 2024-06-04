@@ -102,7 +102,8 @@ const handleBBBButton = function(e){
         messageEditor.focus();
         const range = new Range();
         const childElementCount = messageEditor.childElementCount;
-        range.setStartAfter(messageEditor.children[childElementCount - 1]);
+        let child = Math.max(childElementCount - 1, 0);
+        range.setStartAfter(messageEditor.children[child]);
         document.getSelection().addRange(range);
     }
     var string = str.get_string('bigbluebutton_join_text', 'local_thi_learning_companions');

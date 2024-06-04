@@ -30,3 +30,4 @@ $bbbinstance = new instance($groupid, $meetingobj);
 
 $origin = logger::ORIGIN_BASE;
 $url = meeting::join_meeting($bbbinstance, $origin);
+redirect($url);
