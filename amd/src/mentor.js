@@ -120,7 +120,8 @@ define([
                     dataType: 'json',
                     data: {
                         action: 'deletemyquestion',
-                        questionid: questionid
+                        questionid: questionid,
+                        sesskey: M.cfg.sesskey,
                     },
                     success: function (data) {
                         if (data === 'fail') {

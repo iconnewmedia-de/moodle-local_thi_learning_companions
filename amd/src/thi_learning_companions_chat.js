@@ -209,7 +209,8 @@ const handleCommentDelete = async function(e) {
             method: 'POST',
             dataType: 'json',
             data: {
-                commentid: postId
+                commentid: postId,
+                sesskey: M.cfg.sesskey,
             },
             success: function(data) {
                 // modal.destroy();

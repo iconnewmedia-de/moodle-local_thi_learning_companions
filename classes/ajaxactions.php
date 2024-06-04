@@ -27,7 +27,7 @@ class AjaxActions {
      */
     public static function delete_question() {
         $questionid = required_param('questionid', PARAM_INT);
-
+        require_sesskey();
         if (\local_thi_learning_companions\mentors::delete_asked_question($questionid)) {
             echo '1';
         } else {

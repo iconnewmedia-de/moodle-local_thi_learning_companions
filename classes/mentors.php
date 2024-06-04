@@ -287,11 +287,6 @@ class mentors {
         return $questions;
     }
 
-    public static function get_all_mentor_question_answers($questionid) {
-        global $DB;
-
-    }
-
     /**
      * @param $questionid
      * @return bool
@@ -299,9 +294,31 @@ class mentors {
      */
     public static function delete_asked_question($questionid): bool {
         global $DB;
-        // ICTODO: delete records from thi_lc_chat_comment instead, we don't use thi_lc_mentor_answers anymore.
-        return $DB->delete_records('thi_lc_mentor_answers', ['questionid' => $questionid])
+        if (!self::may_user_delete_question($questionid)) {
+            throw new \moodle_exception('no_permission_to_delete_question', 'local_thi_learning_companions');
+        }
+        $chatid = $DB->get_field('thi_lc_chat', 'id', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
+        return $DB->delete_records('thi_lc_chat_comment', ['chatid' => $chatid])
             && $DB->delete_records('thi_lc_mentor_questions', ['id' => $questionid]);
+    }
+
+    /**
+     * @param $questionid
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    protected static function may_user_delete_question($questionid): bool {
+        global $DB, $USER;
+        $question = $DB->get_record('thi_lc_mentor_questions', ['id' => $questionid]);
+        if ($question->askedby == $USER->id) {
+            return true;
+        }
+        $context = \context_system::instance();
+        if (has_capability('local/thi_learning_companions:delete_comments_of_others', $context)) {
+            return true;
+        }
+        return false;
     }
 
     /**

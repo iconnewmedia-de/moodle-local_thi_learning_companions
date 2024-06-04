@@ -66,7 +66,7 @@ $string['error_group_creation_failed'] = 'Error: Group creation failed with mess
 $string['error_group_edit_failed'] = 'Error: Editing the group failed with message: "{$a}"';
 $string['button_css_selector'] = 'CSS selector for group me up button';
 $string['configbuttoncssselector'] = 'Group me up buttons will automatically get placed on elements that match this CSS selector';
-$string['group_topic'] = 'Topic';
+$string['group_topic'] = 'Keyword(s)';
 $string['coursecontext'] = 'Course context';
 $string['nuggetcontext'] = 'Learning nugget context';
 $string['group_image'] = 'Group image';
@@ -472,3 +472,5 @@ $string['privacy:metadata:thi_lc_chat_lastvisited:timevisited'] = 'Time visited'
 $string['privacy:metadata:thi_lc_tutor_notifications:questionid'] = 'Question id';
 $string['privacy:metadata:thi_lc_tutor_notifications:tutorid'] = 'Tutor id';
 $string['privacy:metadata:thi_lc_tutor_notifications:timecreated'] = 'Time created';
+
+$string['no_permission_to_delete_question'] = 'You don\'t have permission to delete this question';
