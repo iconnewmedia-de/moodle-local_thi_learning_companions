@@ -117,9 +117,9 @@
                     <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/chat.php?groupid={{group.id}}" class="btn btn-primary d-block d-sm-inline-block mt-1"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{#str}}gotogroupbutton, local_thi_learning_companions{{/str}}</a>
                 {{/group.closedgroup}}
             {{/group.currentuserismember}}
-            {{#group.may_edit}}
+            {{#group.mayedit}}
                 <a href="{{globals.config.wwwroot}}/local/thi_learning_companions/group/edit.php?groupid={{group.id}}&referrer={{referrer}}" class="btn btn-secondary d-block d-sm-inline-block mt-1"><i class="icon-thi_learning_companions-edit" aria-hidden="true"></i>{{#str}}edit_group, local_thi_learning_companions{{/str}}</a>
-            {{/group.may_edit}}
+            {{/group.mayedit}}
         </div>
 
     </div>
