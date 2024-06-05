@@ -678,7 +678,8 @@ class mentors {
         $description = get_string('mentor_role_description', 'local_thi_learning_companions');
         $roleid = \create_role($name, $shortname, $description);
         // assign capabilities to the role.
-        assign_capability('local/thi_learning_companions:mentor_ismentor', CAP_ALLOW, $roleid);
+        $context = \context_system::instance();
+        assign_capability('local/thi_learning_companions:mentor_ismentor', CAP_ALLOW, $roleid, $context->id);
         return $roleid;
     }
 
