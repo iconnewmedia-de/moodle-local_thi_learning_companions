@@ -308,7 +308,7 @@ class mentors {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    protected static function may_user_delete_question($questionid): bool {
+    public static function may_user_delete_question($questionid): bool {
         global $DB, $USER;
         $question = $DB->get_record('thi_lc_mentor_questions', ['id' => $questionid]);
         if ($question->askedby == $USER->id) {

@@ -33,6 +33,7 @@ class question {
     public $topic;
     public $timecreated;
     public $timeclosed;
+    public $mayuserdelete;
 
     public $lastactive;
     public $lastactivedmy;
@@ -76,7 +77,7 @@ class question {
         $question->id = $record->id;
         $question->timecreated = $record->timecreated;
         $question->timeclosed = $record->timeclosed;
-
+        $question->mayuserdelete = mentors::may_user_delete_question($question->id);
         return $question;
     }
     private static function question_with_no_permission(): self {

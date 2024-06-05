@@ -43,9 +43,11 @@
                     {{get_timecreated_dmy}}
                 </td>
                 <td>
+                    {{#mayuserdelete}}
                     <span data-balloon="{{#str}}deletemyquestion, local_thi_learning_companions{{/str}}" data-balloon-pos="left">
                         <i class="fa fa-trash icon-trash askedquestions-delete" data-qid="{{id}}" data-question="{{title}}"></i>
                     </span>
+                    {{/mayuserdelete}}
                 </td>
             </tr>
         {{/askedquestions}}
