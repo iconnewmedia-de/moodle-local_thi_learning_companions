@@ -417,7 +417,15 @@ class mentors {
             if (empty($userbadge->courseid)) {
                 continue;
             }
-            if (!in_array(strtolower($userbadge->name), $mentorbadgetypes)) {
+            $ismentorbadge = false;
+            $userbadgename = strtolower($userbadge->name);
+            foreach($mentorbadgetypes as $mentorbadgetype) {
+                if (strpos($userbadgename, $mentorbadgetype) !== false) {
+                    $ismentorbadge = true;
+                    break;
+                }
+            }
+            if (!$ismentorbadge) {
                 continue;
             }
             $coursetopics = \local_thi_learning_companions\get_course_topics($userbadge->courseid);
