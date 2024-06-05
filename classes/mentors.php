@@ -411,9 +411,13 @@ class mentors {
         if (empty($userbadges)) {
             return [];
         }
+        $mentorbadgetypes = self::get_mentor_badge_types();
         $badgetopics = [];
         foreach ($userbadges as $userbadge) {
             if (empty($userbadge->courseid)) {
+                continue;
+            }
+            if (!in_array(strtolower($userbadge->name), $mentorbadgetypes)) {
                 continue;
             }
             $coursetopics = \local_thi_learning_companions\get_course_topics($userbadge->courseid);
@@ -676,6 +680,18 @@ class mentors {
         // assign capabilities to the role.
         assign_capability('local/thi_learning_companions:mentor_ismentor', CAP_ALLOW, $roleid);
         return $roleid;
+    }
+
+    /**
+     * @return array
+     * @throws \dml_exception
+     */
+    public static function get_mentor_badge_types() {
+        $mentorbadges = get_config('local_thi_learning_companions', 'badgetypes_for_mentors');
+        $mentorbadges = strtolower($mentorbadges);
+        $mentorbadges = explode(',', $mentorbadges);
+        $mentorbadges = array_map('trim', $mentorbadges);
+        return $mentorbadges;
     }
 
 }
