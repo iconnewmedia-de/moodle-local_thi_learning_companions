@@ -13,10 +13,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 defined('MOODLE_INTERNAL') || die();
 require_once(dirname(__DIR__). '/lib.php');
 
+/**
+ * Object that represents a group with all its corresponding data
+ */
 class group {
     /**
      * @var int
@@ -156,6 +168,9 @@ class group {
      */
     private $chat;
 
+    /**
+     * @var false|int|mixed
+     */
     public $lastactivetime;
     /**
      * @var string
@@ -175,6 +190,14 @@ class group {
      */
     public $isadmin;
 
+    /**
+     * Constructor
+     * @param $groupid
+     * @param $userid
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public function __construct($groupid, $userid = null) {
         global $DB, $CFG, $USER, $PAGE;
 
@@ -252,6 +275,11 @@ class group {
         return null;
     }
 
+    /**
+     * returns true if user is admin
+     * @param int $userid
+     * @return bool
+     */
     public function is_user_admin(int $userid) {
         $isadmin = false;
         foreach ($this->admins as $admin) {
@@ -263,6 +291,11 @@ class group {
         return $isadmin;
     }
 
+    /**
+     * returns true if user is member
+     * @param int $userid
+     * @return bool
+     */
     public function is_user_member(int $userid) {
         $ismember = false;
         foreach ($this->groupmembers as $member) {
@@ -300,6 +333,7 @@ class group {
     }
 
     /**
+     * returns timestamp of current user's last comment
      * @return int
      * @throws \dml_exception
      */
@@ -322,6 +356,7 @@ class group {
     }
 
     /**
+     * returns timestamp of current users earliest comment
      * @return int
      * @throws \dml_exception
      */
@@ -344,6 +379,7 @@ class group {
     }
 
     /**
+     * returns group members
      * @return array
      * @throws \dml_exception
      */
@@ -371,6 +407,7 @@ class group {
     }
 
     /**
+     * returns member count
      * @return int
      * @throws \dml_exception
      */
@@ -388,6 +425,7 @@ class group {
     }
 
     /**
+     * returns the keywords for the current group
      * @return array
      * @throws \dml_exception
      */
@@ -406,6 +444,11 @@ class group {
         return $this->keywords;
     }
 
+    /**
+     * returns the list of keywords as comma separated string
+     * @return string
+     * @throws \dml_exception
+     */
     public function get_keywordslist() {
         $keywordslist = $this->get_keywords();
         $keywordslist = implode(', ', $keywordslist);
@@ -414,6 +457,7 @@ class group {
     }
 
     /**
+     * returns the group's image
      * @return object|\stored_file|null
      * @throws \coding_exception
      * @throws \dml_exception
@@ -436,6 +480,7 @@ class group {
     }
 
     /**
+     * returns the url for the group's image
      * @return \moodle_url|string
      */
     protected function get_imageurl() {
@@ -458,6 +503,7 @@ class group {
     }
 
     /**
+     * returns the course for the current group
      * @return false|mixed|object|\stdClass|null
      * @throws \dml_exception
      */
@@ -475,6 +521,7 @@ class group {
     }
 
     /**
+     * returns the course module for the current group
      * @return false|object|\stdClass|null
      * @throws \coding_exception
      */
@@ -495,6 +542,7 @@ class group {
     }
 
     /**
+     * returns the group's admins
      * @return array
      * @throws \dml_exception
      */
@@ -531,6 +579,11 @@ class group {
         return $this->admins;
     }
 
+    /**
+     * returns the group's last comment
+     * @return string
+     * @throws \dml_exception
+     */
     public function get_last_comment() {
         global $DB;
         $chatid = chats::get_chat_of_group($this->id);
@@ -551,6 +604,10 @@ class group {
         return $lastcomment->comment;
     }
 
+    /**
+     * returns the group's chat
+     * @return chat
+     */
     public function get_chat() {
         return $this->chat;
     }

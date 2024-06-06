@@ -74,7 +74,8 @@ const handleTableRowClick = async function(e) {
     const groupDetailsPromise = promiseAjax(M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax.php', {
         action: 'getgroupdetails',
         groupid: groupid,
-        'referrer': 'groupsearch'
+        'referrer': 'groupsearch',
+        sesskey: M.cfg.sesskey
     });
     const titlePromise = str.get_string('modal-groupdetails-groupname', 'local_thi_learning_companions', groupname);
 
@@ -149,13 +150,15 @@ export const handleGroupLeaveButton = async function(e) {
      */
     const response = await promiseAjax(M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax.php', {
         action: 'leavegroup',
-        groupid: groupId
+        groupid: groupId,
+        sesskey: M.cfg.sesskey
     });
 
     if (response.needsNewAdmin) {
         const possibleNewAdminsBodyPromise = promiseAjax(M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax.php', {
             action: 'getpossiblenewadmins',
-            groupid: groupId
+            groupid: groupId,
+            sesskey: M.cfg.sesskey
         });
         const titlePromise = str.get_string('modal-groupdetails-needsnewadmin', 'local_thi_learning_companions');
 
@@ -218,7 +221,8 @@ export const handleGroupRequestButton = async function(e) {
 
     const errorCode = await promiseAjax(M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax.php', {
         action: 'requestgroupjoin',
-        groupid: $(this).data('groupid')
+        groupid: $(this).data('groupid'),
+        sesskey: M.cfg.sesskey
     });
 
     if (!errorCode) { // All good

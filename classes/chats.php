@@ -13,6 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 
 use local_thi_learning_companions\event\comment_created;
@@ -20,9 +29,25 @@ use local_thi_learning_companions\event\comment_reported;
 use local_thi_learning_companions\event\question_responded;
 use local_thi_learning_companions\event\super_mentor_assigned;
 
+/**
+ * Class with methods for handling chats
+ */
 class chats {
+    /**
+     *
+     */
     const CHAT_TYPE_MENTOR = 0;
+    /**
+     *
+     */
     const CHAT_TYPE_GROUP = 1;
+
+    /**
+     * Returns the chat for a given group id
+     * @param int $groupid
+     * @return false|mixed
+     * @throws \dml_exception
+     */
     public static function get_chat_of_group(int $groupid) {
         global $DB;
         $chatid = $DB->get_field(
@@ -33,19 +58,8 @@ class chats {
         return $chatid;
     }
 
-    public static function get_chat_of_activity(int $cmid) {
-
-    }
-
-    public static function get_all_chats_of_user() {
-
-    }
-
-    public static function get_all_chats_of_course() {
-
-    }
-
     /**
+     * Handles the posting of a chat comment
      * @param $comment
      * @param $formdata
      * @param $editoroptions
@@ -130,6 +144,7 @@ class chats {
     }
 
     /**
+     * Returns true if the current user may view the chat with the given chat id
      * @param $chatid
      * @return bool
      * @throws \coding_exception
@@ -145,6 +160,7 @@ class chats {
     }
 
     /**
+     * Returns true if the user may view the chat for a certain question to mentors
      * @param $questionid
      * @return bool
      * @throws \dml_exception
@@ -183,10 +199,18 @@ class chats {
         }
     }
 
+    /**
+     * Adds an attachment
+     * @param $comment
+     * @param $formdata
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     protected static function add_attachment($comment, $formdata) {
         // Add the attachment.
         $context = \context_system::instance();
-        // ICTODO: make sure that the user doesn't exceed the chat's total limit for file uploads.
+        // Make sure that the user doesn't exceed the chat's total limit for file uploads.
         $chatmaxuploadexceeded = self::check_uploadsize_total_exceeded($comment, $formdata);
         if ($chatmaxuploadexceeded) {
             return false; // ICTODO return an error message instead.
@@ -239,10 +263,13 @@ class chats {
         return false;
     }
 
-    public static function report_comment($commentid) {
-
-    }
-
+    /**
+     * Handles the flagging of a comment.
+     * @param $commentid
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function flag_comment($commentid) {
         global $DB, $USER;
         $comment = $DB->get_record('thi_lc_chat_comment', ['id' => $commentid]);
@@ -258,6 +285,12 @@ class chats {
         return $result;
     }
 
+    /**
+     * Unflags a comment.
+     * @param $commentid
+     * @return bool
+     * @throws \dml_exception
+     */
     public static function unflag_comment($commentid) {
         global $DB;
         if ($comment = $DB->get_record('thi_lc_chat_comment', ['id' => $commentid])) {
@@ -270,6 +303,7 @@ class chats {
     }
 
     /**
+     * Deletes a comment
      * @param $commentid
      * @return bool
      * @throws \coding_exception
@@ -331,6 +365,14 @@ class chats {
         }
     }
 
+    /**
+     * Returns all comments that have been flagged
+     * @param bool $extended
+     * @param bool $cut
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function get_all_flagged_comments(bool $extended = false, bool $cut = false): array {
         global $CFG, $DB;
         require_once($CFG->dirroot.'/local/thi_learning_companions/lib.php');
@@ -353,6 +395,15 @@ class chats {
         return $comments;
     }
 
+    /**
+     * Adds additional info to a comment that's not directly stored in the comment table
+     * Such as the author's fullname
+     * @param array $comments
+     * @param bool $cut
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function add_extended_fields_to_comments(array $comments, bool $cut = false): array {
         global $CFG, $DB;
 
@@ -377,9 +428,5 @@ class chats {
         }
 
         return $comments;
-    }
-
-    protected static function may_post_comment($chatid) {
-
     }
 }

@@ -14,6 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_thi_learning_companions\privacy;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
@@ -23,9 +32,18 @@ use core_privacy\local\request\writer;
 use local_thi_learning_companions\groups;
 
 defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Privacy provider for local_thi_learning_companions
+ */
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\plugin\provider {
+    /**
+     * Returns all metadata for this privacy provider
+     * @param collection $collection
+     * @return collection
+     */
     public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
             'thi_lc_groups',
@@ -43,65 +61,65 @@ class provider implements
         $collection->add_database_table(
             'thi_lc_group_members',
             [
-                'userid' =>  'privacy:metadata:thi_lc_group_members:userid',
-                'groupid' =>  'privacy:metadata:thi_lc_group_members:groupid',
-                'isadmin' =>  'privacy:metadata:thi_lc_group_members:isadmin',
-                'joined' =>  'privacy:metadata:thi_lc_group_members:joined',
+                'userid' => 'privacy:metadata:thi_lc_group_members:userid',
+                'groupid' => 'privacy:metadata:thi_lc_group_members:groupid',
+                'isadmin' => 'privacy:metadata:thi_lc_group_members:isadmin',
+                'joined' => 'privacy:metadata:thi_lc_group_members:joined',
             ]
         );
         $collection->add_database_table(
             'thi_lc_group_requests',
             [
-                'userid' =>  'privacy:metadata:thi_lc_group_requests:userid',
-                'groupid' =>  'privacy:metadata:thi_lc_group_requests:groupid',
-                'timecreated' =>  'privacy:metadata:thi_lc_group_requests:timecreated',
-                'denied' =>  'privacy:metadata:thi_lc_group_requests:denied',
+                'userid' => 'privacy:metadata:thi_lc_group_requests:userid',
+                'groupid' => 'privacy:metadata:thi_lc_group_requests:groupid',
+                'timecreated' => 'privacy:metadata:thi_lc_group_requests:timecreated',
+                'denied' => 'privacy:metadata:thi_lc_group_requests:denied',
             ]
         );
         $collection->add_database_table(
             'thi_lc_mentors',
             [
-                'userid' =>  'privacy:metadata:thi_lc_mentors:userid',
-                'topic' =>  'privacy:metadata:thi_lc_mentors:topic',
+                'userid' => 'privacy:metadata:thi_lc_mentors:userid',
+                'topic' => 'privacy:metadata:thi_lc_mentors:topic',
             ]
         );
         $collection->add_database_table(
             'thi_lc_users_mentors',
             [
-                'userid' =>  'privacy:metadata:thi_lc_users_mentors:userid',
-                'mentorid' =>  'privacy:metadata:thi_lc_users_mentors:mentorid',
+                'userid' => 'privacy:metadata:thi_lc_users_mentors:userid',
+                'mentorid' => 'privacy:metadata:thi_lc_users_mentors:mentorid',
             ]
         );
         $collection->add_database_table(
             'thi_lc_chat_comment',
             [
-                'userid' =>  'privacy:metadata:thi_lc_chat_comment:userid',
-                'chatid' =>  'privacy:metadata:thi_lc_chat_comment:chatid',
-                'comment' =>  'privacy:metadata:thi_lc_chat_comment:comment',
-                'flagged' =>  'privacy:metadata:thi_lc_chat_comment:flagged',
-                'flaggedby' =>  'privacy:metadata:thi_lc_chat_comment:flaggedby',
-                'timecreated' =>  'privacy:metadata:thi_lc_chat_comment:timecreated',
-                'timedeleted' =>  'privacy:metadata:thi_lc_chat_comment:timedeleted',
-                'timemodified' =>  'privacy:metadata:thi_lc_chat_comment:timemodified',
+                'userid' => 'privacy:metadata:thi_lc_chat_comment:userid',
+                'chatid' => 'privacy:metadata:thi_lc_chat_comment:chatid',
+                'comment' => 'privacy:metadata:thi_lc_chat_comment:comment',
+                'flagged' => 'privacy:metadata:thi_lc_chat_comment:flagged',
+                'flaggedby' => 'privacy:metadata:thi_lc_chat_comment:flaggedby',
+                'timecreated' => 'privacy:metadata:thi_lc_chat_comment:timecreated',
+                'timedeleted' => 'privacy:metadata:thi_lc_chat_comment:timedeleted',
+                'timemodified' => 'privacy:metadata:thi_lc_chat_comment:timemodified',
             ]
         );
         $collection->add_database_table(
             'thi_lc_chat_comment_ratings',
             [
-                'userid' =>  'privacy:metadata:thi_lc_chat_comment_ratings:userid',
-                'commentid' =>  'privacy:metadata:thi_lc_chat_comment_ratings:commentid',
+                'userid' => 'privacy:metadata:thi_lc_chat_comment_ratings:userid',
+                'commentid' => 'privacy:metadata:thi_lc_chat_comment_ratings:commentid',
             ]
         );
         $collection->add_database_table(
             'thi_lc_mentor_questions',
             [
-                'askedby' =>  'privacy:metadata:thi_lc_mentor_questions:askedby',
-                'mentorid' =>  'privacy:metadata:thi_lc_mentor_questions:mentorid',
-                'topic' =>  'privacy:metadata:thi_lc_mentor_questions:topic',
-                'title' =>  'privacy:metadata:thi_lc_mentor_questions:title',
-                'question' =>  'privacy:metadata:thi_lc_mentor_questions:question',
-                'timeclosed' =>  'privacy:metadata:thi_lc_mentor_questions:timeclosed',
-                'timecreated' =>  'privacy:metadata:thi_lc_mentor_questions:timecreated',
+                'askedby' => 'privacy:metadata:thi_lc_mentor_questions:askedby',
+                'mentorid' => 'privacy:metadata:thi_lc_mentor_questions:mentorid',
+                'topic' => 'privacy:metadata:thi_lc_mentor_questions:topic',
+                'title' => 'privacy:metadata:thi_lc_mentor_questions:title',
+                'question' => 'privacy:metadata:thi_lc_mentor_questions:question',
+                'timeclosed' => 'privacy:metadata:thi_lc_mentor_questions:timeclosed',
+                'timecreated' => 'privacy:metadata:thi_lc_mentor_questions:timecreated',
             ]
         );
         $collection->add_database_table(
@@ -133,6 +151,11 @@ class provider implements
         return $collection;
     }
 
+    /**
+     * returns the contexts for a user
+     * @param int $userid
+     * @return contextlist
+     */
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
 
@@ -158,13 +181,19 @@ class provider implements
         return $contextlist;
     }
 
+    /**
+     * exports user data
+     * @param approved_contextlist $contextlist
+     * @return void
+     * @throws \coding_exception
+     */
     public static function export_user_data(approved_contextlist $contextlist) {
         $userid = $contextlist->get_user()->id;
         $contexts = $contextlist->get_contexts();
         $contextids = $contextlist->get_contextids();
         $user = $contextlist->get_user();
         $groupchatsubcontext = get_string('groupchatsubcontext', 'local_thi_learning_companions');
-        foreach($contexts as $context) {
+        foreach ($contexts as $context) {
             switch ($context->contextlevel) {
                 case CONTEXT_MODULE:
                     $cmid = $context->instanceid;
@@ -181,6 +210,15 @@ class provider implements
         // TODO: Implement export_user_data() method.
     }
 
+    /**
+     * exports chat that's related to a course module
+     * @param $subcontext
+     * @param $context
+     * @param $cmid
+     * @param $userid
+     * @return void
+     * @throws \dml_exception
+     */
     protected static function export_chat_for_cmid($subcontext, $context, $cmid, $userid) {
         global $DB;
         $chatcomments = $DB->get_records_sql('SELECT cmt.*
@@ -198,6 +236,15 @@ class provider implements
             ]);
     }
 
+    /**
+     * exports chat that's related to a course
+     * @param $subcontext
+     * @param $context
+     * @param $courseid
+     * @param $userid
+     * @return void
+     * @throws \dml_exception
+     */
     protected static function export_chat_for_course($subcontext, $context, $courseid, $userid) {
         global $DB;
         $chatcomments = $DB->get_records_sql('SELECT cmt.*
@@ -216,11 +263,22 @@ class provider implements
     }
 
 
+    /**
+     * deletes all data for a user in the given context
+     * @param \context $context
+     * @return void
+     * @throws \coding_exception
+     */
     public static function delete_data_for_all_users_in_context(\context $context) {
         $coursecontext = $context->get_course_context();
         // TODO: Implement delete_data_for_all_users_in_context() method.
     }
 
+    /**
+     * deletes all data for a user
+     * @param approved_contextlist $contextlist
+     * @return void
+     */
     public static function delete_data_for_user(approved_contextlist $contextlist) {
         $contexts = $contextlist->get_contexts();
         // TODO: Implement delete_data_for_user() method.

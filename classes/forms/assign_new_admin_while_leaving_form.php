@@ -13,6 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_thi_learning_companions\forms;
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
@@ -25,6 +35,9 @@ use moodle_url;
 
 require_once($CFG->libdir . "/formslib.php");
 
+/**
+ * The form for assigning a new admin when the current admin leaves a group
+ */
 class assign_new_admin_while_leaving_form extends dynamic_form {
     /**
      * @var group
@@ -32,7 +45,10 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
     private $group;
 
     /**
-     * @inheritDoc
+     * the form definition
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     protected function definition() {
         $mform = $this->_form;
@@ -52,6 +68,11 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
         $this->add_action_buttons(false, get_string('leave_group', 'local_thi_learning_companions'));
     }
 
+    /**
+     * Returns the list of users that can be selected as new admin
+     * @param group $group
+     * @return array
+     */
     private function get_possible_admins(group $group): array {
         global $USER;
 
@@ -67,14 +88,28 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
         return $possibleadmins;
     }
 
+    /**
+     * returns the context required for dynamic submission
+     * @return context
+     * @throws \dml_exception
+     */
     protected function get_context_for_dynamic_submission(): context {
         return \context_system::instance();
     }
 
+    /**
+     * checks access for dynamic submission
+     * @return void
+     */
     protected function check_access_for_dynamic_submission(): void {
 
     }
 
+    /**
+     * processes the dynamic submission
+     * @return mixed|void
+     * @throws \dml_exception
+     */
     public function process_dynamic_submission() {
         global $USER;
 
@@ -85,16 +120,31 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
         groups::leave_group($USER->id, $groupid);
     }
 
+    /**
+     * sets data for dynamic submission
+     * @return void
+     */
     public function set_data_for_dynamic_submission(): void {
         // Workaround, because construct is final.
         // Get the group here, so we don`t need to get it everywhere.
         $this->group = groups::get_group_by_id($this->_ajaxformdata['groupId']);
     }
 
+    /**
+     * returns page url for dynamic submission
+     * @return moodle_url
+     */
     protected function get_page_url_for_dynamic_submission(): moodle_url {
         return new moodle_url('/local/thi_learning_companions/group/search.php');
     }
 
+    /**
+     * validates the form data
+     * @param $data
+     * @param $files
+     * @return array
+     * @throws \coding_exception
+     */
     public function validation($data, $files) {
         global $USER;
         $errors = parent::validation($data, $files);

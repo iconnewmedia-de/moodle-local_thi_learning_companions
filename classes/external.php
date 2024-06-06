@@ -13,11 +13,31 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once("$CFG->libdir/externallib.php");
+
+/**
+ * Collection of external methods to be called via JS. See services.php.
+ */
 class external extends \external_api {
+    /**
+     * lists learning nuggets (course activities) inside a course
+     * @param $courseid
+     * @param $query
+     * @return array
+     * @throws \invalid_parameter_exception
+     */
     public static function list_nuggets($courseid, $query) {
         global $DB;
         $params = self::validate_parameters(self::list_nuggets_parameters(),
@@ -42,6 +62,11 @@ class external extends \external_api {
         }
         return $return;
     }
+
+    /**
+     * parameters for list nuggets
+     * @return \external_function_parameters
+     */
     public static function list_nuggets_parameters() {
         return new \external_function_parameters(
             [
@@ -52,6 +77,11 @@ class external extends \external_api {
             VALUE_OPTIONAL
         );
     }
+
+    /**
+     * return type for list_nuggets
+     * @return \external_multiple_structure
+     */
     public static function list_nuggets_returns() {
         return new \external_multiple_structure(
             new \external_single_structure([
@@ -61,6 +91,15 @@ class external extends \external_api {
         );
     }
 
+    /**
+     * returns users that can be invited
+     * @param string $query
+     * @param int $groupid
+     * @param int $limit
+     * @return array
+     * @throws \dml_exception
+     * @throws \invalid_parameter_exception
+     */
     public static function get_invitable_users(string $query, int $groupid, int $limit = 10) {
         global $DB, $USER, $OUTPUT, $PAGE;
         $PAGE->set_context(\context_system::instance());
@@ -100,6 +139,10 @@ class external extends \external_api {
         return $users;
     }
 
+    /**
+     * returns the expected paramters structure and types for the get_invitable_users method
+     * @return \external_function_parameters
+     */
     public static function get_invitable_users_parameters() {
         return new \external_function_parameters(
             [
@@ -111,6 +154,10 @@ class external extends \external_api {
         );
     }
 
+    /**
+     * returns the return type structure for get_invitable_users
+     * @return \external_multiple_structure
+     */
     public static function get_invitable_users_returns() {
         return new \external_multiple_structure(
             new \external_single_structure([
@@ -121,6 +168,13 @@ class external extends \external_api {
         );
     }
 
+    /**
+     * handles the inviting of users
+     * @param int $userid
+     * @param int $groupid
+     * @return int[]
+     * @throws \invalid_parameter_exception
+     */
     public static function invite_user(int $userid, int $groupid) {
         $params = self::validate_parameters(self::invite_user_parameters(),
             [
@@ -138,6 +192,10 @@ class external extends \external_api {
         return ['errorcode' => 1];
     }
 
+    /**
+     * returns the expected parameters for invite_users
+     * @return \external_function_parameters
+     */
     public static function invite_user_parameters() {
         return new \external_function_parameters(
             [
@@ -149,8 +207,12 @@ class external extends \external_api {
         );
     }
 
+    /**
+     * retursn the return type for invite_users
+     * @return \external_single_structure
+     */
     public static function invite_user_returns() {
-        new \external_single_structure([
+        return new \external_single_structure([
             'errorcode' => new \external_value(PARAM_INT, 'Errorcode'),
         ]);
     }

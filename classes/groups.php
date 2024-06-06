@@ -13,6 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 
 use local_thi_learning_companions\event\group_created;
@@ -22,20 +31,49 @@ use local_thi_learning_companions\event\group_left;
 use local_thi_learning_companions\event\group_updated;
 use local_thi_learning_companions\forms\create_edit_group_form;
 
+/**
+ * Class with methods for handling groups.
+ */
 class groups {
+    /**
+     * chat type: Question to Mentor
+     */
     const CHATTYPE_MENTOR = 0;
+    /**
+     * chat type: Group chat
+     */
     const CHATTYPE_GROUP = 1;
-
+    /**
+     * join request: Created
+     */
     const JOIN_REQUEST_CREATED = 0;
+    /**
+     * join request: Already requested
+     */
     const JOIN_REQUEST_ALREADY_REQUESTED = 1;
+    /**
+     * join request: is already member
+     */
     const JOIN_REQUEST_ALREADY_MEMBER = 2;
+    /**
+     * join request: failed
+     */
     const JOIN_REQUEST_FAILED = 3;
+    /**
+     * join request: other error
+     */
     const JOIN_REQUEST_OTHER_ERROR = 666;
-
+    /**
+     * Join: created
+     */
     const JOIN_CREATED = 0;
+    /**
+     * Join: failed
+     */
     const JOIN_FAILED = 3;
 
     /**
+     * get all groups
      * @return group[]
      * @throws \dml_exception
      */
@@ -61,6 +99,7 @@ class groups {
     }
 
     /**
+     * get group by chatid
      * @param int $chatid
      * @return group
      * @throws \dml_exception
@@ -72,6 +111,7 @@ class groups {
     }
 
     /**
+     * get groupid of chatid
      * @param int $chatid
      * @return int
      * @throws \dml_exception
@@ -83,12 +123,13 @@ class groups {
     }
 
     /**
+     * get groups of user
      * @param int $userid
      * @param string $sortby possible values: latestcomment, earliestcomment, mylatestcomment, myearliestcomment
      * @return group[]
      * @throws \dml_exception
      */
-    public static function get_groups_of_user($userid, int $shouldincludegroupid = null, $sortby = 'latestcomment') {
+    public static function get_groups_of_user($userid, int|null $shouldincludegroupid = null, $sortby = 'latestcomment') {
         global $DB, $CFG;
 
         $params = [$userid];
@@ -167,7 +208,15 @@ class groups {
         return $return;
     }
 
-    public static function get_groups_where_user_is_admin(int $userid = null) {
+    /**
+     * get groups where user is admin
+     * @param int|null $userid
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
+    public static function get_groups_where_user_is_admin(int|null $userid = null) {
         global $USER, $DB;
 
         if ($userid === null) {
@@ -191,6 +240,7 @@ class groups {
     }
 
     /**
+     * invite users to group
      * @param array $userids
      * @param int $groupid
      * @return void
@@ -203,6 +253,13 @@ class groups {
         return $success;
     }
 
+    /**
+     * invite user to group
+     * @param $userid
+     * @param $groupid
+     * @return bool
+     * @throws \dml_exception
+     */
     public static function invite_user_to_group($userid, $groupid) {
         global $DB, $USER;
 
@@ -242,6 +299,7 @@ class groups {
     }
 
     /**
+     * group create
      * @param $data
      * @return int    id of created group
      * @throws \dml_exception
@@ -313,6 +371,7 @@ class groups {
     }
 
     /**
+     * get keyword id
      * @param $keyword
      * @return false|mixed
      * @throws \dml_exception
@@ -323,6 +382,7 @@ class groups {
     }
 
     /**
+     * group update
      * @param $groupid
      * @param $name
      * @param $description
@@ -350,6 +410,7 @@ class groups {
     }
 
     /**
+     * save group image
      * @param $groupid
      * @param $image
      * @return void
@@ -369,6 +430,7 @@ class groups {
     }
 
     /**
+     * group add member
      * @param int $groupid
      * @param int $userid
      * @param int $isadmin
@@ -395,6 +457,7 @@ class groups {
     }
 
     /**
+     * is group empty
      * @param int $groupid
      * @return bool
      * @throws \dml_exception
@@ -411,6 +474,7 @@ class groups {
     }
 
     /**
+     * assign keywords to group
      * @param $groupid
      * @param $keywords
      * @return void
@@ -424,6 +488,7 @@ class groups {
     }
 
     /**
+     * assign keyword to group
      * @param $groupid
      * @param $keyword
      * @return void
@@ -443,6 +508,7 @@ class groups {
     }
 
     /**
+     * create keyword
      * @param $keyword
      * @return bool|int|mixed
      * @throws \dml_exception
@@ -458,6 +524,7 @@ class groups {
     }
 
     /**
+     * group remove all keywords
      * @param $groupid
      * @return void
      * @throws \dml_exception
@@ -487,6 +554,7 @@ class groups {
     }
 
     /**
+     * leave group
      * @param int $userid The id of the user who will leave the group
      * @param int $groupid The id of the group the user will leave
      *
@@ -509,6 +577,13 @@ class groups {
         return $deleted;
     }
 
+    /**
+     * make admin
+     * @param int $userid
+     * @param int $groupid
+     * @return void
+     * @throws \dml_exception
+     */
     public static function make_admin(int $userid, int $groupid) {
         global $DB, $USER;
         $DB->set_field('thi_lc_group_members', 'isadmin', 1, ['groupid' => $groupid, 'userid' => $userid]);
@@ -516,12 +591,20 @@ class groups {
         messages::send_appointed_to_admin_notification($userid, $groupid, $USER->id);
     }
 
+    /**
+     * unmake admin
+     * @param int $userid
+     * @param int $groupid
+     * @return void
+     * @throws \dml_exception
+     */
     public static function unmake_admin(int $userid, int $groupid) {
         global $DB;
         $DB->set_field('thi_lc_group_members', 'isadmin', 0, ['groupid' => $groupid, 'userid' => $userid]);
     }
 
     /**
+     * request group join
      * @param $userid
      * @param $groupid
      *
@@ -558,12 +641,20 @@ class groups {
         return $inserted ? self::JOIN_REQUEST_CREATED : self::JOIN_REQUEST_FAILED;
     }
 
+    /**
+     * join is requested
+     * @param int $userid
+     * @param int $groupid
+     * @return bool
+     * @throws \dml_exception
+     */
     public static function join_is_requested(int $userid, int $groupid) {
         global $DB;
         return $DB->record_exists('thi_lc_group_requests', ['groupid' => $groupid, 'userid' => $userid]);
     }
 
     /**
+     * get group join requests
      * @return \stdClass[]
      * @throws \dml_exception
      */
@@ -594,6 +685,7 @@ class groups {
     }
 
     /**
+     * add group join request
      * @param $groupid
      * @param $userid
      * @return bool|int
@@ -609,6 +701,7 @@ class groups {
     }
 
     /**
+     * accept group join request
      * @param $requestid
      * @return void
      * @throws \dml_exception
@@ -626,6 +719,7 @@ class groups {
     }
 
     /**
+     * deny group join request
      * @param $requestid
      * @return void
      * @throws \dml_exception
@@ -639,6 +733,7 @@ class groups {
     }
 
     /**
+     * join group
      * @param int $userid
      * @param int $groupid
      *
@@ -659,6 +754,7 @@ class groups {
     }
 
     /**
+     * delete group
      * @param int $groupid
      * @return void
      * @throws \dml_exception
@@ -721,6 +817,7 @@ class groups {
     }
 
     /**
+     * count comments since last visit
      * @param $groupid
      * @return int
      * @throws \dml_exception
@@ -744,6 +841,7 @@ class groups {
     }
 
     /**
+     * * is the user a group member
      * @param int $userid
      * @param int $groupid
      * @return bool
@@ -755,6 +853,7 @@ class groups {
     }
 
     /**
+     * may user view the group
      * @param int $groupid
      * @return bool
      * @throws \coding_exception

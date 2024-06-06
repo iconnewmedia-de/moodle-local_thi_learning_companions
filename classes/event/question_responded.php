@@ -13,9 +13,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_thi_learning_companions\event;
 
+/**
+ * Event that gets triggered when there's a response to a question
+ */
 class question_responded extends \core\event\base {
+    /**
+     * initializes the event
+     * @return void
+     * @throws \dml_exception
+     */
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
@@ -23,15 +41,29 @@ class question_responded extends \core\event\base {
         $this->data['objecttable'] = 'thi_lc_chat_comment';
     }
 
+    /**
+     * returns the event's name
+     * @return \lang_string|string
+     * @throws \coding_exception
+     */
     public static function get_name() {
         return get_string('event_question_responded', 'local_thi_learning_companions');
     }
 
+    /**
+     * returns the event's description
+     * @return string
+     */
     public function get_description() {
         return "The user with id '$this->userid' has responded to the question chat ".
             "with id '{$this->other['questionid']}' with the answer with the id '$this->objectid'.";
     }
 
+    /**
+     * validates the data
+     * @return void
+     * @throws \coding_exception
+     */
     protected function validate_data() {
         if (!isset($this->data['objectid'])) {
             throw new \coding_exception('The \'objectid\' (questionId) must be set.');
@@ -46,6 +78,14 @@ class question_responded extends \core\event\base {
         }
     }
 
+    /**
+     * Creates the event
+     * @param int $userid
+     * @param int $chatid
+     * @param int $chatcommentid
+     * @return \core\event\base
+     * @throws \coding_exception
+     */
     public static function make(int $userid, int $chatid, int $chatcommentid) {
         return self::create([
             'objectid' => $chatcommentid,

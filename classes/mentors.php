@@ -13,6 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 use local_thi_learning_companions\event\mentor_assigned;
 use local_thi_learning_companions\event\question_created;
@@ -20,6 +29,10 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__ . "/../locallib.php");
 require_once($CFG->libdir . "/badgeslib.php");
 require_once($CFG->dirroot . "/badges/classes/badge.php");
+
+/**
+ * Class with methods for handling mentors
+ */
 class mentors {
 
     /**
@@ -95,10 +108,16 @@ class mentors {
         return $mentors;
     }
 
+    /**
+     * @return void
+     */
     public static function get_my_mentors() {
 
     }
 
+    /**
+     * @return void
+     */
     public static function may_become_mentor() {
 
     }
@@ -162,6 +181,11 @@ class mentors {
         return $countmentorratings >= $minimumratings;
     }
 
+    /**
+     * @param $userid
+     * @return int
+     * @throws \dml_exception
+     */
     public static function count_mentor_ratings($userid = null) {
         global $USER, $DB;
         $userid = is_null($userid) ? $USER->id : $userid;
@@ -401,6 +425,11 @@ class mentors {
         return count($qualifications) > 0;
     }
 
+    /**
+     * @param $userid
+     * @return array
+     * @throws \dml_exception
+     */
     public static function get_all_mentorship_qualifications($userid = null) {
         global $CFG, $USER;
         if (is_null($userid)) {
@@ -419,7 +448,7 @@ class mentors {
             }
             $ismentorbadge = false;
             $userbadgename = strtolower($userbadge->name);
-            foreach($mentorbadgetypes as $mentorbadgetype) {
+            foreach ($mentorbadgetypes as $mentorbadgetype) {
                 if (strpos($userbadgename, $mentorbadgetype) !== false) {
                     $ismentorbadge = true;
                     break;
@@ -453,6 +482,11 @@ class mentors {
         return $topics;
     }
 
+    /**
+     * @param $mentors
+     * @return array
+     * @throws \dml_exception
+     */
     public static function get_mentorship_topics_of_mentors($mentors) {
         $topics = [];
         foreach ($mentors as $mentor) {
@@ -671,6 +705,10 @@ class mentors {
         return $nuggets;
     }
 
+    /**
+     * @param $cmid
+     * @return void
+     */
     protected static function get_latest_comment_of_nugget($cmid) {
 
     }

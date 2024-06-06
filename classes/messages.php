@@ -13,11 +13,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 
 use core\message\message;
 
+/**
+ * Class for sending messages related to this plugin, such as notifications about join requests.
+ */
 class messages {
+    /**
+     * @param string $messagename
+     * @return message
+     */
     private static function init_new_message(string $messagename): message {
         $message = new \core\message\message();
         $message->component = 'local_thi_learning_companions';
@@ -28,6 +44,15 @@ class messages {
         return $message;
     }
 
+    /**
+     * @param int $requesteduserid
+     * @param int $recipientid
+     * @param int $groupid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public static function send_group_join_requested_notification(int $requesteduserid, int $recipientid, int $groupid) {
         global $DB;
 
@@ -56,6 +81,15 @@ class messages {
         message_send($message);
     }
 
+    /**
+     * @param int $newadminid
+     * @param int $groupid
+     * @param int|null $appointedbyuserid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public static function send_appointed_to_admin_notification(int $newadminid, int $groupid, int $appointedbyuserid = null) {
         global $DB;
 
@@ -84,6 +118,14 @@ class messages {
         message_send($message);
     }
 
+    /**
+     * @param $userid
+     * @param $groupid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public static function send_group_join_accepted_notification($userid, $groupid) {
         global $DB, $USER;
 
@@ -111,6 +153,14 @@ class messages {
         message_send($message);
     }
 
+    /**
+     * @param $userid
+     * @param $groupid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public static function send_group_join_denied_notification($userid, $groupid) {
         global $DB, $USER;
 
@@ -138,6 +188,14 @@ class messages {
         message_send($message);
     }
 
+    /**
+     * @param $userid
+     * @param $groupid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public static function send_invited_to_group($userid, $groupid) {
         global $DB, $USER;
 

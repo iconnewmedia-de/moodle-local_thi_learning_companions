@@ -322,7 +322,8 @@ const handleEditGroup = async function(e) {
             data: {
                 action: 'getgroupdetails',
                 groupid: groupid,
-                referrer: 'chat'
+                referrer: 'chat',
+                sesskey: M.cfg.sesskey
             },
             success: function(data) {
                 console.log('got group details modal with data: ', data);

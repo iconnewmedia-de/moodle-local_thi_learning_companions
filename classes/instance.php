@@ -13,6 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 use mod_bigbluebuttonbn\local\helpers\files;
 use stdClass;
@@ -20,14 +29,27 @@ use context_system;
 use moodle_url;
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . "/mod/bigbluebuttonbn/classes/instance.php");
+
+/**
+ * BigBlueButton instance - similar to mod bigbluebutton but doesn't require a course or mod
+ */
 class instance extends \mod_bigbluebuttonbn\instance {
 
+    /**
+     * @param int $groupid
+     * @param stdClass $instancedata
+     */
     public function __construct(int $groupid, stdClass $instancedata) {
         $this->groupid = $groupid;
         $this->instancedata = $instancedata;
         $this->cm = null;
     }
 
+    /**
+     * @param int $groupid
+     * @return instance
+     * @throws \dml_exception
+     */
     public function get_from_groupid(int $groupid) {
         global $DB;
 
@@ -118,6 +140,10 @@ class instance extends \mod_bigbluebuttonbn\instance {
         ]);
     }
 
+    /**
+     * @return string
+     * @throws \dml_exception
+     */
     protected static function get_new_meetingid() {
         global $DB;
         do {

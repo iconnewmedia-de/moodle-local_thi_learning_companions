@@ -13,8 +13,20 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 
+/**
+ * Collection of event observers
+ */
 class eventobservers {
     /**
      * Observer for \core\event\course_module_created event.
@@ -23,7 +35,6 @@ class eventobservers {
      * @return void
      */
     public static function course_module_created(\core\event\course_module_created $event) {
-        global $DB;
         $data = $event->get_data();
         $modulename = $data['other']['modulename'];
         require_once(__DIR__ . "/../locallib.php");
@@ -37,6 +48,7 @@ class eventobservers {
     }
 
     /**
+     * Handles the event when a course gets restored. We might have to add the comment block.
      * @param \core\event\course_restored $event
      * @return void
      * @throws \coding_exception

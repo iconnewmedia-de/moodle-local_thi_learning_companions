@@ -15,27 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Learning Companions Cleanup Task
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
- * @package   local_thi_learning_companions
- * @copyright 2022 ICON Vernetzte Kommunikation GmbH
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace local_thi_learning_companions\task;
 
 /**
  * Learning Companions Cleanup Task
- *
- * @package   local_thi_learning_companions
- * @copyright 2022 ICON Vernetzte Kommunikation GmbH
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class cleanup extends \core\task\scheduled_task {
+    /**
+     * returns the task name
+     * @return \lang_string|string
+     * @throws \coding_exception
+     */
     public function get_name() {
         return get_string('cleanup_task', 'local_thi_learning_companions');
     }
 
+    /**
+     * execute the task
+     * @return void
+     */
     public function execute() {
         // ICTODO: remove users from chats and groups who've been inactive for too long.
         // ICTODO: remove or archive or purge chats and groups that have been unused for too long.

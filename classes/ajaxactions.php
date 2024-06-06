@@ -13,14 +13,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 namespace local_thi_learning_companions;
 
 /**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
  *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class AjaxActions {
 
     /**
+     * Deletes a question. Question id must have been passed as required parameter.
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -36,6 +43,8 @@ class AjaxActions {
     }
 
     /**
+     * Returns all information for a group.
+     * Expects groupid as required_param.
      * @return void
      * @throws \JsonException
      * @throws \coding_exception
@@ -74,6 +83,8 @@ class AjaxActions {
     }
 
     /**
+     * Returns a list of potential new administrators for a group.
+     * Used for presenting a list of users to assign as admin when the original admin left.
      * @return void
      * @throws \JsonException
      * @throws \coding_exception
@@ -100,6 +111,8 @@ class AjaxActions {
     }
 
     /**
+     * Handles current user leaving a group.
+     * The function expects the required_param groupid.
      * @return void
      * @throws \JsonException
      * @throws \coding_exception
@@ -130,6 +143,7 @@ class AjaxActions {
     }
 
     /**
+     * Gets called when the current user requests to join a group.
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -150,6 +164,7 @@ class AjaxActions {
     }
 
     /**
+     * Gets called when user joins a group.
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -174,6 +189,7 @@ class AjaxActions {
     }
 
     /**
+     * Returns a list of users that can be invited.
      * @return void
      * @throws \JsonException
      * @throws \coding_exception

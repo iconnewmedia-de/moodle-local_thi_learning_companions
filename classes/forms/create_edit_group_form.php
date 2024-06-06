@@ -13,6 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_thi_learning_companions\forms;
 defined('MOODLE_INTERNAL') || die();
 use local_thi_learning_companions\group;
@@ -21,7 +31,20 @@ use tool_brickfield\local\areas\mod_choice\option;
 
 require_once($CFG->libdir . "/formslib.php");
 
+/**
+ * Form for creating a new group
+ */
 class create_edit_group_form extends \moodleform {
+    /**
+     * Constructor (duh - comment just here for code checker)
+     * @param $action
+     * @param $customdata
+     * @param $method
+     * @param $target
+     * @param $attributes
+     * @param $editable
+     * @param $ajaxformdata
+     */
     public function __construct($action = null,
                                 $customdata = null,
                                 $method = 'post',
@@ -41,6 +64,11 @@ class create_edit_group_form extends \moodleform {
             $ajaxformdata);
     }
 
+    /**
+     * returns the file picker options
+     * @return array
+     * @throws \dml_exception
+     */
     public static function get_filepickeroptions() {
         $config = get_config('local_thi_learning_companions');
         return [
@@ -50,8 +78,13 @@ class create_edit_group_form extends \moodleform {
         ];
     }
 
+    /**
+     * the actual form definition
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     protected function definition() {
-        global $CFG;
         $mform = $this->_form;
 
         $referrer = optional_param('referrer', '', PARAM_TEXT);
@@ -165,6 +198,11 @@ class create_edit_group_form extends \moodleform {
         $this->add_action_buttons();
     }
 
+    /**
+     * Sets the group data
+     * @param group $group
+     * @return void
+     */
     public function set_group_data(group $group) {
         $this->set_data([
             'name' => $group->name,

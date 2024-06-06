@@ -13,6 +13,15 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace local_thi_learning_companions;
 
 use core\session\exception;
@@ -20,28 +29,77 @@ use local_thi_learning_companions\event\question_answered;
 use local_thi_learning_companions\event\question_created;
 use local_thi_learning_companions\traits\is_db_saveable;
 
+/**
+ * Question object representing a question and all related information
+ */
 class question {
     use is_db_saveable;
 
+    /**
+     * @var array
+     */
     private static $topiclist = [];
 
+    /**
+     * @var
+     */
     public $id;
+    /**
+     * @var int
+     */
     public $askedby;
+    /**
+     * @var int
+     */
     public $mentorid;
+    /**
+     * @var string
+     */
     public $question;
+    /**
+     * @var string
+     */
     public $title;
+    /**
+     * @var string
+     */
     public $topic;
+    /**
+     * @var int
+     */
     public $timecreated;
+    /**
+     * @var
+     */
     public $timeclosed;
+    /**
+     * @var
+     */
     public $mayuserdelete;
 
+    /**
+     * @var
+     */
     public $lastactive;
+    /**
+     * @var
+     */
     public $lastactivedmy;
 
+    /**
+     * @return string
+     */
     private static function get_table_name(): string {
         return 'thi_lc_mentor_questions';
     }
 
+    /**
+     * @param int $askedby
+     * @param int $mentorid
+     * @param string $question
+     * @param string $title
+     * @param string $topic
+     */
     public function __construct(int $askedby, int $mentorid, string $question, string $title, string $topic) {
         $this->askedby = $askedby;
         $this->mentorid = $mentorid;
@@ -51,6 +109,13 @@ class question {
         $this->timecreated = time();
     }
 
+    /**
+     * @param string $question
+     * @param string $title
+     * @param string $topic
+     * @return question
+     * @throws \coding_exception
+     */
     public static function ask_new_open_question(string $question, string $title, string $topic) {
         global $USER;
 
@@ -60,6 +125,14 @@ class question {
         return $newquestion;
     }
 
+    /**
+     * @param string $question
+     * @param string $title
+     * @param string $topic
+     * @param int $mentorid
+     * @return question
+     * @throws \coding_exception
+     */
     public static function ask_new_question(string $question, string $title, string $topic, int $mentorid) {
         global $USER;
 
@@ -69,6 +142,12 @@ class question {
         return $newquestion;
     }
 
+    /**
+     * @param $record
+     * @return static
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     private static function from_record($record): self {
         if (is_null($record->mentorid)) {
             $record->mentorid = 0;
@@ -80,6 +159,11 @@ class question {
         $question->mayuserdelete = mentors::may_user_delete_question($question->id);
         return $question;
     }
+
+    /**
+     * @return static
+     * @throws \coding_exception
+     */
     private static function question_with_no_permission(): self {
         $question = new self(0, 0,
             get_string('no_permission_for_this_question', 'local_thi_learning_companions'),
@@ -90,6 +174,10 @@ class question {
         return $question;
     }
 
+    /**
+     * @return $this
+     * @throws \coding_exception
+     */
     public function mark_closed(): self {
         global $USER;
         $this->timeclosed = time();
@@ -139,6 +227,11 @@ class question {
         return $questions;
     }
 
+    /**
+     * @param int $userid
+     * @return bool
+     * @throws \dml_exception
+     */
     public function can_user_view(int $userid): bool {
         global $DB;
 
@@ -203,6 +296,10 @@ class question {
         return $questions;
     }
 
+    /**
+     * @return false|int|mixed
+     * @throws \dml_exception
+     */
     public function get_last_activity() {
         global $DB;
 
@@ -227,6 +324,10 @@ class question {
         return $this->last_active;
     }
 
+    /**
+     * @return false|mixed|\stdClass
+     * @throws \dml_exception
+     */
     private function get_chat() {
         global $DB;
 
@@ -237,6 +338,9 @@ class question {
         return $this->chat = $DB->get_record('thi_lc_chat', ['relatedid' => $this->id, 'chattype' => groups::CHATTYPE_MENTOR]);
     }
 
+    /**
+     * @return array
+     */
     public function to_array() {
         return [
             'id' => $this->id,
@@ -257,18 +361,33 @@ class question {
         return $this->askedby;
     }
 
+    /**
+     * @return bool
+     */
     public function is_closed() {
         return $this->timeclosed !== null && intval($this->timeclosed) !== 0;
     }
 
+    /**
+     * @return string
+     * @throws \coding_exception
+     */
     public function get_closed_time() {
         return userdate($this->timeclosed, get_string('strftimedatefullshort', 'langconfig'));
     }
 
+    /**
+     * @return mixed
+     */
     public function get_id() {
         return $this->id;
     }
 
+    /**
+     * @return string
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public function get_last_activity_dmy() {
         $date = $this->get_last_activity();
         if ($date === null || $date == 0) {
@@ -277,10 +396,18 @@ class question {
         return userdate($this->get_last_activity(), get_string('strftimedatefullshort', 'langconfig'));
     }
 
+    /**
+     * @return string
+     * @throws \coding_exception
+     */
     public function get_timecreated_dmy() {
         return userdate($this->timecreated, get_string('strftimedatefullshort', 'langconfig'));
     }
 
+    /**
+     * @return int
+     * @throws \dml_exception
+     */
     public function get_answer_count() {
         global $DB;
 
@@ -299,6 +426,10 @@ class question {
         return $this->answer_count;
     }
 
+    /**
+     * @return false|mixed|string
+     * @throws \dml_exception
+     */
     public function get_topic() {
         if ($this->topic === '0') {
             return '-';

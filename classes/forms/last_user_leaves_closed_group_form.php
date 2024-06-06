@@ -13,16 +13,31 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_thi_learning_companions\forms;
 
 use context;
 use local_thi_learning_companions\groups;
 use moodle_url;
 
+/**
+ * Form that appears when the last user leaves a group, leaving it empty
+ */
 class last_user_leaves_closed_group_form extends \core_form\dynamic_form {
 
     /**
-     * @inheritDoc
+     * the form definition
+     * @return void
+     * @throws \coding_exception
      */
     protected function definition() {
         $mform = $this->_form;
@@ -33,21 +48,26 @@ class last_user_leaves_closed_group_form extends \core_form\dynamic_form {
     }
 
     /**
-     * @inheritDoc
+     * returns the context for dynamic form submission
+     * @return context
+     * @throws \dml_exception
      */
     protected function get_context_for_dynamic_submission(): context {
         return \context_system::instance();
     }
 
     /**
-     * @inheritDoc
+     * checks access for dynamic submission
+     * @return void
      */
     protected function check_access_for_dynamic_submission(): void {
 
     }
 
     /**
-     * @inheritDoc
+     * processes the dynamic submission
+     * @return mixed|void
+     * @throws \dml_exception
      */
     public function process_dynamic_submission() {
         global $USER;
@@ -58,13 +78,15 @@ class last_user_leaves_closed_group_form extends \core_form\dynamic_form {
     }
 
     /**
-     * @inheritDoc
+     * sets data for dynamic submission
+     * @return void
      */
     public function set_data_for_dynamic_submission(): void {
     }
 
     /**
-     * @inheritDoc
+     * returns page url for dynamic submission
+     * @return moodle_url
      */
     protected function get_page_url_for_dynamic_submission(): moodle_url {
         return new moodle_url('/local/thi_learning_companions/group/search.php');

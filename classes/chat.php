@@ -13,13 +13,40 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 namespace local_thi_learning_companions;
 
+/**
+ * Chat class with all chat-related functions needed for handling chats.
+ *
+ * Das Projekt THISuccessAI (FBM202-EA-1690-07540) wird im Rahmen der Förderlinie „Hochschulen durch Digitalisierung stärken“
+ * durch die Stiftung Innovation in der Hochschulehre gefördert.
+ *
+ * @package     local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class chat {
+    /**
+     * @var int $chatid
+     */
     protected $chatid;
+    /**
+     * @var \stdClass $chat Object from an entry from the table thi_lc_chat.
+     */
     protected $chat;
+    /**
+     * @var $context
+     */
     protected $context;
 
+    /**
+     * Creates a new chat for a group.
+     * @param $groupid
+     * @return static
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public static function create_group_chat($groupid): self {
         global $DB;
 
@@ -71,6 +98,12 @@ class chat {
         }
     }
 
+    /**
+     * Creates a chat for a question to mentors
+     * @param $questionid
+     * @return static
+     * @throws \dml_exception
+     */
     public static function create_question_chat($questionid): self {
         global $DB;
 
@@ -94,6 +127,7 @@ class chat {
     }
 
     /**
+     * Returns the chat for a given chat id
      * @param $chatid
      * @return chat
      * @throws \dml_exception
@@ -106,6 +140,10 @@ class chat {
         return $chat;
     }
 
+    /**
+     * Returns a few language strings that can then be used from within JS
+     * @return string
+     */
     private function get_language_strings(): string {
         $stringkeys = [
             'delete_post',
@@ -140,11 +178,18 @@ class chat {
         // ICTODO: save attachments.
     }
 
+    /**
+     * Updates a comment.
+     * @param $comment
+     * @param $attachments
+     * @return void
+     */
     public function update_comment($comment, $attachments) {
         // ICTODO: update comment and attachments.
     }
 
     /**
+     * Returns all comments for the current chat
      * @param int $page the Page to use, used for pagination
      * @param int $offset Any offset. Can be used, to compensate new posts, that were added in the meantime
      *
@@ -178,13 +223,14 @@ class chat {
     }
 
     /**
+     * Returns posts for a chat, starting with $firstpostid
      * @param int|null $firstpostid The last post id, that was already loaded. If null, the posts will be loaded from the beginning
      * @param int|null $includedpostid The id of the Post that should be included in the result even if it's older than $firstPostId
      *
      * @return array
      * @throws \dml_exception
      */
-    public function get_posts_for_chat(int $firstpostid = null, int $includedpostid = 0) {
+    public function get_posts_for_chat(int|null $firstpostid = null, int $includedpostid = 0) {
         global $DB;
 
         // If the user is not allowed to see the chat, return an empty array.
@@ -262,6 +308,13 @@ class chat {
         $comment->isratedbyuser = self::is_comment_rated_by_current_user($comment);
     }
 
+    /**
+     * Returns an author's full name
+     * @param $userid
+     * @return \lang_string|string
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function get_author_fullname($userid) {
         global $DB;
         $user = $DB->get_record('user', ['id' => $userid]);
@@ -272,17 +325,24 @@ class chat {
     }
 
     /**
+     * Returns true if the current user has already rated the given comment
      * @param $comment
      * @return bool
      */
     public static function is_comment_rated_by_current_user($comment) {
         global $USER;
-        if (empty($ratings) || !in_array($USER->id, $ratings)) {
+        if (empty($comment->ratings) || !in_array($USER->id, $comment->ratings)) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Returns the newest posts that have been added since the last post the user has viewed
+     * @param int $lastviewedpostid
+     * @return array
+     * @throws \dml_exception
+     */
     public function get_newest_posts(int $lastviewedpostid) {
         // If the user is not allowed to see the chat, return an empty array.
         if (!$this->can_view_chat()) {
@@ -311,6 +371,12 @@ class chat {
         return $comments;
     }
 
+    /**
+     * Sets the latest comment as viewed
+     * @param int $chatid
+     * @return void
+     * @throws \dml_exception
+     */
     public function set_latestviewedcomment(int $chatid) {
         global $DB, $USER;
         $record = $DB->get_record('thi_lc_chat_lastvisited', ['chatid' => $chatid, 'userid' => $USER->id]);
@@ -326,6 +392,14 @@ class chat {
         $DB->insert_record('thi_lc_chat_lastvisited', $record);
     }
 
+    /**
+     * Adds the attachments to comments
+     * @param array $comments
+     * @param string $area
+     * @return array|mixed
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public function get_attachments_of_comments(array $comments, string $area) {
         global $CFG;
         require_once($CFG->dirroot.'/local/thi_learning_companions/lib.php');
@@ -349,6 +423,12 @@ class chat {
         return $OUTPUT->render_from_template('local_thi_learning_companions/chat', $context);
     }
 
+    /**
+     * Returns the chat module for questions to mentors
+     * @return bool|string
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
     public function get_question_chat_module() {
         global $USER, $OUTPUT;
         $form = $this->get_submission_form(['chatid' => $this->chatid]);
@@ -364,6 +444,12 @@ class chat {
         return $OUTPUT->render_from_template('local_thi_learning_companions/mentor/mentor_question_chat', $context);
     }
 
+    /**
+     * Returns the submission form for chats
+     * @param $customdata
+     * @return array|string|string[]
+     * @throws \dml_exception
+     */
     protected function get_submission_form($customdata) {
         require_once(__DIR__. "/chat_post_form.php");
         // ICTODO: Dynamically get the course and module from the currently selected group.
@@ -396,6 +482,11 @@ class chat {
         return $output;
     }
 
+    /**
+     * Returns the timestamp for the latest comment of the current chat
+     * @return false|mixed
+     * @throws \dml_exception
+     */
     public function get_last_active_time() {
         global $DB;
         return $DB->get_field_sql(
@@ -405,6 +496,7 @@ class chat {
     }
 
     /**
+     * Returns the id of the user who has last commented in the current chat
      * @param bool $excludecurrentuser True, if the current user should be ignored.
      *
      * @return false|int
@@ -430,6 +522,12 @@ class chat {
         return $DB->get_field_sql($sql, $params);
     }
 
+    /**
+     * Returns true if the current user is allowed to see the current chat
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     private function can_view_chat(): bool {
         global $USER;
 

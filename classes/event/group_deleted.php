@@ -30,6 +30,11 @@ namespace local_thi_learning_companions\event;
 class group_deleted extends \core\event\base {
 
     // For more information about the Events API please visit {@link https://docs.moodle.org/dev/Events_API}.
+    /**
+     * initializes the event
+     * @return void
+     * @throws \dml_exception
+     */
     protected function init() {
         $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_OTHER;
@@ -37,6 +42,11 @@ class group_deleted extends \core\event\base {
         $this->context = \context_system::instance();
     }
 
+    /**
+     * validates the data
+     * @return void
+     * @throws \coding_exception
+     */
     protected function validate_data() {
         parent::validate_data();
 
@@ -49,14 +59,30 @@ class group_deleted extends \core\event\base {
         }
     }
 
+    /**
+     * returns the event's name
+     * @return \lang_string|string
+     * @throws \coding_exception
+     */
     public static function get_name() {
         return get_string('event_group_deleted', 'local_thi_learning_companions');
     }
 
+    /**
+     * returns the event's description
+     * @return string
+     */
     public function get_description() {
         return "The user with id '$this->userid' deleted a group with id '$this->objectid'.";
     }
 
+    /**
+     * Creates the event
+     * @param int $deleterid
+     * @param int $groupid
+     * @return \core\event\base
+     * @throws \coding_exception
+     */
     public static function make(int $deleterid, int $groupid) {
         return self::create([
             'objectid' => $groupid,

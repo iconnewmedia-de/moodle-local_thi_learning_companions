@@ -30,6 +30,11 @@ namespace local_thi_learning_companions\event;
 class group_joined extends \core\event\base {
 
     // For more information about the Events API please visit {@link https://docs.moodle.org/dev/Events_API}.
+    /**
+     * initializes the event
+     * @return void
+     * @throws \dml_exception
+     */
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
@@ -37,14 +42,28 @@ class group_joined extends \core\event\base {
         $this->context = \context_system::instance();
     }
 
+    /**
+     * returns the event's name
+     * @return \lang_string|string
+     * @throws \coding_exception
+     */
     public static function get_name() {
         return get_string('event_group_joined', 'local_thi_learning_companions');
     }
 
+    /**
+     * returns the event's description
+     * @return string
+     */
     public function get_description() {
         return "The user with id '$this->userid' joined the group with id '$this->objectid'.";
     }
 
+    /**
+     * validates the data
+     * @return void
+     * @throws \coding_exception
+     */
     protected function validate_data() {
         if (!isset($this->data['objectid'])) {
             throw new \coding_exception('The \'objectid\' (groupId) must be set.');
@@ -55,6 +74,13 @@ class group_joined extends \core\event\base {
         }
     }
 
+    /**
+     * Creates the event
+     * @param int $userid
+     * @param int $groupid
+     * @return \core\event\base
+     * @throws \coding_exception
+     */
     public static function make(int $userid, int $groupid) {
         return self::create([
             'objectid' => $groupid,

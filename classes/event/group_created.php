@@ -30,12 +30,21 @@ namespace local_thi_learning_companions\event;
 class group_created extends \core\event\base {
 
     // For more information about the Events API please visit {@link https://docs.moodle.org/dev/Events_API}.
+    /**
+     * initializes the event
+     * @return void
+     */
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'thi_lc_groups';
     }
 
+    /**
+     * validates the data
+     * @return void
+     * @throws \coding_exception
+     */
     protected function validate_data() {
         parent::validate_data();
 
@@ -56,14 +65,34 @@ class group_created extends \core\event\base {
         }
     }
 
+    /**
+     * returns the event's name
+     * @return \lang_string|string
+     * @throws \coding_exception
+     */
     public static function get_name() {
         return get_string('event_group_created', 'local_thi_learning_companions');
     }
 
+    /**
+     * returns the event's description
+     * @return string
+     */
     public function get_description() {
         return "The user with id '$this->userid' created a group with id '$this->objectid'.";
     }
 
+    /**
+     * Creates the event
+     * @param int $creatorid
+     * @param int $groupid
+     * @param array $topics
+     * @param int $courseid
+     * @param int $cmid
+     * @return \core\event\base
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public static function make(int $creatorid, int $groupid, array $topics = [], int $courseid = 0, int $cmid = 0) {
         $params = [
             'objectid' => $groupid,
