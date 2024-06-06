@@ -159,6 +159,7 @@ class question {
 
         // There is no mentor assigned, so we need to check the topics.
         $mentortopics = $DB->get_records_menu('thi_lc_mentors', ['userid' => $userid], '', 'topic');
+        $mentortopics = array_keys($mentortopics);
         return in_array($this->topic, $mentortopics, true);
     }
 

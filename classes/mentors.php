@@ -110,14 +110,14 @@ class mentors {
      * @throws \dml_exception
      */
     public static function is_mentor($userid = null) {
-        global $USER;
+        global $USER, $DB;
         $context = \context_system::instance();
         $userid = is_null($userid) ? $USER->id : $userid;
-        return has_capability(
+        return $DB->record_exists('thi_lc_mentors', ['userid' => $userid]) || has_capability(
             'local/thi_learning_companions:mentor_ismentor',
             $context,
             $userid
-        ); // Maybe access restriction by database entry.
+        );
     }
 
     /**
@@ -144,7 +144,7 @@ class mentors {
      */
     public static function is_mentor_for_topic($userid, $topic) {
         global $DB;
-        return $DB->record_exists('lc_mentor', ['userid' => $userid, 'topic' => $topic]);
+        return $DB->record_exists('thi_lc_mentors', ['userid' => $userid, 'topic' => $topic]);
     }
 
     /**
