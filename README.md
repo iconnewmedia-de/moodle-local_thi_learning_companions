@@ -57,7 +57,7 @@ This block adds all the links to the Learning Companions features on the right-h
 The groups to which you belong are listed at the top. For each group, the group picture, the group title, as well as the last comment and the date of the last comment in the group are displayed. The group title is linked to the corresponding group chat.
 If you belong to more than three groups, only three will be displayed at first. Additional groups can be displayed by clicking on „Show (x) more groups“.
 
-The „Group me up“ link refers to a page on which users can search for groups and join them, or apply to join closed groups.
+The „Group me up“ link refers to a page on which users can create new groups, search for groups and join them, or apply to join closed groups.
 
 The link „Go to admin area“ is only displayed to users with extended rights. The authorisation required for this is „local_thi_learning_companions:group_manage“. By default, all administrators and users with the role „manager“ receive this authorisation when the plug-in is installed. In the admin area, reported contributions can be managed and orphaned groups can be deleted.
 
@@ -68,7 +68,7 @@ The section „My mentorship“ is only visible to users with the role „Mentor
 ###### Course topics
 
 The plugin local/thi_learning_companions adds a new course custom field: „Topic“.
-Edit your courses and enter the associated topic there. These topics help with the group search by topic and determine for which topic a mentor is qualified if he/she has earned a corresponding badge in the course.
+Edit your courses and enter the associated topic there. These topics determine for which topic a mentor is qualified if he/she has earned a corresponding badge in the course.
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en5.png)
 
@@ -80,28 +80,53 @@ There you will find the setting „Mentor badges“:
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en6.png)
 
-Here you can enter several terms, separated by commas, which must be part of the badge name. If a user receives a badge with one of these terms in its name, he or she has thus qualified as a mentor for the subject of the course, is informed of this via a Moodle message and can decide for himself or herself whether to accept this role (via the page „My mentorship > Manage mentorship(s)“).
+Here you can enter several terms, separated by commas, which must be part of the badge name. 
+
+If a user receives a badge with one of these terms in its name, he or she has thus qualified as a mentor for the subject of the course, is informed of this via a Moodle message and can decide for himself or herself whether to accept this role (via the page „My mentorship > Manage mentorship(s)“).
+
+The badge name doesn't have to match exactly. For example if the setting is set to "expert", then a badge with the name "IT Expert" matches too, since it contains the word "expert". The match is case insensitive. 
 
 ###### Group me up
 
-If the block block_thi_learning_companions_mygroups has been added as described above, then users can jump from any page to the page „Groups > Find Group“ via the link „Group me up“ in this block. When I jump to this page from a course or course module, the list of groups is already pre-filtered by the current course.
-By removing this filter (here „Basic Training“) one can then get the whole list of available groups again.  The icon in the „Joining“ column indicates whether the group is open or closed. Anyone can join an open group or view the chats without being a member of the group. For closed groups, you have to request to join.
+If the block block_thi_learning_companions_mygroups has been added as described above, 
+then users can jump from any page to the page „Groups > Find Group“ via the link „Group me up“ in this block.
+
+When I jump to this page from a course or course module, the list of groups is already pre-filtered by the current course.
+By removing this filter (here „Basic Training“ in the screenshot below) one can then get the whole list of available groups again. 
+
+The icon in the „Joining“ column indicates whether the group is open or closed.
+Anyone can join an open group or view the chats without being a member of the group.
+For closed groups, you have to request to join.
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en7.png)
 
 ###### Create a group
 
-If I have not found a group in the table on the „Find group“ page that meets my needs, I can create a new group myself using the „Create new group“ button. A form opens in which I can enter all the relevant information about the group. The group name is displayed in the group search and overview of my groups. It should describe as precisely and concisely as possible what the group is about. It is the only mandatory field.
-The field „Topic“ can be filled freely. It does not have to be congruent with the topic of the course. This is an autocomplete field with tagging function. This means that suggestions appear while you are typing that contain the text you have entered.
+If I have not found a group in the table on the „Find group“ page that meets my needs, I can create a new group myself using the „Create new group“ button.
+A form opens in which I can enter all the relevant information about the group. 
+
+The **group name** is displayed in the group search and overview of my groups. It should describe as precisely and concisely as possible what the group is about. It is the only mandatory field.
+
+The field „**Keyword(s)**“ can be filled freely. It does not have to be congruent with the topic of the course.
+This is an autocomplete field with tagging function. This means that suggestions appear while you are typing that contain the text you have entered.
 By clicking on such a suggestion, it is taken over. You can also create new topics by entering the text as usual and pressing Return(Enter). Several topics can be added.
-Course context is pre-filled with the course I came from when I arrived here via a course. Multiple selection is not possible here. Like all fields except Group name, this field is optional. The field can be useful when users are looking for a group that is relevant to a particular course.
-Learning nugget context is also an autocomplete field. Here, activities (learning nuggets) are available that are included in the course selected for „Course context“.
-With the option „Closed group“ I can define whether everyone can/may visit the group or a membership has to be applied for and approved.
-A group picture can be uploaded. It appears in the overviews and helps to distinguish the groups from each other more quickly. If no picture is uploaded, a placeholder picture is displayed instead.
+
+**Course context** is pre-filled with the course I came from when I arrived here via a course. 
+Multiple selection is not possible here. Like all fields except Group name, this field is optional.
+The field can be useful when users are looking for a group that is relevant to a particular course.
+
+**Learning nugget context** is also an autocomplete field. 
+Here, activities (learning nuggets) are available that are included in the course selected for „Course context“.
+
+With the option „**Closed group**“ I can define whether everyone can/may visit the group or a membership has to be applied for and approved.
+
+A **group picture** can be uploaded. It appears in the overviews and helps to distinguish the groups from each other more quickly. If no picture is uploaded, a placeholder picture is displayed instead.
 
 ###### Group-Chat
 
-In the group chat, users can write texts and apply simple formatting such as bold, italic, underlined and strikethrough. They can also upload pictures and files or start a video conference using the BigBlueButton.
+In the group chat, users can write texts and apply simple formatting such as bold, italic, underlined and strikethrough. 
+They can also upload pictures and files or start a video conference using the BigBlueButton. The buttons for file upload and BigBlueButton are currently only available for the ATTO editor.
+
 Own comments are highlighted in green, reported comments in yellow. Deleted comments appear in the chat with the text „Message deleted“ replaced.
 Hovering over the comments gives you the option to report posts or delete your own.
 

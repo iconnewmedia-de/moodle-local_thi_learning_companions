@@ -6,7 +6,7 @@
             <thead>
                 <tr>
                     <th class="course">{{#str}}course, local_thi_learning_companions{{/str}}</th>
-                    <th class="topic">{{#str}}topic, local_thi_learning_companions{{/str}}</th>
+                    <th class="topic">{{#str}}group_topic, local_thi_learning_companions{{/str}}</th>
                     <th class="name">{{#str}}name, local_thi_learning_companions{{/str}}</th>
                     <th class="join">{{#str}}join, local_thi_learning_companions{{/str}}</th>
                     <th class="member-count">{{#str}}membercount, local_thi_learning_companions{{/str}}</th>
@@ -21,7 +21,7 @@
                         {{course.fullname}}
                     </td>
                     <td title="{{#str}}topic, local_thi_learning_companions{{/str}}">
-                        {{keywords_list}}
+                        {{keywordslist}}
                     </td>
                     <td title="{{#str}}name, local_thi_learning_companions{{/str}}">
                         {{name}}
@@ -42,10 +42,10 @@
                         {{membercount}}
                     </td>
                     <td data-order="{{timecreated}}" data-search="{{timecreated}}" title="{{#str}}createdon, local_thi_learning_companions{{/str}}">
-                        {{timecreated_dmY}}
+                        {{timecreateddmy}}
                     </td>
                     <td data-order="{{last_active_time}}" data-value="{{last_active_time}}" title="{{#str}}lastactivity, local_thi_learning_companions{{/str}}">
-                        {{last_active_time_dmy}}
+                        {{lastactivetimedmy}}
                     </td>
                 </tr>
             {{/groups}}
