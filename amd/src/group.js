@@ -30,8 +30,8 @@ const setupDatatables = async() => {
     datatablesHelpers.initMinSearch('.js-group-filter--min');
     datatablesHelpers.initIncludeSearch('.js-group-filter--includes');
 
-    const url = await str.get_string('datatables_url', 'local_thi_learning_companions');
-
+    var url = await str.get_string('datatables_url', 'local_thi_learning_companions');
+    url = M.cfg.wwwroot + url;
 
     $('#allgroupstable').DataTable({
         dom: 'lrtip',

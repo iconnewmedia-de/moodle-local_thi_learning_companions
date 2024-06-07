@@ -31,6 +31,7 @@ use core\message\message;
  */
 class messages {
     /**
+     * initializes a new message
      * @param string $messagename
      * @return message
      */
@@ -45,6 +46,7 @@ class messages {
     }
 
     /**
+     * sends a notification about the request to join a group
      * @param int $requesteduserid
      * @param int $recipientid
      * @param int $groupid
@@ -82,6 +84,7 @@ class messages {
     }
 
     /**
+     * sends a notification that a user has become admiin for a group
      * @param int $newadminid
      * @param int $groupid
      * @param int|null $appointedbyuserid
@@ -90,7 +93,7 @@ class messages {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public static function send_appointed_to_admin_notification(int $newadminid, int $groupid, int $appointedbyuserid = null) {
+    public static function send_appointed_to_admin_notification(int $newadminid, int $groupid, int|null $appointedbyuserid = null) {
         global $DB;
 
         $newadmin = $DB->get_record('user', ['id' => $newadminid]);
@@ -119,6 +122,7 @@ class messages {
     }
 
     /**
+     * send message that a user's group join request has been accepted
      * @param $userid
      * @param $groupid
      * @return void
@@ -154,6 +158,7 @@ class messages {
     }
 
     /**
+     * sends a message that a user's request to join a group has been denied :(
      * @param $userid
      * @param $groupid
      * @return void
@@ -189,6 +194,7 @@ class messages {
     }
 
     /**
+     * sends a message that a user has been invited to a group
      * @param $userid
      * @param $groupid
      * @return void
@@ -271,6 +277,7 @@ class messages {
     }
 
     /**
+     * sends tutor a notification about questions that have remained unanswered
      * @param $tutor
      * @param $question
      * @return false|int|mixed|void

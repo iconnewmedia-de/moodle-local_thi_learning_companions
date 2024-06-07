@@ -36,6 +36,7 @@ require_once($CFG->dirroot . "/mod/bigbluebuttonbn/classes/instance.php");
 class instance extends \mod_bigbluebuttonbn\instance {
 
     /**
+     * Constructor
      * @param int $groupid
      * @param stdClass $instancedata
      */
@@ -46,6 +47,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
     }
 
     /**
+     * Create a meeting instance for a given group id
      * @param int $groupid
      * @return instance
      * @throws \dml_exception
@@ -68,6 +70,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
     }
 
     /**
+     * creates a BBB meeting
      * @return array
      * @throws \dml_exception
      */
@@ -141,6 +144,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
     }
 
     /**
+     * returns a unique meeting id that isn't taken yet
      * @return string
      * @throws \dml_exception
      */
@@ -214,9 +218,10 @@ class instance extends \mod_bigbluebuttonbn\instance {
     }
 
     /**
+     * returns the group id for the meeting
      * @return int
      */
-    public function get_group_id():int {
+    public function get_group_id(): int {
         return $this->groupid;
     }
 

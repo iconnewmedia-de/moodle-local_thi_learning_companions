@@ -22,12 +22,23 @@
  * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_thi_learning_companions\mentor;
 use local_thi_learning_companions\mentors;
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/lib/formslib.php');
 require_once(__DIR__ . "/../locallib.php");
+
+/**
+ * form for asking a question to a mentor
+ */
 class mentor_question_form extends \moodleform {
+    /**
+     * the form definition
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
     public function definition() {
         global $DB;
         $mform = $this->_form;

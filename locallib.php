@@ -25,6 +25,7 @@
 
 namespace local_thi_learning_companions;
 /**
+ * handles a chat submission (posting a new comment in the chat)
  * @param $data
  * @param $form
  * @return array|bool[]
@@ -54,6 +55,7 @@ function chat_handle_submission($data, $form) {
 }
 
 /**
+ * returns the topics of a course
  * @param $courseid
  * @return string[]
  * @throws \dml_exception
@@ -82,7 +84,7 @@ function get_course_topics($courseid) {
  * @throws \coding_exception
  * @throws \dml_exception
  */
-function get_topics_of_user_courses(int $userid = null) {
+function get_topics_of_user_courses(int|null $userid = null) {
     global $DB, $USER;
     if (is_null($userid) && isloggedin()) {
         $userid = $USER->id;
@@ -117,6 +119,7 @@ function get_topics_of_user_courses(int $userid = null) {
 }
 
 /**
+ * invites users to a group
  * @return void
  * @throws \coding_exception
  */
@@ -137,6 +140,7 @@ function invite_users() {
 }
 
 /**
+ * returns the course module types that should have a comment block added
  * @return false|string[]
  * @throws \dml_exception
  */
@@ -148,6 +152,7 @@ function get_moduletypes_for_commentblock() {
 }
 
 /**
+ * creates a comment block
  * @param $parentcontextid
  * @param $modulename
  * @return void
@@ -171,6 +176,7 @@ function create_comment_block($parentcontextid, $modulename) {
 }
 
 /**
+ * adds comment blocks
  * @return void
  * @throws \coding_exception
  * @throws \dml_exception

@@ -36,6 +36,7 @@ class cron_task extends \core\task\scheduled_task {
     use \core\task\logging_trait;
 
     /**
+     * returns the name of the task
      * @return string
      */
     public function get_name() {

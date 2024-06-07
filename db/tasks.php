@@ -18,6 +18,7 @@
  * Definition of scheduled tasks.
  *
  * @package   local_thi_learning_companions
+ * @copyright   2022 ICON Vernetzte Kommunikation GmbH <info@iconnewmedia.de>
  * @category  task
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -14,7 +14,8 @@ define([
         datatablesHelpers.initMinSearch('.js-mentor-filter--min');
         datatablesHelpers.initIncludeSearch('.js-mentor-filter--includes');
 
-        const languageUrl = await str.get_string('datatables_url', 'local_thi_learning_companions');
+        var languageUrl = await str.get_string('datatables_url', 'local_thi_learning_companions');
+        languageUrl = M.cfg.wwwroot + languageUrl;
 
         $('#askedquestionstable').DataTable({
             language: {

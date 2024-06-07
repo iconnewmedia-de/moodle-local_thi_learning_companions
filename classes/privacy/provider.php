@@ -31,8 +31,6 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\writer;
 use local_thi_learning_companions\groups;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy provider for local_thi_learning_companions
  */
@@ -159,7 +157,7 @@ class provider implements
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
 
-        // Group memberships from course module related groups
+        // Group memberships from course module related groups.
         $sql = "SELECT c.id
                   FROM {context} c
                   JOIN {course_modules} cm ON cm.id = c.instanceid AND c.contextlevel = ?
@@ -169,7 +167,7 @@ class provider implements
                     OR gm.userid = ?";
         $contextlist->add_from_sql($sql, [CONTEXT_MODULE, $userid, $userid]);
 
-        // Group memberships from course related groups
+        // Group memberships from course related groups.
         $sql = "SELECT c.id
                   FROM {context} c
                   JOIN {course} crs ON crs.id = c.instanceid AND c.contextlevel = ?
@@ -204,14 +202,14 @@ class provider implements
                     self::export_chat_for_course($groupchatsubcontext, $context, $courseid, $userid);
                     break;
                 default:
-                    // nothing at the moment
+                    // Nothing at the moment.
             }
         }
-        // TODO: Implement export_user_data() method.
+        // ICTODO: Implement export_user_data() method.
     }
 
     /**
-     * exports chat that's related to a course module
+     * Exports chat that's related to a course module.
      * @param $subcontext
      * @param $context
      * @param $cmid
@@ -225,7 +223,7 @@ class provider implements
             FROM {thi_lc_chat_comment} cmt
             JOIN {thi_lc_chat} chat ON chat.id = cmt.chatid
             JOIN {thi_lc_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
-            WHERE g.cmid = ? 
+            WHERE g.cmid = ?
               AND cmt.userid = ?
             ',
             [groups::CHATTYPE_GROUP, $cmid, $userid]
@@ -251,7 +249,7 @@ class provider implements
             FROM {thi_lc_chat_comment} cmt
             JOIN {thi_lc_chat} chat ON chat.id = cmt.chatid
             JOIN {thi_lc_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
-            WHERE g.courseid = ? 
+            WHERE g.courseid = ?
               AND cmt.userid = ?
             ',
             [groups::CHATTYPE_GROUP, $courseid, $userid]
@@ -271,7 +269,7 @@ class provider implements
      */
     public static function delete_data_for_all_users_in_context(\context $context) {
         $coursecontext = $context->get_course_context();
-        // TODO: Implement delete_data_for_all_users_in_context() method.
+        // ICTODO: Implement delete_data_for_all_users_in_context() method.
     }
 
     /**
@@ -281,6 +279,6 @@ class provider implements
      */
     public static function delete_data_for_user(approved_contextlist $contextlist) {
         $contexts = $contextlist->get_contexts();
-        // TODO: Implement delete_data_for_user() method.
+        // ICTODO: Implement delete_data_for_user() method.
     }
 }

@@ -41,7 +41,7 @@ class question {
     private static $topiclist = [];
 
     /**
-     * @var
+     * @var int
      */
     public $id;
     /**
@@ -69,24 +69,25 @@ class question {
      */
     public $timecreated;
     /**
-     * @var
+     * @var int
      */
     public $timeclosed;
     /**
-     * @var
+     * @var bool
      */
     public $mayuserdelete;
 
     /**
-     * @var
+     * @var int
      */
     public $lastactive;
     /**
-     * @var
+     * @var string
      */
     public $lastactivedmy;
 
     /**
+     * returns the name of the database table
      * @return string
      */
     private static function get_table_name(): string {
@@ -94,6 +95,7 @@ class question {
     }
 
     /**
+     * Constructor
      * @param int $askedby
      * @param int $mentorid
      * @param string $question
@@ -110,6 +112,7 @@ class question {
     }
 
     /**
+     * creates a new open question to all mentors
      * @param string $question
      * @param string $title
      * @param string $topic
@@ -126,6 +129,7 @@ class question {
     }
 
     /**
+     * creates a new question to a specific mentor
      * @param string $question
      * @param string $title
      * @param string $topic
@@ -143,6 +147,7 @@ class question {
     }
 
     /**
+     * creates an instance of this class from a given record
      * @param $record
      * @return static
      * @throws \coding_exception
@@ -161,6 +166,7 @@ class question {
     }
 
     /**
+     * returns a question object for a question for which the user doesn't have permission to view it
      * @return static
      * @throws \coding_exception
      */
@@ -175,6 +181,7 @@ class question {
     }
 
     /**
+     * marks a question as closed (accepted answer)
      * @return $this
      * @throws \coding_exception
      */
@@ -186,6 +193,7 @@ class question {
     }
 
     /**
+     * returns a question for a given question id
      * @param $questionid
      * @return \local_thi_learning_companions\question
      * @throws \dml_exception
@@ -211,6 +219,7 @@ class question {
     }
 
     /**
+     * returns all questions for a certain user
      * @param int $userid
      *
      * @return self[]
@@ -228,6 +237,7 @@ class question {
     }
 
     /**
+     * returns true if the user may view the question of the current question object
      * @param int $userid
      * @return bool
      * @throws \dml_exception
@@ -257,6 +267,7 @@ class question {
     }
 
     /**
+     * returns all questions that have been asked to a specific mentor
      * @param int $userid
      *
      * @return array
@@ -274,6 +285,7 @@ class question {
     }
 
     /**
+     * returns all questions for a certain topic
      * @param array $topics
      * @return array
      * @throws \coding_exception
@@ -297,6 +309,7 @@ class question {
     }
 
     /**
+     * returns date of last activity
      * @return false|int|mixed
      * @throws \dml_exception
      */
@@ -325,6 +338,7 @@ class question {
     }
 
     /**
+     * returns the chat for a question
      * @return false|mixed|\stdClass
      * @throws \dml_exception
      */
@@ -339,6 +353,7 @@ class question {
     }
 
     /**
+     * returns the data of the current question object as an associative array
      * @return array
      */
     public function to_array() {
@@ -355,6 +370,7 @@ class question {
     }
 
     /**
+     * returns the user who asked the question
      * @return int
      */
     public function get_askedby(): int {
@@ -362,6 +378,7 @@ class question {
     }
 
     /**
+     * returns the closed status (closed if the user has marked it as such, usually because (s)he has accepted an answer
      * @return bool
      */
     public function is_closed() {
@@ -369,6 +386,7 @@ class question {
     }
 
     /**
+     * returns the timestamp of when the question was marked as closed
      * @return string
      * @throws \coding_exception
      */
@@ -377,6 +395,7 @@ class question {
     }
 
     /**
+     * returns the id of the question
      * @return mixed
      */
     public function get_id() {
@@ -384,6 +403,7 @@ class question {
     }
 
     /**
+     * returns the date of the last activity as string
      * @return string
      * @throws \coding_exception
      * @throws \dml_exception
@@ -397,6 +417,7 @@ class question {
     }
 
     /**
+     * returns the creation date as string
      * @return string
      * @throws \coding_exception
      */
@@ -405,6 +426,7 @@ class question {
     }
 
     /**
+     * returns the amount of answer for the current question
      * @return int
      * @throws \dml_exception
      */
@@ -427,6 +449,7 @@ class question {
     }
 
     /**
+     * returns the topic of the current question
      * @return false|mixed|string
      * @throws \dml_exception
      */

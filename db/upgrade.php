@@ -34,6 +34,6 @@
  */
 function xmldb_local_thi_learning_companions_upgrade($oldversion) {
     global $DB;
-    // nothin here yet
+    // Nothing here yet.
     return true;
 }

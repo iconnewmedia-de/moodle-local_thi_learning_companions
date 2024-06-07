@@ -56,7 +56,7 @@ echo $OUTPUT->header();
 $notification = optional_param('n', null, PARAM_TEXT);
 if (!is_null($notification)) {
     $notificationtype = substr($notification, 0, 2) === 'n_' ? 'error' : 'success';
-    echo $OUTPUT->notification(get_string('notification_'.$notification, 'local_thi_learning_companions'), $notificationtype);
+    echo $OUTPUT->notification(get_string('notification_m_'.$notification, 'local_thi_learning_companions'), $notificationtype);
 }
 
 $hasaskedquestions = count($askedquestions) > 0;

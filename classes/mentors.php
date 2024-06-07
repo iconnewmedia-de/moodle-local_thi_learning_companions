@@ -36,6 +36,7 @@ require_once($CFG->dirroot . "/badges/classes/badge.php");
 class mentors {
 
     /**
+     * get mentors
      * @param $topic
      * @param $supermentorsonly
      * @param bool $excludecurrentuser allows to exclude the current user from the mentor search
@@ -109,20 +110,7 @@ class mentors {
     }
 
     /**
-     * @return void
-     */
-    public static function get_my_mentors() {
-
-    }
-
-    /**
-     * @return void
-     */
-    public static function may_become_mentor() {
-
-    }
-
-    /**
+     * returns true if given user id (or current user if null) is a mentor
      * @param $userid
      * @return bool
      * @throws \coding_exception
@@ -156,6 +144,7 @@ class mentors {
     }
 
     /**
+     * returns true if the user with the given user id is a mentor for the specified topic
      * @param $userid
      * @param $topic
      * @return bool
@@ -167,13 +156,14 @@ class mentors {
     }
 
     /**
+     * returns true if the user is a supermentor
      * @param $userid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
      */
     public static function is_supermentor($userid = null) {
-        global $USER, $DB;
+        global $USER;
         $userid = is_null($userid) ? $USER->id : $userid;
         $config = get_config('local_thi_learning_companions');
         $minimumratings = intval($config->supermentor_minimum_ratings);
@@ -182,6 +172,7 @@ class mentors {
     }
 
     /**
+     * returns the number of possitive ratings for the comments of a specific user
      * @param $userid
      * @return int
      * @throws \dml_exception
@@ -200,6 +191,7 @@ class mentors {
     }
 
     /**
+     * returns true if the user is a tutor
      * @param $userid
      * @return bool
      * @throws \coding_exception
@@ -217,6 +209,7 @@ class mentors {
     }
 
     /**
+     * returns the questions that a user has asked
      * @param int  $userid
      * @return question[]
      * @throws \dml_exception
@@ -226,6 +219,7 @@ class mentors {
     }
 
     /**
+     * returns all questions that were asked to a specific mentor
      * @param int $userid
      *
      * @return array
@@ -236,6 +230,7 @@ class mentors {
     }
 
     /**
+     * get all questions to mentors for a specific topic
      * @param int[] $topics
      *
      * @return array
@@ -245,6 +240,7 @@ class mentors {
     }
 
     /**
+     * returns all questions that were asked to mentors
      * @param int|null   $userid
      * @param array|null $topics
      * @param bool       $onlyopen
@@ -253,8 +249,8 @@ class mentors {
      * @throws \dml_exception
      */
     public static function get_all_mentor_questions(
-        int $userid = null,
-        array $topics = null,
+        int|null $userid = null,
+        array|null $topics = null,
         bool $onlyopen = false,
         bool $extended = false
     ): array {
@@ -312,6 +308,7 @@ class mentors {
     }
 
     /**
+     * deletes a question
      * @param $questionid
      * @return bool
      * @throws \dml_exception
@@ -327,6 +324,7 @@ class mentors {
     }
 
     /**
+     * checks if the current user has permission to delete the question for the given question id
      * @param $questionid
      * @return bool
      * @throws \coding_exception
@@ -346,6 +344,7 @@ class mentors {
     }
 
     /**
+     * returns all keywords for a mentor
      * @param $userid
      * @param $idsonly
      * @return array
@@ -377,6 +376,7 @@ class mentors {
     }
 
     /**
+     * returns all topics of a mentor
      * @param $userid
      * @return false|mixed
      * @throws \dml_exception
@@ -426,6 +426,7 @@ class mentors {
     }
 
     /**
+     * returns all topics or which a user has qualified to become mentor
      * @param $userid
      * @return array
      * @throws \dml_exception
@@ -483,6 +484,7 @@ class mentors {
     }
 
     /**
+     * returns all topics of a mentor
      * @param $mentors
      * @return array
      * @throws \dml_exception
@@ -592,6 +594,7 @@ class mentors {
     }
 
     /**
+     * creates a new question to mentors
      * @param int $askedby
      * @param int $mentorid
      * @param string $topic
@@ -647,6 +650,7 @@ class mentors {
     }
 
     /**
+     * returns all comments that the user has made for learning nuggets (activities)
      * @param $userid
      * @return array
      * @throws \coding_exception
@@ -693,6 +697,7 @@ class mentors {
     }
 
     /**
+     * returns all learning nuggets (activities) of certain courses
      * @param $courseids
      * @return array
      * @throws \coding_exception
@@ -706,14 +711,6 @@ class mentors {
     }
 
     /**
-     * @param $cmid
-     * @return void
-     */
-    protected static function get_latest_comment_of_nugget($cmid) {
-
-    }
-
-    /**
      * creates the mentor role if it doesn't exist yet
      * @return int
      * @throws \coding_exception
@@ -723,13 +720,14 @@ class mentors {
         $shortname = 'lc_mentor';
         $description = get_string('mentor_role_description', 'local_thi_learning_companions');
         $roleid = \create_role($name, $shortname, $description);
-        // assign capabilities to the role.
+        // Assign capabilities to the role.
         $context = \context_system::instance();
         assign_capability('local/thi_learning_companions:mentor_ismentor', CAP_ALLOW, $roleid, $context->id);
         return $roleid;
     }
 
     /**
+     * returns the types of badges that can qualify a user to become mentor
      * @return array
      * @throws \dml_exception
      */
