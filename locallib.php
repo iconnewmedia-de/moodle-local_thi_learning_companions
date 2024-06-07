@@ -26,16 +26,15 @@
 namespace local_thi_learning_companions;
 /**
  * handles a chat submission (posting a new comment in the chat)
- * @param $data
- * @param $form
+ * @param \stdClass $data
  * @return array|bool[]
  */
-function chat_handle_submission($data, $form) {
+function chat_handle_submission($data) {
     global $DB;
     try {
         $transaction = $DB->start_delegated_transaction();
         $data->message = $data->message["text"];
-        $attachmentsaved = \local_thi_learning_companions\chats::post_comment($data, $form, chat_post_form::editor_options(0));
+        $attachmentsaved = \local_thi_learning_companions\chats::post_comment($data, chat_post_form::editor_options(0));
         $transaction->allow_commit();
         $return = ["success" => true];
         if (!$attachmentsaved) {

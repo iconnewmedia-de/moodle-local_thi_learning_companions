@@ -123,8 +123,8 @@ class messages {
 
     /**
      * send message that a user's group join request has been accepted
-     * @param $userid
-     * @param $groupid
+     * @param int $userid
+     * @param int $groupid
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -159,8 +159,8 @@ class messages {
 
     /**
      * sends a message that a user's request to join a group has been denied :(
-     * @param $userid
-     * @param $groupid
+     * @param int $userid
+     * @param int $groupid
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -195,8 +195,8 @@ class messages {
 
     /**
      * sends a message that a user has been invited to a group
-     * @param $userid
-     * @param $groupid
+     * @param int $userid
+     * @param int $groupid
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -231,7 +231,7 @@ class messages {
 
     /**
      * informs a user that (s)he has qualified to become a mentor
-     * @param $courseid
+     * @param int $courseid
      * @return false|int|mixed
      * @throws \coding_exception
      * @throws \dml_exception
@@ -278,8 +278,8 @@ class messages {
 
     /**
      * sends tutor a notification about questions that have remained unanswered
-     * @param $tutor
-     * @param $question
+     * @param \stdClass $tutor
+     * @param \stdClass $question
      * @return false|int|mixed|void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -327,7 +327,7 @@ class messages {
 
     /**
      * notifies a user that (s)he has just become a supermentor by reaching the minimum amount of positive comment ratings
-     * @param $userid
+     * @param int $userid
      * @return void
      * @throws \coding_exception
      */

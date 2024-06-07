@@ -63,7 +63,7 @@ class AjaxActions {
                     \local_thi_learning_companions_get_user_status($groupmember->id);
                 $groupmember->userpic = $OUTPUT->user_picture($groupmember, [
                     'link' => false, 'visibletoscreenreaders' => false,
-                    'class' => 'userpicture',
+                    'class' => 'local_thi_learning_companions_usersearch_picture',
                 ]);
             }
         } else {

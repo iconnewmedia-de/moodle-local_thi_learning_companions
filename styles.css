@@ -534,3 +534,11 @@ body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable 
     }
 }
 
+img.local_thi_learning_companions_usersearch_picture {
+    margin-right: .25rem;
+}
+.local_thi_learning_companions_usersearch_picture {
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+}

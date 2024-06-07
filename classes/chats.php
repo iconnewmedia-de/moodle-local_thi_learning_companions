@@ -60,14 +60,13 @@ class chats {
 
     /**
      * Handles the posting of a chat comment
-     * @param $comment
-     * @param $formdata
-     * @param $editoroptions
+     * @param \stdClass $comment
+     * @param array $editoroptions
      * @return bool success status of saving file attachment (if any). false if limit of file sizes has been reached for this chat
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function post_comment($comment, $formdata, $editoroptions) {
+    public static function post_comment($comment, $editoroptions) {
         global $USER, $DB;
 
         // Check if the user is a member of the group.
@@ -131,7 +130,7 @@ class chats {
             $comment->message
         );
         $DB->set_field('thi_lc_chat_comment', 'comment', $comment->comment, ['id' => $comment->id]);
-        $success = self::add_attachment($comment, $formdata);
+        $success = self::add_attachment($comment);
         self::set_latest_comment($comment->chatid);
 
         if ((int)$chat->chattype === groups::CHATTYPE_MENTOR) {
@@ -179,7 +178,7 @@ class chats {
 
     /**
      * stores date of latest comment in group
-     * @param $chatid
+     * @param int $chatid
      * @return void
      * @throws \dml_exception
      */
@@ -201,17 +200,16 @@ class chats {
 
     /**
      * Adds an attachment
-     * @param $comment
-     * @param $formdata
+     * @param \stdClass $comment
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    protected static function add_attachment($comment, $formdata) {
+    protected static function add_attachment($comment) {
         // Add the attachment.
         $context = \context_system::instance();
         // Make sure that the user doesn't exceed the chat's total limit for file uploads.
-        $chatmaxuploadexceeded = self::check_uploadsize_total_exceeded($comment, $formdata);
+        $chatmaxuploadexceeded = self::check_uploadsize_total_exceeded($comment);
         if ($chatmaxuploadexceeded) {
             return false; // ICTODO return an error message instead.
         }
@@ -229,7 +227,7 @@ class chats {
 
     /**
      * checks if the maximum of bytes for uploaded attachments gets exceeded with the new comment
-     * @param $comment
+     * @param \stdClass $comment
      * @return bool
      * @throws \dml_exception
      */
@@ -265,7 +263,7 @@ class chats {
 
     /**
      * Handles the flagging of a comment.
-     * @param $commentid
+     * @param int $commentid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
@@ -287,7 +285,7 @@ class chats {
 
     /**
      * Unflags a comment.
-     * @param $commentid
+     * @param int $commentid
      * @return bool
      * @throws \dml_exception
      */
@@ -304,7 +302,7 @@ class chats {
 
     /**
      * Deletes a comment
-     * @param $commentid
+     * @param int $commentid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
@@ -350,7 +348,7 @@ class chats {
 
     /**
      * checks if a user has just reached the ammount of comments needed to become a supermentor
-     * @param $userid
+     * @param int $userid
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception

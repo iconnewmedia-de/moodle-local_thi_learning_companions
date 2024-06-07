@@ -118,12 +118,12 @@ function local_thi_learning_companions_extend_navigation(global_navigation $nav)
 
 /**
  * handles plugin files for this plugin
- * @param $course
- * @param $record
- * @param $context
- * @param $filearea
- * @param $args
- * @param $forcedownload
+ * @param stdClass $course
+ * @param stdClass $record
+ * @param stdClass $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
  * @param array $options
  * @return void
  * @throws coding_exception
@@ -170,8 +170,8 @@ function local_thi_learning_companions_pluginfile($course, $record, $context, $f
 
 /**
  * returns a user's status
- * @param $userid   int|null The user id to get the status for
- * @param $readable bool Whether to return the status as a sentence or as a class string
+ * @param int|null $userid  The user id to get the status for
+ * @param bool $readable    Whether to return the status as a sentence or as a class string
  *
  * @return array    first value is for css classes, second value is the actual readable value, in the user's language
  * @throws dml_exception
@@ -200,23 +200,6 @@ function local_thi_learning_companions_get_user_status(int|null $userid = null):
     return [$statusicon, $statusfield];
 }
 
-/**
- * sets the user status
- * @param $status
- * @param $userid
- * @return void
- * @throws dml_exception
- */
-function set_user_status($status, $userid = null) {
-    global $CFG, $DB, $USER;
-
-    require_once($CFG->dirroot.'/user/profile/lib.php');
-
-    $userid = is_null($userid) ? $USER->id : $userid;
-    $user = $DB->get_record('user', ['id' => $userid]);
-
-    // ICTODO.
-}
 
 /**
  * gets called as a service from JS in group.js, handleGroupInviteButton:
