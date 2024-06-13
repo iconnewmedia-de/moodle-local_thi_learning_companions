@@ -44,15 +44,15 @@ At the end of the update process, a form is displayed with the newly recognised 
 
 In order for the block plugin block_thi_learning_companions to be displayed on all pages, it must be added to the start page (/?redirect=0).
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en2.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en2.png)
 
 Then configure the block. In the section „Where this block appears“ select for „Page contexts“ the option „Display throughout the entire site“. This block is displayed for all users on all pages.
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en3.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en3.png)
 
 This block adds all the links to the Learning Companions features on the right-hand column:
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en4.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en4.png)
 
 The groups to which you belong are listed at the top. For each group, the group picture, the group title, as well as the last comment and the date of the last comment in the group are displayed. The group title is linked to the corresponding group chat.
 If you belong to more than three groups, only three will be displayed at first. Additional groups can be displayed by clicking on „Show (x) more groups“.
@@ -70,7 +70,7 @@ The section „My mentorship“ is only visible to users with the role „Mentor
 The plugin local/thi_learning_companions adds a new course custom field: „Topic“.
 Edit your courses and enter the associated topic there. These topics determine for which topic a mentor is qualified if he/she has earned a corresponding badge in the course.
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en5.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en5.png)
 
 ###### Configure Badges
 
@@ -78,7 +78,7 @@ To become a mentor for a topic, one must have earned a specific badge in a cours
 These settings can be found under Site administration > General > Learning Companions > Local plugin local_thi_learning_companions or the URL admin/settings.php?section=local_thi_learning_companions.
 There you will find the setting „Mentor badges“:
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en6.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en6.png)
 
 Here you can enter several terms, separated by commas, which must be part of the badge name. 
 
@@ -98,7 +98,7 @@ The icon in the „Joining“ column indicates whether the group is open or clos
 Anyone can join an open group or view the chats without being a member of the group.
 For closed groups, you have to request to join.
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en7.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en7.png)
 
 ###### Create a group
 
@@ -130,7 +130,7 @@ They can also upload pictures and files or start a video conference using the Bi
 Own comments are highlighted in green, reported comments in yellow. Deleted comments appear in the chat with the text „Message deleted“ replaced.
 Hovering over the comments gives you the option to report posts or delete your own.
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en8.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en8.png)
 
 ###### Online Status
 
@@ -141,7 +141,7 @@ By default, unless manually overridden by the user, it will be set to the curren
 Wherever group members get listed, the user status will be indicated with a colored circle above the user image. Green indicates "Online", grey means "Offline" and a red is for "Please do not disturb".<br>
 When you hover over that colored circle, a tooltip will show the meaning of the status color code.
 
-![](pix\documentation\icon-thi-dokumentation_v0.9_en9.png)
+![](pix/documentation/icon-thi-dokumentation_v0.9_en9.png)
 
 ###### Plugin-Settings
 
