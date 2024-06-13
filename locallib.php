@@ -55,7 +55,7 @@ function chat_handle_submission($data) {
 
 /**
  * returns the topics of a course
- * @param $courseid
+ * @param int $courseid
  * @return string[]
  * @throws \dml_exception
  */
@@ -152,8 +152,8 @@ function get_moduletypes_for_commentblock() {
 
 /**
  * creates a comment block
- * @param $parentcontextid
- * @param $modulename
+ * @param int $parentcontextid
+ * @param string $modulename
  * @return void
  * @throws \dml_exception
  */

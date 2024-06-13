@@ -71,6 +71,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
 
     /**
      * creates a BBB meeting
+     * @param int $groupid
      * @return array
      * @throws \dml_exception
      */

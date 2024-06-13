@@ -36,13 +36,13 @@ class chat {
      */
     protected $chat;
     /**
-     * @var $context
+     * @var \core\context $context
      */
     protected $context;
 
     /**
      * Creates a new chat for a group.
-     * @param $groupid
+     * @param int $groupid
      * @return static
      * @throws \dml_exception
      * @throws \moodle_exception
@@ -100,7 +100,7 @@ class chat {
 
     /**
      * Creates a chat for a question to mentors
-     * @param $questionid
+     * @param int $questionid
      * @return static
      * @throws \dml_exception
      */
@@ -128,7 +128,7 @@ class chat {
 
     /**
      * Returns the chat for a given chat id
-     * @param $chatid
+     * @param int $chatid
      * @return chat
      * @throws \dml_exception
      */
@@ -158,8 +158,8 @@ class chat {
 
     /**
      * @deprecated do not use! Use chats::post_comment instead!
-     * @param $comment
-     * @param $attachments
+     * @param \stdClass $comment
+     * @param array $attachments
      * @return void
      * @throws \dml_exception
      */
@@ -180,8 +180,8 @@ class chat {
 
     /**
      * Updates a comment.
-     * @param $comment
-     * @param $attachments
+     * @param \stdClass $comment
+     * @param array $attachments
      * @return void
      */
     public function update_comment($comment, $attachments) {
@@ -280,8 +280,8 @@ class chat {
     /**
      * adds further details to a comment like author's name, email, username
      * and datetime which is a human readable version of the timecreated timestamp
-     * @param $comment
-     * @param $attachments
+     * @param \stdClass $comment
+     * @param array $attachments
      * @return void
      * @throws \dml_exception
      */
@@ -310,7 +310,7 @@ class chat {
 
     /**
      * Returns an author's full name
-     * @param $userid
+     * @param int $userid
      * @return \lang_string|string
      * @throws \coding_exception
      * @throws \dml_exception
@@ -326,7 +326,7 @@ class chat {
 
     /**
      * Returns true if the current user has already rated the given comment
-     * @param $comment
+     * @param \stdClass $comment
      * @return bool
      */
     public static function is_comment_rated_by_current_user($comment) {
@@ -446,7 +446,7 @@ class chat {
 
     /**
      * Returns the submission form for chats
-     * @param $customdata
+     * @param array $customdata
      * @return array|string|string[]
      * @throws \dml_exception
      */

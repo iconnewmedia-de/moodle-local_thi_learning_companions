@@ -140,8 +140,8 @@ class assign_new_admin_while_leaving_form extends dynamic_form {
 
     /**
      * validates the form data
-     * @param $data
-     * @param $files
+     * @param array $data
+     * @param array $files
      * @return array
      * @throws \coding_exception
      */

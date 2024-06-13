@@ -33,8 +33,8 @@ require_once("$CFG->libdir/externallib.php");
 class external extends \external_api {
     /**
      * lists learning nuggets (course activities) inside a course
-     * @param $courseid
-     * @param $query
+     * @param int $courseid
+     * @param string $query
      * @return array
      * @throws \invalid_parameter_exception
      */

@@ -105,8 +105,8 @@ class ask_open_question extends \moodleform {
 
     /**
      * Validates the form
-     * @param $data
-     * @param $files
+     * @param array $data
+     * @param array $files
      * @return array
      * @throws \coding_exception
      */

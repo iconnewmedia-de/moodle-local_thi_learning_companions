@@ -144,7 +144,7 @@ class chats {
 
     /**
      * Returns true if the current user may view the chat with the given chat id
-     * @param $chatid
+     * @param int $chatid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
@@ -160,7 +160,7 @@ class chats {
 
     /**
      * Returns true if the user may view the chat for a certain question to mentors
-     * @param $questionid
+     * @param int $questionid
      * @return bool
      * @throws \dml_exception
      */

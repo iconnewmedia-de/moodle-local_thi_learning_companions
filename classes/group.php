@@ -192,14 +192,14 @@ class group {
 
     /**
      * Constructor
-     * @param $groupid
-     * @param $userid
+     * @param int $groupid
+     * @param int|null $userid
      * @throws \coding_exception
      * @throws \dml_exception
      * @throws \moodle_exception
      */
     public function __construct($groupid, $userid = null) {
-        global $DB, $CFG, $USER, $PAGE;
+        global $DB, $CFG, $USER;
 
         if (is_null($userid)) {
             $userid = $USER->id;
@@ -263,7 +263,7 @@ class group {
     /**
      * use magic functions, so we can access data that only needs to be read on the fly without calling methods
      * lazy loading type of thing
-     * @param $name
+     * @param string $name
      * @return array|int|void
      * @throws \dml_exception
      */

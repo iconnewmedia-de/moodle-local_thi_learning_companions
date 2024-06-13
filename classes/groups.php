@@ -125,6 +125,7 @@ class groups {
     /**
      * get groups of user
      * @param int $userid
+     * @param mixed $shouldincludegroupid
      * @param string $sortby possible values: latestcomment, earliestcomment, mylatestcomment, myearliestcomment
      * @return group[]
      * @throws \dml_exception
@@ -255,8 +256,8 @@ class groups {
 
     /**
      * invite user to group
-     * @param $userid
-     * @param $groupid
+     * @param int $userid
+     * @param int $groupid
      * @return bool
      * @throws \dml_exception
      */
@@ -300,7 +301,7 @@ class groups {
 
     /**
      * group create
-     * @param $data
+     * @param \stdClass $data
      * @return int    id of created group
      * @throws \dml_exception
      * @throws \Exception
@@ -372,7 +373,7 @@ class groups {
 
     /**
      * get keyword id
-     * @param $keyword
+     * @param string $keyword
      * @return false|mixed
      * @throws \dml_exception
      */
@@ -383,11 +384,14 @@ class groups {
 
     /**
      * group update
-     * @param $groupid
-     * @param $name
-     * @param $description
-     * @param $closedgroup
-     * @param $keywords
+     * @param int $groupid
+     * @param string $name
+     * @param string $description
+     * @param int $closedgroup
+     * @param mixed $keywords
+     * @param int $courseid
+     * @param int $cmid
+     * @param mixed $image
      * @return void
      * @throws \dml_exception
      */
@@ -411,8 +415,8 @@ class groups {
 
     /**
      * save group image
-     * @param $groupid
-     * @param $image
+     * @param int $groupid
+     * @param mixed $image
      * @return void
      * @throws \dml_exception
      */
@@ -475,8 +479,8 @@ class groups {
 
     /**
      * assign keywords to group
-     * @param $groupid
-     * @param $keywords
+     * @param int $groupid
+     * @param array $keywords
      * @return void
      * @throws \dml_exception
      */
@@ -489,8 +493,8 @@ class groups {
 
     /**
      * assign keyword to group
-     * @param $groupid
-     * @param $keyword
+     * @param int $groupid
+     * @param string $keyword
      * @return void
      * @throws \dml_exception
      */
@@ -509,7 +513,7 @@ class groups {
 
     /**
      * create keyword
-     * @param $keyword
+     * @param string $keyword
      * @return bool|int|mixed
      * @throws \dml_exception
      */
@@ -525,7 +529,7 @@ class groups {
 
     /**
      * group remove all keywords
-     * @param $groupid
+     * @param int $groupid
      * @return void
      * @throws \dml_exception
      */
@@ -536,7 +540,7 @@ class groups {
 
     /**
      * creates a chat record for the group
-     * @param $groupid
+     * @param int $groupid
      * @return void
      * @throws \dml_exception
      */
@@ -605,8 +609,8 @@ class groups {
 
     /**
      * request group join
-     * @param $userid
-     * @param $groupid
+     * @param int $userid
+     * @param int $groupid
      *
      * @return int
      * @throws \dml_exception
@@ -686,8 +690,8 @@ class groups {
 
     /**
      * add group join request
-     * @param $groupid
-     * @param $userid
+     * @param int $groupid
+     * @param int $userid
      * @return bool|int
      * @throws \dml_exception
      */
@@ -702,7 +706,7 @@ class groups {
 
     /**
      * accept group join request
-     * @param $requestid
+     * @param int $requestid
      * @return void
      * @throws \dml_exception
      */
@@ -720,7 +724,7 @@ class groups {
 
     /**
      * deny group join request
-     * @param $requestid
+     * @param int $requestid
      * @return void
      * @throws \dml_exception
      */
@@ -818,7 +822,7 @@ class groups {
 
     /**
      * count comments since last visit
-     * @param $groupid
+     * @param int $groupid
      * @return int
      * @throws \dml_exception
      */

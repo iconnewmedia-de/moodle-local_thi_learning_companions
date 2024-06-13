@@ -148,7 +148,7 @@ class question {
 
     /**
      * creates an instance of this class from a given record
-     * @param $record
+     * @param \stdClass $record
      * @return static
      * @throws \coding_exception
      * @throws \dml_exception
@@ -194,7 +194,7 @@ class question {
 
     /**
      * returns a question for a given question id
-     * @param $questionid
+     * @param int $questionid
      * @return \local_thi_learning_companions\question
      * @throws \dml_exception
      * @throws \exception
@@ -287,6 +287,7 @@ class question {
     /**
      * returns all questions for a certain topic
      * @param array $topics
+     * @param bool $onlyopenquestions
      * @return array
      * @throws \coding_exception
      * @throws \dml_exception

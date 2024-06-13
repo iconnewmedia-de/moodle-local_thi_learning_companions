@@ -232,6 +232,7 @@ class messages {
     /**
      * informs a user that (s)he has qualified to become a mentor
      * @param int $courseid
+     * @param int $userid
      * @return false|int|mixed
      * @throws \coding_exception
      * @throws \dml_exception

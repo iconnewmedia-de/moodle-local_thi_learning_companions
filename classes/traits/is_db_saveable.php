@@ -54,7 +54,7 @@ trait is_db_saveable {
 
     /**
      * returns a record from the database for the given id
-     * @param $id
+     * @param int $id
      * @return is_db_saveable|\local_thi_learning_companions\question
      * @throws \dml_exception
      */
@@ -72,7 +72,7 @@ trait is_db_saveable {
 
     /**
      * creates an instance from a db record
-     * @param $record
+     * @param \stdClass $record
      * @return mixed
      */
     abstract public static function from_record($record);

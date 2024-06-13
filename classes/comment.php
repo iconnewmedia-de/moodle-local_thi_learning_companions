@@ -63,7 +63,7 @@ class comment {
 
     /**
      * Creates a comment object
-     * @param $id
+     * @param int $id
      * @throws \coding_exception
      * @throws \dml_exception
      */

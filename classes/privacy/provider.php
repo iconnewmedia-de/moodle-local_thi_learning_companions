@@ -225,10 +225,10 @@ class provider implements
 
     /**
      * Exports chat that's related to a course module.
-     * @param $subcontext
-     * @param $context
-     * @param $cmid
-     * @param $userid
+     * @param string $subcontext
+     * @param \core\context $context
+     * @param int $cmid
+     * @param int $userid
      * @return void
      * @throws \dml_exception
      */
@@ -249,8 +249,8 @@ class provider implements
 
     /**
      * Exports groups that were created by the user for the course module
-     * @param $subcontext
-     * @param $context
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $cmid
      * @param int $userid
      * @return void
@@ -269,8 +269,8 @@ class provider implements
 
     /**
      * Exports groups that were created by the user for the course module
-     * @param $subcontext
-     * @param $context
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $courseid
      * @param int $userid
      * @return void
@@ -289,8 +289,8 @@ class provider implements
 
     /**
      * Exports groups that were created by the user with no course or course module context
-     * @param $subcontext
-     * @param $context
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $userid
      * @return void
      * @throws \dml_exception
@@ -308,8 +308,8 @@ class provider implements
 
     /**
      * Exports the group memberships for groups that are related to a certain course module
-     * @param $subcontext
-     * @param $context
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $cmid
      * @param int $userid
      * @return void
@@ -329,8 +329,8 @@ class provider implements
 
     /**
      * Exports the group membership requests for groups that are related to a certain course module
-     * @param $subcontext
-     * @param $context
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $cmid
      * @param int $userid
      * @return void
@@ -350,8 +350,8 @@ class provider implements
 
     /**
      * Exports the group membership requests for groups that are related to a certain course
-     * @param $subcontext
-     * @param $context
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $courseid
      * @param int $userid
      * @return void
@@ -371,9 +371,8 @@ class provider implements
 
     /**
      * Exports the group membership requests for groups that are not related to a course or course module
-     * @param $subcontext
-     * @param $context
-     * @param int $courseid
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $userid
      * @return void
      * @throws \dml_exception
@@ -392,7 +391,7 @@ class provider implements
 
     /**
      * Exports the information for which topic a user has become mentor.
-     * @param $subcontext
+     * @param string $subcontext
      * @param int $context
      * @param int $userid
      * @return void
@@ -407,9 +406,9 @@ class provider implements
 
     /**
      * Exports all questions to mentors asked by the user
-     * @param $subcontext
-     * @param $context
-     * @param $userid
+     * @param string $subcontext
+     * @param \core\context $context
+     * @param int $userid
      * @return void
      */
     protected static function export_mentor_questions($subcontext, $context, $userid) {
@@ -421,8 +420,8 @@ class provider implements
 
     /**
      * Exports the group memberships for groups that are related to a certain course module
-     * @param $subcontext
-     * @param $context
+     * @param string $subcontext
+     * @param \core\context $context
      * @param int $courseid
      * @param int $userid
      * @return void
@@ -442,9 +441,9 @@ class provider implements
 
     /**
      * Exports the group memberships for groups that are related to a certain course module
-     * @param $subcontext
-     * @param $context
-     * @param $userid
+     * @param string $subcontext
+     * @param \core\context $context
+     * @param int $userid
      * @return void
      * @throws \dml_exception
      */
@@ -462,10 +461,10 @@ class provider implements
 
     /**
      * exports chat that's related to a course
-     * @param $subcontext
-     * @param $context
-     * @param $courseid
-     * @param $userid
+     * @param string $subcontext
+     * @param \core\context $context
+     * @param int $courseid
+     * @param int $userid
      * @return void
      * @throws \dml_exception
      */
@@ -486,9 +485,9 @@ class provider implements
 
     /**
      * exports chat that's not related to a course or course module
-     * @param $subcontext
-     * @param $context
-     * @param $userid
+     * @param string $subcontext
+     * @param \core\context $context
+     * @param int $userid
      * @return void
      * @throws \dml_exception
      */

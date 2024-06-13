@@ -37,13 +37,13 @@ require_once($CFG->libdir . "/formslib.php");
 class create_edit_group_form extends \moodleform {
     /**
      * Constructor (duh - comment just here for code checker)
-     * @param $action
-     * @param $customdata
-     * @param $method
-     * @param $target
-     * @param $attributes
-     * @param $editable
-     * @param $ajaxformdata
+     * @param mixed $action
+     * @param mixed $customdata
+     * @param string $method
+     * @param string $target
+     * @param mixed $attributes
+     * @param bool $editable
+     * @param array $ajaxformdata
      */
     public function __construct($action = null,
                                 $customdata = null,

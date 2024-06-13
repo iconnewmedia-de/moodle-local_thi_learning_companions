@@ -36,13 +36,13 @@ class chat_post_form extends \moodleform {
 
     /**
      * Creates a form for posting inside a chat
-     * @param $action
-     * @param $customdata
-     * @param $method
-     * @param $target
-     * @param $attributes
-     * @param $editable
-     * @param $ajaxformdata
+     * @param mixed $action
+     * @param mixed $customdata
+     * @param string $method
+     * @param string $target
+     * @param mixed $attributes
+     * @param bool $editable
+     * @param array $ajaxformdata
      */
     public function __construct(
         $action = null,

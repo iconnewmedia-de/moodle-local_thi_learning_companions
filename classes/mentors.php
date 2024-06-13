@@ -37,8 +37,8 @@ class mentors {
 
     /**
      * get mentors
-     * @param $topic
-     * @param $supermentorsonly
+     * @param string|null $topic
+     * @param bool $supermentorsonly
      * @param bool $excludecurrentuser allows to exclude the current user from the mentor search
      * @return array
      * @throws \coding_exception
@@ -111,7 +111,7 @@ class mentors {
 
     /**
      * returns true if given user id (or current user if null) is a mentor
-     * @param $userid
+     * @param int $userid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
@@ -129,7 +129,7 @@ class mentors {
 
     /**
      * returns an array with all badge names that are available within a given set of mentors
-     * @param $mentors
+     * @param array $mentors
      * @return array
      */
     public static function get_selectable_badgetypes($mentors) {
@@ -145,8 +145,8 @@ class mentors {
 
     /**
      * returns true if the user with the given user id is a mentor for the specified topic
-     * @param $userid
-     * @param $topic
+     * @param int $userid
+     * @param string $topic
      * @return bool
      * @throws \dml_exception
      */
@@ -157,7 +157,7 @@ class mentors {
 
     /**
      * returns true if the user is a supermentor
-     * @param $userid
+     * @param int $userid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
@@ -173,7 +173,7 @@ class mentors {
 
     /**
      * returns the number of possitive ratings for the comments of a specific user
-     * @param $userid
+     * @param int $userid
      * @return int
      * @throws \dml_exception
      */
@@ -192,7 +192,7 @@ class mentors {
 
     /**
      * returns true if the user is a tutor
-     * @param $userid
+     * @param int $userid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
@@ -241,7 +241,7 @@ class mentors {
 
     /**
      * deletes a question
-     * @param $questionid
+     * @param int $questionid
      * @return bool
      * @throws \dml_exception
      */
@@ -257,7 +257,7 @@ class mentors {
 
     /**
      * checks if the current user has permission to delete the question for the given question id
-     * @param $questionid
+     * @param int $questionid
      * @return bool
      * @throws \coding_exception
      * @throws \dml_exception
@@ -277,8 +277,8 @@ class mentors {
 
     /**
      * returns all keywords for a mentor
-     * @param $userid
-     * @param $idsonly
+     * @param int $userid
+     * @param bool $idsonly
      * @return array
      * @throws \dml_exception
      */
@@ -309,7 +309,7 @@ class mentors {
 
     /**
      * returns all topics of a mentor
-     * @param $userid
+     * @param int $userid
      * @return false|mixed
      * @throws \dml_exception
      */
@@ -341,7 +341,7 @@ class mentors {
 
     /**
      * returns true if a given user either is mentor or has the qualification to become one
-     * @param $userid
+     * @param int $userid
      * @return bool
      * @throws \dml_exception
      */
@@ -359,7 +359,7 @@ class mentors {
 
     /**
      * returns all topics or which a user has qualified to become mentor
-     * @param $userid
+     * @param int $userid
      * @return array
      * @throws \dml_exception
      */
@@ -401,7 +401,7 @@ class mentors {
 
     /**
      * returns an array of topics for which a given users has already accepted mentorship
-     * @param $userid
+     * @param int $userid
      * @return int[]|string[]
      * @throws \dml_exception
      */
@@ -417,7 +417,7 @@ class mentors {
 
     /**
      * returns all topics of a mentor
-     * @param $mentors
+     * @param array $mentors
      * @return array
      * @throws \dml_exception
      */
@@ -432,7 +432,7 @@ class mentors {
 
     /**
      * returns all the courses that belong a mentor's topics
-     * @param $userid
+     * @param int $userid
      * @return array
      * @throws \coding_exception
      * @throws \dml_exception
@@ -461,8 +461,8 @@ class mentors {
 
     /**
      * make the user mentor for a topic
-     * @param $userid
-     * @param $topic
+     * @param int $userid
+     * @param string $topic
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -507,7 +507,7 @@ class mentors {
 
     /**
      * assigns the mentor role to a user (if the user doesn't have it yet)
-     * @param $userid
+     * @param int $userid
      * @return void
      * @throws \coding_exception
      * @throws \dml_exception
@@ -551,7 +551,7 @@ class mentors {
 
     /**
      * returns all mentors that have qualified for topics of courses that a given user is enrolled in
-     * @param $userid
+     * @param int $userid
      * @return array
      * @throws \coding_exception
      * @throws \dml_exception
@@ -583,7 +583,7 @@ class mentors {
 
     /**
      * returns all comments that the user has made for learning nuggets (activities)
-     * @param $userid
+     * @param int $userid
      * @return array
      * @throws \coding_exception
      * @throws \dml_exception
@@ -630,7 +630,7 @@ class mentors {
 
     /**
      * returns all learning nuggets (activities) of certain courses
-     * @param $courseids
+     * @param array $courseids
      * @return array
      * @throws \coding_exception
      * @throws \dml_exception
