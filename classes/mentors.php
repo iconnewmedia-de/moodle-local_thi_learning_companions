@@ -324,6 +324,7 @@ class mentors {
 
     /**
      * returns an array of courses for which the user is qualified to become a mentor but hasn't become yet
+     * @param int|null $userid
      * @return array
      * @throws \dml_exception
      * @throws \moodle_exception

@@ -125,7 +125,7 @@ class groups {
     /**
      * get groups of user
      * @param int $userid
-     * @param mixed $shouldincludegroupid
+     * @param int|null $shouldincludegroupid
      * @param string $sortby possible values: latestcomment, earliestcomment, mylatestcomment, myearliestcomment
      * @return group[]
      * @throws \dml_exception

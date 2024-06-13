@@ -171,7 +171,6 @@ function local_thi_learning_companions_pluginfile($course, $record, $context, $f
 /**
  * returns a user's status
  * @param int|null $userid  The user id to get the status for
- * @param bool $readable    Whether to return the status as a sentence or as a class string
  *
  * @return array    first value is for css classes, second value is the actual readable value, in the user's language
  * @throws dml_exception

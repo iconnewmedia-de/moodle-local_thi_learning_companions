@@ -78,7 +78,7 @@ function get_course_topics($courseid) {
 
 /**
  * returns all topics of a user's courses
- * @param int $userid
+ * @param int|null $userid
  * @return string[]
  * @throws \coding_exception
  * @throws \dml_exception

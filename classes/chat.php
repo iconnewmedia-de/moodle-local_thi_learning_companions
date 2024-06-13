@@ -190,8 +190,6 @@ class chat {
 
     /**
      * Returns all comments for the current chat
-     * @param int $page the Page to use, used for pagination
-     * @param int $offset Any offset. Can be used, to compensate new posts, that were added in the meantime
      *
      * @return array
      * @throws \dml_exception
