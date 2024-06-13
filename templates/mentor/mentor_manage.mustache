@@ -12,7 +12,8 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+    along with Moodle.  If not, see
+    <http://www.gnu.org/licenses/>.
 }}
 {{!
     @template local_thi_learning_companions/mentor/mentor_manage
@@ -36,28 +37,31 @@
         <h2>{{#str}}my_mentorships, local_thi_learning_companions{{/str}}</h2>
         <h3>{{#str}}your_mentorship_qualifications, local_thi_learning_companions{{/str}}</h3>
         <div class="container mt-5">
-        {{^qualifications}}
-        <span>{{#str}}no_mentorship_qualifications, local_thi_learning_companions{{/str}}</span>
-        {{/qualifications}}
-        {{#qualifications}}
+            {{^qualifications}}
+            <span>{{#str}}no_mentorship_qualifications, local_thi_learning_companions{{/str}}</span>
+            {{/qualifications}}
+            {{#qualifications}}
 
             <div class="row border-bottom py-4">
                 <div class="col col-xl-4"><strong>{{name}}</strong></div>
-                <div class="col col-xl-8"><a class="btn btn-primary" href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/manage.php?action=acceptmentorship&topic={{name_urlencoded}}">{{#str}}become_mentor, local_thi_learning_companions{{/str}}</a></div>
+                <div class="col col-xl-8"><a class="btn btn-primary"
+                                             href="{{globals.config.wwwroot}}/local/thi_learning_companions/mentor/manage.php?action=acceptmentorship&topic={{name_urlencoded}}">{{#str}}become_mentor,
+                    local_thi_learning_companions{{/str}}</a></div>
             </div>
-        {{/qualifications}}
-    </div>
-    {{#hasmentorships}}
-    <div>
-        <hr>
-        <h3 class="mt-3">{{#str}}your_mentorships, local_thi_learning_companions{{/str}}</h3>
-        <div class="container mt-5">
-        {{#mentorships}}
-            <div class="row border-bottom py-4">
-                <div class="col"><strong>{{name}}</strong></div>
-            </div>
-        {{/mentorships}}
+            {{/qualifications}}
         </div>
+        {{#hasmentorships}}
+        <div>
+            <hr>
+            <h3 class="mt-3">{{#str}}your_mentorships, local_thi_learning_companions{{/str}}</h3>
+            <div class="container mt-5">
+                {{#mentorships}}
+                <div class="row border-bottom py-4">
+                    <div class="col"><strong>{{name}}</strong></div>
+                </div>
+                {{/mentorships}}
+            </div>
+        </div>
+        {{/hasmentorships}}
     </div>
-    {{/hasmentorships}}
 </div>
