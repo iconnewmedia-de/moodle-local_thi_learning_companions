@@ -54,7 +54,7 @@ class mentors {
         $sql = 'SELECT DISTINCT m.userid, GROUP_CONCAT(m.topic) as topics,
                        u.*
                   FROM {thi_lc_mentors} m
-             LEFT JOIN {user} u ON u.id = m.userid
+                    JOIN {user} u ON u.id = m.userid AND u.deleted = 0
              ';
         $params = [];
         $conditions = [];
@@ -237,74 +237,6 @@ class mentors {
      */
     public static function get_open_mentor_questions_by_topics(array $topics): array {
         return question::get_all_questions_by_topics($topics, true);
-    }
-
-    /**
-     * returns all questions that were asked to mentors
-     * @param int|null   $userid
-     * @param array|null $topics
-     * @param bool       $onlyopen
-     * @param bool       $extended
-     * @return array
-     * @throws \dml_exception
-     */
-    public static function get_all_mentor_questions(
-        int|null $userid = null,
-        array|null $topics = null,
-        bool $onlyopen = false,
-        bool $extended = false
-    ): array {
-        global $DB;
-
-        if ($extended) {
-            $sql = 'SELECT q.*,
-                           FROM_UNIXTIME(q.timecreated, "%d.%m.%Y") AS dateasked,
-                           IF(q.timeclosed=0, "-", FROM_UNIXTIME(q.timeclosed, "%d.%m.%Y - %H:%i")) AS dateclosed,
-                           (SELECT COUNT(a.id) FROM {thi_lc_mentor_answers} a WHERE a.questionid = q.id) answercount,
-                           (SELECT FROM_UNIXTIME(MAX(a.timecreated), "%d.%m.%Y")
-                                FROM {thi_lc_mentor_answers} a
-                                WHERE a.questionid = q.id
-                            ) lastactivity
-                      FROM {thi_lc_mentor_questions} q';
-            $params = [];
-            $conditions = 0;
-
-            if (!is_null($userid)) {
-                $sql .= ($conditions < 1) ? ' WHERE q.mentorid = ?' : ' AND q.mentorid = ?';
-                $params[] = $userid;
-                $conditions++;
-            } else {
-                $sql .= ($conditions < 1) ? ' WHERE q.mentorid IS NULL' : ' AND q.mentorid IS NULL';
-                $conditions++;
-            }
-
-            if ($onlyopen) {
-                $sql .= ($conditions) < 1 ? ' WHERE q.timeclosed IS NULL' : ' AND q.timeclosed IS NULL';
-                $conditions++;
-            }
-
-            if (is_array($topics) && count($topics) > 0) {
-                list($conditiontopics, $paramstopics) = $DB->get_in_or_equal($topics);
-                $sql .= ($conditions < 1) ? ' WHERE q.topic ' . $conditiontopics : ' AND q.topic ' . $conditiontopics;
-                $params = $params + $paramstopics;
-                $conditions++;
-            }
-
-            return $DB->get_records_sql($sql, $params);
-        }
-
-        $params = [];
-        if (!is_null($userid)) {
-            $params['mentorid'] = $userid;
-        }
-        $questions = $DB->get_records('thi_lc_mentor_questions', $params);
-        if ($onlyopen) {
-            $questions = array_filter($questions, function($question) {
-                return is_null($question->timeclosed);
-            });
-        }
-
-        return $questions;
     }
 
     /**
@@ -683,7 +615,7 @@ class mentors {
                     JOIN {course_modules} cm ON cm.id = ctx.instanceid
                     JOIN {modules} m ON m.id = cm.module
                     JOIN {course} c ON c.id = cm.course
-                    JOIN {user} u ON u.id = comment.userid
+                    JOIN {user} u ON u.id = comment.userid AND u.deleted = 0
                     WHERE cm.id " . $condition . "
                     ORDER BY comment.timecreated DESC
                     LIMIT " . $limit,

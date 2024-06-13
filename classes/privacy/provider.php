@@ -31,6 +31,12 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\writer;
 use local_thi_learning_companions\groups;
 
+// ICUNDO start.
+require_once(__DIR__ . '/../../../../config.php');
+require_login();
+$test = optional_param('test', 0, PARAM_INT);
+// ICUNDO end.
+
 /**
  * Privacy provider for local_thi_learning_companions
  */
@@ -82,13 +88,6 @@ class provider implements
             ]
         );
         $collection->add_database_table(
-            'thi_lc_users_mentors',
-            [
-                'userid' => 'privacy:metadata:thi_lc_users_mentors:userid',
-                'mentorid' => 'privacy:metadata:thi_lc_users_mentors:mentorid',
-            ]
-        );
-        $collection->add_database_table(
             'thi_lc_chat_comment',
             [
                 'userid' => 'privacy:metadata:thi_lc_chat_comment:userid',
@@ -121,16 +120,6 @@ class provider implements
             ]
         );
         $collection->add_database_table(
-            'thi_lc_mentor_answers',
-            [
-                'questionid' => 'privacy:metadata:thi_lc_mentor_answers:questionid',
-                'userid' => 'privacy:metadata:thi_lc_mentor_answers:userid',
-                'answer' => 'privacy:metadata:thi_lc_mentor_answers:answer',
-                'issolution' => 'privacy:metadata:thi_lc_mentor_answers:issolution',
-                'timecreated' => 'privacy:metadata:thi_lc_mentor_answers:timecreated',
-            ]
-        );
-        $collection->add_database_table(
             'thi_lc_chat_lastvisited',
             [
                 'userid' => 'privacy:metadata:thi_lc_chat_lastvisited:userid',
@@ -146,6 +135,7 @@ class provider implements
                 'timecreated' => 'privacy:metadata:thi_lc_tutor_notifications:timecreated',
             ]
         );
+        $collection->add_subsystem_link('local_thi_learning_companions', [], 'privacy:metadata:core_comment');
         return $collection;
     }
 
@@ -176,6 +166,9 @@ class provider implements
                  WHERE g.createdby = ?
                     OR gm.userid = ?";
         $contextlist->add_from_sql($sql, [CONTEXT_COURSE, $userid, $userid]);
+
+        $contextlist->add_system_context();
+
         return $contextlist;
     }
 
@@ -188,24 +181,52 @@ class provider implements
     public static function export_user_data(approved_contextlist $contextlist) {
         $userid = $contextlist->get_user()->id;
         $contexts = $contextlist->get_contexts();
-        $contextids = $contextlist->get_contextids();
-        $user = $contextlist->get_user();
         $groupchatsubcontext = get_string('groupchatsubcontext', 'local_thi_learning_companions');
+        $groupcreatedsubcontext = get_string('groupcreatedsubcontext', 'local_thi_learning_companions');
+        $groupmembershipsubcontext = get_string('groupmembershipsubcontext', 'local_thi_learning_companions');
+        $grouprequestsubcontext = get_string('grouprequestsubcontext', 'local_thi_learning_companions');
+        $mentorsubcontext = get_string('mentorsubcontext', 'local_thi_learning_companions');
+        $mentorquestionsubcontext = get_string('mentorquestionsubcontext', 'local_thi_learning_companions');
         foreach ($contexts as $context) {
             switch ($context->contextlevel) {
                 case CONTEXT_MODULE:
                     $cmid = $context->instanceid;
                     self::export_chat_for_cmid($groupchatsubcontext, $context, $cmid, $userid);
+                    self::export_groups_created_for_cmid_by_user($groupchatsubcontext, $context, $cmid, $userid);
+                    self::export_group_memberships_for_cmid($groupchatsubcontext, $context, $cmid, $userid);
+                    self::export_group_requests_for_cmid($groupchatsubcontext, $context, $cmid, $userid);
                     break;
                 case CONTEXT_COURSE:
                     $courseid = $context->instanceid;
                     self::export_chat_for_course($groupchatsubcontext, $context, $courseid, $userid);
+                    self::export_groups_created_for_course_by_user($groupchatsubcontext, $context, $courseid, $userid);
+                    self::export_group_memberships_for_course($groupchatsubcontext, $context, $courseid, $userid);
+                    self::export_group_requests_for_course($groupchatsubcontext, $context, $courseid, $userid);
+                    break;
+                case CONTEXT_SYSTEM:
+                    self::export_chat($groupchatsubcontext, $context, $userid);
+                    self::export_groups_created_by_user($groupcreatedsubcontext, $context, $userid);
+                    self::export_group_memberships($groupmembershipsubcontext, $context, $userid);
+                    self::export_group_requests($grouprequestsubcontext, $context, $userid);
+                    self::export_mentorships($mentorsubcontext, $context, $userid);
+                    self::export_mentor_questions($mentorquestionsubcontext, $context, $userid);
                     break;
                 default:
                     // Nothing at the moment.
             }
         }
         // ICTODO: Implement export_user_data() method.
+        /* Get data for the user with:
+            thi_lc_groups.createdby
+            thi_lc_group_members.userid
+            thi_lc_group_requests.userid
+            thi_lc_mentors.userid
+            thi_lc_chat_comment.userid
+            thi_lc_chat_comment_ratings.userid
+            thi_lc_mentor_questions.askedby
+            thi_lc_chat_lastvisited.userid
+            thi_lc_tutor_notifications.tutorid
+        */
     }
 
     /**
@@ -229,9 +250,220 @@ class provider implements
             [groups::CHATTYPE_GROUP, $cmid, $userid]
         );
         \core_privacy\local\request\writer::with_context($context)
-            ->export_data([$subcontext], (object) [
-                'comments' => $chatcomments,
-            ]);
+            ->export_data([$subcontext], (object)$chatcomments);
+    }
+
+    /**
+     * Exports groups that were created by the user for the course module
+     * @param $subcontext
+     * @param $context
+     * @param int $cmid
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_groups_created_for_cmid_by_user($subcontext, $context, $cmid, $userid) {
+        global $DB;
+        $groups = $DB->get_records_sql("select g.*
+            FROM {thi_lc_groups} g
+            WHERE g.cmid = ? AND g.createdby = ?",
+            [$cmid, $userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$groups);
+    }
+
+    /**
+     * Exports groups that were created by the user for the course module
+     * @param $subcontext
+     * @param $context
+     * @param int $courseid
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_groups_created_for_course_by_user($subcontext, $context, $courseid, $userid) {
+        global $DB;
+        $groups = $DB->get_records_sql("select g.*
+            FROM {thi_lc_groups} g
+            WHERE g.courseid = ? AND g.createdby = ?",
+            [$courseid, $userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$groups);
+    }
+
+    /**
+     * Exports groups that were created by the user with no course or course module context
+     * @param $subcontext
+     * @param $context
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_groups_created_by_user($subcontext, $context, $userid) {
+        global $DB;
+        $groups = $DB->get_records_sql("select g.*
+            FROM {thi_lc_groups} g
+            WHERE g.courseid = 0 AND g.cmid = 0 AND g.createdby = ?",
+            [$userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$groups);
+    }
+
+    /**
+     * Exports the group memberships for groups that are related to a certain course module
+     * @param $subcontext
+     * @param $context
+     * @param int $cmid
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_group_memberships_for_cmid($subcontext, $context, $cmid, $userid) {
+        global $DB;
+        $memberships = $DB->get_records_sql("select gm.*, g.name as groupname
+            FROM {thi_lc_groups} g
+            JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+            WHERE g.cmid = ? AND gm.userid = ?",
+            [$cmid, $userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$memberships);
+    }
+
+    /**
+     * Exports the group membership requests for groups that are related to a certain course module
+     * @param $subcontext
+     * @param $context
+     * @param int $cmid
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_group_requests_for_cmid($subcontext, $context, $cmid, $userid) {
+        global $DB;
+        $requests = $DB->get_records_sql("select gr.*, g.name as groupname
+            FROM {thi_lc_groups} g
+            JOIN {thi_lc_group_requests} gr ON gr.groupid = g.id
+            WHERE g.cmid = ? AND gr.userid = ?",
+            [$cmid, $userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$requests);
+    }
+
+    /**
+     * Exports the group membership requests for groups that are related to a certain course
+     * @param $subcontext
+     * @param $context
+     * @param int $courseid
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_group_requests_for_course($subcontext, $context, $courseid, $userid) {
+        global $DB;
+        $requests = $DB->get_records_sql("select gr.*, g.name as groupname
+            FROM {thi_lc_groups} g
+            JOIN {thi_lc_group_requests} gr ON gr.groupid = g.id
+            WHERE g.courseid = ? AND gr.userid = ?",
+            [$courseid, $userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$requests);
+    }
+
+    /**
+     * Exports the group membership requests for groups that are not related to a course or course module
+     * @param $subcontext
+     * @param $context
+     * @param int $courseid
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_group_requests($subcontext, $context, $userid) {
+        global $DB;
+        $requests = $DB->get_records_sql("select gr.*, g.name as groupname
+            FROM {thi_lc_groups} g
+            JOIN {thi_lc_group_requests} gr ON gr.groupid = g.id
+            WHERE g.courseid = 0 AND g.cmid = 0 AND gr.userid = ?",
+            [$userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$requests);
+    }
+
+    /**
+     * Exports the information for which topic a user has become mentor.
+     * @param $subcontext
+     * @param int $context
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_mentorships($subcontext, $context, $userid) {
+        global $DB;
+        $mentorships = $DB->get_records('thi_lc_mentors', ['userid' => $userid]);
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$mentorships);
+    }
+
+    /**
+     * Exports all questions to mentors asked by the user
+     * @param $subcontext
+     * @param $context
+     * @param $userid
+     * @return void
+     */
+    protected static function export_mentor_questions($subcontext, $context, $userid) {
+        global $DB;
+        $questions = $DB->get_records('thi_lc_mentor_questions', ['askedby' => $userid]);
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$questions);
+    }
+
+    /**
+     * Exports the group memberships for groups that are related to a certain course module
+     * @param $subcontext
+     * @param $context
+     * @param int $courseid
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_group_memberships_for_course($subcontext, $context, $courseid, $userid) {
+        global $DB;
+        $memberships = $DB->get_records_sql("select gm.*, g.name as groupname
+            FROM {thi_lc_groups} g
+            JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+            WHERE g.courseid = ? AND gm.userid = ?",
+            [$courseid, $userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$memberships);
+    }
+
+    /**
+     * Exports the group memberships for groups that are related to a certain course module
+     * @param $subcontext
+     * @param $context
+     * @param $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_group_memberships($subcontext, $context, $userid) {
+        global $DB;
+        $memberships = $DB->get_records_sql("select gm.*, g.name as groupname
+            FROM {thi_lc_groups} g
+            JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+            WHERE g.courseid = 0 AND g.cmid = 0 AND gm.userid = ?",
+            [$userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$memberships);
     }
 
     /**
@@ -255,9 +487,30 @@ class provider implements
             [groups::CHATTYPE_GROUP, $courseid, $userid]
         );
         \core_privacy\local\request\writer::with_context($context)
-            ->export_data([$subcontext], (object) [
-                'comments' => $chatcomments,
-            ]);
+            ->export_data([$subcontext], (object)$chatcomments);
+    }
+
+    /**
+     * exports chat that's not related to a course or course module
+     * @param $subcontext
+     * @param $context
+     * @param $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function export_chat($subcontext, $context, $userid) {
+        global $DB;
+        $chatcomments = $DB->get_records_sql('SELECT cmt.*
+            FROM {thi_lc_chat_comment} cmt
+            JOIN {thi_lc_chat} chat ON chat.id = cmt.chatid
+            LEFT JOIN {thi_lc_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
+            WHERE ((g.courseid = 0 AND g.cmid = 0) OR chat.chattype = ?)
+              AND cmt.userid = ?
+            ',
+            [groups::CHATTYPE_GROUP, groups::CHATTYPE_MENTOR, $userid]
+        );
+        \core_privacy\local\request\writer::with_context($context)
+            ->export_data([$subcontext], (object)$chatcomments);
     }
 
 
@@ -278,7 +531,339 @@ class provider implements
      * @return void
      */
     public static function delete_data_for_user(approved_contextlist $contextlist) {
+        if (empty($contextlist->count())) {
+            return;
+        }
+        $userid = $contextlist->get_user()->id;
         $contexts = $contextlist->get_contexts();
-        // ICTODO: Implement delete_data_for_user() method.
+        foreach ($contexts as $context) {
+            if ($context instanceof \context_course) {
+                $courseid = $context->instanceid;
+                // Delete all data for the user for groups that are course related.
+                self::delete_comments_for_user_and_course($userid, $courseid);
+                self::delete_group_requests_for_user_and_course($userid, $courseid);
+                self::delete_group_membership_for_user_and_course($userid, $courseid);
+                self::delete_group_createdby_for_user_and_course($userid, $courseid);
+            } else if ($context instanceof \context_module) {
+                $cmid = $context->instanceid;
+                // Delete all data for the user for groups that are course module related.
+                self::delete_comments_for_user_and_cm($userid, $cmid);
+                self::delete_group_requests_for_user_and_cm($userid, $cmid);
+                self::delete_group_membership_for_user_and_cm($userid, $cmid);
+                self::delete_group_createdby_for_user_and_cm($userid, $cmid);
+            } else if ($context instanceof \context_system) {
+                // Delete all data for the user for groups that are neither course- nor module related.
+                self::delete_comments_for_user($userid);
+                self::delete_tutor_notifications_for_user($userid);
+                self::delete_mentor_questions_asked_by($userid);
+                self::delete_mentorship_for_user($userid);
+                self::delete_group_requests_for_user($userid);
+                self::delete_group_membership_for_user($userid);
+                self::delete_group_createdby_for_user($userid);
+            }
+        }
+    }
+
+    /**
+     * deletes all comments from a user for the group chat of groups that are related to the given course id
+     * doesn't delete the whole entry, just removes user-related info: userid, comment and sets the timedeleted stamp
+     * @param int $userid
+     * @param int $courseid
+     * @return void
+     */
+    protected static function delete_comments_for_user_and_course($userid, $courseid) {
+        global $DB;
+        $DB->execute('UPDATE {thi_lc_groups} g
+                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+                    SET cmt.timedeleted = ?, userid = 0, comment = \'\'
+                    WHERE g.courseid = ?',
+            [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, time(), $courseid]
+        );
+        // Delete last visited entry.
+        $DB->execute('DELETE lvstd
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    WHERE g.courseid = ?',
+            [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, $courseid]
+        );
+    }
+
+    /**
+     * deletes all comments from a user for the group chat of groups that are related to the given course module id
+     * doesn't delete the whole entry, just removes user-related info: userid, comment and sets the timedeleted stamp
+     * @param int $userid
+     * @param int $cmid
+     * @return void
+     */
+    protected static function delete_comments_for_user_and_cm($userid, $cmid) {
+        global $DB;
+        $DB->execute('UPDATE {thi_lc_groups} g
+                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+                    SET cmt.timedeleted = ?, userid = 0, comment = \'\'
+                    WHERE g.cmid = ?',
+            [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, time(), $cmid]
+        );
+        // Delete last visited entry.
+        $DB->execute('DELETE lvstd
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    WHERE g.cmid = ?',
+            [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, $cmid]
+        );
+    }
+
+    /**
+     * deletes all comments from a user for the group chat of groups that are not related courses or modules
+     * doesn't delete the whole entry, just removes user-related info: userid, comment and sets the timedeleted stamp
+     * @param int $userid
+     * @return void
+     */
+    protected static function delete_comments_for_user($userid) {
+        global $DB;
+        // Delete group chat comments for the user.
+        $DB->execute('UPDATE {thi_lc_groups} g
+                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+                    SET cmt.timedeleted = ?, userid = 0, comment = \'\'
+                    WHERE g.cmid = 0 AND g.courseid = 0',
+            [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, time()]
+        );
+        // Delete mentor chat comments for the user.
+        $DB->execute('UPDATE {thi_lc_chat} c
+                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+                    SET cmt.timedeleted = ?, userid = 0, comment = \'\'
+                    WHERE c.chattype = ?',
+            [$userid, time(), \local_thi_learning_companions\groups::CHATTYPE_MENTOR]
+        );
+        // Delete last visited entry for group chat.
+        $DB->execute('DELETE lvstd
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    WHERE g.cmid = 0 AND g.courseid = 0',
+            [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid]
+        );
+        // Delete last visited entry for mentor chat.
+        $DB->execute('DELETE lvstd
+                    FROM {thi_lc_chat} c
+                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    WHERE c.chattype = ?',
+            [$userid, \local_thi_learning_companions\groups::CHATTYPE_MENTOR]
+        );
+        // Anonymize comment rating.
+        $DB->execute('UPDATE {thi_lc_groups} g
+                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id
+                    JOIN {thi_lc_chat_comment_ratings} rtng ON rtng.commentid = cmt.id
+                    SET rtng.userid = 0
+                    WHERE g.cmid = 0 AND g.courseid = 0 AND rtng.userid = ?',
+            [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid]
+        );
+        $DB->execute('UPDATE {thi_lc_chat} c
+                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id
+                    JOIN {thi_lc_chat_comment_ratings} rtng ON rtng.commentid = cmt.id
+                    SET rtng.userid = 0
+                    WHERE c.chattype = ? AND rtng.userid = ?',
+            [\local_thi_learning_companions\groups::CHATTYPE_MENTOR, $userid]
+        );
+    }
+
+    /**
+     * deletes notifications to tutors if the tutor is the user who requested data deletion
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_tutor_notifications_for_user($userid) {
+        global $DB;
+        $DB->delete_records('thi_lc_tutor_notifications', ['tutorid' => $userid]);
+    }
+
+    /**
+     * deletes questions asked to mentors by the user
+     * @param int $userid
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    protected static function delete_mentor_questions_asked_by($userid) {
+        global $DB;
+        $deleted = get_string('deleted', 'local_thi_learning_companions');
+        $deletedquestion = get_string('deletedquestion', 'local_thi_learning_companions');
+        $DB->execute(
+            "UPDATE {thi_lc_mentor_questions}
+                    SET askedby = 0, topic = ?, title = ?, question = ?
+                    WHERE askedby = ?",
+            [$deleted, $deleted, $deletedquestion, $userid]
+        );
+    }
+
+    /**
+     * deletes the entry that says that the user has become mentor for a certain topic
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_mentorship_for_user($userid) {
+        global $DB;
+        $DB->delete_records('thi_lc_mentors', ['userid' => $userid]);
+    }
+
+    /**
+     * deletes group join requests for groups related to a certain course
+     * @param int $userid
+     * @param int $courseid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_requests_for_user_and_course($userid, $courseid) {
+        global $DB;
+        $DB->execute('DELETE req
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_group_requests} req ON req.gropuid = g.id
+                    WHERE g.courseid = ? AND req.userid = ?',
+            [$courseid, $userid]
+        );
+    }
+
+    /**
+     * deletes group join requests for groups related to a certain module
+     * @param int $userid
+     * @param int $cmid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_requests_for_user_and_cm($userid, $cmid) {
+        global $DB;
+        $DB->execute('DELETE req
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_group_requests} req ON req.gropuid = g.id
+                    WHERE g.cmid = ? AND req.userid = ?',
+            [$cmid, $userid]
+        );
+    }
+
+    /**
+     * deletes group join requests for the user
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_requests_for_user($userid) {
+        global $DB;
+        $DB->execute('DELETE req
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_group_requests} req ON req.gropuid = g.id
+                    WHERE g.cmid = 0 AND g.courseid = 0 AND req.userid = ?',
+            [$userid]
+        );
+    }
+
+    /**
+     * deletes the group membership for groups related to a certain course
+     * @param int $userid
+     * @param int $courseid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_membership_for_user_and_course($userid, $courseid) {
+        global $DB;
+        $DB->execute('DELETE mem
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_group_members} mem ON mem.gropuid = g.id
+                    WHERE g.courseid = ? AND mem.userid = ?',
+            [$courseid, $userid]
+        );
+    }
+
+    /**
+     * deletes the information who created the group for groups related to a certain course
+     * @param int $userid
+     * @param int $courseid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_createdby_for_user_and_course($userid, $courseid) {
+        global $DB;
+        $DB->execute('UPDATE {thi_lc_groups} g
+                    SET g.createdby = 0
+                    WHERE g.courseid = ? AND g.createdby = ?',
+            [$courseid, $userid]
+        );
+    }
+
+    /**
+     * deletes the group membership for groups related to a certain module
+     * @param int $userid
+     * @param int $cmid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_membership_for_user_and_cm($userid, $cmid) {
+        global $DB;
+        $DB->execute('DELETE mem
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_group_members} mem ON mem.gropuid = g.id
+                    WHERE g.cmid = ? AND mem.userid = ?',
+            [$cmid, $userid]
+        );
+    }
+
+    /**
+     * deletes the information about who created the group for groups created by user for group related to module
+     * @param int $userid
+     * @param int $cmid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_createdby_for_user_and_cm($userid, $cmid) {
+        global $DB;
+        $DB->execute('UPDATE {thi_lc_groups} g
+                    SET g.createdby = 0
+                    WHERE g.cmid = ? AND g.createdby = ?',
+            [$cmid, $userid]
+        );
+    }
+
+    /**
+     * deletes the group membership for groups that aren't tied to courses and/or modules
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_membership_for_user($userid) {
+        global $DB;
+        $DB->execute('DELETE mem
+                    FROM {thi_lc_groups} g
+                    JOIN {thi_lc_group_members} mem ON mem.gropuid = g.id
+                    WHERE g.cmid = 0 AND g.courseid = 0 AND mem.userid = ?',
+            [$userid]
+        );
+    }
+
+    /**
+     * deletes the information about who created the group if group was created by user who wants his/her data removed
+     * @param int $userid
+     * @return void
+     * @throws \dml_exception
+     */
+    protected static function delete_group_createdby_for_user($userid) {
+        global $DB;
+        $DB->execute('UPDATE {thi_lc_groups} g
+                    SET g.createdby = 0
+                    WHERE g.cmid = 0 AND g.courseid = 0 AND g.createdby = ?',
+            [$userid]
+        );
     }
 }
+// ICUNDO start.
+if ($test == 1) {
+    $task = new \tool_dataprivacy\task\process_data_request_task();
+    $task->set_custom_data(['requestid' => 18]);
+    $task->execute();
+}
+// ICUNDO end.

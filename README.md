@@ -132,6 +132,17 @@ Hovering over the comments gives you the option to report posts or delete your o
 
 ![](pix\documentation\icon-thi-dokumentation_v0.9_en8.png)
 
+###### Online Status
+
+The plugin local_thi_learning_companions adds a new profile field: "Learning companions user status". It can be set to one of three options: "Online", "Offline" and "Please do not disturb".
+
+By default, unless manually overridden by the user, it will be set to the current login status of the user.
+
+Wherever group members get listed, the user status will be indicated with a colored circle above the user image. Green indicates "Online", grey means "Offline" and a red is for "Please do not disturb".<br>
+When you hover over that colored circle, a tooltip will show the meaning of the status color code.
+
+![](pix\documentation\icon-thi-dokumentation_v0.9_en9.png)
+
 ###### Plugin-Settings
 
 local_thi_learning_companions

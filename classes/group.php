@@ -556,7 +556,7 @@ class group {
         $sql = 'SELECT u.*,
                        gm.joined
                   FROM {thi_lc_group_members} gm
-             LEFT JOIN {user} u ON u.id = gm.userid
+             LEFT JOIN {user} u ON u.id = gm.userid AND u.deleted = 0
                  WHERE gm.groupid = ?
                    AND gm.isadmin = 1';
 
