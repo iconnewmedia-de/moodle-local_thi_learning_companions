@@ -1,3 +1,40 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_thi_learning_companions/mentor/mentor_learningnuggetcomments
+
+    Lists comments for learning nuggets
+
+    Example context (json):
+    {
+        "haslearningnuggetcomments": "true",
+        "latestcomments": [{
+            "courseid": "4",
+            "coursefullname": "Learning how to learn",
+            "cmid": "15",
+            "nuggettitle": "Learning at home",
+            "modulename": "book",
+            "userid": "3",
+            "firstname": "Max",
+            "lastname": "Mustermann",
+            "timecreated": "1718284493"
+        }]
+    }
+}}
 {{#haslearningnuggetcomments}}
 {{#latestcomments}}
     <div class="lc_comment">

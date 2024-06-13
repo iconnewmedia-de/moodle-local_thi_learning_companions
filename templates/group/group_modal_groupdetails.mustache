@@ -1,3 +1,58 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_thi_learning_companions/group/group_modal_groupdetails
+
+    Modal for showing the details for a group
+
+    Example context (json):
+    {
+        "group": {
+            "keywordslist": "support, questions, getting started",
+            "membercount": "5",
+            "lastactivetimedmy": "23.04.2024",
+            "timecreateddmy": "10.03.2024",
+            "closedgroup": "false",
+            "description": "Group to discuss the things that weren't quite clear to some",
+            "course": {
+                "fullname": "Introduction"
+            },
+            "courseid": "2",
+        },
+        "cm": {
+            "id": "42",
+            "modname": "scorm",
+            "name": "Onboarding"
+        },
+        "groupadmins": [{
+            "userpic": "<img src=\"http://www.mymoodlesite.net/pluginfile.php/3/user/icon/boost/f2?rev=119\" class=\"userpicture\" width=\"35\" height=\"35\" alt=\"\">",
+            "profileurl": "https://www.mymoodlesite.net/user/profile.php?id=31",
+            "fullname": "Juan dela Cruz"
+        }],
+        "mayviewmembers": "true",
+        "groupmembers": [{
+            "firstname": "Maija",
+            "lastname": "Meikäläinen"
+        }],
+        "currentuserismember": "true",
+        "closedgroup": "false",
+        "mayedit": "true"
+    }
+}}
 <div id="group-details-modal" class="row">
     <div id="group-details-modal-left" class="col-4">
         <div class="group-details-modal-info">

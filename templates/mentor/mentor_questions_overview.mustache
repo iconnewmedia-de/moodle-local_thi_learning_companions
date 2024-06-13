@@ -1,3 +1,59 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_thi_learning_companions/mentor/mentor_questions_overview
+
+    Lists questions to me as a mentor as well as open questions to all mentros
+
+    Example context (json):
+    {
+        "hasquestionstome": "true",
+        "questionstome": [{
+            "id": "1",
+            "title": "I have a question",
+            "get_answer_count": "5",
+            "is_closed": "false",
+            "get_closed_time": "05.12.2024",
+            "get_last_activity_dmy": "05.12.2024",
+            "get_timecreated_dmy": "25.10.2024",
+            "mayuserdelete": "false",
+        }],
+        "hasquestionstoallmentors": "true",
+        "questionstoallmentors": [{
+            "id": "2",
+            "title": "I have a question",
+            "get_answer_count": "5",
+            "is_closed": "false",
+            "get_closed_time": "",
+            "get_last_activity_dmy": "05.12.2024",
+            "get_timecreated_dmy": "25.10.2024",
+            "mayuserdelete": "false",
+        }],
+        "hascomments": "true",
+        "latestcomments": [{
+            "content": "This was great, I learned a lot!"
+            "coursefullname": "Maths recap",
+            "nuggettitle": "Basic Algebra",
+            "firstname": "John",
+            "lastname": "Doe",
+            "timecreated": "1718286543",
+        }]
+    }
+}}
 <h2>{{#str}}private_questions_to_me, local_thi_learning_companions{{/str}}</h2>
 {{#hasquestionstome}}
     <table class="stripe hover compact lc_datatable" id="lc_private_mentor_questions" data-paging="true" data-page-length="50">

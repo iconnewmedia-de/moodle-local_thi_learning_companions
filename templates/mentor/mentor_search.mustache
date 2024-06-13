@@ -1,3 +1,49 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_thi_learning_companions/mentor/mentor_search
+
+    Lists mentors in a searchable table
+
+    Example context (json):
+    {
+        "hasmentors": "true",
+        "mentors": [{
+            "issupermentor": "true",
+            "profileurl": "https://www.mymoodlesite.net/user/profile.php?id=31",
+            "userpic": "<img src=\"http://www.mymoodlesite.net/pluginfile.php/3/user/icon/boost/f2?rev=119\" class=\"userpicture\" width=\"35\" height=\"35\" alt=\"\">",
+            "fullname": "Jan Jansen",
+            "badges": [{
+                "name": "Chemistry Expert"
+                "image": "https://www.mymoodlesite.net/pluginfile.php/269/badges/badgeimage/22/f2?refresh=2201"
+            }],
+            "topiclist": [{
+                "topic": "my topic title",
+            }]
+            "id": "3"
+        }],
+        "badges": [
+            "badge"
+        ],
+        "topics": [
+            "topic"
+        ]
+    }
+}}
 <div id="local_thi_learning_companions_mentor_search">
     <h1>{{#str}}findmentor, local_thi_learning_companions{{/str}}</h1>
     {{#hasmentors}}
