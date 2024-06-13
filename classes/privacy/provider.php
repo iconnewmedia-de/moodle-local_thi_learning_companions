@@ -31,12 +31,6 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\writer;
 use local_thi_learning_companions\groups;
 
-// ICUNDO start.
-require_once(__DIR__ . '/../../../../config.php');
-require_login();
-$test = optional_param('test', 0, PARAM_INT);
-// ICUNDO end.
-
 /**
  * Privacy provider for local_thi_learning_companions
  */
@@ -860,10 +854,3 @@ class provider implements
         );
     }
 }
-// ICUNDO start.
-if ($test == 1) {
-    $task = new \tool_dataprivacy\task\process_data_request_task();
-    $task->set_custom_data(['requestid' => 18]);
-    $task->execute();
-}
-// ICUNDO end.
