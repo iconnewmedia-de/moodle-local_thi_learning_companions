@@ -27,7 +27,7 @@
             "get_id": "2"
         },
         "userid": "5",
-        "languageStrings": ""
+        "languageStrings": "var mystrings='';"
     }
 }}
 <div class="container">
@@ -52,8 +52,8 @@
     var thi_learning_companions_groupid = null;
 </script>
 {{#js}}
-    {{{languageStrings}}}
-    window.$(document).ready(function() {
+{{{languageStrings}}}
+window.$(document).ready(function() {
     window.Chat.startQuestionChat();
-    });
+});
 {{/js}}
