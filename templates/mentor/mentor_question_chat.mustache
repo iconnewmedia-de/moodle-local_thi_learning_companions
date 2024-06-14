@@ -27,12 +27,12 @@
             "get_id": "2"
         },
         "userid": "5",
-        "languageStrings": "M.str.local_thi_learning_companions = json_object_with_language_strings;"
+        "languageStrings": ""
     }
 }}
 <div class="container">
     <h1>Mentoring</h1>
-    <div id="thi_learning_companions_chat">
+    <div id="thi_learning_companions_chat_wrapper">
         <div class="row">
             <div id="thi_learning_companions_chat" class="col-12">
                 <div id="thi_learning_companions_chat-content"></div>
@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<script>
     var thi_learning_companions_questionid = {{question.get_id}};
     var thi_learning_companions_chat_userid = {{userid}};
     var thi_learning_companions_groupid = null;
