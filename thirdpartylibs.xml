@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>src/datatables.js</location>
+        <name>Datatables</name>
+        <version>1.13.2</version>
+        <license>MIT</license>
+        <repository>https://github.com/DataTables/DataTables.git</repository>
+    </library>
+    <library>
+        <location>src/jquery.dataTables.js</location>
+        <name>Datatables for jQuery</name>
+        <version>1.10.18</version>
+        <license>MIT</license>
+        <repository>https://github.com/DataTables/DataTables.git</repository>
+    </library>
+    <library>
+        <location>src/select2.js</location>
+        <name>Select2</name>
+        <version>4.0.9</version>
+        <license>MIT</license>
+        <repository>https://github.com/select2/select2.git</repository>
+    </library>
+</libraries>

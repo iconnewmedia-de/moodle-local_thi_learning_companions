@@ -1,4 +1,4 @@
-/* eslint-disable jsdoc/require-param-type, valid-jsdoc */
+/* eslint-disable jsdoc/require-param-type */
 import $ from 'jquery';
 import 'local_thi_learning_companions/datatables';
 
@@ -52,7 +52,7 @@ export const addOrSearch = (element) => {
     $.fn.dataTable.ext.search.push((settings, data) => {
         let searchVal = element.val() ?? '';
 
-        //If the search value is empty, don´t filter it.
+        // If the search value is empty, don´t filter it.
         if (!searchVal) {
             return true;
         }
@@ -209,15 +209,15 @@ const getTargetColumnIndexes = (settings, element) => {
         return null;
     }
 
-    //if it´s just a single number, return it
+    // If it´s just a single number, return it
     if (!isNaN(targetData)) {
         return [targetData];
     }
 
-    //Split it, so we can support multiple classes.
+    // Split it, so we can support multiple classes.
     const targetArray = targetData.split(',');
 
-    //Map the array to the index.
+    // Map the array to the index.
     return targetArray.map((target) => {
         // It´s a number? Return it.
         if (!isNaN(target)) {
@@ -229,9 +229,9 @@ const getTargetColumnIndexes = (settings, element) => {
     });
 };
 
-export const makeTablesFullWidth = function () {
+export const makeTablesFullWidth = function (){
     if (document.querySelector('.dataTable') !== null) {
-        // make page and table full width
+        // Make page and table full width.
         document.querySelector('body').classList.add('hasDatatable');
         $('.dataTable').css('width', '');
     }

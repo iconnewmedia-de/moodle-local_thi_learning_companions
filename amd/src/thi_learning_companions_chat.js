@@ -13,7 +13,7 @@ let strings = [];
 
 export const init = async() => {
     // Put send button to the right next to the message box
-    // we can't arrange it that way with just Moodle Forms API
+    // We can't arrange it that way with just Moodle Forms API
     const sendButton = $('#local_thi_learning_companions_chat-send');
     const messageBox = $('#id_messageeditable');
     messageBox.after(sendButton);
@@ -52,13 +52,8 @@ export const init = async() => {
     body.on('click', '.thi_learning_companions_upload_button', handleUploadButton);
     let item = document.querySelector('#page-local-thi_learning_companions-chat #fitem_id_attachments');
     document.body.addEventListener('dragenter', function(e) {
-        // console.log('started dragging', e);
         document.querySelector('#page-local-thi_learning_companions-chat #fitem_id_attachments').classList.add('upload-visible');
     });
-    // document.body.addEventListener('dragstop', function(e) {
-    //     console.log('stopped dragging', e);
-    //     document.querySelector('#page-local-thi_learning_companions-chat #fitem_id_attachments').classList.remove('upload-visible');
-    // });
 };
 
 const addBBBlinkButton = function() {
@@ -144,8 +139,8 @@ const pasteHtmlAtCaret = function(html) {
             range.deleteContents();
 
             // Range.createContextualFragment() would be useful here but is
-            // only relatively recently standardized and is not supported in
-            // some browsers (IE9, for one)
+            // Only relatively recently standardized and is not supported in
+            // Some browsers (IE9, for one)
             var el = document.createElement("div");
             el.innerHTML = html;
             var frag = document.createDocumentFragment(), node, lastNode;
@@ -178,14 +173,12 @@ const handleCommentRating = function(e) {
             commentid: postId
         },
         success: function(data) {
-            // modal.destroy();
             if (data === 'fail') {
                 // ICTODO: output fail message
             } else {
                 // ICTODO: output success message
             }
             document.dispatchEvent(new CustomEvent('thi_learning_companions_message_rated', {detail: {postid: postId, newvalue: data.israted}}));
-            // document.dispatchEvent(new ModalEvents.hidden);
         }
     });
 };
@@ -201,8 +194,6 @@ const handleCommentDelete = async function(e) {
             '</div>',
     });
 
-    // console.log('comment id from data:', postId);
-
     modal.getRoot().on(ModalEvents.save, function() {
         $.ajax({
             url: M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajaxdeletecomment.php',
@@ -213,14 +204,12 @@ const handleCommentDelete = async function(e) {
                 sesskey: M.cfg.sesskey,
             },
             success: function(data) {
-                // modal.destroy();
                 if (data === 'fail') {
                     // ICTODO: output fail message
                 } else {
                     // ICTODO: output success message
                 }
                 document.dispatchEvent(new CustomEvent('thi_learning_companions_message_deleted', {detail: {postid: postId}}));
-                // document.dispatchEvent(new ModalEvents.hidden);
             }
         });
     });
@@ -228,11 +217,7 @@ const handleCommentDelete = async function(e) {
     modal.show();
 };
 const handleCommentEdit = async function(e) {
-    // console.log('clicked edit comment. event object:', e);
-    // console.log('clicked edit comment for comment id:', e.target.dataset.id);
     var commentid = e.target.dataset.id;
-    // console.log('commentid before creating modal:', commentid);
-    // console.log(ModalFactory);
     return ModalFactory.create({
         type: ModalFactory.types.SAVE_CANCEL,
         title: strings[3],
@@ -240,14 +225,7 @@ const handleCommentEdit = async function(e) {
             '<div id="thi_learning_companions-edit-modal">' +
             '<div id="thi_learning_companions-edit-modal-text">' + strings[4] + '</div>' +
             '</div>',
-        // footer: '' +
-        //     '<div id="thi_learning_companions-deletecomment-modal-buttons">' +
-        //     '<button class="btn btn-primary" aria-hidden="true" id="thi_learning_companions-deletecomment-modal-delete" data-cid="' + commentid + '">' + strings[2] + '</button>' +
-        //     '<button class="btn btn-secondary" aria-hidden="true" id="thi_learning_companions-deletecomment-modal-close" data-action="hide">' + strings[3] + '</button>' +
-        //     '</div>'
     }).then(function(modal) {
-        // console.log('edit comment id from data:', commentid);
-
         modal.setSaveButtonText(strings[5]);
         $.ajax(
             {
@@ -259,12 +237,8 @@ const handleCommentEdit = async function(e) {
                 }
             }
         ).done(function(a, b, c) {
-            // console.log('inside edit comment. a:', a, 'b:', b, 'c:', c);
             modal.setText(a.text);
         });
-        // modal.getRoot().on(ModalEvents.hidden, function () {
-        //     modal.destroy();
-        // });
         modal.show();
     });
 };
@@ -279,10 +253,7 @@ const handleCommentReport = async function(e) {
             '<div id="thi_learning_companions-reportcomment-modal-text">' + strings[6] + '</div>' +
             '</div>'
     }).then(function(modal) {
-        // console.log('comment id from data:', postId);
-
         modal.getRoot().on(ModalEvents.save, function() {
-            // console.log('about to call ajaxdeletecomment.php with comment id', postId);
             $.ajax({
                 url: `${M.cfg.wwwroot}/local/thi_learning_companions/ajax/ajaxreport.php`,
                 method: 'POST',
@@ -291,14 +262,12 @@ const handleCommentReport = async function(e) {
                     commentid: postId
                 },
                 success: function(data) {
-                    // modal.destroy();
                     if (data === 'fail') {
                         // ICTODO: output fail message
                     } else {
                         // ICTODO: output success message
                     }
                     document.dispatchEvent(new CustomEvent('thi_learning_companions_message_reported', {detail: {postid: postId}}));
-                    // document.dispatchEvent(ModalEvents.hidden);
                 }
             });
         });
@@ -307,14 +276,11 @@ const handleCommentReport = async function(e) {
     });
 };
 const handleEditGroup = async function(e) {
-    // console.log('clicked on gear icon', this, e);
-
     async function callGroupModal(e) {
         e.preventDefault();
 
         const groupid = e.target.dataset.gid;
         const groupname = e.target.dataset.title;
-        // console.log('getting group modal for ', groupid, groupname, this, e);
         const groupDetails = $.ajax({
             url: M.cfg.wwwroot + '/local/thi_learning_companions/ajax/ajax.php',
             method: 'POST',
@@ -329,8 +295,6 @@ const handleEditGroup = async function(e) {
                 console.log('got group details modal with data: ', data);
                 const title = str.get_string('modal-groupdetails-groupname', 'local_thi_learning_companions', groupname);
                 title.then(function(string) {
-                    // console.log('got group title string:', title);
-                    // console.log('got group details data:', data);
                     ModalFactory.create({
                         title: string,
                         body: data.html,
@@ -368,7 +332,7 @@ const handleNewMessageSubmit = (e) => {
         data
     ).done(function(a, b, c) {
         // ICTODO: give a success message, like with a toast or so
-        // reset the form to empty values after successfully sending the form
+        // Reset the form to empty values after successfully sending the form
         if (a.warning_body) {
             console.log('output warning');
             ModalFactory.create({
@@ -403,7 +367,7 @@ const handleNewMessageSubmit = (e) => {
         console.warn('Failed sending via AJAX', a, b, c);
         window.alert("couldn't save"); // ICTODO: give proper message, via get_string and ideally with a modal
     }).always(function(a, b, c) {
-        // reactivate the form/ungrey it when data has been sent
+        // Reactivate the form/ungrey it when data has been sent
         $('#thi_learning_companions_chat #id_messageeditable').css('opacity', '1');
         $('#thi_learning_companions_chat #id_messageeditable').attr('contenteditable', 'true');
         $('#thi_learning_companions_chat form input,  #thi_learning_companions_chat form textarea, #local_thi_learning_companions_chat-send').attr('disabled', false);

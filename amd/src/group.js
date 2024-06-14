@@ -10,10 +10,8 @@ import 'local_thi_learning_companions/datatables';
 import 'local_thi_learning_companions/select2';
 import DynamicForm from 'core_form/dynamicform';
 import Templates from 'core/templates';
-import {init as inviteInit} from 'local_thi_learning_companions/invite_members';
 import Fragment from "core/fragment";
 import Pending from "core/pending";
-import * as Str from "core/str";
 import * as Notification from "core/notification";
 import * as Autocomplete from "core/form-autocomplete";
 
@@ -140,7 +138,7 @@ export const handleGroupInviteButton = async function(e) {
         .catch (Notification.exception);
 };
 
-export const handleGroupLeaveButton = async function(e) {
+export const handleGroupLeaveButton = async function(e){
     e.preventDefault();
 
     const groupId = $(this).data('groupid');
@@ -229,6 +227,6 @@ export const handleGroupRequestButton = async function(e) {
         window.location.reload();
     } else { // Error happened
         const errorMessage = await str.get_string(`group_request_error_code_${errorCode}`, 'local_thi_learning_companions');
-        alert(errorMessage);
+        Notification.alert(errorMessage);
     }
 };
