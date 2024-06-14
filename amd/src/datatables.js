@@ -1,3 +1,4 @@
+/* eslint-disable */
 import $ from "jquery";
 
 var DataTable = function ( selector, options )

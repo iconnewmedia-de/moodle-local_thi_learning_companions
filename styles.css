@@ -1,3 +1,4 @@
+/* eslint-disable declaration-no-important */
 .icthi_learning_companions-group-me-up {
     position: absolute;
     right: 0;
@@ -27,7 +28,7 @@
     width: 480px;
 }
 .icon-check-green {
-    color: #AFC95A;
+    color: #afc95a;
 }
 #mentor-deletemyquestion-modal-delete {
     margin-right: 10px;
@@ -58,13 +59,13 @@
     max-width: 10em;
 }
 .local_thi_learning_companions_mentor_search_askquestion_link {
-    color: #E38227;
+    color: #e38227;
 }
 .local_thi_learning_companions_chevron {
-    color: #E38227;
+    color: #e38227;
 }
 .icon-issupermentor {
-    color: #E38227;
+    color: #e38227;
     margin-left: 2px;
     position: relative;
     top: 1px;
@@ -192,6 +193,7 @@
 .thi_learning_companions_chat-post {
     position: relative;
 }
+
 @media (min-width: 992px) {
     #thi_learning_companions_chat-postlist {
         margin-left: -15px;
@@ -202,7 +204,7 @@
 .thi_learning_companions_chat-post:hover .thi_learning_companions_report_comment,
 .thi_learning_companions_chat-post:hover .thi_learning_companions_delete_comment,
 .thi_learning_companions_chat-post:hover .thi_learning_companions_rate_comment,
-.thi_learning_companions_chat-post:hover .thi_learning_companions_edit_comment  {
+.thi_learning_companions_chat-post:hover .thi_learning_companions_edit_comment {
     display: inline-block;
     color: transparent;
 }
@@ -253,7 +255,7 @@
     padding: 5px 10px 7px;
     font-size: 16px;
     line-height: 24px;
-    min-height:65px;
+    min-height: 65px;
     cursor: pointer;
     gap: 0.5em;
 }
@@ -267,7 +269,7 @@
 .thi_learning_companions_chat-post {
     padding: 10px;
     position: relative;
-    border-top:1px solid #ccc;
+    border-top: 1px solid #ccc;
 }
 .thi_learning_companions_chat-my-post {
     background: #e6ffe3;
@@ -286,8 +288,12 @@
 }
 
 @keyframes thi_learning_companions_loader_spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .thi_learning_companions_editgroup {
@@ -298,8 +304,6 @@
     background: url([[pix:local_thi_learning_companions|gear]]) no-repeat;
     float: right;
     margin-top: 10px;
-}
-.thi_learning_companions_chat_time {
 }
 
 /* Invite */
@@ -423,7 +427,7 @@ body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable 
     width: 20px;
     height: 20px;
     padding-top: 1px;
-    background: #00A070;
+    background: #00a070;
     border: 0;
     color: #ffffff;
     text-align: center;
@@ -447,6 +451,7 @@ body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable 
 /* ------------------------------------------- */
 /* --------RESPONSIVENESS--------------------- */
 /* ------------------------------------------- */
+
 @media screen and (min-width: 768px) {
     #page-local-thi_learning_companions-chat .thi_learning_companions_groupheader h1 {
         max-width: calc(100vw - 330px);
@@ -455,13 +460,15 @@ body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable 
         overflow: hidden;
     }
 }
+
 @media screen and (max-width:992px) {
 
     /* -------------- CHAT -------------- */
     #page-local-thi_learning_companions-chat .thi_learning_companions_group_infos em {
-        max-width:calc(100vw - 210px);
+        max-width: calc(100vw - 210px);
     }
 }
+
 @media screen and (max-width:767.98px) {
     /* ------------------- GROUP SEARCH --------------- */
     #page-local-thi_learning_companions-group-search #allgroupstable th:nth-child(2),
@@ -478,7 +485,7 @@ body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable 
     }
 
     #thi_learning_companions_chat #fitem_id_message {
-        padding:5px;
+        padding: 5px;
     }
 
     #page-local-thi_learning_companions-chat .thi_learning_companions_groupheader .thi_learning_companions_groupimage {
@@ -503,6 +510,7 @@ body[id^="page-local-thi_learning_companions"].pagelayout-standard.hasDatatable 
         padding: 10px;
     }
 }
+
 @media screen and (max-width:480px) {
     /* ------------------- GROUP SEARCH --------------- */
     #page-local-thi_learning_companions-group-search #allgroupstable th {
