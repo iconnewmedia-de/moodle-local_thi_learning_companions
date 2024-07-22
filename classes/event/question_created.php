@@ -38,7 +38,7 @@ class question_created extends \core\event\base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->context = \context_system::instance();
-        $this->data['objecttable'] = 'thi_lc_mentor_questions';
+        $this->data['objecttable'] = 'local_thi_learning_companions_mentor_questions';
     }
 
     /**

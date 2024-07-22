@@ -36,7 +36,7 @@ $groupid = required_param('groupid', PARAM_INT);
 $questionid = optional_param('questionid', 0, PARAM_INT);
 $chatid = optional_param('chatid', 0, PARAM_INT);
 if ($chatid === 0) {
-    $chatid = $DB->get_field('thi_lc_chat', 'id',
+    $chatid = $DB->get_field('local_thi_learning_companions_chat', 'id',
         ['relatedid' => $groupid, 'chattype' => local_thi_learning_companions\groups::CHATTYPE_GROUP]
     );
 }

@@ -38,7 +38,7 @@ class group_deleted extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_OTHER;
-        $this->data['objecttable'] = 'thi_lc_groups';
+        $this->data['objecttable'] = 'local_thi_learning_companions_groups';
         $this->context = \context_system::instance();
     }
 

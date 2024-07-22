@@ -126,7 +126,7 @@ style2 = underline, strike',
         $groupid = optional_param('groupid', null, PARAM_INT);
         // If the group is closed, use the "request to join" string, otherwise use the "join group" string.
         $joingroupstring = get_string('join_group_link_text', 'local_thi_learning_companions');
-        if ($groupid && $DB->get_record('thi_lc_groups', ['id' => $groupid])->closedgroup) {
+        if ($groupid && $DB->get_record('local_thi_learning_companions_groups', ['id' => $groupid])->closedgroup) {
             $joingroupstring = get_string('request_join_group', 'local_thi_learning_companions');
         }
 

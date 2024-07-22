@@ -44,89 +44,89 @@ class provider implements
      */
     public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
-            'thi_lc_groups',
+            'local_thi_learning_companions_groups',
             [
-                'createdby' => 'privacy:metadata:thi_lc_groups:createdby',
-                'name' => 'privacy:metadata:thi_lc_groups:name',
-                'description' => 'privacy:metadata:thi_lc_groups:description',
-                'closedgroup' => 'privacy:metadata:thi_lc_groups:closedgroup',
-                'timecreated' => 'privacy:metadata:thi_lc_groups:timecreated',
-                'timemodified' => 'privacy:metadata:thi_lc_groups:timemodified',
-                'courseid' => 'privacy:metadata:thi_lc_groups:courseid',
-                'cmid' => 'privacy:metadata:thi_lc_groups:cmid',
+                'createdby' => 'privacy:metadata:local_thi_learning_companions_groups:createdby',
+                'name' => 'privacy:metadata:local_thi_learning_companions_groups:name',
+                'description' => 'privacy:metadata:local_thi_learning_companions_groups:description',
+                'closedgroup' => 'privacy:metadata:local_thi_learning_companions_groups:closedgroup',
+                'timecreated' => 'privacy:metadata:local_thi_learning_companions_groups:timecreated',
+                'timemodified' => 'privacy:metadata:local_thi_learning_companions_groups:timemodified',
+                'courseid' => 'privacy:metadata:local_thi_learning_companions_groups:courseid',
+                'cmid' => 'privacy:metadata:local_thi_learning_companions_groups:cmid',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_group_members',
+            'local_thi_learning_companions_group_members',
             [
-                'userid' => 'privacy:metadata:thi_lc_group_members:userid',
-                'groupid' => 'privacy:metadata:thi_lc_group_members:groupid',
-                'isadmin' => 'privacy:metadata:thi_lc_group_members:isadmin',
-                'joined' => 'privacy:metadata:thi_lc_group_members:joined',
+                'userid' => 'privacy:metadata:local_thi_learning_companions_group_members:userid',
+                'groupid' => 'privacy:metadata:local_thi_learning_companions_group_members:groupid',
+                'isadmin' => 'privacy:metadata:local_thi_learning_companions_group_members:isadmin',
+                'joined' => 'privacy:metadata:local_thi_learning_companions_group_members:joined',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_group_requests',
+            'local_thi_learning_companions_group_requests',
             [
-                'userid' => 'privacy:metadata:thi_lc_group_requests:userid',
-                'groupid' => 'privacy:metadata:thi_lc_group_requests:groupid',
-                'timecreated' => 'privacy:metadata:thi_lc_group_requests:timecreated',
-                'denied' => 'privacy:metadata:thi_lc_group_requests:denied',
+                'userid' => 'privacy:metadata:local_thi_learning_companions_group_requests:userid',
+                'groupid' => 'privacy:metadata:local_thi_learning_companions_group_requests:groupid',
+                'timecreated' => 'privacy:metadata:local_thi_learning_companions_group_requests:timecreated',
+                'denied' => 'privacy:metadata:local_thi_learning_companions_group_requests:denied',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_mentors',
+            'local_thi_learning_companions_mentors',
             [
-                'userid' => 'privacy:metadata:thi_lc_mentors:userid',
-                'topic' => 'privacy:metadata:thi_lc_mentors:topic',
+                'userid' => 'privacy:metadata:local_thi_learning_companions_mentors:userid',
+                'topic' => 'privacy:metadata:local_thi_learning_companions_mentors:topic',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_chat_comment',
+            'local_thi_learning_companions_chat_comment',
             [
-                'userid' => 'privacy:metadata:thi_lc_chat_comment:userid',
-                'chatid' => 'privacy:metadata:thi_lc_chat_comment:chatid',
-                'comment' => 'privacy:metadata:thi_lc_chat_comment:comment',
-                'flagged' => 'privacy:metadata:thi_lc_chat_comment:flagged',
-                'flaggedby' => 'privacy:metadata:thi_lc_chat_comment:flaggedby',
-                'timecreated' => 'privacy:metadata:thi_lc_chat_comment:timecreated',
-                'timedeleted' => 'privacy:metadata:thi_lc_chat_comment:timedeleted',
-                'timemodified' => 'privacy:metadata:thi_lc_chat_comment:timemodified',
+                'userid' => 'privacy:metadata:local_thi_learning_companions_chat_comment:userid',
+                'chatid' => 'privacy:metadata:local_thi_learning_companions_chat_comment:chatid',
+                'comment' => 'privacy:metadata:local_thi_learning_companions_chat_comment:comment',
+                'flagged' => 'privacy:metadata:local_thi_learning_companions_chat_comment:flagged',
+                'flaggedby' => 'privacy:metadata:local_thi_learning_companions_chat_comment:flaggedby',
+                'timecreated' => 'privacy:metadata:local_thi_learning_companions_chat_comment:timecreated',
+                'timedeleted' => 'privacy:metadata:local_thi_learning_companions_chat_comment:timedeleted',
+                'timemodified' => 'privacy:metadata:local_thi_learning_companions_chat_comment:timemodified',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_chat_comment_ratings',
+            'local_thi_learning_companions_chat_comment_ratings',
             [
-                'userid' => 'privacy:metadata:thi_lc_chat_comment_ratings:userid',
-                'commentid' => 'privacy:metadata:thi_lc_chat_comment_ratings:commentid',
+                'userid' => 'privacy:metadata:local_thi_learning_companions_chat_comment_ratings:userid',
+                'commentid' => 'privacy:metadata:local_thi_learning_companions_chat_comment_ratings:commentid',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_mentor_questions',
+            'local_thi_learning_companions_mentor_questions',
             [
-                'askedby' => 'privacy:metadata:thi_lc_mentor_questions:askedby',
-                'mentorid' => 'privacy:metadata:thi_lc_mentor_questions:mentorid',
-                'topic' => 'privacy:metadata:thi_lc_mentor_questions:topic',
-                'title' => 'privacy:metadata:thi_lc_mentor_questions:title',
-                'question' => 'privacy:metadata:thi_lc_mentor_questions:question',
-                'timeclosed' => 'privacy:metadata:thi_lc_mentor_questions:timeclosed',
-                'timecreated' => 'privacy:metadata:thi_lc_mentor_questions:timecreated',
+                'askedby' => 'privacy:metadata:local_thi_learning_companions_mentor_questions:askedby',
+                'mentorid' => 'privacy:metadata:local_thi_learning_companions_mentor_questions:mentorid',
+                'topic' => 'privacy:metadata:local_thi_learning_companions_mentor_questions:topic',
+                'title' => 'privacy:metadata:local_thi_learning_companions_mentor_questions:title',
+                'question' => 'privacy:metadata:local_thi_learning_companions_mentor_questions:question',
+                'timeclosed' => 'privacy:metadata:local_thi_learning_companions_mentor_questions:timeclosed',
+                'timecreated' => 'privacy:metadata:local_thi_learning_companions_mentor_questions:timecreated',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_chat_lastvisited',
+            'local_thi_learning_companions_chat_lastvisited',
             [
-                'userid' => 'privacy:metadata:thi_lc_chat_lastvisited:userid',
-                'chatid' => 'privacy:metadata:thi_lc_chat_lastvisited:chatid',
-                'timevisited' => 'privacy:metadata:thi_lc_chat_lastvisited:timevisited',
+                'userid' => 'privacy:metadata:local_thi_learning_companions_chat_lastvisited:userid',
+                'chatid' => 'privacy:metadata:local_thi_learning_companions_chat_lastvisited:chatid',
+                'timevisited' => 'privacy:metadata:local_thi_learning_companions_chat_lastvisited:timevisited',
             ]
         );
         $collection->add_database_table(
-            'thi_lc_tutor_notifications',
+            'local_thi_learning_companions_tutor_notifications',
             [
-                'questionid' => 'privacy:metadata:thi_lc_tutor_notifications:questionid',
-                'tutorid' => 'privacy:metadata:thi_lc_tutor_notifications:tutorid',
-                'timecreated' => 'privacy:metadata:thi_lc_tutor_notifications:timecreated',
+                'questionid' => 'privacy:metadata:local_thi_learning_companions_tutor_notifications:questionid',
+                'tutorid' => 'privacy:metadata:local_thi_learning_companions_tutor_notifications:tutorid',
+                'timecreated' => 'privacy:metadata:local_thi_learning_companions_tutor_notifications:timecreated',
             ]
         );
         $collection->add_subsystem_link('local_thi_learning_companions', [], 'privacy:metadata:core_comment');
@@ -145,8 +145,8 @@ class provider implements
         $sql = "SELECT c.id
                   FROM {context} c
                   JOIN {course_modules} cm ON cm.id = c.instanceid AND c.contextlevel = ?
-                  JOIN {thi_lc_groups} g ON g.cmid = cm.id
-                  LEFT JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+                  JOIN {local_thi_learning_companions_groups} g ON g.cmid = cm.id
+                  LEFT JOIN {local_thi_learning_companions_group_members} gm ON gm.groupid = g.id
                  WHERE g.createdby = ?
                     OR gm.userid = ?";
         $contextlist->add_from_sql($sql, [CONTEXT_MODULE, $userid, $userid]);
@@ -155,8 +155,8 @@ class provider implements
         $sql = "SELECT c.id
                   FROM {context} c
                   JOIN {course} crs ON crs.id = c.instanceid AND c.contextlevel = ?
-                  JOIN {thi_lc_groups} g ON g.courseid = crs.id
-                  LEFT JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+                  JOIN {local_thi_learning_companions_groups} g ON g.courseid = crs.id
+                  LEFT JOIN {local_thi_learning_companions_group_members} gm ON gm.groupid = g.id
                  WHERE g.createdby = ?
                     OR gm.userid = ?";
         $contextlist->add_from_sql($sql, [CONTEXT_COURSE, $userid, $userid]);
@@ -211,15 +211,15 @@ class provider implements
         }
         // ICTODO: Implement export_user_data() method.
         /* Get data for the user with:
-            thi_lc_groups.createdby
-            thi_lc_group_members.userid
-            thi_lc_group_requests.userid
-            thi_lc_mentors.userid
-            thi_lc_chat_comment.userid
-            thi_lc_chat_comment_ratings.userid
-            thi_lc_mentor_questions.askedby
-            thi_lc_chat_lastvisited.userid
-            thi_lc_tutor_notifications.tutorid
+            local_thi_learning_companions_groups.createdby
+            local_thi_learning_companions_group_members.userid
+            local_thi_learning_companions_group_requests.userid
+            local_thi_learning_companions_mentors.userid
+            local_thi_learning_companions_chat_comment.userid
+            local_thi_learning_companions_chat_comment_ratings.userid
+            local_thi_learning_companions_mentor_questions.askedby
+            local_thi_learning_companions_chat_lastvisited.userid
+            local_thi_learning_companions_tutor_notifications.tutorid
         */
     }
 
@@ -235,9 +235,9 @@ class provider implements
     protected static function export_chat_for_cmid($subcontext, $context, $cmid, $userid) {
         global $DB;
         $chatcomments = $DB->get_records_sql('SELECT cmt.*
-            FROM {thi_lc_chat_comment} cmt
-            JOIN {thi_lc_chat} chat ON chat.id = cmt.chatid
-            JOIN {thi_lc_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
+            FROM {local_thi_learning_companions_chat_comment} cmt
+            JOIN {local_thi_learning_companions_chat} chat ON chat.id = cmt.chatid
+            JOIN {local_thi_learning_companions_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
             WHERE g.cmid = ?
               AND cmt.userid = ?
             ',
@@ -259,7 +259,7 @@ class provider implements
     protected static function export_groups_created_for_cmid_by_user($subcontext, $context, $cmid, $userid) {
         global $DB;
         $groups = $DB->get_records_sql("select g.*
-            FROM {thi_lc_groups} g
+            FROM {local_thi_learning_companions_groups} g
             WHERE g.cmid = ? AND g.createdby = ?",
             [$cmid, $userid]
         );
@@ -279,7 +279,7 @@ class provider implements
     protected static function export_groups_created_for_course_by_user($subcontext, $context, $courseid, $userid) {
         global $DB;
         $groups = $DB->get_records_sql("select g.*
-            FROM {thi_lc_groups} g
+            FROM {local_thi_learning_companions_groups} g
             WHERE g.courseid = ? AND g.createdby = ?",
             [$courseid, $userid]
         );
@@ -298,7 +298,7 @@ class provider implements
     protected static function export_groups_created_by_user($subcontext, $context, $userid) {
         global $DB;
         $groups = $DB->get_records_sql("select g.*
-            FROM {thi_lc_groups} g
+            FROM {local_thi_learning_companions_groups} g
             WHERE g.courseid = 0 AND g.cmid = 0 AND g.createdby = ?",
             [$userid]
         );
@@ -318,8 +318,8 @@ class provider implements
     protected static function export_group_memberships_for_cmid($subcontext, $context, $cmid, $userid) {
         global $DB;
         $memberships = $DB->get_records_sql("select gm.*, g.name as groupname
-            FROM {thi_lc_groups} g
-            JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+            FROM {local_thi_learning_companions_groups} g
+            JOIN {local_thi_learning_companions_group_members} gm ON gm.groupid = g.id
             WHERE g.cmid = ? AND gm.userid = ?",
             [$cmid, $userid]
         );
@@ -339,8 +339,8 @@ class provider implements
     protected static function export_group_requests_for_cmid($subcontext, $context, $cmid, $userid) {
         global $DB;
         $requests = $DB->get_records_sql("select gr.*, g.name as groupname
-            FROM {thi_lc_groups} g
-            JOIN {thi_lc_group_requests} gr ON gr.groupid = g.id
+            FROM {local_thi_learning_companions_groups} g
+            JOIN {local_thi_learning_companions_group_requests} gr ON gr.groupid = g.id
             WHERE g.cmid = ? AND gr.userid = ?",
             [$cmid, $userid]
         );
@@ -360,8 +360,8 @@ class provider implements
     protected static function export_group_requests_for_course($subcontext, $context, $courseid, $userid) {
         global $DB;
         $requests = $DB->get_records_sql("select gr.*, g.name as groupname
-            FROM {thi_lc_groups} g
-            JOIN {thi_lc_group_requests} gr ON gr.groupid = g.id
+            FROM {local_thi_learning_companions_groups} g
+            JOIN {local_thi_learning_companions_group_requests} gr ON gr.groupid = g.id
             WHERE g.courseid = ? AND gr.userid = ?",
             [$courseid, $userid]
         );
@@ -380,8 +380,8 @@ class provider implements
     protected static function export_group_requests($subcontext, $context, $userid) {
         global $DB;
         $requests = $DB->get_records_sql("select gr.*, g.name as groupname
-            FROM {thi_lc_groups} g
-            JOIN {thi_lc_group_requests} gr ON gr.groupid = g.id
+            FROM {local_thi_learning_companions_groups} g
+            JOIN {local_thi_learning_companions_group_requests} gr ON gr.groupid = g.id
             WHERE g.courseid = 0 AND g.cmid = 0 AND gr.userid = ?",
             [$userid]
         );
@@ -399,7 +399,7 @@ class provider implements
      */
     protected static function export_mentorships($subcontext, $context, $userid) {
         global $DB;
-        $mentorships = $DB->get_records('thi_lc_mentors', ['userid' => $userid]);
+        $mentorships = $DB->get_records('local_thi_learning_companions_mentors', ['userid' => $userid]);
         \core_privacy\local\request\writer::with_context($context)
             ->export_data([$subcontext], (object)$mentorships);
     }
@@ -413,7 +413,7 @@ class provider implements
      */
     protected static function export_mentor_questions($subcontext, $context, $userid) {
         global $DB;
-        $questions = $DB->get_records('thi_lc_mentor_questions', ['askedby' => $userid]);
+        $questions = $DB->get_records('local_thi_learning_companions_mentor_questions', ['askedby' => $userid]);
         \core_privacy\local\request\writer::with_context($context)
             ->export_data([$subcontext], (object)$questions);
     }
@@ -430,8 +430,8 @@ class provider implements
     protected static function export_group_memberships_for_course($subcontext, $context, $courseid, $userid) {
         global $DB;
         $memberships = $DB->get_records_sql("select gm.*, g.name as groupname
-            FROM {thi_lc_groups} g
-            JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+            FROM {local_thi_learning_companions_groups} g
+            JOIN {local_thi_learning_companions_group_members} gm ON gm.groupid = g.id
             WHERE g.courseid = ? AND gm.userid = ?",
             [$courseid, $userid]
         );
@@ -450,8 +450,8 @@ class provider implements
     protected static function export_group_memberships($subcontext, $context, $userid) {
         global $DB;
         $memberships = $DB->get_records_sql("select gm.*, g.name as groupname
-            FROM {thi_lc_groups} g
-            JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+            FROM {local_thi_learning_companions_groups} g
+            JOIN {local_thi_learning_companions_group_members} gm ON gm.groupid = g.id
             WHERE g.courseid = 0 AND g.cmid = 0 AND gm.userid = ?",
             [$userid]
         );
@@ -471,9 +471,9 @@ class provider implements
     protected static function export_chat_for_course($subcontext, $context, $courseid, $userid) {
         global $DB;
         $chatcomments = $DB->get_records_sql('SELECT cmt.*
-            FROM {thi_lc_chat_comment} cmt
-            JOIN {thi_lc_chat} chat ON chat.id = cmt.chatid
-            JOIN {thi_lc_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
+            FROM {local_thi_learning_companions_chat_comment} cmt
+            JOIN {local_thi_learning_companions_chat} chat ON chat.id = cmt.chatid
+            JOIN {local_thi_learning_companions_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
             WHERE g.courseid = ?
               AND cmt.userid = ?
             ',
@@ -494,9 +494,9 @@ class provider implements
     protected static function export_chat($subcontext, $context, $userid) {
         global $DB;
         $chatcomments = $DB->get_records_sql('SELECT cmt.*
-            FROM {thi_lc_chat_comment} cmt
-            JOIN {thi_lc_chat} chat ON chat.id = cmt.chatid
-            LEFT JOIN {thi_lc_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
+            FROM {local_thi_learning_companions_chat_comment} cmt
+            JOIN {local_thi_learning_companions_chat} chat ON chat.id = cmt.chatid
+            LEFT JOIN {local_thi_learning_companions_groups} g ON g.id = chat.relatedid AND chat.chattype = ?
             WHERE ((g.courseid = 0 AND g.cmid = 0) OR chat.chattype = ?)
               AND cmt.userid = ?
             ',
@@ -566,18 +566,18 @@ class provider implements
      */
     protected static function delete_comments_for_user_and_course($userid, $courseid) {
         global $DB;
-        $DB->execute('UPDATE {thi_lc_groups} g
-                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
-                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+        $DB->execute('UPDATE {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {local_thi_learning_companions_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
                     SET cmt.timedeleted = ?, userid = 0, comment = \'\'
                     WHERE g.courseid = ?',
             [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, time(), $courseid]
         );
         // Delete last visited entry.
         $DB->execute('DELETE lvstd
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
-                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {local_thi_learning_companions_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
                     WHERE g.courseid = ?',
             [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, $courseid]
         );
@@ -592,18 +592,18 @@ class provider implements
      */
     protected static function delete_comments_for_user_and_cm($userid, $cmid) {
         global $DB;
-        $DB->execute('UPDATE {thi_lc_groups} g
-                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
-                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+        $DB->execute('UPDATE {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {local_thi_learning_companions_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
                     SET cmt.timedeleted = ?, userid = 0, comment = \'\'
                     WHERE g.cmid = ?',
             [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, time(), $cmid]
         );
         // Delete last visited entry.
         $DB->execute('DELETE lvstd
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
-                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {local_thi_learning_companions_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
                     WHERE g.cmid = ?',
             [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, $cmid]
         );
@@ -618,47 +618,47 @@ class provider implements
     protected static function delete_comments_for_user($userid) {
         global $DB;
         // Delete group chat comments for the user.
-        $DB->execute('UPDATE {thi_lc_groups} g
-                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
-                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+        $DB->execute('UPDATE {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {local_thi_learning_companions_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
                     SET cmt.timedeleted = ?, userid = 0, comment = \'\'
                     WHERE g.cmid = 0 AND g.courseid = 0',
             [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid, time()]
         );
         // Delete mentor chat comments for the user.
-        $DB->execute('UPDATE {thi_lc_chat} c
-                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
+        $DB->execute('UPDATE {local_thi_learning_companions_chat} c
+                    JOIN {local_thi_learning_companions_chat_comment} cmt ON cmt.chatid = c.id AND cmt.userid = ?
                     SET cmt.timedeleted = ?, userid = 0, comment = \'\'
                     WHERE c.chattype = ?',
             [$userid, time(), \local_thi_learning_companions\groups::CHATTYPE_MENTOR]
         );
         // Delete last visited entry for group chat.
         $DB->execute('DELETE lvstd
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
-                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {local_thi_learning_companions_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
                     WHERE g.cmid = 0 AND g.courseid = 0',
             [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid]
         );
         // Delete last visited entry for mentor chat.
         $DB->execute('DELETE lvstd
-                    FROM {thi_lc_chat} c
-                    JOIN {thi_lc_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
+                    FROM {local_thi_learning_companions_chat} c
+                    JOIN {local_thi_learning_companions_chat_lastvisited} lvstd ON lvstd.chatid = c.id AND lvstd.userid = ?
                     WHERE c.chattype = ?',
             [$userid, \local_thi_learning_companions\groups::CHATTYPE_MENTOR]
         );
         // Anonymize comment rating.
-        $DB->execute('UPDATE {thi_lc_groups} g
-                    JOIN {thi_lc_chat} c ON c.relatedid = g.id AND c.chattype = ?
-                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id
-                    JOIN {thi_lc_chat_comment_ratings} rtng ON rtng.commentid = cmt.id
+        $DB->execute('UPDATE {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_chat} c ON c.relatedid = g.id AND c.chattype = ?
+                    JOIN {local_thi_learning_companions_chat_comment} cmt ON cmt.chatid = c.id
+                    JOIN {local_thi_learning_companions_chat_comment_ratings} rtng ON rtng.commentid = cmt.id
                     SET rtng.userid = 0
                     WHERE g.cmid = 0 AND g.courseid = 0 AND rtng.userid = ?',
             [\local_thi_learning_companions\groups::CHATTYPE_GROUP, $userid]
         );
-        $DB->execute('UPDATE {thi_lc_chat} c
-                    JOIN {thi_lc_chat_comment} cmt ON cmt.chatid = c.id
-                    JOIN {thi_lc_chat_comment_ratings} rtng ON rtng.commentid = cmt.id
+        $DB->execute('UPDATE {local_thi_learning_companions_chat} c
+                    JOIN {local_thi_learning_companions_chat_comment} cmt ON cmt.chatid = c.id
+                    JOIN {local_thi_learning_companions_chat_comment_ratings} rtng ON rtng.commentid = cmt.id
                     SET rtng.userid = 0
                     WHERE c.chattype = ? AND rtng.userid = ?',
             [\local_thi_learning_companions\groups::CHATTYPE_MENTOR, $userid]
@@ -673,7 +673,7 @@ class provider implements
      */
     protected static function delete_tutor_notifications_for_user($userid) {
         global $DB;
-        $DB->delete_records('thi_lc_tutor_notifications', ['tutorid' => $userid]);
+        $DB->delete_records('local_thi_learning_companions_tutor_notifications', ['tutorid' => $userid]);
     }
 
     /**
@@ -688,7 +688,7 @@ class provider implements
         $deleted = get_string('deleted', 'local_thi_learning_companions');
         $deletedquestion = get_string('deletedquestion', 'local_thi_learning_companions');
         $DB->execute(
-            "UPDATE {thi_lc_mentor_questions}
+            "UPDATE {local_thi_learning_companions_mentor_questions}
                     SET askedby = 0, topic = ?, title = ?, question = ?
                     WHERE askedby = ?",
             [$deleted, $deleted, $deletedquestion, $userid]
@@ -703,7 +703,7 @@ class provider implements
      */
     protected static function delete_mentorship_for_user($userid) {
         global $DB;
-        $DB->delete_records('thi_lc_mentors', ['userid' => $userid]);
+        $DB->delete_records('local_thi_learning_companions_mentors', ['userid' => $userid]);
     }
 
     /**
@@ -716,8 +716,8 @@ class provider implements
     protected static function delete_group_requests_for_user_and_course($userid, $courseid) {
         global $DB;
         $DB->execute('DELETE req
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_requests} req ON req.gropuid = g.id
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_requests} req ON req.gropuid = g.id
                     WHERE g.courseid = ? AND req.userid = ?',
             [$courseid, $userid]
         );
@@ -733,8 +733,8 @@ class provider implements
     protected static function delete_group_requests_for_user_and_cm($userid, $cmid) {
         global $DB;
         $DB->execute('DELETE req
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_requests} req ON req.gropuid = g.id
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_requests} req ON req.gropuid = g.id
                     WHERE g.cmid = ? AND req.userid = ?',
             [$cmid, $userid]
         );
@@ -749,8 +749,8 @@ class provider implements
     protected static function delete_group_requests_for_user($userid) {
         global $DB;
         $DB->execute('DELETE req
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_requests} req ON req.gropuid = g.id
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_requests} req ON req.gropuid = g.id
                     WHERE g.cmid = 0 AND g.courseid = 0 AND req.userid = ?',
             [$userid]
         );
@@ -766,8 +766,8 @@ class provider implements
     protected static function delete_group_membership_for_user_and_course($userid, $courseid) {
         global $DB;
         $DB->execute('DELETE mem
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_members} mem ON mem.gropuid = g.id
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_members} mem ON mem.gropuid = g.id
                     WHERE g.courseid = ? AND mem.userid = ?',
             [$courseid, $userid]
         );
@@ -782,7 +782,7 @@ class provider implements
      */
     protected static function delete_group_createdby_for_user_and_course($userid, $courseid) {
         global $DB;
-        $DB->execute('UPDATE {thi_lc_groups} g
+        $DB->execute('UPDATE {local_thi_learning_companions_groups} g
                     SET g.createdby = 0
                     WHERE g.courseid = ? AND g.createdby = ?',
             [$courseid, $userid]
@@ -799,8 +799,8 @@ class provider implements
     protected static function delete_group_membership_for_user_and_cm($userid, $cmid) {
         global $DB;
         $DB->execute('DELETE mem
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_members} mem ON mem.gropuid = g.id
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_members} mem ON mem.gropuid = g.id
                     WHERE g.cmid = ? AND mem.userid = ?',
             [$cmid, $userid]
         );
@@ -815,7 +815,7 @@ class provider implements
      */
     protected static function delete_group_createdby_for_user_and_cm($userid, $cmid) {
         global $DB;
-        $DB->execute('UPDATE {thi_lc_groups} g
+        $DB->execute('UPDATE {local_thi_learning_companions_groups} g
                     SET g.createdby = 0
                     WHERE g.cmid = ? AND g.createdby = ?',
             [$cmid, $userid]
@@ -831,8 +831,8 @@ class provider implements
     protected static function delete_group_membership_for_user($userid) {
         global $DB;
         $DB->execute('DELETE mem
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_members} mem ON mem.gropuid = g.id
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_members} mem ON mem.gropuid = g.id
                     WHERE g.cmid = 0 AND g.courseid = 0 AND mem.userid = ?',
             [$userid]
         );
@@ -846,7 +846,7 @@ class provider implements
      */
     protected static function delete_group_createdby_for_user($userid) {
         global $DB;
-        $DB->execute('UPDATE {thi_lc_groups} g
+        $DB->execute('UPDATE {local_thi_learning_companions_groups} g
                     SET g.createdby = 0
                     WHERE g.cmid = 0 AND g.courseid = 0 AND g.createdby = ?',
             [$userid]

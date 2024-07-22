@@ -53,7 +53,7 @@ class mentors {
 
         $sql = 'SELECT DISTINCT m.userid, GROUP_CONCAT(m.topic) as topics,
                        u.*
-                  FROM {thi_lc_mentors} m
+                  FROM {local_thi_learning_companions_mentors} m
                     JOIN {user} u ON u.id = m.userid AND u.deleted = 0
              ';
         $params = [];
@@ -120,7 +120,7 @@ class mentors {
         global $USER, $DB;
         $context = \context_system::instance();
         $userid = is_null($userid) ? $USER->id : $userid;
-        return $DB->record_exists('thi_lc_mentors', ['userid' => $userid]) || has_capability(
+        return $DB->record_exists('local_thi_learning_companions_mentors', ['userid' => $userid]) || has_capability(
             'local/thi_learning_companions:mentor_ismentor',
             $context,
             $userid
@@ -152,7 +152,7 @@ class mentors {
      */
     public static function is_mentor_for_topic($userid, $topic) {
         global $DB;
-        return $DB->record_exists('thi_lc_mentors', ['userid' => $userid, 'topic' => $topic]);
+        return $DB->record_exists('local_thi_learning_companions_mentors', ['userid' => $userid, 'topic' => $topic]);
     }
 
     /**
@@ -182,8 +182,8 @@ class mentors {
         $userid = is_null($userid) ? $USER->id : $userid;
         $countmentorratings = $DB->count_records_sql(
             "SELECT count(distinct cr.id)
-                    FROM {thi_lc_chat_comment} c
-                     JOIN {thi_lc_chat_comment_ratings} cr ON cr.commentid = c.id
+                    FROM {local_thi_learning_companions_chat_comment} c
+                     JOIN {local_thi_learning_companions_chat_comment_ratings} cr ON cr.commentid = c.id
                      WHERE c.userid = ?",
             [$userid]
         );
@@ -250,9 +250,9 @@ class mentors {
         if (!self::may_user_delete_question($questionid)) {
             throw new \moodle_exception('no_permission_to_delete_question', 'local_thi_learning_companions');
         }
-        $chatid = $DB->get_field('thi_lc_chat', 'id', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
-        return $DB->delete_records('thi_lc_chat_comment', ['chatid' => $chatid])
-            && $DB->delete_records('thi_lc_mentor_questions', ['id' => $questionid]);
+        $chatid = $DB->get_field('local_thi_learning_companions_chat', 'id', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
+        return $DB->delete_records('local_thi_learning_companions_chat_comment', ['chatid' => $chatid])
+            && $DB->delete_records('local_thi_learning_companions_mentor_questions', ['id' => $questionid]);
     }
 
     /**
@@ -264,7 +264,7 @@ class mentors {
      */
     public static function may_user_delete_question($questionid): bool {
         global $DB, $USER;
-        $question = $DB->get_record('thi_lc_mentor_questions', ['id' => $questionid]);
+        $question = $DB->get_record('local_thi_learning_companions_mentor_questions', ['id' => $questionid]);
         if ($question->askedby == $USER->id) {
             return true;
         }
@@ -290,8 +290,8 @@ class mentors {
 
         $sql = 'SELECT m.topic,
                        k.keyword
-                  FROM {thi_lc_mentors} m
-             LEFT JOIN {thi_lc_keywords} k ON k.id = m.topic
+                  FROM {local_thi_learning_companions_mentors} m
+             LEFT JOIN {local_thi_learning_companions_keywords} k ON k.id = m.topic
                  WHERE m.userid = ?';
 
         $keywords = $DB->get_records_sql($sql, [$userid]);
@@ -318,7 +318,7 @@ class mentors {
         if (is_null($userid)) {
             $userid = $USER->id;
         }
-        $topics = $DB->get_records('thi_lc_mentors', ['userid' => $userid], 'topic', 'topic');
+        $topics = $DB->get_records('local_thi_learning_companions_mentors', ['userid' => $userid], 'topic', 'topic');
         return array_keys($topics);
     }
 
@@ -411,7 +411,7 @@ class mentors {
         if (is_null($userid)) {
             $userid = $USER->id;
         }
-        $mentortopics = $DB->get_records('thi_lc_mentors', ['userid' => $userid], '', 'topic');
+        $mentortopics = $DB->get_records('local_thi_learning_companions_mentors', ['userid' => $userid], '', 'topic');
         $topics = array_keys($mentortopics);
         return $topics;
     }
@@ -493,7 +493,7 @@ class mentors {
             $obj = new \stdClass();
             $obj->userid = $userid;
             $obj->topic = $topic;
-            $mentorid = $DB->insert_record('thi_lc_mentors', $obj);
+            $mentorid = $DB->insert_record('local_thi_learning_companions_mentors', $obj);
             self::assign_mentor_role($userid);
 
             mentor_assigned::make($userid, $mentorid)->trigger();
@@ -546,7 +546,7 @@ class mentors {
         $obj->question = $question;
         $obj->timeclosed = 0;
         $obj->timecreated = time();
-        $questionid = $DB->insert_record('thi_lc_mentor_questions', $obj);
+        $questionid = $DB->insert_record('local_thi_learning_companions_mentor_questions', $obj);
         question_created::make($askedby, $questionid, $topic, $mentorid)->trigger();
     }
 
@@ -571,7 +571,7 @@ class mentors {
         list($topicscondition, $topicsparams) = $DB->get_in_or_equal($coursetopics);
         $mentors = $DB->get_records_sql(
             "SELECT DISTINCT u.* FROM {user} u
-                JOIN {thi_lc_mentors} m ON m.userid = u.id
+                JOIN {local_thi_learning_companions_mentors} m ON m.userid = u.id
                 WHERE u.deleted = 0
                 AND m.topic " . $topicscondition,
             $topicsparams

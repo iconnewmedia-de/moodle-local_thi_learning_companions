@@ -90,7 +90,7 @@ class cron_task extends \core\task\scheduled_task {
             foreach ($tutors as $tutor) {
                 $success = \local_thi_learning_companions\messages::send_tutor_unanswered_question_message($tutor, $question);
                 if ($success) {
-                    $DB->insert_record('thi_lc_tutor_notifications',
+                    $DB->insert_record('local_thi_learning_companions_tutor_notifications',
                        ['questionid' => $question->id, 'tutorid' => $tutor->id, 'timecreated' => time()]);
                 }
             }
@@ -108,10 +108,10 @@ class cron_task extends \core\task\scheduled_task {
         $timelimit = $config->inform_tutors_about_unanswered_questions_after_x_days;
         $xdaysago = time() - $timelimit * DAYSECS;
         $unanswered = $DB->get_records_sql("SELECT q.*
-            FROM {thi_lc_mentor_questions} q
-            LEFT JOIN {thi_lc_chat} c ON c.relatedid = q.id AND c.chattype = '" . groups::CHATTYPE_MENTOR . "'
-            LEFT JOIN {thi_lc_chat_comment} cmnt ON cmnt.chatid = c.id
-            LEFT JOIN {thi_lc_tutor_notifications} n ON n.questionid = q.id
+            FROM {local_thi_learning_companions_mentor_questions} q
+            LEFT JOIN {local_thi_learning_companions_chat} c ON c.relatedid = q.id AND c.chattype = '" . groups::CHATTYPE_MENTOR . "'
+            LEFT JOIN {local_thi_learning_companions_chat_comment} cmnt ON cmnt.chatid = c.id
+            LEFT JOIN {local_thi_learning_companions_tutor_notifications} n ON n.questionid = q.id
             WHERE q.timecreated < ?
             AND cmnt.id IS NULL
             AND n.id IS NULL",

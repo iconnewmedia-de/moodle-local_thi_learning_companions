@@ -25,7 +25,7 @@
 namespace local_thi_learning_companions;
 
 /**
- * Comment objects hold an entry from thi_lc_chat_comment along with the attachments for that comment.
+ * Comment objects hold an entry from local_thi_learning_companions_chat_comment along with the attachments for that comment.
  */
 class comment {
     /**
@@ -70,7 +70,7 @@ class comment {
     public function __construct($id) {
         global $DB;
         $this->id = $id;
-        $comment = $DB->get_record('thi_lc_chat_comment', ['id' => $id]);
+        $comment = $DB->get_record('local_thi_learning_companions_chat_comment', ['id' => $id]);
         foreach ($comment as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->$key = $value;

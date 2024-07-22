@@ -115,7 +115,7 @@ class external extends \external_api {
 
         $sl = "SELECT u.id, CONCAT(u.firstname, ' ', u.lastname) as fullname
                 FROM {user} u
-                LEFT JOIN {thi_lc_group_members} gm ON gm.userid = u.id AND gm.groupid = :groupidjoin
+                LEFT JOIN {local_thi_learning_companions_group_members} gm ON gm.userid = u.id AND gm.groupid = :groupidjoin
                 WHERE u.deleted = 0
                 AND u.confirmed = 1
                 AND " . $DB->sql_like($DB->sql_fullname(), ':search', false) . "

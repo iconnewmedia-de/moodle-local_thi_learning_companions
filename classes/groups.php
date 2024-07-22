@@ -80,7 +80,7 @@ class groups {
     public static function get_all_groups(): array {
         global $DB;
 
-        $groups = $DB->get_records('thi_lc_groups');
+        $groups = $DB->get_records('local_thi_learning_companions_groups');
         $returngroups = [];
         foreach ($groups as $group) {
             $returngroups[] = new group($group->id);
@@ -118,7 +118,7 @@ class groups {
      */
     public static function get_groupid_of_chatid(int $chatid): int {
         global $DB;
-        $groupid = $DB->get_field('thi_lc_chat', 'relatedid', ['id' => $chatid, 'chattype' => self::CHATTYPE_GROUP]);
+        $groupid = $DB->get_field('local_thi_learning_companions_chat', 'relatedid', ['id' => $chatid, 'chattype' => self::CHATTYPE_GROUP]);
         return $groupid;
     }
 
@@ -135,8 +135,8 @@ class groups {
 
         $params = [$userid];
         $query = "SELECT g.id
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_members} gm ON gm.groupid = g.id AND gm.userid = ?";
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_members} gm ON gm.groupid = g.id AND gm.userid = ?";
 
         $groups = $DB->get_records_sql($query, $params);
         $return = [];
@@ -225,8 +225,8 @@ class groups {
         }
 
         $query = "SELECT g.id
-                    FROM {thi_lc_groups} g
-                    JOIN {thi_lc_group_members} gm ON gm.groupid = g.id
+                    FROM {local_thi_learning_companions_groups} g
+                    JOIN {local_thi_learning_companions_group_members} gm ON gm.groupid = g.id
                     WHERE gm.userid = ? AND gm.isadmin = 1";
         $params = [$userid];
         $groups = $DB->get_records_sql($query, $params);
@@ -264,21 +264,21 @@ class groups {
     public static function invite_user_to_group($userid, $groupid) {
         global $DB, $USER;
 
-        $userisalreadyingroup = $DB->record_exists('thi_lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
+        $userisalreadyingroup = $DB->record_exists('local_thi_learning_companions_group_members', ['userid' => $userid, 'groupid' => $groupid]);
         if ($userisalreadyingroup) {
             // Return for now. Maybe throw exception or something later.
             return false;
         }
 
         // Check if the current user is in the group.
-        $userisingroup = $DB->record_exists('thi_lc_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
+        $userisingroup = $DB->record_exists('local_thi_learning_companions_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
         if (!$userisingroup) {
             // Return for now. Maybe throw exception or something later.
             return false;
         }
 
         // If there is a request for joining this group, delete it.
-        $DB->delete_records('thi_lc_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_group_requests', ['userid' => $userid, 'groupid' => $groupid]);
 
         $id = self::group_add_member($groupid, $userid);
 
@@ -296,7 +296,7 @@ class groups {
      */
     public static function get_all_keywords() {
         global $DB;
-        return $DB->get_records_menu('thi_lc_keywords');
+        return $DB->get_records_menu('local_thi_learning_companions_keywords');
     }
 
     /**
@@ -321,7 +321,7 @@ class groups {
         }
         // Check if there's already a group with that name by that user for that course.
         // Don't create groups that are indistinguishable from eachother.
-        $similargroupexists = $DB->record_exists('thi_lc_groups',
+        $similargroupexists = $DB->record_exists('local_thi_learning_companions_groups',
             ['courseid' => $data->courseid, 'createdby' => $USER->id, 'name' => $data->name]);
         if ($similargroupexists) {
             throw new \moodle_exception(get_string('no_group_duplicates_allowed', 'local_thi_learning_companions'));
@@ -344,7 +344,7 @@ class groups {
         $transaction = $DB->start_delegated_transaction();
 
         try {
-            $groupid = $DB->insert_record('thi_lc_groups', $record);
+            $groupid = $DB->insert_record('local_thi_learning_companions_groups', $record);
             $context = \context_system::instance();
             $options = [];
             $data = file_postupdate_standard_editor(
@@ -356,7 +356,7 @@ class groups {
                 'description',
                 $groupid
             );
-            $DB->set_field('thi_lc_groups', 'description', $data->description, ['id' => $groupid]);
+            $DB->set_field('local_thi_learning_companions_groups', 'description', $data->description, ['id' => $groupid]);
             self::save_group_image($groupid, $data->groupimage);
             self::group_assign_keywords($groupid, $data->keywords);
             self::create_group_chat($groupid);
@@ -379,7 +379,7 @@ class groups {
      */
     public static function keyword_get_id($keyword) {
         global $DB;
-        return $DB->get_field('thi_lc_keywords', 'id', ['keyword' => $keyword]);
+        return $DB->get_field('local_thi_learning_companions_keywords', 'id', ['keyword' => $keyword]);
     }
 
     /**
@@ -398,14 +398,14 @@ class groups {
     public static function group_update($groupid, $name, $description, $closedgroup, $keywords, $courseid, $cmid, $image) {
         global $DB, $USER;
         // ICTODO: make sure that user may update this group.
-        $group = $DB->get_record('thi_lc_groups', ['id' => $groupid], '*', MUST_EXIST);
+        $group = $DB->get_record('local_thi_learning_companions_groups', ['id' => $groupid], '*', MUST_EXIST);
         $group->name = $name;
         $group->description = $description;
         $group->closedgroup = $closedgroup;
         $group->timemodified = time();
         $group->courseid = $courseid;
         $group->cmid = $cmid;
-        $DB->update_record('thi_lc_groups', $group);
+        $DB->update_record('local_thi_learning_companions_groups', $group);
 
         group_updated::make($USER->id, $groupid)->trigger();
 
@@ -450,7 +450,7 @@ class groups {
         $record->isadmin = $isadmin;
         $record->joined = time();
         $isemptygroup = self::is_group_empty($groupid);
-        $recordid = $DB->insert_record('thi_lc_group_members', $record);
+        $recordid = $DB->insert_record('local_thi_learning_companions_group_members', $record);
         if ($isemptygroup) {
             self::make_admin($userid, $groupid);
         }
@@ -469,7 +469,7 @@ class groups {
     public static function is_group_empty(int $groupid) {
         global $DB;
         return !$DB->record_exists_sql("SELECT gm.*
-                FROM {thi_lc_group_members} gm
+                FROM {local_thi_learning_companions_group_members} gm
                 JOIN {user} u ON gm.userid = u.id
                     AND u.deleted = 0
                 WHERE gm.groupid = ?",
@@ -508,7 +508,7 @@ class groups {
         $obj = new \stdClass();
         $obj->groupid = $groupid;
         $obj->keywordid = $keywordid;
-        $DB->insert_record('thi_lc_groups_keywords', $obj);
+        $DB->insert_record('local_thi_learning_companions_groups_keywords', $obj);
     }
 
     /**
@@ -519,12 +519,12 @@ class groups {
      */
     protected static function keyword_create($keyword) {
         global $DB;
-        if ($DB->record_exists('thi_lc_keywords', ['keyword' => $keyword])) {
-            return $DB->get_field('thi_lc_keywords', 'id', ['keyword' => $keyword]);
+        if ($DB->record_exists('local_thi_learning_companions_keywords', ['keyword' => $keyword])) {
+            return $DB->get_field('local_thi_learning_companions_keywords', 'id', ['keyword' => $keyword]);
         }
         $obj = new \stdClass();
         $obj->keyword = $keyword;
-        return $DB->insert_record('thi_lc_keywords', $obj);
+        return $DB->insert_record('local_thi_learning_companions_keywords', $obj);
     }
 
     /**
@@ -535,7 +535,7 @@ class groups {
      */
     protected static function group_remove_all_keywords($groupid) {
         global $DB;
-        $DB->delete_records('thi_lc_groups_keywords', ['groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_groups_keywords', ['groupid' => $groupid]);
     }
 
     /**
@@ -550,11 +550,11 @@ class groups {
         $record->chattype = self::CHATTYPE_GROUP;
         $record->relatedid = $groupid;
         $record->timecreated = time();
-        $record->course = $DB->get_field('thi_lc_groups', 'courseid', ['id' => $groupid]);
-        if ($DB->record_exists('thi_lc_chat', ['chattype' => $record->chattype, 'relatedid' => $record->relatedid])) {
+        $record->course = $DB->get_field('local_thi_learning_companions_groups', 'courseid', ['id' => $groupid]);
+        if ($DB->record_exists('local_thi_learning_companions_chat', ['chattype' => $record->chattype, 'relatedid' => $record->relatedid])) {
             return; // Already exists (for some reason) - nothing to do.
         }
-        $DB->insert_record('thi_lc_chat', $record);
+        $DB->insert_record('local_thi_learning_companions_chat', $record);
     }
 
     /**
@@ -567,7 +567,7 @@ class groups {
      */
     public static function leave_group(int $userid, int $groupid) {
         global $DB;
-        $deleted = $DB->delete_records('thi_lc_group_members', ['groupid' => $groupid, 'userid' => $userid]);
+        $deleted = $DB->delete_records('local_thi_learning_companions_group_members', ['groupid' => $groupid, 'userid' => $userid]);
         group_left::make($userid, $groupid)->trigger();
 
         $group = new group($groupid);
@@ -590,7 +590,7 @@ class groups {
      */
     public static function make_admin(int $userid, int $groupid) {
         global $DB, $USER;
-        $DB->set_field('thi_lc_group_members', 'isadmin', 1, ['groupid' => $groupid, 'userid' => $userid]);
+        $DB->set_field('local_thi_learning_companions_group_members', 'isadmin', 1, ['groupid' => $groupid, 'userid' => $userid]);
 
         messages::send_appointed_to_admin_notification($userid, $groupid, $USER->id);
     }
@@ -604,7 +604,7 @@ class groups {
      */
     public static function unmake_admin(int $userid, int $groupid) {
         global $DB;
-        $DB->set_field('thi_lc_group_members', 'isadmin', 0, ['groupid' => $groupid, 'userid' => $userid]);
+        $DB->set_field('local_thi_learning_companions_group_members', 'isadmin', 0, ['groupid' => $groupid, 'userid' => $userid]);
     }
 
     /**
@@ -654,7 +654,7 @@ class groups {
      */
     public static function join_is_requested(int $userid, int $groupid) {
         global $DB;
-        return $DB->record_exists('thi_lc_group_requests', ['groupid' => $groupid, 'userid' => $userid]);
+        return $DB->record_exists('local_thi_learning_companions_group_requests', ['groupid' => $groupid, 'userid' => $userid]);
     }
 
     /**
@@ -674,7 +674,7 @@ class groups {
             return [];
         }
 
-        $requests = $DB->get_records_sql('SELECT * FROM {thi_lc_group_requests} WHERE groupid IN (' .
+        $requests = $DB->get_records_sql('SELECT * FROM {local_thi_learning_companions_group_requests} WHERE groupid IN (' .
                 implode(',', $groupids) . ') and denied = 0') ?? [];
         $requestedusersids = array_map(static function($request) {
             return $request->userid;
@@ -701,7 +701,7 @@ class groups {
         $record->groupid = $groupid;
         $record->userid = $userid;
         $record->timecreated = time();
-        return $DB->insert_record('thi_lc_group_requests', $record);
+        return $DB->insert_record('local_thi_learning_companions_group_requests', $record);
     }
 
     /**
@@ -714,11 +714,11 @@ class groups {
         global $DB;
 
         // Get the request.
-        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestid]);
+        $request = $DB->get_record('local_thi_learning_companions_group_requests', ['id' => $requestid]);
         // Add the user to the group.
         self::group_add_member($request->groupid, $request->userid);
         // Delete the request.
-        $DB->delete_records('thi_lc_group_requests', ['id' => $requestid]);
+        $DB->delete_records('local_thi_learning_companions_group_requests', ['id' => $requestid]);
         messages::send_group_join_accepted_notification($request->userid, $request->groupid);
     }
 
@@ -730,9 +730,9 @@ class groups {
      */
     public static function deny_group_join_request($requestid) {
         global $DB;
-        $request = $DB->get_record('thi_lc_group_requests', ['id' => $requestid]);
+        $request = $DB->get_record('local_thi_learning_companions_group_requests', ['id' => $requestid]);
 
-        $DB->set_field('thi_lc_group_requests', 'denied', 1, ['id' => $requestid]);
+        $DB->set_field('local_thi_learning_companions_group_requests', 'denied', 1, ['id' => $requestid]);
         messages::send_group_join_denied_notification($request->userid, $request->groupid);
     }
 
@@ -768,35 +768,35 @@ class groups {
         global $DB, $USER;
 
         $event = group_deleted::make($USER->id, $groupid);
-        $event->add_record_snapshot('thi_lc_groups', $DB->get_record('thi_lc_groups', ['id' => $groupid]));
-        $event->add_record_snapshot('thi_lc_chat',
-            $DB->get_record('thi_lc_chat',
+        $event->add_record_snapshot('local_thi_learning_companions_groups', $DB->get_record('local_thi_learning_companions_groups', ['id' => $groupid]));
+        $event->add_record_snapshot('local_thi_learning_companions_chat',
+            $DB->get_record('local_thi_learning_companions_chat',
                 ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]
             )
         );
-        $groupmembers = $DB->get_records('thi_lc_group_members', ['groupid' => $groupid]);
+        $groupmembers = $DB->get_records('local_thi_learning_companions_group_members', ['groupid' => $groupid]);
         foreach ($groupmembers as $groupmember) {
-            $event->add_record_snapshot('thi_lc_group_members', $groupmember);
+            $event->add_record_snapshot('local_thi_learning_companions_group_members', $groupmember);
         }
         $event->trigger();
 
         $transaction = $DB->start_delegated_transaction();
         // Get Chat ID.
-        $chatid = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
+        $chatid = $DB->get_field('local_thi_learning_companions_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
         // Delete file attachments.
         self::delete_attachments_of_chat($chatid);
         // Delete the group members.
-        $DB->delete_records('thi_lc_group_members', ['groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_group_members', ['groupid' => $groupid]);
         // Delete the group requests.
-        $DB->delete_records('thi_lc_group_requests', ['groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_group_requests', ['groupid' => $groupid]);
         // Delete the group keywords.
-        $DB->delete_records('thi_lc_groups_keywords', ['groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_groups_keywords', ['groupid' => $groupid]);
         // Delete the group.
-        $DB->delete_records('thi_lc_groups', ['id' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_groups', ['id' => $groupid]);
         // Delete Chat.
-        $DB->delete_records('thi_lc_chat', ['id' => $chatid]);
+        $DB->delete_records('local_thi_learning_companions_chat', ['id' => $chatid]);
         // Delete Chat Messages.
-        $DB->delete_records('thi_lc_chat_comment', ['chatid' => $chatid]);
+        $DB->delete_records('local_thi_learning_companions_chat_comment', ['chatid' => $chatid]);
         $transaction->allow_commit();
     }
 
@@ -809,7 +809,7 @@ class groups {
     protected static function delete_attachments_of_chat($chatid) {
         global $DB;
         // Delete Chat Messages.
-        $comments = $DB->get_records('thi_lc_chat_comment', ['chatid' => $chatid]);
+        $comments = $DB->get_records('local_thi_learning_companions_chat_comment', ['chatid' => $chatid]);
         $fs = new \file_storage();
         $context = \context_system::instance();
         foreach ($comments as $comment) {
@@ -828,13 +828,13 @@ class groups {
      */
     public static function count_comments_since_last_visit($groupid) {
         global $DB, $USER;
-        $chatid = $DB->get_field('thi_lc_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
-        $lastvisited = $DB->get_field('thi_lc_chat_lastvisited', 'timevisited', ['chatid' => $chatid, 'userid' => $USER->id]);
+        $chatid = $DB->get_field('local_thi_learning_companions_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
+        $lastvisited = $DB->get_field('local_thi_learning_companions_chat_lastvisited', 'timevisited', ['chatid' => $chatid, 'userid' => $USER->id]);
         if (false === $lastvisited) {
             $lastvisited = 0;
         }
         $commentssincelastvisit = $DB->get_records_sql(
-            'SELECT * FROM {thi_lc_chat_comment}
+            'SELECT * FROM {local_thi_learning_companions_chat_comment}
                     WHERE chatid = ? AND timecreated > ?',
             [$chatid, $lastvisited]
         );
@@ -853,7 +853,7 @@ class groups {
      */
     public static function is_group_member(int $userid, int $groupid) {
         global $DB;
-        return $DB->record_exists('thi_lc_group_members', ['userid' => $userid, 'groupid' => $groupid]);
+        return $DB->record_exists('local_thi_learning_companions_group_members', ['userid' => $userid, 'groupid' => $groupid]);
     }
 
     /**

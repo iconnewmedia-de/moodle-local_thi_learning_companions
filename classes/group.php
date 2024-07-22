@@ -206,9 +206,9 @@ class group {
         }
         $this->userid = $userid;
         $this->id = $groupid;
-        $group = $DB->get_record('thi_lc_groups', ['id' => $groupid]);
+        $group = $DB->get_record('local_thi_learning_companions_groups', ['id' => $groupid]);
         $user = $DB->get_record('user', ['id' => $group->createdby]);
-        $chat = $DB->get_record('thi_lc_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
+        $chat = $DB->get_record('local_thi_learning_companions_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
         foreach ($group as $key => $value) {
             $this->$key = $value;
         }
@@ -217,7 +217,7 @@ class group {
         $this->createdbyprofileurl = $CFG->wwwroot.'/user/profile.php?id='.$user->id;
 
         $this->latestcomment = $DB->get_field(
-            'thi_lc_chat_comment',
+            'local_thi_learning_companions_chat_comment',
             'MAX(timecreated)',
             ['chatid' => $chat->id, 'timedeleted' => null]
         );
@@ -320,8 +320,8 @@ class group {
             return $this->earliestcomment;
         }
         $query = "SELECT MIN(posts.timecreated) AS earliestcomment
-                    FROM {thi_lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
-               LEFT JOIN {thi_lc_chat_comment} posts ON posts.chatid = chat.id
+                    FROM {local_thi_learning_companions_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
+               LEFT JOIN {local_thi_learning_companions_chat_comment} posts ON posts.chatid = chat.id
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, [$this->id]);
         if (!$result) {
@@ -343,8 +343,8 @@ class group {
             return $this->mylatestcomment;
         }
         $query = "SELECT MAX(posts.timecreated) AS mylatestcomment
-                    FROM {thi_lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
-               LEFT JOIN {thi_lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
+                    FROM {local_thi_learning_companions_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
+               LEFT JOIN {local_thi_learning_companions_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, [$this->id, $this->userid]);
         if (!$result) {
@@ -366,8 +366,8 @@ class group {
             return $this->myearliestcomment;
         }
         $query = "SELECT MIN(posts.timecreated) AS myearliestcomment
-                    FROM {thi_lc_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
-               LEFT JOIN {thi_lc_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
+                    FROM {local_thi_learning_companions_chat} chat ON chat.relatedid = ? AND chat.chattype = 1
+               LEFT JOIN {local_thi_learning_companions_chat_comment} posts ON posts.chatid = chat.id AND posts.userid = ?
                                                  GROUP BY chat.id";
         $result = $DB->get_record_sql($query, [$this->id, $this->userid]);
         if (!$result) {
@@ -392,7 +392,7 @@ class group {
         $groupmembers = $DB->get_records_sql(
             'SELECT DISTINCT u.*, gm.isadmin
                     FROM {user} u
-                    JOIN {thi_lc_group_members} gm ON gm.userid = u.id AND u.deleted = 0
+                    JOIN {local_thi_learning_companions_group_members} gm ON gm.userid = u.id AND u.deleted = 0
                    WHERE gm.groupid = ?',
             [$this->id]
         );
@@ -436,8 +436,8 @@ class group {
         global $DB;
         $keywords = $DB->get_records_sql(
             'SELECT DISTINCT k.keyword
-                    FROM {thi_lc_keywords} k
-                    JOIN {thi_lc_groups_keywords} gk ON gk.groupid = ? AND gk.keywordid = k.id',
+                    FROM {local_thi_learning_companions_keywords} k
+                    JOIN {local_thi_learning_companions_groups_keywords} gk ON gk.groupid = ? AND gk.keywordid = k.id',
             [$this->id]
         );
         $this->keywords = array_keys($keywords);
@@ -555,7 +555,7 @@ class group {
 
         $sql = 'SELECT u.*,
                        gm.joined
-                  FROM {thi_lc_group_members} gm
+                  FROM {local_thi_learning_companions_group_members} gm
              LEFT JOIN {user} u ON u.id = gm.userid AND u.deleted = 0
                  WHERE gm.groupid = ?
                    AND gm.isadmin = 1';
@@ -592,7 +592,7 @@ class group {
         }
         $lastcomment = $DB->get_record_sql(
             'SELECT comment
-                    FROM {thi_lc_chat_comment}
+                    FROM {local_thi_learning_companions_chat_comment}
                     WHERE chatid = ?
                     ORDER BY timecreated DESC, id DESC
                     LIMIT 1',

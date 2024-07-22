@@ -33,7 +33,7 @@ use local_thi_learning_companions\instance;
 use mod_bigbluebuttonbn\logger;
 use local_thi_learning_companions\meeting;
 $meetingid = required_param('id', PARAM_INT);
-$meetingobj = $DB->get_record('thi_lc_bbb', ['id' => $meetingid]);
+$meetingobj = $DB->get_record('local_thi_learning_companions_bbb', ['id' => $meetingid]);
 $groupid = $meetingobj->groupid;
 
 $bbbinstance = new instance($groupid, $meetingobj);

@@ -56,7 +56,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
         global $DB;
 
         $sql = "SELECT *
-      FROM {thi_lc_bbb}
+      FROM {local_thi_learning_companions_bbb}
      WHERE groupid = :groupid";
 
         $instancedata = $DB->get_record_sql($sql, [
@@ -110,7 +110,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
         $data["lockonjoin"] = 1;
         $data["moderatorid"] = $USER->id;
 
-        $data["id"] = $DB->insert_record('thi_lc_bbb', $data);
+        $data["id"] = $DB->insert_record('local_thi_learning_companions_bbb', $data);
         $data = (object)$data;
         return $data;
         // ICTODO: replace hardcoded values with values from config.
@@ -153,7 +153,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
         global $DB;
         do {
             $encodedseed = sha1(uniqid());
-            $meetingid = (string) $DB->get_field('thi_lc_bbb', 'meetingid', ['meetingid' => $encodedseed]);
+            $meetingid = (string) $DB->get_field('local_thi_learning_companions_bbb', 'meetingid', ['meetingid' => $encodedseed]);
         } while ($meetingid == $encodedseed);
         return $encodedseed;
     }
@@ -215,7 +215,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
      */
     public function get_group_name(): ?string {
         global $DB;
-        return $DB->get_field('thi_lc_groups', 'name', ['id' => $this->groupid]);
+        return $DB->get_field('local_thi_learning_companions_groups', 'name', ['id' => $this->groupid]);
     }
 
     /**
@@ -234,7 +234,7 @@ class instance extends \mod_bigbluebuttonbn\instance {
      */
     public function get_meeting_description(bool $rewritepluginfileurls = false): string {
         global $DB;
-        $description = $DB->get_field('thi_lc_groups', 'description', ['id' => $this->groupid]);
+        $description = $DB->get_field('local_thi_learning_companions_groups', 'description', ['id' => $this->groupid]);
         return $description;
     }
 }

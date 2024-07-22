@@ -39,7 +39,7 @@ class group_updated extends \core\event\base {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->context = \context_system::instance();
-        $this->data['objecttable'] = 'thi_lc_groups';
+        $this->data['objecttable'] = 'local_thi_learning_companions_groups';
     }
 
     /**

@@ -91,7 +91,7 @@ class question {
      * @return string
      */
     private static function get_table_name(): string {
-        return 'thi_lc_mentor_questions';
+        return 'local_thi_learning_companions_mentor_questions';
     }
 
     /**
@@ -201,7 +201,7 @@ class question {
      */
     public static function get_question_by_id($questionid) {
         global $DB, $USER;
-        $record = $DB->get_record('thi_lc_mentor_questions', ['id' => $questionid]);
+        $record = $DB->get_record('local_thi_learning_companions_mentor_questions', ['id' => $questionid]);
         if (!$record) {
             throw new \exception('invalid_question_id', 'local_thi_learning_companions');
         }
@@ -228,7 +228,7 @@ class question {
     public static function get_all_questions_for_user(int $userid) {
         global $DB;
 
-        $records = $DB->get_records('thi_lc_mentor_questions', ['askedby' => $userid]);
+        $records = $DB->get_records('local_thi_learning_companions_mentor_questions', ['askedby' => $userid]);
         $questions = [];
         foreach ($records as $record) {
             $questions[] = self::find($record->id);
@@ -261,7 +261,7 @@ class question {
         }
 
         // There is no mentor assigned, so we need to check the topics.
-        $mentortopics = $DB->get_records_menu('thi_lc_mentors', ['userid' => $userid], '', 'topic');
+        $mentortopics = $DB->get_records_menu('local_thi_learning_companions_mentors', ['userid' => $userid], '', 'topic');
         $mentortopics = array_keys($mentortopics);
         return in_array($this->topic, $mentortopics, true);
     }
@@ -276,7 +276,7 @@ class question {
     public static function get_all_questions_for_mentor_user(int $userid) {
         global $DB;
 
-        $records = $DB->get_records('thi_lc_mentor_questions', ['mentorid' => $userid]);
+        $records = $DB->get_records('local_thi_learning_companions_mentor_questions', ['mentorid' => $userid]);
         $questions = [];
         foreach ($records as $record) {
             $questions[] = self::find($record->id);
@@ -301,7 +301,7 @@ class question {
         if ($onlyopenquestions) {
             $sql .= ' AND mentorid = 0';
         }
-        $records = $DB->get_records_sql('SELECT * FROM {thi_lc_mentor_questions} WHERE topic '.$sql, $params);
+        $records = $DB->get_records_sql('SELECT * FROM {local_thi_learning_companions_mentor_questions} WHERE topic '.$sql, $params);
         $questions = [];
         foreach ($records as $record) {
             $questions[] = self::find($record->id);
@@ -330,7 +330,7 @@ class question {
             $this->last_active = 0;
         } else {
             $this->last_active = $DB->get_field(
-                'thi_lc_chat_comment',
+                'local_thi_learning_companions_chat_comment',
                 'MAX(timecreated)',
                 ['chatid' => $chat->id, 'timedeleted' => null]
             );
@@ -350,7 +350,7 @@ class question {
             return $this->chat;
         }
 
-        return $this->chat = $DB->get_record('thi_lc_chat', ['relatedid' => $this->id, 'chattype' => groups::CHATTYPE_MENTOR]);
+        return $this->chat = $DB->get_record('local_thi_learning_companions_chat', ['relatedid' => $this->id, 'chattype' => groups::CHATTYPE_MENTOR]);
     }
 
     /**
@@ -442,7 +442,7 @@ class question {
             $this->answer_count = 0;
         } else {
             $this->answer_count = $DB->count_records(
-                'thi_lc_chat_comment',
+                'local_thi_learning_companions_chat_comment',
                 ['chatid' => $chat->id, 'timedeleted' => null]
             );
         }
@@ -465,7 +465,7 @@ class question {
 
         global $DB;
 
-        $topic = $DB->get_field('thi_lc_keywords', 'keyword', ['id' => $this->topic]) ?? '-';
+        $topic = $DB->get_field('local_thi_learning_companions_keywords', 'keyword', ['id' => $this->topic]) ?? '-';
         self::$topiclist[$this->topic] = $topic;
         return $topic;
     }
