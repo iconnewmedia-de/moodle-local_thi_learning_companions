@@ -1,4 +1,4 @@
-/* eslint-disable valid-jsdoc, jsdoc/require-param-type */
+/* eslint-disable jsdoc/require-param-type */
 // https://moodledev.io/docs/guides/javascript/ajax
 
 import {call} from 'core/ajax';

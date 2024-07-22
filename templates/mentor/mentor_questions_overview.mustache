@@ -180,7 +180,7 @@
 <h2 class="mt-5">{{#str}}latest_comments, local_thi_learning_companions{{/str}}</h2>
     {{#latestcomments}}
         <div class="lc_comment">
-            <p class="lc_comment_content"><strong>{{content}}</a></strong></p>
+            <p class="lc_comment_content"><strong>{{content}}</strong></p>
             <p class="lc_comment_path">{{#str}}learning_nugget, local_thi_learning_companions{{/str}}: <a href="{{globals.config.wwwroot}}/course/view.php?id={{courseid}}">{{coursefullname}}</a> &gt; <a href="{{globals.config.wwwroot}}/mod/{{modulename}}/view.php?id={{cmid}}">{{nuggettitle}}</a></p>
             <p class="lc_comment_author-info">{{#str}}comment_from, local_thi_learning_companions{{/str}} <a href="{{globals.config.wwwroot}}/user/profile.php?id={{userid}}">{{firstname}} {{lastname}}</a> {{#str}}date_from, local_thi_learning_companions{{/str}} {{#userdate}}{{timecreated}}{{/userdate}}</p>
             <hr>

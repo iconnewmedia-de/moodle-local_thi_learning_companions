@@ -26,7 +26,6 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
     return /** @alias module:local_thi_learning_companions/invitation_potential_user_selector */ {
 
         processResults: function(selector, results) {
-            console.log('called processResults with params:', selector, results);
             var users = [];
             if ($.isArray(results)) {
                 $.each(results, function(index, user) {
@@ -43,7 +42,6 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
         },
 
         transport: function(selector, query, success, failure) {
-            console.log('called transport with params:', selector, query, success, failure);
             var promise;
             var groupid = $(selector).attr('groupid');
             var userfields = ['firstname', 'lastname'];
@@ -54,13 +52,10 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
             }
 
             promise = Ajax.call([{
-                methodname: 'local_thi_learning_companions_get_invitable_users', // see local_thi_learning_companions\external::get_invitable_users
+                methodname: 'local_thi_learning_companions_get_invitable_users',
                 args: {
                     groupid: groupid,
-                    query: query,
-                    // searchanywhere: true,
-                    // page: 0,
-                    // perpage: perpage + 1
+                    query: query
                 }
             }]);
 
@@ -83,7 +78,6 @@ define(['jquery', 'core/ajax', 'core/templates', 'core/str'], function($, Ajax, 
                                             ctx.hasidentity = true;
                                             identity.push(customfield.value);
                                         }
-
                                     });
                                 }
                             } else {

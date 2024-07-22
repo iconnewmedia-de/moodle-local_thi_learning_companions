@@ -24,20 +24,15 @@
         "form": "<form>The rendered HTML for the form element for writing messages</form>",
         "question": {
             "is_closed": "false",
-            "get_id": "2",
-            "userid": "5"
+            "get_id": "2"
         },
-        "languageStrings": {
-            "delete_post": "translated string for delete_post",
-            "report_post": "translated string for report_post",
-            "no_posts_available": "translated string for no_posts_available",
-            "not_allowed_to_see_posts": "translated string for not_allowed_to_see_posts"
-        }
+        "userid": "5",
+        "languageStrings": "// Here be some language strings."
     }
 }}
 <div class="container">
     <h1>Mentoring</h1>
-    <div id="thi_learning_companions_chat">
+    <div id="thi_learning_companions_chat_wrapper">
         <div class="row">
             <div id="thi_learning_companions_chat" class="col-12">
                 <div id="thi_learning_companions_chat-content"></div>
@@ -51,14 +46,14 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<script>
     var thi_learning_companions_questionid = {{question.get_id}};
     var thi_learning_companions_chat_userid = {{userid}};
     var thi_learning_companions_groupid = null;
 </script>
 {{#js}}
-    {{{languageStrings}}}
-    window.$(document).ready(function() {
+{{{languageStrings}}}
+window.$(document).ready(function() {
     window.Chat.startQuestionChat();
-    });
+});
 {{/js}}

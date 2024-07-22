@@ -34,7 +34,7 @@ $PAGE->set_url($CFG->wwwroot.'/local/thi_learning_companions/mentor/search.php')
 $PAGE->set_pagelayout('standard');
 $PAGE->requires->js_call_amd('local_thi_learning_companions/mentor', 'init');
 $PAGE->requires->js_call_amd('local_thi_learning_companions/mentor', 'select2');
-$PAGE->requires->css('/local/thi_learning_companions/js/DataTables/datatables.min.css');
+$PAGE->requires->css('/local/thi_learning_companions/css/DataTables/datatables.min.css');
 $PAGE->requires->css('/local/thi_learning_companions/css/select2.min.css');
 $PAGE->requires->css('/local/thi_learning_companions/css/balloon.css');
 $PAGE->navbar->add(
