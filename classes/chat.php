@@ -56,7 +56,8 @@ class chat {
 
         $newchat = new self();
         $newchat->groupid = $groupid;
-        $newchat->chat = $DB->get_record('local_thi_learning_companions_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
+        $newchat->chat = $DB->get_record('local_thi_learning_companions_chat',
+            ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
         if ($groupid) {
             if (!$newchat->chat) {
                 $chat = new \stdClass();
@@ -110,7 +111,8 @@ class chat {
         $newchat = new self();
         $newchat->context = \context_system::instance();
         $newchat->filestorage = get_file_storage();
-        $newchat->chat = $DB->get_record('local_thi_learning_companions_chat', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
+        $newchat->chat = $DB->get_record('local_thi_learning_companions_chat',
+            ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
 
         if (!$newchat->chat) {
             $chat = new \stdClass();
@@ -239,7 +241,10 @@ class chat {
         $stepsize = 5;
 
         if (is_null($firstpostid)) {
-            $firstpostid = $DB->get_field_sql('SELECT MAX(id) FROM {local_thi_learning_companions_chat_comment} WHERE chatid = ?', [$this->chatid]);
+            $firstpostid = $DB->get_field_sql(
+                'SELECT MAX(id) FROM {local_thi_learning_companions_chat_comment} WHERE chatid = ?',
+                [$this->chatid]
+            );
             $firstpostid++;
         }
 
@@ -488,7 +493,8 @@ class chat {
     public function get_last_active_time() {
         global $DB;
         return $DB->get_field_sql(
-            'SELECT timecreated FROM {local_thi_learning_companions_chat_comment} WHERE chatid = ? ORDER BY timecreated DESC LIMIT 1',
+            'SELECT timecreated FROM {local_thi_learning_companions_chat_comment} ' .
+            'WHERE chatid = ? ORDER BY timecreated DESC LIMIT 1',
             [$this->chatid]
         );
     }

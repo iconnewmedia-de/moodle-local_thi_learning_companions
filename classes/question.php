@@ -301,7 +301,10 @@ class question {
         if ($onlyopenquestions) {
             $sql .= ' AND mentorid = 0';
         }
-        $records = $DB->get_records_sql('SELECT * FROM {local_thi_learning_companions_mentor_questions} WHERE topic '.$sql, $params);
+        $records = $DB->get_records_sql(
+            'SELECT * FROM {local_thi_learning_companions_mentor_questions} WHERE topic '.$sql,
+            $params
+        );
         $questions = [];
         foreach ($records as $record) {
             $questions[] = self::find($record->id);
@@ -350,7 +353,8 @@ class question {
             return $this->chat;
         }
 
-        return $this->chat = $DB->get_record('local_thi_learning_companions_chat', ['relatedid' => $this->id, 'chattype' => groups::CHATTYPE_MENTOR]);
+        return $this->chat = $DB->get_record('local_thi_learning_companions_chat',
+            ['relatedid' => $this->id, 'chattype' => groups::CHATTYPE_MENTOR]);
     }
 
     /**

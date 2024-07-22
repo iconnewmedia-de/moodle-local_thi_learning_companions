@@ -208,7 +208,8 @@ class group {
         $this->id = $groupid;
         $group = $DB->get_record('local_thi_learning_companions_groups', ['id' => $groupid]);
         $user = $DB->get_record('user', ['id' => $group->createdby]);
-        $chat = $DB->get_record('local_thi_learning_companions_chat', ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
+        $chat = $DB->get_record('local_thi_learning_companions_chat',
+            ['relatedid' => $groupid, 'chattype' => groups::CHATTYPE_GROUP]);
         foreach ($group as $key => $value) {
             $this->$key = $value;
         }

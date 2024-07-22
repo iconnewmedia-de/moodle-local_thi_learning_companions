@@ -109,7 +109,9 @@ class cron_task extends \core\task\scheduled_task {
         $xdaysago = time() - $timelimit * DAYSECS;
         $unanswered = $DB->get_records_sql("SELECT q.*
             FROM {local_thi_learning_companions_mentor_questions} q
-            LEFT JOIN {local_thi_learning_companions_chat} c ON c.relatedid = q.id AND c.chattype = '" . groups::CHATTYPE_MENTOR . "'
+            LEFT JOIN {local_thi_learning_companions_chat} c ON c.relatedid = q.id AND c.chattype = '" .
+            groups::CHATTYPE_MENTOR .
+            "'
             LEFT JOIN {local_thi_learning_companions_chat_comment} cmnt ON cmnt.chatid = c.id
             LEFT JOIN {local_thi_learning_companions_tutor_notifications} n ON n.questionid = q.id
             WHERE q.timecreated < ?

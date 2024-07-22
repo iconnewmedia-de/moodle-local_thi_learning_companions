@@ -248,11 +248,16 @@ class mentors {
     public static function delete_asked_question($questionid): bool {
         global $DB;
         if (!self::may_user_delete_question($questionid)) {
-            throw new \moodle_exception('no_permission_to_delete_question', 'local_thi_learning_companions');
+            throw new \moodle_exception('no_permission_to_delete_question',
+                'local_thi_learning_companions');
         }
-        $chatid = $DB->get_field('local_thi_learning_companions_chat', 'id', ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
-        return $DB->delete_records('local_thi_learning_companions_chat_comment', ['chatid' => $chatid])
-            && $DB->delete_records('local_thi_learning_companions_mentor_questions', ['id' => $questionid]);
+        $chatid = $DB->get_field('local_thi_learning_companions_chat',
+            'id',
+            ['relatedid' => $questionid, 'chattype' => groups::CHATTYPE_MENTOR]);
+        return $DB->delete_records('local_thi_learning_companions_chat_comment',
+                ['chatid' => $chatid])
+            && $DB->delete_records('local_thi_learning_companions_mentor_questions',
+                ['id' => $questionid]);
     }
 
     /**

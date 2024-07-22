@@ -118,7 +118,11 @@ class groups {
      */
     public static function get_groupid_of_chatid(int $chatid): int {
         global $DB;
-        $groupid = $DB->get_field('local_thi_learning_companions_chat', 'relatedid', ['id' => $chatid, 'chattype' => self::CHATTYPE_GROUP]);
+        $groupid = $DB->get_field(
+            'local_thi_learning_companions_chat',
+            'relatedid',
+            ['id' => $chatid, 'chattype' => self::CHATTYPE_GROUP]
+        );
         return $groupid;
     }
 
@@ -264,14 +268,20 @@ class groups {
     public static function invite_user_to_group($userid, $groupid) {
         global $DB, $USER;
 
-        $userisalreadyingroup = $DB->record_exists('local_thi_learning_companions_group_members', ['userid' => $userid, 'groupid' => $groupid]);
+        $userisalreadyingroup = $DB->record_exists(
+            'local_thi_learning_companions_group_members',
+            ['userid' => $userid, 'groupid' => $groupid]
+        );
         if ($userisalreadyingroup) {
             // Return for now. Maybe throw exception or something later.
             return false;
         }
 
         // Check if the current user is in the group.
-        $userisingroup = $DB->record_exists('local_thi_learning_companions_group_members', ['userid' => $USER->id, 'groupid' => $groupid]);
+        $userisingroup = $DB->record_exists(
+            'local_thi_learning_companions_group_members',
+            ['userid' => $USER->id, 'groupid' => $groupid]
+        );
         if (!$userisingroup) {
             // Return for now. Maybe throw exception or something later.
             return false;
@@ -550,8 +560,15 @@ class groups {
         $record->chattype = self::CHATTYPE_GROUP;
         $record->relatedid = $groupid;
         $record->timecreated = time();
-        $record->course = $DB->get_field('local_thi_learning_companions_groups', 'courseid', ['id' => $groupid]);
-        if ($DB->record_exists('local_thi_learning_companions_chat', ['chattype' => $record->chattype, 'relatedid' => $record->relatedid])) {
+        $record->course = $DB->get_field(
+            'local_thi_learning_companions_groups',
+            'courseid',
+            ['id' => $groupid]
+        );
+        if ($DB->record_exists(
+            'local_thi_learning_companions_chat',
+            ['chattype' => $record->chattype, 'relatedid' => $record->relatedid]
+        )) {
             return; // Already exists (for some reason) - nothing to do.
         }
         $DB->insert_record('local_thi_learning_companions_chat', $record);
@@ -768,13 +785,18 @@ class groups {
         global $DB, $USER;
 
         $event = group_deleted::make($USER->id, $groupid);
-        $event->add_record_snapshot('local_thi_learning_companions_groups', $DB->get_record('local_thi_learning_companions_groups', ['id' => $groupid]));
+        $event->add_record_snapshot('local_thi_learning_companions_groups',
+            $DB->get_record('local_thi_learning_companions_groups',
+                ['id' => $groupid]
+            )
+        );
         $event->add_record_snapshot('local_thi_learning_companions_chat',
             $DB->get_record('local_thi_learning_companions_chat',
                 ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]
             )
         );
-        $groupmembers = $DB->get_records('local_thi_learning_companions_group_members', ['groupid' => $groupid]);
+        $groupmembers = $DB->get_records('local_thi_learning_companions_group_members',
+            ['groupid' => $groupid]);
         foreach ($groupmembers as $groupmember) {
             $event->add_record_snapshot('local_thi_learning_companions_group_members', $groupmember);
         }
@@ -782,21 +804,30 @@ class groups {
 
         $transaction = $DB->start_delegated_transaction();
         // Get Chat ID.
-        $chatid = $DB->get_field('local_thi_learning_companions_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
+        $chatid = $DB->get_field('local_thi_learning_companions_chat',
+            'id',
+            ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]
+        );
         // Delete file attachments.
         self::delete_attachments_of_chat($chatid);
         // Delete the group members.
-        $DB->delete_records('local_thi_learning_companions_group_members', ['groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_group_members',
+            ['groupid' => $groupid]);
         // Delete the group requests.
-        $DB->delete_records('local_thi_learning_companions_group_requests', ['groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_group_requests',
+            ['groupid' => $groupid]);
         // Delete the group keywords.
-        $DB->delete_records('local_thi_learning_companions_groups_keywords', ['groupid' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_groups_keywords',
+            ['groupid' => $groupid]);
         // Delete the group.
-        $DB->delete_records('local_thi_learning_companions_groups', ['id' => $groupid]);
+        $DB->delete_records('local_thi_learning_companions_groups',
+            ['id' => $groupid]);
         // Delete Chat.
-        $DB->delete_records('local_thi_learning_companions_chat', ['id' => $chatid]);
+        $DB->delete_records('local_thi_learning_companions_chat',
+            ['id' => $chatid]);
         // Delete Chat Messages.
-        $DB->delete_records('local_thi_learning_companions_chat_comment', ['chatid' => $chatid]);
+        $DB->delete_records('local_thi_learning_companions_chat_comment',
+            ['chatid' => $chatid]);
         $transaction->allow_commit();
     }
 
@@ -809,13 +840,20 @@ class groups {
     protected static function delete_attachments_of_chat($chatid) {
         global $DB;
         // Delete Chat Messages.
-        $comments = $DB->get_records('local_thi_learning_companions_chat_comment', ['chatid' => $chatid]);
+        $comments = $DB->get_records('local_thi_learning_companions_chat_comment',
+            ['chatid' => $chatid]);
         $fs = new \file_storage();
         $context = \context_system::instance();
         foreach ($comments as $comment) {
             foreach ($comment->attachments as $attachment) {
-                $fs->delete_area_files($context->id, 'local_thi_learning_companions', 'message', $comment->id);
-                $fs->delete_area_files($context->id,  'local_thi_learning_companions', 'attachments', $comment->id);
+                $fs->delete_area_files($context->id,
+                    'local_thi_learning_companions',
+                    'message',
+                    $comment->id);
+                $fs->delete_area_files($context->id,
+                    'local_thi_learning_companions',
+                    'attachments',
+                    $comment->id);
             }
         }
     }
@@ -828,8 +866,12 @@ class groups {
      */
     public static function count_comments_since_last_visit($groupid) {
         global $DB, $USER;
-        $chatid = $DB->get_field('local_thi_learning_companions_chat', 'id', ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
-        $lastvisited = $DB->get_field('local_thi_learning_companions_chat_lastvisited', 'timevisited', ['chatid' => $chatid, 'userid' => $USER->id]);
+        $chatid = $DB->get_field('local_thi_learning_companions_chat',
+            'id',
+            ['chattype' => self::CHATTYPE_GROUP, 'relatedid' => $groupid]);
+        $lastvisited = $DB->get_field('local_thi_learning_companions_chat_lastvisited',
+            'timevisited',
+            ['chatid' => $chatid, 'userid' => $USER->id]);
         if (false === $lastvisited) {
             $lastvisited = 0;
         }
@@ -853,7 +895,8 @@ class groups {
      */
     public static function is_group_member(int $userid, int $groupid) {
         global $DB;
-        return $DB->record_exists('local_thi_learning_companions_group_members', ['userid' => $userid, 'groupid' => $groupid]);
+        return $DB->record_exists('local_thi_learning_companions_group_members',
+            ['userid' => $userid, 'groupid' => $groupid]);
     }
 
     /**
@@ -867,7 +910,10 @@ class groups {
         global $USER;
         $isgroupmember = self::is_group_member($USER->id, $groupid);
         $context = \context_system::instance();
-        $maymanagegroups = has_capability('local/thi_learning_companions:group_manage', $context);
+        $maymanagegroups = has_capability(
+            'local/thi_learning_companions:group_manage',
+            $context
+        );
         return $isgroupmember || $maymanagegroups;
     }
 }
